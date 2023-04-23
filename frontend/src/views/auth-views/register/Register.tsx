@@ -9,7 +9,7 @@ import {
   VStack,
   InputRightElement,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
@@ -17,19 +17,19 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import {
   registrationSchema,
   RegisterFormData,
 } from "../../../schemas/register.schema";
 import { RegisterInput } from "./components/RegisterInput";
 import Button from "../../../components/CustomBtn/Button";
-import FormContainer from "../../../components/FormContainer/FormContainer";
 import { useRegisterUserMutation } from "../../../store/slices/services/registerApiSlice";
 import { toast } from "react-hot-toast";
+import useNavigation from "../../../hooks/useNavigation";
 
 const Register = () => {
-  const navigate = useNavigate();
+  const { handleNavigate } = useNavigation();
   const [show, setShow] = useState(false);
   const {
     register,
@@ -47,7 +47,7 @@ const Register = () => {
       if (response.status === "Success") {
         toast.success(response.message);
         setTimeout(() => {
-          navigate(`${AUTH_PREFIX_PATH}/login`);
+          handleNavigate(`${AUTH_PREFIX_PATH}/login`);
         }, 2000);
       }
     } catch (error: any) {
@@ -57,7 +57,7 @@ const Register = () => {
   };
 
   return (
-    <FormContainer showHeading={true}>
+    <Fragment>
       <Stack pb={10}>
         <Text textAlign="center">
           Already have an account?{" "}
@@ -152,7 +152,7 @@ const Register = () => {
           Register
         </Button>
       </form>
-    </FormContainer>
+    </Fragment>
   );
 };
 

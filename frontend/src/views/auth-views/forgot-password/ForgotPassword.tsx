@@ -7,13 +7,13 @@ import {
   forgotPasswordSchema,
 } from "../../../schemas/forgot-password.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormContainer from "../../../components/FormContainer/FormContainer";
 import Button from "../../../components/CustomBtn/Button";
-import { useNavigate } from "react-router-dom";
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
+import { Fragment } from "react";
+import useNavigation from "../../../hooks/useNavigation";
 
 const ForgotPassword = () => {
-  const navigate = useNavigate();
+  const { handleNavigate } = useNavigation();
   const {
     register,
     handleSubmit,
@@ -26,12 +26,8 @@ const ForgotPassword = () => {
     console.log(data);
   };
 
-  const handleNavigate = () => {
-    navigate(`${AUTH_PREFIX_PATH}/login`);
-  };
-
   return (
-    <FormContainer showHeading={true} formHeading="Reset your password">
+    <Fragment>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           label="Email"
@@ -56,14 +52,14 @@ const ForgotPassword = () => {
           <Button
             type="button"
             width="1/2"
-            onClick={handleNavigate}
+            onClick={() => handleNavigate(`${AUTH_PREFIX_PATH}/login`)}
             leftIcon={<BsArrowLeftShort size={25} color="gray.3000" />}
           >
             Back
           </Button>
         </HStack>
       </form>
-    </FormContainer>
+    </Fragment>
   );
 };
 

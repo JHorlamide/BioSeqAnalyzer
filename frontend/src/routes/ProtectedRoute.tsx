@@ -7,7 +7,7 @@ import {
 } from "../config/AppConfig";
 
 const ProtectedRoute = () => {
-  const { token } = useAppSelector((state) => state.auth);
+  const token = useAppSelector((state) => state.auth.token);
   const location = useLocation();
 
   if (!token) {

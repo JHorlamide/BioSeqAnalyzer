@@ -10,36 +10,38 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
+import {  Link } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { AUTH_PREFIX_PATH, APP_PREFIX_PATH } from "../../../config/AppConfig";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { loginSchema, LoginFormData } from "../../../schemas/login.schema";
 import Button from "../../../components/CustomBtn/Button";
 import { LoginInput } from "./components/LoginInput";
-import FormContainer from "../../../components/FormContainer/FormContainer";
 import { useLoginUserMutation } from "../../../store/slices/services/loginApiSlice";
 import { toast } from "react-hot-toast";
 import { setToken, setRefreshToken } from "../../../store/slices/authSlice";
 import { setUser } from "../../../store/slices/authSlice";
 import { useAppDispatch } from "../../../hooks/reduxHook";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
+import useNavigation from "../../../hooks/useNavigation";
 
 const Login = () => {
-  const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [loginUser, { isLoading, isError }] = useLoginUserMutation();
   const dispatch = useAppDispatch();
+  const { handleNavigate } = useNavigation();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
+
+  const handleShowPassword = () => setShow(!show);
 
   const onSubmit = async (data: LoginFormData) => {
     try {
@@ -57,7 +59,7 @@ const Login = () => {
         localStorage.setItem(AUTH_TOKEN, accessToken);
         localStorage.setItem(REFRESH_TOKEN, refreshToken);
 
-        navigate(`${APP_PREFIX_PATH}/dashboard`);
+        handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
       }
     } catch (error: any) {
       const errorMessage = error.response.data.message || error.message;
@@ -65,10 +67,8 @@ const Login = () => {
     }
   };
 
-  const handleShowPassword = () => setShow(!show);
-
   return (
-    <FormContainer showHeading={true}>
+    <Fragment>
       <Stack pb={10}>
         <Text textAlign="center">
           Don't have an account?{" "}
@@ -152,7 +152,7 @@ const Login = () => {
           Login
         </Button>
       </form>
-    </FormContainer>
+    </Fragment>
   );
 };
 

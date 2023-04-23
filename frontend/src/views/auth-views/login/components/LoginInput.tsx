@@ -2,8 +2,10 @@ import { forwardRef, Ref } from "react";
 import { Input, InputProps, FormErrorMessage } from "@chakra-ui/react";
 import { UseFormRegister } from "react-hook-form";
 
+type LoginInputName = "email" | "password";
+
 interface LoginInputProps extends InputProps {
-  name: "email" | "password";
+  name: LoginInputName;
   error?: string;
   register: UseFormRegister<{
     email: string;

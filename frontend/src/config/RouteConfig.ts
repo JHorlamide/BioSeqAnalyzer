@@ -20,7 +20,7 @@ export const publicRoute: IRoute[] = [
     path: `${AUTH_PREFIX_PATH}/register`,
     component: React.lazy(() => import("../views/auth-views/register/Register"))
   },
-  
+
   {
     key: "forgot-password",
     path: `${AUTH_PREFIX_PATH}/forgot-password`,
@@ -32,6 +32,18 @@ export const protectedRoute: IRoute[] = [
   {
     key: "dashboard",
     path: `${APP_PREFIX_PATH}/dashboard`,
+    component: React.lazy(() => import("../views/app-views/dashboard"))
+  },
+
+  {
+    key: "projects",
+    path: `${APP_PREFIX_PATH}/create-project`,
+    component: React.lazy(() => import("../views/app-views/create-project"))
+  },
+
+  {
+    key: "project-members",
+    path: `${APP_PREFIX_PATH}/project-members`,
     component: React.lazy(() => import("../views/app-views/dashboard"))
   },
 ]

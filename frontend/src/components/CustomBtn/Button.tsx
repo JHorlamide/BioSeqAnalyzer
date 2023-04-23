@@ -10,7 +10,6 @@ const Button = (props: Props) => {
 
   return (
     <ChakraButton
-      p="6"
       fontWeight="500"
       fontSize={["0.875rem", "1rem"]}
       isDisabled={isDisabled}
