@@ -1,5 +1,5 @@
 import winston from "winston";
-import { NODE_ENV } from "./EnvironmentConfig";
+import { NODE_ENV } from "./environmentConfig";
 
 const isDevEnvironment = () => {
   return NODE_ENV === "development" ? true : false

@@ -12,7 +12,7 @@ export const ERR_MSG = {
 }
 
 export const ERROR_MESSAGES = {
-  REQUIRED_CREATE_FIELD: {
+  REQUIRED_USER_FIELDS: {
     name: "InvalidInputError",
     statusCode: httpStatus.BAD_REQUEST,
     message: "name, email, and, password are required fields"
@@ -34,10 +34,5 @@ export const ERROR_MESSAGES = {
     name: 'UnauthorizedError',
     statusCode: httpStatus.UNAUTHORIZED,
     message: 'Unauthorized access',
-  },
-
-  GENERAL_ERROR: {
-    name: 'Error',
-    statusCode: httpStatus.INTERNAL_SERVER_ERROR,
   },
 };

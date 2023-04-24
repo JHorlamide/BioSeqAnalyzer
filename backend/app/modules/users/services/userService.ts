@@ -2,14 +2,20 @@ import userRepository from "../repository/userRepository";
 import { ERROR_MESSAGES } from "../types/constants";
 import { IUser } from "../types/types";
 import { AppError } from "../../../common/middleware/appError";
+import { GENERAL_ERROR } from "../../../config/appConstants";
 
-const { name, statusCode } = ERROR_MESSAGES.GENERAL_ERROR;
+const { name, statusCode } = GENERAL_ERROR.ERROR_MSG;
 
 class UserService {
   public async createUser(userBodyField: IUser) {
+    // Ensure that the necessary data is provided to create a user
     if (Object.keys(userBodyField).length === 0) {
-      const { name, statusCode, message } = ERROR_MESSAGES.REQUIRED_CREATE_FIELD;
-      throw new AppError(name, statusCode, message, true);
+      const { REQUIRED_USER_FIELDS } = ERROR_MESSAGES;
+
+      throw new AppError(
+        REQUIRED_USER_FIELDS.name,
+        REQUIRED_USER_FIELDS.statusCode,
+        REQUIRED_USER_FIELDS.message, true);
     }
 
     try {
@@ -22,15 +28,24 @@ class UserService {
 
   public async getUserByEmail(email: string) {
     if (!email) {
-      const { name, statusCode, message } = ERROR_MESSAGES.INVALID_EMAIL_ERROR;
-      throw new AppError(name, statusCode, message, true);
+      const { INVALID_EMAIL_ERROR } = ERROR_MESSAGES;
+
+      throw new AppError(
+        INVALID_EMAIL_ERROR.name,
+        INVALID_EMAIL_ERROR.statusCode,
+        INVALID_EMAIL_ERROR.message, true);
     }
 
     try {
       const user = await userRepository.getUserByEmail(email);
+
       if (!user) {
-        const { name, statusCode, message } = ERROR_MESSAGES.USER_FOUND_ERROR;
-        throw new AppError(name, statusCode, message, true);
+        const { USER_FOUND_ERROR } = ERROR_MESSAGES;
+
+        throw new AppError(
+          USER_FOUND_ERROR.name,
+          USER_FOUND_ERROR.statusCode,
+          USER_FOUND_ERROR.message, true);
       }
 
       return user;
@@ -38,8 +53,6 @@ class UserService {
       throw new AppError(name, statusCode, error.message, true);
     }
   }
-
-
 }
 
 export default new UserService();

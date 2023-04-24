@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { onError } from "./requestLogger";
-import { DATABASE_URL } from "./EnvironmentConfig";
+import { DATABASE_URL } from "./environmentConfig";
 import { logger } from "./logger";
 
 let count = 0;

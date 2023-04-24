@@ -9,6 +9,7 @@ const requestBodyValidator = (schema: any) => {
       return responseHandler.failureResponse(error.details[0].message, res);
     }
 
+    console.log("projectMiddleware called");
     next();
   }
 }

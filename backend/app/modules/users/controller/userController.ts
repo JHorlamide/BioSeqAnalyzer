@@ -16,6 +16,7 @@ class UserController {
       return responseHandler.failureResponse(error.message, res);
     }
   }
+  
   // public createUser = asyncHandler(async (req: Request, res: Response) => {
   //   const { password } = req.body;
   //   const passwordHash = await argon2.hash(password);

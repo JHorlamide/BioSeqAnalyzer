@@ -5,8 +5,10 @@ import {
   FormLabel,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   VStack,
   Flex,
+  Spinner,
   Center,
   HStack,
 } from "@chakra-ui/react";
@@ -190,6 +192,12 @@ const CreateProject = () => {
                     pt="5px"
                     pointerEvents={"none"}
                     children={<GiAcid color="gray.3000" />}
+                  />
+
+                  <InputRightElement
+                    pt="5px"
+                    pointerEvents={"none"}
+                    children={<Spinner size="sm" />}
                   />
 
                   <ProjectInput

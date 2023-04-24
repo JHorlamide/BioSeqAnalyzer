@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from "express";
 import responseHandler from "../../../common/responseHandler";
 import requestBodyValidator from "../../../common/requestValidation";
 import { registerUser } from "../validation/userSchema";
-import userService from "../services/userService";
 import userRepository from "../repository/userRepository";
 import { ERR_MSG } from "../types/constants";
 

@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { JWT_SECRETE } from "../../../config/EnvironmentConfig";
+import { JWT_SECRETE } from "../../../config/environmentConfig";
 import { Jwt } from "../types/authTypes";
 import responseHandler from "../../../common/responseHandler";
 import userService from "../../users/services/userService";
@@ -17,17 +17,21 @@ class JwtMiddleware {
     if (req.headers["authorization"]) {
       try {
         const authorization = req.headers["authorization"].split(" ");
+
         if (authorization[0] !== "Bearer") {
           return responseHandler.unAuthorizedResponse("Invalid authorization token", res);
         }
 
         res.locals.jwt = jwt.verify(authorization[1], JWT_SECRETE) as Jwt;
+        console.log("authMiddleware called");
         return next();
       } catch (error: any) {
         return responseHandler
           .forbiddenResponse(`Not authorized ${error}`, res);
       }
     }
+
+    responseHandler.unAuthorizedResponse("Authorization denied", res);
   }
 
   public async validRefreshNeeded(req: Request, res: Response, next: NextFunction) {

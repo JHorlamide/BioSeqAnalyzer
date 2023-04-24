@@ -2,7 +2,7 @@ import http from "http";
 import { app, routes } from "./config/app";
 import { CommonRoutesConfig } from "./common/CommonRouteConfig";
 import { onError } from "./config/requestLogger";
-import { PORT, NODE_ENV } from "./config/EnvironmentConfig";
+import { PORT, NODE_ENV } from "./config/environmentConfig";
 import DBConnectWithRetry from "./config/DBConfig";
 
 async function connectToDatabase(): Promise<void> {

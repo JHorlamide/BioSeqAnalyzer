@@ -6,10 +6,12 @@ import { useTreblle } from "treblle";
 import { requestLogger } from "./requestLogger";
 import { CommonRoutesConfig } from "../common/CommonRouteConfig";
 import errorMiddleware from "../common/middleware/errorMiddleware";
-import { NODE_ENV, TREBLE_API_KEY, TREBLLE_PROJECT_ID } from "./EnvironmentConfig";
+import { NODE_ENV, TREBLE_API_KEY, TREBLLE_PROJECT_ID } from "./environmentConfig";
 
+// Routes imports
 import { AuthRoute } from "../modules/auth/routeConfig";
 import { UserRoute } from "../modules/users/routeConfig";
+import { ProjectRoute } from "../modules/projects/routeConfig";
 
 const app = express();
 const routes: CommonRoutesConfig[] = [];
@@ -41,6 +43,7 @@ if (NODE_ENV !== "test") {
 }
 
 // routes definition
+routes.push(new ProjectRoute(app));
 routes.push(new AuthRoute(app));
 routes.push(new UserRoute(app));
 

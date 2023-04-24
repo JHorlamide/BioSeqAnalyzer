@@ -3,7 +3,7 @@ import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import responseHandler from "../../../common/responseHandler";
 import asyncHandler from "../../../common/asyncHandler";
-import { JWT_SECRETE, TOKEN_EXPIRATION } from "../../../config/EnvironmentConfig";
+import { JWT_SECRETE, TOKEN_EXPIRATION } from "../../../config/environmentConfig";
 
 class AuthController {
   public createUserJWT = asyncHandler(async (req: Request, res: Response) => {
