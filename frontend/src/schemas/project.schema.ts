@@ -34,7 +34,7 @@ export const projectSchema = z.object({
     }),
 
   proteinPDBID: z.string().optional(),
-  uniProtId: z.string().optional(),
+  uniprotId: z.string().optional(),
   proteinAminoAcidSequence: z.string().optional()
 })
 

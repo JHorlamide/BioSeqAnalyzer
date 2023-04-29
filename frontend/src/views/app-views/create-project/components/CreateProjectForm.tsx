@@ -98,7 +98,7 @@ const CreateProject = () => {
                       }}
                       name="uniprotId"
                       register={register}
-                      error={errors.uniProtId?.message}
+                      error={errors.uniprotId?.message}
                     />
                   </InputGroup>
                 </FormControl>
@@ -132,7 +132,7 @@ const CreateProject = () => {
                       }}
                       name="uniprotId"
                       register={register}
-                      error={errors.uniProtId?.message}
+                      error={errors.uniprotId?.message}
                     />
                   </InputGroup>
                 </FormControl>
@@ -242,7 +242,7 @@ const CreateProject = () => {
                     }}
                     name="projectTitle"
                     register={register}
-                    error={errors.uniProtId?.message}
+                    error={errors.projectTitle?.message}
                   />
                 </InputGroup>
               </FormControl>

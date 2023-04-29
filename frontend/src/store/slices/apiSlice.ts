@@ -4,7 +4,7 @@ import { RootState } from "..";
 
 export const proteinApi = createApi({
   reducerPath: "proteinApi",
-  tagTypes: ["User", "Project"],
+  tagTypes: ["User", "Projects"],
   baseQuery: fetchBaseQuery({
     prepareHeaders: async (headers, { getState }) => {
       const isBrowser = typeof window !== undefined;
@@ -17,6 +17,7 @@ export const proteinApi = createApi({
       return headers;
     }
   }),
+
   endpoints: () => ({}),
   refetchOnReconnect: true
 })

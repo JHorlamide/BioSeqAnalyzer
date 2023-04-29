@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
 import EmptyProject from "../../../components/EmptyProject/EmptyProject";
 import Button from "../../../components/CustomBtn/Button";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
@@ -7,10 +7,30 @@ import ProjectCard from "../../../components/ProjectCard/ProjectCard";
 import { useGetProjectsQuery } from "../../../store/slices/services/projectApiSlice";
 import { Fragment } from "react";
 import Loading from "../../../components/Loading/Loading";
+import { Projects } from "../../../schemas/project.schema";
+
+interface ProjectsContainerProps {
+  projects: Projects[];
+}
+
+const ProjectsContainer = ({ projects }: ProjectsContainerProps) => {
+  return (
+    <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+      {projects.map((project) => (
+        <GridItem key={project._id}>
+          <ProjectCard
+            projectTitle={project.projectTitle}
+            updatedAt={project.updateAt}
+          />
+        </GridItem>
+      ))}
+    </Grid>
+  );
+};
 
 const Dashboard = () => {
   const { handleNavigate } = useNavigation();
-  const { data: projects, isLoading, isError } = useGetProjectsQuery();
+  const { data: projects } = useGetProjectsQuery();
 
   return (
     <Box width="full">
@@ -29,14 +49,7 @@ const Dashboard = () => {
 
       <Box marginY={10}>
         {projects && projects.data.length > 0 ? (
-          projects.data.map((project) => (
-            <Fragment key={project._id}>
-              <ProjectCard
-                projectTitle={project.projectTitle}
-                updatedAt={project.updateAt}
-              />
-            </Fragment>
-          ))
+          <ProjectsContainer projects={projects.data} />
         ) : (
           <EmptyProject />
         )}
@@ -46,3 +59,12 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
+
+{
+  /* <Fragment key={project._id}>
+  <ProjectCard
+    projectTitle={project.projectTitle}
+    updatedAt={project.updateAt}
+  />
+</Fragment>; */
+}
