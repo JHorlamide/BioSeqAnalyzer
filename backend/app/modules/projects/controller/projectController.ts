@@ -7,8 +7,10 @@ import uniprotService from "../services/uniprot.service";
 
 class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = res.locals.jwt;
+    
     try {
-      const project = await projectService.createProject(req.body);
+      const project = await projectService.createProject({ user: userId, ...req.body });
       console.log("projectController  called");
       responseHandler.successfullyCreated(RES_MSG.projectCreated, project, res);
     } catch (error: any) {

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { IBaseResponse } from ".";
 
 export enum ProjectGoal {
   MAXIMIZE = "Maximize",
@@ -17,23 +18,8 @@ export type InputName =
   | "projectGoal"
 
   | "proteinPDBID"
-  | "uniProtId"
+  | "uniprotId"
   | "proteinAminoAcidSequence"
-
-export interface IProject {
-  projectTitle: string;
-  measuredProperty: MeasuredProperty;
-  projectGoal: ProjectGoal;
-
-  //OPTIONAL PROPERTY
-  proteinPDBID?: string;
-  uniProtId?: string;
-  proteinAminoAcidSequence?: string;
-}
-
-export interface ProjectState {
-  project: IProject | null;
-}
 
 export const projectSchema = z.object({
   projectTitle: z.string().min(5, { message: "Project tile is required" }),
@@ -53,3 +39,39 @@ export const projectSchema = z.object({
 })
 
 export type ProjectFormData = z.infer<typeof projectSchema>;
+
+export interface IProject {
+  projectTitle: string;
+  measuredProperty: MeasuredProperty;
+  projectGoal: ProjectGoal;
+
+  //OPTIONAL PROPERTY
+  proteinPDBID?: string;
+  uniprotId?: string;
+  proteinAminoAcidSequence?: string;
+}
+
+export interface ProjectState {
+  project: IProject | null;
+}
+
+export interface Projects extends IProject {
+  _id: string;
+  updateAt: string;
+}
+
+export interface ICreateProjectRes extends IBaseResponse {
+  data: IProject;
+}
+
+export interface IFetchProjects extends IBaseResponse {
+  data: Projects[];
+}
+
+export interface IGetProteinSequenceRes extends IBaseResponse {
+  data: string;
+}
+
+export interface IGetProteinSequenceReq {
+  uniprotId: string;
+}

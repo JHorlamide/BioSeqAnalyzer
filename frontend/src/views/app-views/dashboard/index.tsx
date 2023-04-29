@@ -3,9 +3,15 @@ import EmptyProject from "../../../components/EmptyProject/EmptyProject";
 import Button from "../../../components/CustomBtn/Button";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
 import useNavigation from "../../../hooks/useNavigation";
+import ProjectCard from "../../../components/ProjectCard/ProjectCard";
+import { useGetProjectsQuery } from "../../../store/slices/services/projectApiSlice";
+import { Fragment } from "react";
+import Loading from "../../../components/Loading/Loading";
 
 const Dashboard = () => {
   const { handleNavigate } = useNavigation();
+  const { data: projects, isLoading, isError } = useGetProjectsQuery();
+
   return (
     <Box width="full">
       <Flex justify="space-between">
@@ -20,7 +26,21 @@ const Dashboard = () => {
           Create new project
         </Button>
       </Flex>
-      <EmptyProject />
+
+      <Box marginY={10}>
+        {projects && projects.data.length > 0 ? (
+          projects.data.map((project) => (
+            <Fragment key={project._id}>
+              <ProjectCard
+                projectTitle={project.projectTitle}
+                updatedAt={project.updateAt}
+              />
+            </Fragment>
+          ))
+        ) : (
+          <EmptyProject />
+        )}
+      </Box>
     </Box>
   );
 };

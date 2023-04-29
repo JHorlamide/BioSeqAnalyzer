@@ -9,12 +9,18 @@ export const RES_MSG = {
 }
 
 export const ERR_MSG = {
-  requiredUniprotIdError: "uniprotID is required",
+  requiredUniprotIdError: "uniprotId is required",
   invalidUniprotIdError: "Invalid uniprotId",
   requiredPDBIdError: "proteinPDBID is required",
 }
 
 export const ERROR_MESSAGES = {
+  REQUIRED_USER_ID: {
+    name: "InvalidUserId",
+    statusCode: httpStatus.BAD_REQUEST,
+    message: "userId is required"
+  },
+
   REQUIRED_PROJECT_DATA: {
     name: "InvalidInputError",
     statusCode: httpStatus.BAD_REQUEST,

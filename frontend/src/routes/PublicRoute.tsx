@@ -1,6 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { AUTHENTICATED_ENTRY } from "../config/AppConfig";
-import { useAppSelector } from "../hooks/reduxHook";
+import { useAppSelector } from "../store";
 
 const PublicRoute = () => {
   const { token } = useAppSelector((state) => state.auth);

@@ -1,3 +1,4 @@
+import { ObjectId } from "mongoose";
 export enum ProjectGoal {
   MAXIMIZE = "Maximize",
   MINIMIZE = "Minimize"
@@ -10,13 +11,14 @@ export enum MeasuredProperty {
 }
 
 export interface IProject {
+  user: ObjectId;
   projectTitle: string;
   measuredProperty: MeasuredProperty;
   projectGoal: ProjectGoal;
 
   //OPTIONAL PROPERTY
   proteinPDBID?: string;
-  uniprotID?: string;
+  uniprotId?: string;
   proteinAminoAcidSequence?: string;
 }
 

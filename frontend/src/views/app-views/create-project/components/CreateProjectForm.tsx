@@ -32,13 +32,16 @@ const measuredPropertyOption = [
 
 const CreateProject = () => {
   const {
-    handleSubmit,
-    onSubmit,
-    register,
+    isLoading,
+    loading,
     showRawSeqInput,
     showUniProtInput,
     isValid,
     errors,
+    animoAcidSequence,
+    handleSubmit,
+    submitProject,
+    register,
     toggleShowUniProtInput,
   } = useProject();
 
@@ -56,7 +59,7 @@ const CreateProject = () => {
           </Text>
         </Box>
 
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(submitProject)}>
           <VStack spacing={3} paddingY={2}>
             <VStack
               spacing={3}
@@ -93,7 +96,7 @@ const CreateProject = () => {
                         type: "string",
                         placeholder: "Copy and past raw sequence here...",
                       }}
-                      name="uniProtId"
+                      name="uniprotId"
                       register={register}
                       error={errors.uniProtId?.message}
                     />
@@ -127,7 +130,7 @@ const CreateProject = () => {
                         type: "string",
                         placeholder: "Enter UniProtId here...",
                       }}
-                      name="uniProtId"
+                      name="uniprotId"
                       register={register}
                       error={errors.uniProtId?.message}
                     />
@@ -197,13 +200,15 @@ const CreateProject = () => {
                   <InputRightElement
                     pt="5px"
                     pointerEvents={"none"}
-                    children={<Spinner size="sm" />}
+                    children={loading && <Spinner size="sm" />}
                   />
 
                   <ProjectInput
                     inputProps={{
                       type: "string",
                       placeholder: "",
+                      defaultValue: animoAcidSequence,
+                      value: animoAcidSequence,
                     }}
                     name="proteinAminoAcidSequence"
                     register={register}
@@ -243,7 +248,12 @@ const CreateProject = () => {
               </FormControl>
             </VStack>
 
-            <Button isDisabled={!isValid} alignSelf="end" type="submit">
+            <Button
+              isLoading={isLoading}
+              isDisabled={!isValid}
+              alignSelf="end"
+              type="submit"
+            >
               Create Project
             </Button>
           </VStack>

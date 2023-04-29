@@ -10,7 +10,7 @@ const { name, statusCode } = GENERAL_ERROR.ERROR_MSG;
 
 class ProjectService {
   /**
-  * Creates a project using the given project data. If uniprotID is provided, retrieves the protein sequence
+  * Creates a project using the given project data. If uniprotId is provided, retrieves the protein sequence
   * and adds it to the project data. If proteinPDBID is provided, adds the PDB URL to the project data.
   * @param projectData The data for the project to be created.
   * @returns The created project.
@@ -26,11 +26,20 @@ class ProjectService {
         REQUIRED_PROJECT_DATA.message, true);
     }
 
-    const { uniprotID, proteinPDBID } = projectData;
+    const { uniprotId, proteinPDBID, user } = projectData;
 
-    if (uniprotID) {
-      // If uniprotID is provided, retrieve the protein sequence
-      const proteinSequence = await uniprotService.getProteinSequence(uniprotID);
+    if (!user) {
+      const { REQUIRED_USER_ID } = ERROR_MESSAGES;
+
+      throw new AppError(
+        REQUIRED_USER_ID.name,
+        REQUIRED_USER_ID.statusCode,
+        REQUIRED_USER_ID.message, true);
+    }
+
+    if (uniprotId) {
+      // If uniprotId is provided, retrieve the protein sequence
+      const proteinSequence = await uniprotService.getProteinSequence(uniprotId);
 
       // Add the protein sequence to the project data and create the project
       const projectWithSequence = {
@@ -53,7 +62,7 @@ class ProjectService {
       return await this.createProteinProject(projectWithPDBID);
     }
 
-    // If neither uniprotID nor proteinPDBID is provided, create the project as-is
+    // If neither uniprotId nor proteinPDBID is provided, create the project as-is
     return projectRepository.createProject(projectData);
   }
 

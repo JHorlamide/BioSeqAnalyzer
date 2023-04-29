@@ -1,7 +1,7 @@
 import React, { Suspense, memo } from "react";
 import Loading from "../Loading/Loading";
 import Views from "../../views";
-import { useAppSelector } from "../../hooks/reduxHook";
+import { useAppSelector } from "../../store";
 
 const AppLayout = React.lazy(() => import("./AppLayout"));
 const AuthLayout = React.lazy(() => import("./AuthLayout"));

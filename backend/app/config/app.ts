@@ -1,5 +1,5 @@
-import express from "express";
-import cors from "cors";
+import express, { NextFunction, Request, Response } from "express";
+import cors, { CorsOptions } from "cors";
 import helmet from "helmet";
 import { useTreblle } from "treblle";
 
@@ -23,7 +23,12 @@ useTreblle(app, {
 
 // Middleware that enables Cross-Origin Resource Sharing (CORS) for the server.
 // This allows the server to handle requests from different domains or origins.
-app.use(cors());
+const corsOptions: CorsOptions = {
+  origin: "http://localhost:5173",
+  credentials: true,
+}
+
+app.use(cors(corsOptions));
 
 // Middleware that sets various HTTP headers for enhanced security.
 // This helps protect our application from well-known web vulnerabilities.

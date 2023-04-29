@@ -1,6 +1,6 @@
+import { Box } from "@chakra-ui/react";
 import Button from "../../../components/CustomBtn/Button";
 import { BsArrowLeft } from "react-icons/bs";
-import { Box, Flex, Center } from "@chakra-ui/react";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
 import useNavigation from "../../../hooks/useNavigation";
 import CreateProjectForm from "./components/CreateProjectForm";

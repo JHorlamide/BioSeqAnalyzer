@@ -9,12 +9,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { UseFormRegister } from "react-hook-form";
-import {
-  IProject,
-  InputName,
-  MeasuredProperty,
-  ProjectGoal,
-} from "../../../../schemas/project.schema";
+import { IProject, InputName } from "../../../../schemas/project.schema";
 
 type SelectOptionType = {
   label: string;
@@ -70,8 +65,15 @@ const ProjectInput = forwardRef(
 
 export const SelectInput = forwardRef(
   (props: SelectInputProps, ref: Ref<HTMLInputElement>) => {
-    const { name, label, selectOptions, selectProps, error, register, ...rest } =
-      props;
+    const {
+      name,
+      label,
+      selectOptions,
+      selectProps,
+      error,
+      register,
+      ...rest
+    } = props;
 
     return (
       <Fragment>

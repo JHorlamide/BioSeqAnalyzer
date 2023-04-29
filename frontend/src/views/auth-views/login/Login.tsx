@@ -25,7 +25,7 @@ import { useLoginUserMutation } from "../../../store/slices/services/loginApiSli
 import { toast } from "react-hot-toast";
 import { setToken, setRefreshToken } from "../../../store/slices/authSlice";
 import { setUser } from "../../../store/slices/authSlice";
-import { useAppDispatch } from "../../../hooks/reduxHook";
+import { useAppDispatch } from "../../../store";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
 import useNavigation from "../../../hooks/useNavigation";
 
@@ -46,6 +46,7 @@ const Login = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data).unwrap();
+
       if (response.status === "Success") {
         const { accessToken, refreshToken, user } = response.data;
 
@@ -58,7 +59,6 @@ const Login = () => {
 
         localStorage.setItem(AUTH_TOKEN, accessToken);
         localStorage.setItem(REFRESH_TOKEN, refreshToken);
-
         handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
       }
     } catch (error: any) {

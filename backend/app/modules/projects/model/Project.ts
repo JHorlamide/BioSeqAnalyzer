@@ -1,8 +1,10 @@
-import { Schema, model } from "mongoose";
+import mongoose, { Schema, model } from "mongoose";
 import { ProjectModel, ProjectGoal, MeasuredProperty } from "../types/types";
 
 const projectSchema = new Schema<ProjectModel>({
+  user: { type: mongoose.Types.ObjectId, ref: "User" },
   projectTitle: { type: String, required: true },
+
   projectGoal: {
     type: String,
     default: ProjectGoal.MINIMIZE,
@@ -28,8 +30,8 @@ const projectSchema = new Schema<ProjectModel>({
   },
 
   proteinPDBID: { type: String },
-  uniprotID: { type: String },
+  uniprotId: { type: String },
   proteinAminoAcidSequence: { type: String }
-})
+}, { timestamps: true })
 
 export default model<ProjectModel>("Project", projectSchema);

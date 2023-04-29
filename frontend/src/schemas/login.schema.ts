@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { IBaseResponse } from "./register.schema";
+import { IBaseResponse } from ".";
 
 export const loginSchema = z.object({
   email: z.string().min(10, { message: "Email is required" }),

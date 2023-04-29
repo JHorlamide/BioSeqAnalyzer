@@ -23,7 +23,6 @@ class JwtMiddleware {
         }
 
         res.locals.jwt = jwt.verify(authorization[1], JWT_SECRETE) as Jwt;
-        console.log("authMiddleware called");
         return next();
       } catch (error: any) {
         return responseHandler

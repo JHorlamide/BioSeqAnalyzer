@@ -23,6 +23,17 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
+    * @route /api/projects/uniprot/:uniprotId
+    * @desc Get Protein Sequence
+    * @access Private
+    * ***/
+    this.app.get(`${APP_PREFIX_PATH}/projects/uniprot/:uniprotId`, [
+      jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateReqParam,
+      projectController.getProteinSequence
+    ])
+
+    /***
     * @route /api/projects
     * @desc Get All Projects
     * @access Private
@@ -40,17 +51,6 @@ export class ProjectRoute extends CommonRoutesConfig {
     this.app.get(`${APP_PREFIX_PATH}/projects/:projectId`, [
       jwtMiddleware.validJWTNeeded,
       projectController.getProjectDetail
-    ])
-
-    /***
-    * @route /api/projects/uniprot/:uniprotId
-    * @desc Get Protein Sequence
-    * @access Private
-    * ***/
-    this.app.get(`${APP_PREFIX_PATH}/projects/uniprot/:uniprotId`, [
-      jwtMiddleware.validJWTNeeded,
-      projectMiddleware.validateReqParam,
-      projectController.getProteinSequence
     ])
 
     return this.app;

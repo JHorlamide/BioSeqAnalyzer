@@ -1,4 +1,4 @@
-import { useAppSelector } from "../hooks/reduxHook";
+import { useAppSelector } from "../store";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import {
   AUTH_PREFIX_PATH,

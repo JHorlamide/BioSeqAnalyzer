@@ -15,7 +15,7 @@ import {
 import SearchInput from "../SearchInput/SearchInput";
 import { CiUser } from "react-icons/ci";
 import { IoIosArrowDown, IoIosLogOut } from "react-icons/io";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHook";
+import { useAppDispatch, useAppSelector } from "../../store";
 import Button from "../CustomBtn/Button";
 import { logoutUser } from "../../store/slices/authSlice";
 import MobileNav from "../MobileNav/MobileNav";
