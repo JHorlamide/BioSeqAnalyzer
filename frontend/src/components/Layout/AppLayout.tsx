@@ -1,9 +1,9 @@
-import { Box, Flex, HStack, Show } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import HeaderNav from "../HeaderNav/HeaderNav";
 import SideNav from "../SideNav/SideNav";
 import Footer from "../Footer/Footer";
 import { Suspense } from "react";
-import Loading from "../Loading/Loading";
+import AppLoader from "../Loading/AppLoader";
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -24,7 +24,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         overflow="auto"
       >
         <HeaderNav />
-        <Suspense fallback={<Loading />}>{children}</Suspense>
+        <Suspense fallback={<AppLoader />}>{children}</Suspense>
         <Footer />
       </Box>
     </Flex>

@@ -10,7 +10,7 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-import {  Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
@@ -25,7 +25,7 @@ import { useLoginUserMutation } from "../../../store/slices/services/loginApiSli
 import { toast } from "react-hot-toast";
 import { setToken, setRefreshToken } from "../../../store/slices/authSlice";
 import { setUser } from "../../../store/slices/authSlice";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch } from "../../../store/store";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
 import useNavigation from "../../../hooks/useNavigation";
 
@@ -62,7 +62,9 @@ const Login = () => {
         handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
       }
     } catch (error: any) {
-      const errorMessage = error.response.data.message || error.message;
+      console.log(error);
+      const errorMessage =
+        error.data.message || error.response.data.message || error.message;
       toast.error(errorMessage);
     }
   };

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
-import { RootState } from "..";
+import { RootState } from "../store";
 
 export const proteinApi = createApi({
   reducerPath: "proteinApi",

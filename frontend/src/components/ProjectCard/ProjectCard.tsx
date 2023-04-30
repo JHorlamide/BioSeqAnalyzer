@@ -22,7 +22,12 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ projectTitle, updatedAt }: ProjectCardProps) => {
   return (
-    <Card width="322px" height="140px" borderRadius={10} paddingTop={-3}>
+    <Card
+      width={{ base: "100%", md: "322px" }}
+      height="140px"
+      borderRadius={10}
+      paddingTop={-3}
+    >
       <CardHeader
         display="flex"
         justifyContent="space-between"

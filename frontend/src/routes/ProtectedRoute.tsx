@@ -1,4 +1,4 @@
-import { useAppSelector } from "../store";
+import { useAppSelector } from "../store/store";
 import { useLocation, Navigate, Outlet } from "react-router-dom";
 import {
   AUTH_PREFIX_PATH,

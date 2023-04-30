@@ -1,12 +1,10 @@
-import { Box, Flex, Grid, GridItem, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, Text, useMediaQuery } from "@chakra-ui/react";
 import EmptyProject from "../../../components/EmptyProject/EmptyProject";
 import Button from "../../../components/CustomBtn/Button";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
 import useNavigation from "../../../hooks/useNavigation";
 import ProjectCard from "../../../components/ProjectCard/ProjectCard";
 import { useGetProjectsQuery } from "../../../store/slices/services/projectApiSlice";
-import { Fragment } from "react";
-import Loading from "../../../components/Loading/Loading";
 import { Projects } from "../../../schemas/project.schema";
 
 interface ProjectsContainerProps {
@@ -14,8 +12,16 @@ interface ProjectsContainerProps {
 }
 
 const ProjectsContainer = ({ projects }: ProjectsContainerProps) => {
+  const isLargeScreen = useMediaQuery("(min-width: 1440px)");
   return (
-    <Grid templateColumns="repeat(3, 1fr)" gap={4}>
+    <Grid
+      templateColumns={{
+        base: "repeat(1, 1fr)",
+        md: "repeat(2, 1fr)",
+        lg: isLargeScreen ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
+      }}
+      gap={4}
+    >
       {projects.map((project) => (
         <GridItem key={project._id}>
           <ProjectCard

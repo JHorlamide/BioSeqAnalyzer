@@ -1,7 +1,7 @@
 import React, { Suspense, memo } from "react";
-import Loading from "../Loading/Loading";
+import AppLoader from "../Loading/AppLoader";
 import Views from "../../views";
-import { useAppSelector } from "../../store";
+import { useAppSelector } from "../../store/store";
 
 const AppLayout = React.lazy(() => import("./AppLayout"));
 const AuthLayout = React.lazy(() => import("./AuthLayout"));
@@ -11,7 +11,7 @@ const Layout = () => {
   const Layout = token ? AppLayout : AuthLayout;
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<AppLoader />}>
       <Layout>
         <Views />
       </Layout>
