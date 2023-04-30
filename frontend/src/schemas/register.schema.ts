@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { IBaseResponse } from ".";
 
 export const registrationSchema = z.object({
   fullName: z.string().min(10, { message: "Full name is required" }),
@@ -10,7 +9,3 @@ export const registrationSchema = z.object({
 export type RegisterFormData = z.infer<typeof registrationSchema>;
 
 export interface IUser extends RegisterFormData { }
-
-export interface IRegisterResponse extends IBaseResponse {
-  data: null;
-}

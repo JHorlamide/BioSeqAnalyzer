@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProject, ProjectState } from "../../types/project";
+import { IProject, ProjectState } from "../../schemas/project.schema";
 
 const initialState: ProjectState = {
   project: null
@@ -17,4 +17,4 @@ const projectSlice = createSlice({
 })
 
 export const { setProject } = projectSlice.actions;
-export default projectSlice.reducer;
+export const projectReducer = projectSlice.reducer;

@@ -13,8 +13,8 @@ import {
 } from "redux-persist";
 import { proteinApi } from "./slices/apiSlice";
 import { unAuthenticatedMiddleware } from "./middleware/unAuthenticatedMiddleware";
-import authReducer from "./slices/authSlice";
-import projectReducer from "./slices/projectSlice";
+import { authReducer } from "./slices/authSlice";
+import { projectReducer } from "./slices/projectSlice";
 import { RESET_STATE_ACTION_TYPE } from "./actions/resetStateAction";
 import storage from "redux-persist/lib/storage";
 

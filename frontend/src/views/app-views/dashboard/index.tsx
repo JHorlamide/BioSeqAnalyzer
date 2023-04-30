@@ -1,10 +1,17 @@
-import { Box, Flex, Grid, GridItem, Text, useMediaQuery } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import EmptyProject from "../../../components/EmptyProject/EmptyProject";
 import Button from "../../../components/CustomBtn/Button";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
 import useNavigation from "../../../hooks/useNavigation";
 import ProjectCard from "../../../components/ProjectCard/ProjectCard";
-import { useGetProjectsQuery } from "../../../store/slices/services/projectApiSlice";
+import { useGetProjectsQuery } from "../../../store/slices/services/project/projectApiSlice";
 import { Projects } from "../../../schemas/project.schema";
 
 interface ProjectsContainerProps {

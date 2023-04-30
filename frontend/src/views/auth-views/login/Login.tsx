@@ -21,7 +21,7 @@ import { Fragment, useState } from "react";
 import { loginSchema, LoginFormData } from "../../../schemas/login.schema";
 import Button from "../../../components/CustomBtn/Button";
 import { LoginInput } from "./components/LoginInput";
-import { useLoginUserMutation } from "../../../store/slices/services/loginApiSlice";
+import { useLoginUserMutation } from "../../../store/slices/services/auth/loginApiSlice";
 import { toast } from "react-hot-toast";
 import { setToken, setRefreshToken } from "../../../store/slices/authSlice";
 import { setUser } from "../../../store/slices/authSlice";

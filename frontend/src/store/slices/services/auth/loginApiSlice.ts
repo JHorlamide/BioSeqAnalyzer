@@ -1,6 +1,7 @@
-import { proteinApi } from "../apiSlice";
-import { API_BASE_URL } from "../../../config/AppConfig";
-import { ILoginResponse, LoginFormData } from "../../../schemas/login.schema";
+import { proteinApi } from "../../apiSlice";
+import { API_BASE_URL } from "../../../../config/AppConfig";
+import { LoginFormData } from "../../../../schemas/login.schema";
+import { ILoginResponse } from "./type";
 
 const loginApiSlice = proteinApi.injectEndpoints({
   endpoints: (builder) => ({
@@ -16,4 +17,4 @@ const loginApiSlice = proteinApi.injectEndpoints({
   overrideExisting: true,
 })
 
-export const { useLoginUserMutation } = loginApiSlice
+export const { useLoginUserMutation } = loginApiSlice;

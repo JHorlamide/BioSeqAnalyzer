@@ -54,24 +54,3 @@ export interface IProject {
 export interface ProjectState {
   project: IProject | null;
 }
-
-export interface Projects extends IProject {
-  _id: string;
-  updateAt: string;
-}
-
-export interface ICreateProjectRes extends IBaseResponse {
-  data: IProject;
-}
-
-export interface IFetchProjects extends IBaseResponse {
-  data: Projects[];
-}
-
-export interface IGetProteinSequenceRes extends IBaseResponse {
-  data: string;
-}
-
-export interface IGetProteinSequenceReq {
-  uniprotId: string;
-}

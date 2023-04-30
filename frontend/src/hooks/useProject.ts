@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ProjectFormData, projectSchema } from "../schemas/project.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateProjectMutation } from "../store/slices/services/projectApiSlice";
+import { useCreateProjectMutation } from "../store/slices/services/project/projectApiSlice";
 import { toast } from "react-hot-toast";
 import useNavigation from "./useNavigation";
 import { APP_PREFIX_PATH } from "../config/AppConfig";

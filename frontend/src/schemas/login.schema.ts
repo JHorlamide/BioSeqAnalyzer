@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { IBaseResponse } from ".";
 
 export const loginSchema = z.object({
   email: z.string().min(10, { message: "Email is required" }),
@@ -23,13 +22,3 @@ export interface AuthState {
   token: string | null;
   refreshToken: string | null;
 }
-
-export interface ILoginResponse extends IBaseResponse {
-  data: {
-    accessToken: string;
-    refreshToken: string;
-    user: User
-  }
-}
-
-// export type IUserLogin = Pick<IUser, "email" | "password">;

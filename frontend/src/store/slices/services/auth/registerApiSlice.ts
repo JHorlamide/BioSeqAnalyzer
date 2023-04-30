@@ -1,7 +1,7 @@
-import { IRegisterResponse } from "../../../schemas/register.schema";
-import { proteinApi } from "../apiSlice";
-import { API_BASE_URL } from "../../../config/AppConfig";
-import { RegisterFormData } from "../../../schemas/register.schema";
+import { proteinApi } from "../../apiSlice";
+import { API_BASE_URL } from "../../../../config/AppConfig";
+import { RegisterFormData } from "../../../../schemas/register.schema";
+import { IRegisterResponse } from "./type";
 
 export const registerApiSlice = proteinApi.injectEndpoints({
   endpoints: (builder) => ({

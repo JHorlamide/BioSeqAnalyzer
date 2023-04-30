@@ -1,12 +1,7 @@
-import { proteinApi } from "../apiSlice";
-import { API_BASE_URL } from "../../../config/AppConfig";
-import {
-  ICreateProjectRes,
-  ProjectFormData,
-  IGetProteinSequenceRes,
-  IGetProteinSequenceReq,
-  IFetchProjects
-} from "../../../schemas/project.schema";
+import { proteinApi } from "../../apiSlice";
+import { API_BASE_URL } from "../../../../config/AppConfig";
+import { ProjectFormData } from "../../../../schemas/project.schema";
+import { ICreateProjectRes, IGetProteinSequenceRes, IGetProteinSequenceReq, IFetchProjects } from "./type"
 
 const projectApiSlice = proteinApi.injectEndpoints({
   endpoints: (builder) => ({
