@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { IBaseResponse } from ".";
 
 export enum ProjectGoal {
   MAXIMIZE = "Maximize",
@@ -44,13 +43,7 @@ export interface IProject {
   projectTitle: string;
   measuredProperty: MeasuredProperty;
   projectGoal: ProjectGoal;
-
-  //OPTIONAL PROPERTY
   proteinPDBID?: string;
   uniprotId?: string;
   proteinAminoAcidSequence?: string;
-}
-
-export interface ProjectState {
-  project: IProject | null;
 }

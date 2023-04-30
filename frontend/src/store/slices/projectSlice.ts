@@ -1,5 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IProject, ProjectState } from "../../schemas/project.schema";
+import { IProject } from "../../schemas/project.schema";
+
+interface ProjectState {
+  project: IProject | null;
+}
 
 const initialState: ProjectState = {
   project: null
