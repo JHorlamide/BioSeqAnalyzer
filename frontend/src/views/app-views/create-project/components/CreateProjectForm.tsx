@@ -32,16 +32,17 @@ const measuredPropertyOption = [
 
 const CreateProject = () => {
   const {
-    isLoading,
+    error,
+    errors,
     loading,
+    isValid,
+    isLoading,
     showRawSeqInput,
     showUniProtInput,
-    isValid,
-    errors,
     animoAcidSequence,
+    register,
     handleSubmit,
     submitProject,
-    register,
     toggleShowUniProtInput,
   } = useProject();
 
@@ -207,7 +208,6 @@ const CreateProject = () => {
                     inputProps={{
                       type: "string",
                       placeholder: "",
-                      defaultValue: animoAcidSequence,
                       value: animoAcidSequence,
                     }}
                     name="proteinAminoAcidSequence"
@@ -215,6 +215,9 @@ const CreateProject = () => {
                     error={errors.proteinAminoAcidSequence?.message}
                   />
                 </InputGroup>
+                <Text as="small" color="red.500">
+                  {error}
+                </Text>
               </FormControl>
             </VStack>
 

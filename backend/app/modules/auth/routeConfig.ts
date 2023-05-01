@@ -24,8 +24,8 @@ export class AuthRoute extends CommonRoutesConfig {
 
     /***
     * @route  POST /api/auth/refresh-token.
-    * @desc    Get authentication refresh token.
-    * @access  Private.
+    * @desc   Get authentication refresh token.
+    * @access Private.
     * ***/
     this.app.post(`${APP_PREFIX_PATH}/auth/refresh-token`, [
       jwtMiddleware.validJWTNeeded,

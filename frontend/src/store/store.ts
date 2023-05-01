@@ -17,6 +17,7 @@ import { authReducer } from "./slices/authSlice";
 import { projectReducer } from "./slices/projectSlice";
 import { RESET_STATE_ACTION_TYPE } from "./actions/resetStateAction";
 import storage from "redux-persist/lib/storage";
+import { AUTH_TOKEN } from "../constants/AuthConstant";
 
 const reducers = {
   ["auth"]: authReducer,
@@ -33,6 +34,11 @@ const persistConfig = {
 
 export const rootReducer: Reducer = persistReducer(persistConfig, (state: RootState, action: AnyAction) => {
   if (action.type === RESET_STATE_ACTION_TYPE) {
+    localStorage.removeItem(AUTH_TOKEN);
+
+    proteinApi.util.resetApiState();
+    window.location.replace("/");
+
     state = {} as RootState;
   }
 

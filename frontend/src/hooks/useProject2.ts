@@ -7,7 +7,7 @@ import { toast } from "react-hot-toast";
 import useNavigation from "./useNavigation";
 import { APP_PREFIX_PATH } from "../config/AppConfig";
 
-const useProject = () => {
+const useProject2 = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [animoAcidSequence, setAminoAcidSequence] = useState<string | undefined>("");
@@ -27,26 +27,23 @@ const useProject = () => {
 
   const [createProject, { isLoading }] = useCreateProjectMutation();
 
-  const {
-    data,
-    error: proteinSequenceError,
-    isLoading: proteinSequenceIsLoading
-  } = useGetProteinSequenceQuery({ uniprotId });
+  const fetchData = () => {
+    try {
+      const { data } = useGetProteinSequenceQuery({ uniprotId: uniprotId });
+      setAminoAcidSequence(data?.data);
+      setLoading(false);
+      setError("Request failed: Could not fetch protein sequence");
+    } catch (error) {
+      setLoading(false);
+      setError("Could not fetch protein sequence");
+    }
+  }
 
   useEffect(() => {
-    setLoading(proteinSequenceIsLoading);
-    setError("");
-
-    if (data) {
-      setAminoAcidSequence(data.data);
-      setLoading(false);
+    if (uniprotId) {
+      fetchData();
     }
-
-    if (proteinSequenceError) {
-      setLoading(false);
-      setError("Error fetching sequence");
-    }
-  }, [data, proteinSequenceError, proteinSequenceIsLoading]);
+  }, [uniprotId]);
 
   const toggleShowUniProtInput = () => {
     setInputVisibility((prevState) => ({
@@ -97,4 +94,4 @@ const useProject = () => {
   };
 }
 
-export default useProject;
+export default useProject2;

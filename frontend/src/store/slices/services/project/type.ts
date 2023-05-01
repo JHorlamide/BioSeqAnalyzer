@@ -10,7 +10,7 @@ export interface IGetProteinSequenceRes extends IBaseResponse {
 }
 
 export interface IGetProteinSequenceReq {
-  uniprotId: string;
+  uniprotId: string | undefined;
 }
 
 export interface Projects extends IProject {
