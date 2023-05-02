@@ -1,4 +1,4 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/dist/query";
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { API_BASE_URL } from "../../config/AppConfig";
 import { ProjectFormData } from "../../schemas/project.schema";
 import {
@@ -6,11 +6,28 @@ import {
   IGetProteinSequenceRes,
   IGetProteinSequenceReq,
   IGetProjectsRes
-} from "./type"
+} from "./type";
+import { RootState } from "../../store/store";
+import { AUTH_TOKEN } from "../../constants/AuthConstant";
+
+export const PROJECT_API_REDUCER_KEY = "projectApi";
 
 export const projectApi = createApi({
-  reducerPath: "projectApi",
-  baseQuery: fetchBaseQuery({ baseUrl: `${API_BASE_URL}` }),
+  reducerPath: PROJECT_API_REDUCER_KEY,
+  baseQuery: fetchBaseQuery({
+    baseUrl: `${API_BASE_URL}`,
+    prepareHeaders: async (headers, { getState }) => {
+      const isBrowser = typeof window !== undefined;
+      const token = (getState() as RootState).auth.token ||
+        (isBrowser ? localStorage.getItem(AUTH_TOKEN) : null);
+
+      if (token) {
+        headers.set("authorization", `Bearer ${token}`);
+      }
+
+      return headers;
+    }
+  }),
   endpoints: (builder) => ({
     createProject: builder.mutation<ICreateProjectRes, ProjectFormData>({
       query: (data) => ({
@@ -37,14 +54,3 @@ export const {
   useGetProjectsQuery,
   useGetProteinSequenceQuery
 } = projectApi;
-
-// prepareHeaders: async (headers, { getState }) => {
-//   const isBrowser = typeof window !== undefined;
-//   const token = (getState() as RootState).auth.token || (isBrowser ? localStorage.getItem(AUTH_TOKEN) : null);
-
-//   if (token) {
-//     headers.set("authorization", `Bearer ${token}`);
-//   }
-
-//   return headers;
-// }

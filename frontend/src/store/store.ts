@@ -11,22 +11,20 @@ import {
   persistStore,
   persistReducer
 } from "redux-persist";
-import { unAuthenticatedMiddleware } from "./middleware/unAuthenticatedMiddleware";
-import { authReducer } from "./slices/authSlice";
-import { projectReducer } from "./slices/projectSlice";
-import { RESET_STATE_ACTION_TYPE } from "./actions/resetStateAction";
 import storage from "redux-persist/lib/storage";
+import { unAuthenticatedMiddleware } from "./middleware/unAuthenticatedMiddleware";
+import { authReducer, authSlice } from "./slices/authSlice";
+import { RESET_STATE_ACTION_TYPE } from "./actions/resetStateAction";
 import { AUTH_TOKEN } from "../constants/AuthConstant";
-import { loginApi } from "../services/auth/loginApiSlice";
-import { registerApi } from "../services/auth/registerApiSlice";
-import { projectApi } from "../services/project/projectApiSlice";
+import { authApi, AUTH_API_REDUCER_KEY } from "../services/auth/authApi";
+import { registerApi, REGISTER_API_REDUCER_KEY } from "../services/auth/registerApi";
+import { projectApi, PROJECT_API_REDUCER_KEY } from "../services/project/projectApi";
 
 const reducers = {
-  ["auth"]: authReducer,
-  ["project"]: projectReducer,
-  [loginApi.reducerPath]: loginApi.reducer,
-  [registerApi.reducerPath]: registerApi.reducer,
-  [projectApi.reducerPath]: projectApi.reducer
+  [authSlice.name]: authReducer,
+  [AUTH_API_REDUCER_KEY]: authApi.reducer,
+  [REGISTER_API_REDUCER_KEY]: registerApi.reducer,
+  [PROJECT_API_REDUCER_KEY]: projectApi.reducer
 }
 
 const combinedReducer = combineReducers<typeof reducers>(reducers);
@@ -54,7 +52,7 @@ export const store = configureStore({
     },
   }).concat([
     unAuthenticatedMiddleware,
-    loginApi.middleware,
+    authApi.middleware,
     registerApi.middleware,
     projectApi.middleware
   ])
@@ -63,7 +61,6 @@ export const store = configureStore({
 setupListeners(store.dispatch);
 
 export const persistor = persistStore(store);
-
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export const useAppDispatch = () => useDispatch<AppDispatch>();

@@ -3,8 +3,10 @@ import { LoginFormData } from "../../schemas/login.schema";
 import { ILoginResponse } from "./type";
 import { API_BASE_URL } from '../../config/AppConfig';
 
-export const loginApi = createApi({
-  reducerPath: "loginApi",
+export const AUTH_API_REDUCER_KEY = 'authApi';
+
+export const authApi = createApi({
+  reducerPath: AUTH_API_REDUCER_KEY,
   baseQuery: fetchBaseQuery({ baseUrl: `${API_BASE_URL}` }),
   endpoints: (builder) => ({
     loginUser: builder.mutation<ILoginResponse, LoginFormData>({
@@ -17,4 +19,4 @@ export const loginApi = createApi({
   })
 })
 
-export const { useLoginUserMutation } = loginApi;
+export const { useLoginUserMutation } = authApi;

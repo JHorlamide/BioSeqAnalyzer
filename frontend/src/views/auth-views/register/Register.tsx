@@ -24,7 +24,7 @@ import {
 } from "../../../schemas/register.schema";
 import { RegisterInput } from "./components/RegisterInput";
 import Button from "../../../components/CustomBtn/Button";
-import { useRegisterUserMutation } from "../../../services/auth/registerApiSlice";
+import { useRegisterUserMutation } from "../../../services/auth/registerApi";
 import { toast } from "react-hot-toast";
 import useNavigation from "../../../hooks/useNavigation";
 

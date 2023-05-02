@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useGetProjectsQuery } from "../services/project/projectApiSlice";
+import { useGetProjectsQuery } from "../services/project/projectApi";
 import { Projects } from "../services/project/type";
 
 const useFetchProject = () => {
