@@ -1,5 +1,5 @@
-import { IBaseResponse } from "../../../../schemas";
-import { IProject } from "../../../../schemas/project.schema";
+import { IBaseResponse } from "../../schemas";
+import { IProject } from "../../schemas/project.schema";
 
 export interface ICreateProjectRes extends IBaseResponse {
   data: IProject;
@@ -18,6 +18,6 @@ export interface Projects extends IProject {
   updateAt: string;
 }
 
-export interface IFetchProjects extends IBaseResponse {
+export interface IGetProjectsRes extends IBaseResponse {
   data: Projects[];
 }

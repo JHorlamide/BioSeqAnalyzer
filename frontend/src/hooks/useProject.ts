@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { ProjectFormData, projectSchema } from "../schemas/project.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useCreateProjectMutation, useGetProteinSequenceQuery } from "../store/slices/services/project/projectApiSlice";
+import { useCreateProjectMutation, useGetProteinSequenceQuery } from "../services/project/projectApiSlice";
 import { toast } from "react-hot-toast";
 import useNavigation from "./useNavigation";
 import { APP_PREFIX_PATH } from "../config/AppConfig";
@@ -75,7 +75,6 @@ const useProject = () => {
       toast.error(response.message);
 
     } catch (error: any) {
-      console.log(error);
       const errorMessage = error.response?.data.message || error.data.message || error.message;
       toast.error(errorMessage);
     }

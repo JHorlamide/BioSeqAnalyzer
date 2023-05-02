@@ -1,5 +1,5 @@
 import { AppError } from "../../../common/middleware/appError";
-import { apiClient } from "../../../config/apiClient";
+import { httpClient } from "../../../config/httpClient";
 import { ERR_MSG } from "../types/constants";
 
 class UniProtService {
@@ -8,7 +8,7 @@ class UniProtService {
       throw new AppError("invalidUniProtId", 400, ERR_MSG.requiredPDBIdError, true);
     }
 
-    const response = await apiClient.get(`/${uniprotId}.fasta`);
+    const response = await httpClient.get(`/${uniprotId}.fasta`);
 
     if (response.status === 200) {
       const sequenceArray = response.data.split("\n");

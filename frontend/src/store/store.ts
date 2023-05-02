@@ -11,18 +11,22 @@ import {
   persistStore,
   persistReducer
 } from "redux-persist";
-import { proteinApi } from "./slices/apiSlice";
 import { unAuthenticatedMiddleware } from "./middleware/unAuthenticatedMiddleware";
 import { authReducer } from "./slices/authSlice";
 import { projectReducer } from "./slices/projectSlice";
 import { RESET_STATE_ACTION_TYPE } from "./actions/resetStateAction";
 import storage from "redux-persist/lib/storage";
 import { AUTH_TOKEN } from "../constants/AuthConstant";
+import { loginApi } from "../services/auth/loginApiSlice";
+import { registerApi } from "../services/auth/registerApiSlice";
+import { projectApi } from "../services/project/projectApiSlice";
 
 const reducers = {
   ["auth"]: authReducer,
   ["project"]: projectReducer,
-  [proteinApi.reducerPath]: proteinApi.reducer
+  [loginApi.reducerPath]: loginApi.reducer,
+  [registerApi.reducerPath]: registerApi.reducer,
+  [projectApi.reducerPath]: projectApi.reducer
 }
 
 const combinedReducer = combineReducers<typeof reducers>(reducers);
@@ -35,16 +39,13 @@ const persistConfig = {
 export const rootReducer: Reducer = persistReducer(persistConfig, (state: RootState, action: AnyAction) => {
   if (action.type === RESET_STATE_ACTION_TYPE) {
     localStorage.removeItem(AUTH_TOKEN);
-
-    proteinApi.util.resetApiState();
-    window.location.replace("/");
-
     state = {} as RootState;
   }
 
   return combinedReducer(state, action);
 });
 
+// Store Configuration
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
@@ -53,7 +54,9 @@ export const store = configureStore({
     },
   }).concat([
     unAuthenticatedMiddleware,
-    proteinApi.middleware,
+    loginApi.middleware,
+    registerApi.middleware,
+    projectApi.middleware
   ])
 });
 

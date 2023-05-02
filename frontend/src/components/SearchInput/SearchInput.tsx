@@ -13,7 +13,6 @@ const SearchInput = () => {
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
-    console.log(searchParam);
   };
 
   return (

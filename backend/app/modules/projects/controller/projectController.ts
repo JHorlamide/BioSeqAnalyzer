@@ -11,7 +11,6 @@ class ProjectController {
     
     try {
       const project = await projectService.createProject({ user: userId, ...req.body });
-      console.log("projectController  called");
       responseHandler.successfullyCreated(RES_MSG.projectCreated, project, res);
     } catch (error: any) {
       return responseHandler.failureResponse(error.message, res);
