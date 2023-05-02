@@ -28,6 +28,7 @@ export const projectApi = createApi({
       return headers;
     }
   }),
+  
   endpoints: (builder) => ({
     createProject: builder.mutation<ICreateProjectRes, ProjectFormData>({
       query: (data) => ({
@@ -44,9 +45,15 @@ export const projectApi = createApi({
     }),
 
     getProjects: builder.query<IGetProjectsRes, void>({
-      query: () => `/projects`,
+      query: () => ({
+        url: `/projects`,
+        method: "GET"
+      })
     })
-  })
+  }),
+
+  refetchOnFocus: true,
+  refetchOnReconnect: true
 })
 
 export const {

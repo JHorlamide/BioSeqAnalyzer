@@ -10,4 +10,4 @@ const useNavigation = () => {
   return { handleNavigate }
 }
 
-export default useNavigation
+export default useNavigation;

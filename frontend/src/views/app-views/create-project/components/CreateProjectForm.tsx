@@ -32,7 +32,6 @@ const measuredPropertyOption = [
 
 const CreateProject = () => {
   const {
-    error,
     errors,
     loading,
     isValid,
@@ -215,9 +214,6 @@ const CreateProject = () => {
                     error={errors.proteinAminoAcidSequence?.message}
                   />
                 </InputGroup>
-                <Text as="small" color="red.500">
-                  {error}
-                </Text>
               </FormControl>
             </VStack>
 

@@ -73,7 +73,6 @@ const useProject = () => {
       }
 
       toast.error(response.message);
-
     } catch (error: any) {
       const errorMessage = error.response?.data.message || error.data.message || error.message;
       toast.error(errorMessage);
