@@ -6,10 +6,12 @@ import useNavigation from "../../../hooks/useNavigation";
 import ProjectsContainer from "./components/ProjectsContainer";
 import useFetchProject from "../../../hooks/useFetchProjects";
 import AppLoader from "../../../components/Loading/AppLoader";
+import { useGetProjectsQuery } from "../../../services/project/projectApi";
 
 const Dashboard = () => {
   const { handleNavigate } = useNavigation();
-  const { projects, isLoading } = useFetchProject();
+  // const { projects, isLoading } = useFetchProject();
+  const { data: projects, isLoading } = useGetProjectsQuery();
 
   if (isLoading) {
     return <AppLoader />;
@@ -31,8 +33,8 @@ const Dashboard = () => {
       </Flex>
 
       <Box marginY={10}>
-        {projects && projects.length > 0 ? (
-          <ProjectsContainer projects={projects} />
+        {projects && projects?.data.length > 0 ? (
+          <ProjectsContainer projects={projects?.data} />
         ) : (
           <EmptyProject />
         )}

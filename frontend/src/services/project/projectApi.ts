@@ -10,10 +10,11 @@ import {
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
 
-export const PROJECT_API_REDUCER_KEY = "projectApi";
+export const PROJECT_API_REDUCER_KEY = "projectsApi";
 
 export const projectApi = createApi({
   reducerPath: PROJECT_API_REDUCER_KEY,
+  tagTypes: ["Projects"],
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_BASE_URL}`,
     prepareHeaders: async (headers, { getState }) => {
@@ -28,27 +29,28 @@ export const projectApi = createApi({
       return headers;
     }
   }),
-  
+
   endpoints: (builder) => ({
     createProject: builder.mutation<ICreateProjectRes, ProjectFormData>({
       query: (data) => ({
         url: `/projects`,
         method: "POST",
         body: data
-      })
+      }),
+
+      invalidatesTags: ["Projects"]
     }),
 
     getProteinSequence: builder.query<IGetProteinSequenceRes, IGetProteinSequenceReq>({
-      query: ({ uniprotId }) => ({
-        url: `/projects/uniprot/${uniprotId}`
-      })
+      query: ({ uniprotId }) => `/projects/uniprot/${uniprotId}`
     }),
 
     getProjects: builder.query<IGetProjectsRes, void>({
       query: () => ({
         url: `/projects`,
-        method: "GET"
-      })
+      }),
+
+      providesTags: ["Projects"]
     })
   }),
 
@@ -58,6 +60,6 @@ export const projectApi = createApi({
 
 export const {
   useCreateProjectMutation,
+  useGetProteinSequenceQuery,
   useGetProjectsQuery,
-  useGetProteinSequenceQuery
 } = projectApi;

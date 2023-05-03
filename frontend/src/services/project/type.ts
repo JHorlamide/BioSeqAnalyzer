@@ -15,6 +15,8 @@ export interface IGetProteinSequenceReq {
 
 export interface Projects extends IProject {
   _id: string;
+  user: string;
+  createdAt: string;
   updateAt: string;
 }
 

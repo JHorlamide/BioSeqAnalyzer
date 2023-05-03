@@ -15,10 +15,12 @@ export const unAuthenticatedMiddleware: Middleware = ({
   dispatch
 }) => (next) => (action) => {
   if (isRejectedWithValue(action) && action.payload.status === UNAUTHORIZED_STATUS.NOT_AUTHORIZED) {
+    toast.error(action.payload.data.message);
     dispatch(resetStateAction());
   }
 
   if (isRejectedWithValue(action) && action.payload.status === UNAUTHORIZED_STATUS.FORBIDDEN) {
+    toast.error(action.payload.data.message);
     dispatch(resetStateAction());
   }
 
@@ -27,6 +29,7 @@ export const unAuthenticatedMiddleware: Middleware = ({
   }
 
   if (isRejectedWithValue(action) && action.payload.data.message.toLowerCase() === TOKEN_EXPIRE) {
+    toast.error("Session expired");
     dispatch(resetStateAction());
   }
 

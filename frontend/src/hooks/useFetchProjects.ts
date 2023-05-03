@@ -5,6 +5,8 @@ import { Projects } from "../services/project/type";
 const useFetchProject = () => {
   const [projects, setProjects] = useState<Projects[]>([]);
   const { data, isLoading } = useGetProjectsQuery();
+  
+  console.log({ data, isLoading })
 
   useEffect(() => {
     if (data) {
