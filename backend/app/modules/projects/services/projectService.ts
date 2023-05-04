@@ -67,9 +67,28 @@ class ProjectService {
   }
 
   // Fetch all the create project from the DB
-  public async fetchProjects() {
+  public async getAllProjects(page: number, limit: number, search: string) {
     try {
-      return await projectRepository.getAllProjects();
+      const query: any = {};
+
+      // Apply search filter if provided
+      if (search) {
+        query.$or = [
+          { projectTitle: { $regex: search, $options: "i" } },
+          { measuredProperty: { $regex: search, $options: "i" } },
+          { projectGoal: { $regex: search, $options: "i" } },
+        ];
+      }
+
+      const totalCount = await projectRepository.countProjects(query);
+      const totalPages = Math.ceil(totalCount / limit);
+      const projects = await projectRepository.getAllProjects(query, page, limit);
+      
+      return {
+        projects,
+        totalPages,
+        totalCount,
+      };
     } catch (error: any) {
       throw new AppError(name, statusCode, error.message, true);
     }

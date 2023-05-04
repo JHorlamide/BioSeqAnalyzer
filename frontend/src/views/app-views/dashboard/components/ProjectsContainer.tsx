@@ -11,12 +11,12 @@ const ProjectsContainer = ({ projects }: Props) => {
 
   return (
     <Grid
+      gap={4}
       templateColumns={{
         base: "repeat(1, 1fr)",
         md: "repeat(2, 1fr)",
         lg: isLargeScreen ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
       }}
-      gap={4}
     >
       {projects.map((project) => (
         <GridItem key={project._id}>

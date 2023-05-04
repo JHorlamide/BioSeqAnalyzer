@@ -1,3 +1,7 @@
 {
-  "cSpell.words": ["hookform", "Moleculer"]
+  "cSpell.words": [
+    "hookform",
+    "Moleculer"
+  ],
+  "editor.tabSize": 2
 }

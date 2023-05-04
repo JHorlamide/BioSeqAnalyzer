@@ -21,5 +21,15 @@ export interface Projects extends IProject {
 }
 
 export interface IGetProjectsRes extends IBaseResponse {
-  data: Projects[];
+  data: {
+    projects: Projects[]
+  };
+  totalPages: number;
+  totalCount: number;
+}
+
+export interface IGetProjectQueryParam {
+  page?: number;
+  limit?: number;
+  search?: string;
 }

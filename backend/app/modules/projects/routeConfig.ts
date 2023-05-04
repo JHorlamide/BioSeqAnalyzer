@@ -40,6 +40,7 @@ export class ProjectRoute extends CommonRoutesConfig {
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/projects`, [
       jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validatePaginationParams,
       projectController.getProjects
     ])
 

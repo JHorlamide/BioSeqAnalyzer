@@ -2,7 +2,8 @@ import { Box, Flex } from "@chakra-ui/react";
 import HeaderNav from "../HeaderNav/HeaderNav";
 import SideNav from "../SideNav/SideNav";
 import Footer from "../Footer/Footer";
-import { Suspense } from "react";
+import Footer2 from "../Footer/Footer";
+import { Fragment, Suspense } from "react";
 import AppLoader from "../Loading/AppLoader";
 
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
@@ -25,7 +26,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
       >
         <HeaderNav />
         <Suspense fallback={<AppLoader />}>{children}</Suspense>
-        <Footer />
+        <Footer2 />
       </Box>
     </Flex>
   );

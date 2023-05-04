@@ -1,17 +1,31 @@
+import { Fragment, useEffect, useState } from "react";
 import { Box, Flex, Text } from "@chakra-ui/react";
 import EmptyProject from "../../../components/EmptyProject/EmptyProject";
 import Button from "../../../components/CustomBtn/Button";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
 import useNavigation from "../../../hooks/useNavigation";
 import ProjectsContainer from "./components/ProjectsContainer";
-import useFetchProject from "../../../hooks/useFetchProjects";
 import AppLoader from "../../../components/Loading/AppLoader";
 import { useGetProjectsQuery } from "../../../services/project/projectApi";
+import Pagination from "../../../components/Pagination/Pagination";
 
 const Dashboard = () => {
   const { handleNavigate } = useNavigation();
-  // const { projects, isLoading } = useFetchProject();
-  const { data: projects, isLoading } = useGetProjectsQuery();
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = 9;
+
+  const { data: projects, isLoading, refetch } = useGetProjectsQuery({
+    page: currentPage,
+    limit: totalPages,
+    search: ""
+  });
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    refetch();
+  };
+
+  console.log({ rest: projects?.data })
 
   if (isLoading) {
     return <AppLoader />;
@@ -33,8 +47,17 @@ const Dashboard = () => {
       </Flex>
 
       <Box marginY={10}>
-        {projects && projects?.data.length > 0 ? (
-          <ProjectsContainer projects={projects?.data} />
+        {projects && projects.data.projects.length > 0 ? (
+          <Fragment>
+            <ProjectsContainer projects={projects.data.projects} />
+
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          </Fragment>
+
         ) : (
           <EmptyProject />
         )}

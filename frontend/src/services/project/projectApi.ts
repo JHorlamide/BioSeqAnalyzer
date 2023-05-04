@@ -5,7 +5,8 @@ import {
   ICreateProjectRes,
   IGetProteinSequenceRes,
   IGetProteinSequenceReq,
-  IGetProjectsRes
+  IGetProjectsRes,
+  IGetProjectQueryParam
 } from "./type";
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
@@ -45,9 +46,10 @@ export const projectApi = createApi({
       query: ({ uniprotId }) => `/projects/uniprot/${uniprotId}`
     }),
 
-    getProjects: builder.query<IGetProjectsRes, void>({
-      query: () => ({
+    getProjects: builder.query<IGetProjectsRes, IGetProjectQueryParam>({
+      query: ({ page, limit, search }) => ({
         url: `/projects`,
+        params: { page, limit, search }
       }),
 
       providesTags: ["Projects"]

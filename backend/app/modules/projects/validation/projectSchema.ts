@@ -8,3 +8,9 @@ export const createProjectSchema = Joi.object({
   proteinPDBID: Joi.string().max(4).optional(),
   proteinAminoAcidSequence: Joi.string().max(5).optional()
 })
+
+export const paginationParams = Joi.object({
+  page: Joi.number().optional(),
+  limit: Joi.number().optional(),
+  search: Joi.string().allow("").empty().optional(),
+})

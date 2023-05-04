@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import requestBodyValidator from "../../../common/requestValidation";
-import { createProjectSchema } from "../validation/projectSchema";
+import { createProjectSchema, paginationParams } from "../validation/projectSchema";
 import responseHandler from "../../../common/responseHandler";
 
 class ProjectMiddleware {
@@ -11,6 +11,17 @@ class ProjectMiddleware {
 
     if (!uniprotId) {
       return responseHandler.failureResponse("Invalid uniprotId", res);
+    }
+
+    next();
+  }
+
+  public validatePaginationParams = (req: Request, res: Response, next: NextFunction) => {
+    const { page, limit, search } = req.query;
+
+    const { error } = paginationParams.validate({ page, limit, search });
+    if (error) {
+      return responseHandler.failureResponse(error.details[0].message, res);
     }
 
     next();

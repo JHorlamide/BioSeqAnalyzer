@@ -6,12 +6,17 @@ class ProjectRepository {
     return await Project.create({ ...projectData });
   }
 
-  public async getAllProjects() {
-    return await Project.find({}).exec();
+  public async getAllProjects(query: any, page: number, limit: number) {
+    const skip = (page - 1) * limit;
+    return await Project.find(query).skip(skip).limit(limit).exec();
   }
 
   public async getProjectById(projectId: string) {
     return await Project.findById(projectId).exec();
+  }
+
+  public async countProjects(query: any) {
+    return await Project.countDocuments(query).exec();
   }
 }
 

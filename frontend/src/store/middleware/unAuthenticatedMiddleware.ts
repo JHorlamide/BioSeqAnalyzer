@@ -1,10 +1,8 @@
 import { Middleware, isRejectedWithValue, } from "@reduxjs/toolkit";
 import toast from "react-hot-toast";
-import { logoutUser } from "../slices/authSlice";
-import { AUTH_TOKEN } from "../../constants/AuthConstant";
 import { resetStateAction } from "../actions/resetStateAction";
+import { SESSION_EXPIRE_ERROR } from "../../config/AppConfig";
 
-const TOKEN_EXPIRE = "not authorized tokenexpirederror: jwt expired"
 const SERVER_ERROR = 500;
 const UNAUTHORIZED_STATUS = {
   FORBIDDEN: 403,
@@ -20,17 +18,12 @@ export const unAuthenticatedMiddleware: Middleware = ({
   }
 
   if (isRejectedWithValue(action) && action.payload.status === UNAUTHORIZED_STATUS.FORBIDDEN) {
-    toast.error(action.payload.data.message);
+    toast.error(SESSION_EXPIRE_ERROR);
     dispatch(resetStateAction());
   }
 
   if (isRejectedWithValue(action) && action.payload.status === SERVER_ERROR) {
     toast.error(`Server Error: ${action.payload.data.message}`);
-  }
-
-  if (isRejectedWithValue(action) && action.payload.data.message.toLowerCase() === TOKEN_EXPIRE) {
-    toast.error("Session expired");
-    dispatch(resetStateAction());
   }
 
   return next(action);
