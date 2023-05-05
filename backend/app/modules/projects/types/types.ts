@@ -22,4 +22,16 @@ export interface IProject {
   proteinAminoAcidSequence?: string;
 }
 
+export interface IUpdateProject {
+  projectId: string;
+  projectData: IProject;
+}
+
+export interface IGetProjects {
+  page: number;
+  limit: number;
+  search: string;
+  userId: string;
+}
+
 export interface ProjectModel extends IProject { }

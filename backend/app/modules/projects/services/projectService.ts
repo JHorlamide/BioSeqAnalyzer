@@ -1,7 +1,7 @@
 import { PDB_BASE_URL } from "../../../config/environmentConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
-import { IProject } from "../types/types";
+import { IUpdateProject, IProject, IGetProjects } from "../types/types";
 import { ERROR_MESSAGES } from "../types/constants";
 import { AppError } from "../../../common/middleware/appError";
 import { GENERAL_ERROR } from "../../../config/appConstants";
@@ -37,39 +37,20 @@ class ProjectService {
         REQUIRED_USER_ID.message, true);
     }
 
-    if (uniprotId) {
-      // If uniprotId is provided, retrieve the protein sequence
-      const proteinSequence = await uniprotService.getProteinSequence(uniprotId);
+    if (uniprotId) return this.createProjectIfUniprotIdExist(projectData);
 
-      // Add the protein sequence to the project data and create the project
-      const projectWithSequence = {
-        ...projectData,
-        proteinAminoAcidSequence: proteinSequence
-      };
-
-      return await this.createProteinProject(projectWithSequence);
-    }
-
-    if (proteinPDBID) {
-      // If proteinPDBID is provided, add the PDB URL to the project data and create the project
-      const PDBID = `${PDB_BASE_URL}/${proteinPDBID}`;
-
-      const projectWithPDBID = {
-        ...projectData,
-        proteinPDBID: PDBID
-      };
-
-      return await this.createProteinProject(projectWithPDBID);
-    }
+    if (proteinPDBID) return this.createProjectIfPDBIDExist(projectData);
 
     // If neither uniprotId nor proteinPDBID is provided, create the project as-is
     return projectRepository.createProject(projectData);
   }
 
-  // Fetch all the create project from the DB
-  public async getAllProjects(page: number, limit: number, search: string) {
+  // Fetch all the create project by a given user from the DB
+  public async getAllProjects(params: IGetProjects) {
+    const { page, limit, search, userId } = params;
+
     try {
-      const query: any = {};
+      const query: any = { user: userId };
 
       // Apply search filter if provided
       if (search) {
@@ -83,7 +64,7 @@ class ProjectService {
       const totalCount = await projectRepository.countProjects(query);
       const totalPages = Math.ceil(totalCount / limit);
       const projects = await projectRepository.getAllProjects(query, page, limit);
-      
+
       return {
         projects,
         totalPages,
@@ -114,13 +95,96 @@ class ProjectService {
         throw new AppError(
           PROJECT_NOT_FOUND.name,
           PROJECT_NOT_FOUND.statusCode,
-          PROJECT_NOT_FOUND.message, true)
+          PROJECT_NOT_FOUND.message, true);
       }
 
       return project;
     } catch (error: any) {
       throw new AppError(name, statusCode, error.message, true);
     }
+  }
+
+  public async getProjectByUserId(userId: string) {
+    try {
+      const project = await projectRepository.getProjectByUserId(userId);
+
+      if (!project) {
+        const { PROJECT_NOT_FOUND } = ERROR_MESSAGES;
+
+        throw new AppError(
+          PROJECT_NOT_FOUND.name,
+          PROJECT_NOT_FOUND.statusCode,
+          PROJECT_NOT_FOUND.message, true);
+      }
+
+      return project;
+    } catch (error: any) {
+      throw new AppError(name, statusCode, error.message, true);
+    }
+  }
+
+  public async updateProject(projectUpdateData: IUpdateProject) {
+    const { projectId, projectData } = projectUpdateData;
+
+    if (!projectId) {
+      const { REQUIRED_PROJECT_ID } = ERROR_MESSAGES;
+
+      throw new AppError(
+        REQUIRED_PROJECT_ID.name,
+        REQUIRED_PROJECT_ID.statusCode,
+        REQUIRED_PROJECT_ID.message, true);
+    }
+
+    // Ensure that the necessary data is provided to create the project
+    if (Object.keys(projectData).length === 0) {
+      const { REQUIRED_PROJECT_DATA } = ERROR_MESSAGES;
+
+      throw new AppError(
+        REQUIRED_PROJECT_DATA.name,
+        REQUIRED_PROJECT_DATA.statusCode,
+        REQUIRED_PROJECT_DATA.message, true);
+    }
+
+    try {
+      const updatedProject = await projectRepository.updateProject(projectUpdateData)
+      if (!updatedProject) {
+        const { PROJECT_NOT_FOUND } = ERROR_MESSAGES;
+
+        throw new AppError(
+          PROJECT_NOT_FOUND.name,
+          PROJECT_NOT_FOUND.statusCode,
+          PROJECT_NOT_FOUND.message, true);
+      }
+
+      return updatedProject;
+    } catch (error: any) {
+      throw new AppError(name, statusCode, error.message, true);
+    }
+  }
+
+  private async createProjectIfUniprotIdExist(projectData: IProject) {
+    // If uniprotId is provided, retrieve the protein sequence
+    const proteinSequence = await uniprotService.getProteinSequence(projectData.uniprotId!!);
+
+    // Add the protein sequence to the project data and create the project
+    const projectWithSequence = {
+      ...projectData,
+      proteinAminoAcidSequence: proteinSequence
+    };
+
+    return await this.createProteinProject(projectWithSequence);
+  }
+
+  private async createProjectIfPDBIDExist(projectData: IProject) {
+    // If proteinPDBID is provided, add the PDB URL to the project data and create the project
+    const PDBID = `${PDB_BASE_URL}/${projectData.proteinPDBID}`;
+
+    const projectWithPDBID = {
+      ...projectData,
+      proteinPDBID: PDBID
+    };
+
+    return await this.createProteinProject(projectWithPDBID);
   }
 
   private async createProteinProject(projectData: IProject) {

@@ -4,6 +4,7 @@ import projectService from "../services/projectService";
 import responseHandler from "../../../common/responseHandler";
 import { RES_MSG } from "../types/constants";
 import uniprotService from "../services/uniprot.service";
+import { UPGRADE_REQUIRED } from "http-status";
 
 class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
@@ -27,15 +28,25 @@ class ProjectController {
     }
   })
 
-  public getProjects = asyncHandler(async (req: Request, res: Response) => {
+  public getAllProjects = asyncHandler(async (req: Request, res: Response) => {
     try {
       const { page, limit, search } = req.query;
+      const { userId } = res.locals.jwt;
+
+      console.log({ userId });
 
       const pageNumber = page ? Number(page) : 1;
       const limitNumber = limit ? Number(limit) : 10;
       const searchString = search ? String(search) : "";
 
-      const projects = await projectService.getAllProjects(pageNumber, limitNumber, searchString);
+      const getProjectPrams = {
+        userId,
+        page: pageNumber,
+        limit: limitNumber,
+        search: searchString
+      }
+
+      const projects = await projectService.getAllProjects(getProjectPrams);
       responseHandler.successResponse(RES_MSG.projectFetched, projects, res);
     } catch (error: any) {
       return responseHandler.failureResponse(error.message, res);
@@ -47,6 +58,17 @@ class ProjectController {
       const { projectId } = req.params;
       const project = await projectService.getProjectById(projectId);
       responseHandler.successResponse(RES_MSG.projectFetched, project, res);
+    } catch (error: any) {
+      return responseHandler.failureResponse(error.message, res);
+    }
+  })
+
+  public updateProjectDetails = asyncHandler(async (req: Request, res: Response) => {
+    try {
+      const { projectId } = req.params;
+
+      const updatedProject = await projectService.updateProject({ projectId, projectData: req.body });
+      responseHandler.successResponse(RES_MSG.projectUpdated, updatedProject, res);
     } catch (error: any) {
       return responseHandler.failureResponse(error.message, res);
     }

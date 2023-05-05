@@ -12,7 +12,7 @@ export class ProjectRoute extends CommonRoutesConfig {
 
   configureRoutes(): Application {
     /***
-    * @route /api/projects
+    * @route POST: /api/projects
     * @desc Create new project
     * @access Private
     * ***/
@@ -23,7 +23,7 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route /api/projects/uniprot/:uniprotId
+    * @route GET: /api/projects/uniprot/:uniprotId
     * @desc Get Protein Sequence
     * @access Private
     * ***/
@@ -34,24 +34,36 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route /api/projects
+    * @route GET: /api/projects
     * @desc Get All Projects
     * @access Private
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/projects`, [
       jwtMiddleware.validJWTNeeded,
       projectMiddleware.validatePaginationParams,
-      projectController.getProjects
+      projectController.getAllProjects
     ])
 
     /***
-    * @route /api/projects/:projectId
+    * @route GET: /api/projects/:projectId
     * @desc Get Project Details
     * @access Private
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/projects/:projectId`, [
       jwtMiddleware.validJWTNeeded,
       projectController.getProjectDetail
+    ])
+
+    /***
+    * @route PUT: /api/projects/:projectId
+    * @desc Update Project Details
+    * @access Private
+    * ***/
+    this.app.put(`${APP_PREFIX_PATH}/projects/:projectId`, [
+      jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectBelongsToUser,
+      projectMiddleware.validateRequestBodyField,
+      projectController.updateProjectDetails
     ])
 
     return this.app;

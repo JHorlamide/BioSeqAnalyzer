@@ -15,7 +15,7 @@ export const PROJECT_API_REDUCER_KEY = "projectsApi";
 
 export const projectApi = createApi({
   reducerPath: PROJECT_API_REDUCER_KEY,
-  tagTypes: ["Projects"],
+  tagTypes: ["Projects", "User"],
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_BASE_URL}`,
     prepareHeaders: async (headers, { getState }) => {

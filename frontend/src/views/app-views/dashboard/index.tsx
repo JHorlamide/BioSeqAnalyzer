@@ -25,8 +25,6 @@ const Dashboard = () => {
     refetch();
   };
 
-  console.log({ rest: projects?.data })
-
   if (isLoading) {
     return <AppLoader />;
   }

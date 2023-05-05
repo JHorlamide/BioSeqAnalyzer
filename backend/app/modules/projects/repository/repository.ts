@@ -1,5 +1,5 @@
 import Project from "../model/Project";
-import { IProject } from "../types/types";
+import { IUpdateProject, IProject } from "../types/types";
 
 class ProjectRepository {
   public async createProject(projectData: IProject) {
@@ -15,8 +15,21 @@ class ProjectRepository {
     return await Project.findById(projectId).exec();
   }
 
+  public async getProjectByUserId(userId: string) {
+    return await Project.findOne({ user: userId }).exec();
+  }
+
   public async countProjects(query: any) {
     return await Project.countDocuments(query).exec();
+  }
+
+  public async updateProject(updateBodyField: IUpdateProject) {
+    const { projectId, projectData } = updateBodyField;
+    
+    return await Project.findOneAndUpdate(
+      { _id: projectId },
+      { $set: projectData },
+      { new: true }).exec();
   }
 }
 
