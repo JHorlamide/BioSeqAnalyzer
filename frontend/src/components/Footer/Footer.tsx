@@ -55,7 +55,7 @@ export default function SmallCentered() {
             width={{ base: "full", md: "container.md" }}
             display={{ base: "full", md: isLargeScreen ? "block" : "none" }}
         >
-            <Box position="relative" top={8}>
+            <Box position="absolute" top={5}>
                 <Container
                     as={Stack}
                     maxW={'6xl'}

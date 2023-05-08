@@ -38,7 +38,13 @@ export const protectedRoute: IRoute[] = [
   {
     key: "projects",
     path: `${APP_PREFIX_PATH}/create-project`,
-    component: React.lazy(() => import("../views/app-views/create-project"))
+    component: React.lazy(() => import("../views/app-views/create-project/CreateProjectForm"))
+  },
+
+  {
+    key: "projects",
+    path: `${APP_PREFIX_PATH}/project/update/:projectId`,
+    component: React.lazy(() => import("../views/app-views/create-project/UpdateProjectForm"))
   },
 
   {

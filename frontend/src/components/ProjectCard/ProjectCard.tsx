@@ -14,13 +14,22 @@ import { BsFolderFill } from "react-icons/bs";
 import { SlOptions } from "react-icons/sl";
 import { BiEditAlt } from "react-icons/bi";
 import { MdOutlineDeleteOutline } from "react-icons/md";
+import useNavigation from "../../hooks/useNavigation";
+import { APP_PREFIX_PATH } from "../../config/AppConfig";
 
 interface ProjectCardProps {
   projectTitle: string;
   updatedAt: string;
+  projectId: string;
 }
 
-const ProjectCard = ({ projectTitle, updatedAt }: ProjectCardProps) => {
+const ProjectCard = ({ projectTitle, projectId, updatedAt }: ProjectCardProps) => {
+  const { handleNavigate } = useNavigation();
+
+  const navigateToEditProjectPage = () => {
+    handleNavigate(`${APP_PREFIX_PATH}/project/update/${projectId}`);
+  }
+
   return (
     <Card
       width={{ base: "100%", md: "322px" }}
@@ -50,7 +59,7 @@ const ProjectCard = ({ projectTitle, updatedAt }: ProjectCardProps) => {
           </MenuButton>
 
           <MenuList>
-            <MenuItem display="flex">
+            <MenuItem display="flex" onClick={navigateToEditProjectPage}>
               <BiEditAlt size={20} />
               <Text marginLeft={3}>Edit</Text>
             </MenuItem>

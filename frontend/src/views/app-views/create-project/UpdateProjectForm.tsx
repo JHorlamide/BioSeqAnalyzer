@@ -3,10 +3,15 @@ import Button from "../../../components/CustomBtn/Button";
 import { BsArrowLeft } from "react-icons/bs";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
 import useNavigation from "../../../hooks/useNavigation";
-import CreateProjectForm from "./components/CreateProjectForm";
+import ProjectForm from "./components/ProjectForm";
+import { useUpdateProject } from "../../../hooks/useProject";
+import { useParams } from "react-router-dom";
 
-const CreateProject = () => {
+const UpdateProjectForm = () => {
+  const { projectId } = useParams();
   const { handleNavigate } = useNavigation();
+  const id = String(projectId);
+  const updateProjectHook = { projectId, ...useUpdateProject(id) };
 
   return (
     <Box width="full">
@@ -17,9 +22,9 @@ const CreateProject = () => {
         Back
       </Button>
 
-      <CreateProjectForm />
+      <ProjectForm {...updateProjectHook} />
     </Box>
   );
-};
+}
 
-export default CreateProject;
+export default UpdateProjectForm

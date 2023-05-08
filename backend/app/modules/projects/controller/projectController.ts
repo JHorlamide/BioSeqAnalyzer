@@ -33,8 +33,6 @@ class ProjectController {
       const { page, limit, search } = req.query;
       const { userId } = res.locals.jwt;
 
-      console.log({ userId });
-
       const pageNumber = page ? Number(page) : 1;
       const limitNumber = limit ? Number(limit) : 10;
       const searchString = search ? String(search) : "";
@@ -66,7 +64,7 @@ class ProjectController {
   public updateProjectDetails = asyncHandler(async (req: Request, res: Response) => {
     try {
       const { projectId } = req.params;
-
+      console.log({ controllerLevel: projectId })
       const updatedProject = await projectService.updateProject({ projectId, projectData: req.body });
       responseHandler.successResponse(RES_MSG.projectUpdated, updatedProject, res);
     } catch (error: any) {

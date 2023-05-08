@@ -1,5 +1,5 @@
 import { IBaseResponse } from "../../schemas";
-import { IProject } from "../../schemas/project.schema";
+import { IProject, ProjectFormData } from "../../schemas/project.schema";
 
 export interface ICreateProjectRes extends IBaseResponse {
   data: IProject;
@@ -32,4 +32,21 @@ export interface IGetProjectQueryParam {
   page?: number;
   limit?: number;
   search?: string;
+}
+
+export interface IGetProjectReq {
+  projectId: string | undefined;
+}
+
+export interface IGetProjectRes extends IBaseResponse {
+  data: Projects;
+}
+
+export interface IUpdateProjectReq {
+  projectId: string;
+  data: ProjectFormData;
+}
+
+export interface IUpdateProjectRes extends IBaseResponse {
+  data: IProject;
 }

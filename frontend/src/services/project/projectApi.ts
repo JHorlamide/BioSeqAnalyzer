@@ -6,7 +6,11 @@ import {
   IGetProteinSequenceRes,
   IGetProteinSequenceReq,
   IGetProjectsRes,
-  IGetProjectQueryParam
+  IGetProjectQueryParam,
+  IGetProjectReq,
+  IGetProjectRes,
+  IUpdateProjectRes,
+  IUpdateProjectReq
 } from "./type";
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
@@ -53,6 +57,22 @@ export const projectApi = createApi({
       }),
 
       providesTags: ["Projects"]
+    }),
+
+    getProject: builder.query<IGetProjectRes, IGetProjectReq>({
+      query: ({ projectId }) => ({
+        url: `/projects/${projectId}`
+      })
+    }),
+
+    updateProject: builder.mutation<IUpdateProjectRes, IUpdateProjectReq>({
+      query: ({ projectId, data }) => ({
+        url: `/projects/${projectId}`,
+        method: "PUT",
+        body: data,
+      }),
+      
+      invalidatesTags: ["Projects"]
     })
   }),
 
@@ -64,4 +84,6 @@ export const {
   useCreateProjectMutation,
   useGetProteinSequenceQuery,
   useGetProjectsQuery,
+  useGetProjectQuery,
+  useUpdateProjectMutation,
 } = projectApi;

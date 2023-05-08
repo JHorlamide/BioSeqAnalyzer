@@ -23,6 +23,7 @@ const ProjectsContainer = ({ projects }: Props) => {
           <ProjectCard
             projectTitle={project.projectTitle}
             updatedAt={project.updateAt}
+            projectId={project._id}
           />
         </GridItem>
       ))}

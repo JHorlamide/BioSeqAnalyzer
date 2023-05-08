@@ -17,7 +17,7 @@ import { SiMoleculer } from "react-icons/si";
 import { MdOutlineTitle } from "react-icons/md";
 import ProjectInput, { SelectInput } from "./ProjectInput";
 import Button from "../../../../components/CustomBtn/Button";
-import useProject from "../../../../hooks/useProject";
+import { ProjectFormProps } from "./types";
 
 const goalOptions = [
   { label: "Maximize", value: "Maximize" },
@@ -30,12 +30,14 @@ const measuredPropertyOption = [
   { label: "Thermostability", value: "Thermostability" },
 ];
 
-const CreateProject = () => {
+const ProjectForm = (props: ProjectFormProps) => {
   const {
     errors,
     loading,
     isValid,
     isLoading,
+    projectId,
+    projectData,
     showRawSeqInput,
     showUniProtInput,
     animoAcidSequence,
@@ -43,7 +45,9 @@ const CreateProject = () => {
     handleSubmit,
     submitProject,
     toggleShowUniProtInput,
-  } = useProject();
+  } = props;
+
+  const aminoAcidSequenceInputValue = animoAcidSequence || projectData && projectData.proteinAminoAcidSequence
 
   return (
     <Center mt="-45px" justifyContent={{ base: "start", md: "center" }}>
@@ -55,7 +59,7 @@ const CreateProject = () => {
             fontSize="24px"
             textAlign={{ base: "end", md: "start" }}
           >
-            Create new project
+            {projectId ? "Updated Project" : "Create new project"}
           </Text>
         </Box>
 
@@ -95,6 +99,7 @@ const CreateProject = () => {
                       inputProps={{
                         type: "string",
                         placeholder: "Copy and past raw sequence here...",
+                        defaultValue: projectData && projectData?.uniprotId
                       }}
                       name="uniprotId"
                       register={register}
@@ -129,6 +134,7 @@ const CreateProject = () => {
                       inputProps={{
                         type: "string",
                         placeholder: "Enter UniProtId here...",
+                        defaultValue: projectData && projectData.uniprotId
                       }}
                       name="uniprotId"
                       register={register}
@@ -151,6 +157,7 @@ const CreateProject = () => {
                     inputProps={{
                       type: "string",
                       placeholder: "Enter PDB ID here...",
+                      defaultValue: projectData && projectData.proteinPDBID
                     }}
                     name="proteinPDBID"
                     register={register}
@@ -176,6 +183,10 @@ const CreateProject = () => {
                     register={register}
                     selectOptions={goalOptions}
                     error={errors.projectGoal?.message}
+                    selectProps={{
+                      // value: projectData && projectData.projectGoal,
+                      defaultValue: projectData && projectData.projectGoal
+                    }}
                   />
 
                   <SelectInput
@@ -184,6 +195,10 @@ const CreateProject = () => {
                     register={register}
                     selectOptions={measuredPropertyOption}
                     error={errors.measuredProperty?.message}
+                    selectProps={{
+                      // value: projectData && projectData.measuredProperty,
+                      defaultValue: projectData && projectData.measuredProperty,
+                    }}
                   />
                 </HStack>
               </FormControl>
@@ -207,7 +222,8 @@ const CreateProject = () => {
                     inputProps={{
                       type: "string",
                       placeholder: "",
-                      value: animoAcidSequence,
+                      value: animoAcidSequence || projectData && projectData.proteinAminoAcidSequence,
+                      // defaultValue: projectData && projectData.proteinAminoAcidSequence,
                     }}
                     name="proteinAminoAcidSequence"
                     register={register}
@@ -238,6 +254,7 @@ const CreateProject = () => {
                     inputProps={{
                       type: "string",
                       placeholder: "Enter project title",
+                      defaultValue: projectData && projectData.projectTitle
                     }}
                     name="projectTitle"
                     register={register}
@@ -262,4 +279,4 @@ const CreateProject = () => {
   );
 };
 
-export default CreateProject;
+export default ProjectForm;

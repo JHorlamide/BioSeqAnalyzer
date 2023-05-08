@@ -126,6 +126,8 @@ class ProjectService {
   public async updateProject(projectUpdateData: IUpdateProject) {
     const { projectId, projectData } = projectUpdateData;
 
+    console.log({ serviceLevel: projectId })
+
     if (!projectId) {
       const { REQUIRED_PROJECT_ID } = ERROR_MESSAGES;
 
