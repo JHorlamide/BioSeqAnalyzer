@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import cache from "memory-cache";
 import requestBodyValidator from "../../../common/requestValidation";
 import { createProjectSchema, paginationParams } from "../validation/projectSchema";
 import responseHandler from "../../../common/responseHandler";
@@ -38,6 +39,32 @@ class ProjectMiddleware {
     }
 
     next();
+  }
+
+  /**
+  * A middleware for caching responses.
+  * @param duration The duration in seconds to cache the response.
+  */
+  public cacheMiddleware = (duration: number) => {
+    return (req: Request, res: Response, next: NextFunction) => {
+      const key = `__protProject__ ${req.originalUrl || req.url}`;
+      const cachedBody = cache.get(key);
+
+      if (cachedBody) {
+        const parsedBody = JSON.parse(cachedBody);
+        return responseHandler.successResponse("Cached Response", parsedBody, res);
+      }
+
+      res.send = (body: any) => {
+        // Cache the response body.
+        cache.put(key, JSON.stringify(body), duration * 1000);
+
+        // Send the response using the `successResponse` method of the `ResponseHandler`.
+        return responseHandler.successResponse("New request cached", body, res);
+      }
+
+      next();
+    }
   }
 }
 

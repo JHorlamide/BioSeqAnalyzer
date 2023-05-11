@@ -47,8 +47,6 @@ const ProjectForm = (props: ProjectFormProps) => {
     toggleShowUniProtInput,
   } = props;
 
-  const aminoAcidSequenceInputValue = animoAcidSequence || projectData && projectData.proteinAminoAcidSequence
-
   return (
     <Center mt="-45px" justifyContent={{ base: "start", md: "center" }}>
       <Box width={{ base: "full", md: "50%" }}>
@@ -184,8 +182,8 @@ const ProjectForm = (props: ProjectFormProps) => {
                     selectOptions={goalOptions}
                     error={errors.projectGoal?.message}
                     selectProps={{
-                      // value: projectData && projectData.projectGoal,
-                      defaultValue: projectData && projectData.projectGoal
+                      value: projectData && projectData.projectGoal,
+                      // defaultValue: projectData && projectData.projectGoal
                     }}
                   />
 
@@ -196,7 +194,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     selectOptions={measuredPropertyOption}
                     error={errors.measuredProperty?.message}
                     selectProps={{
-                      // value: projectData && projectData.measuredProperty,
+                      value: projectData && projectData.measuredProperty,
                       defaultValue: projectData && projectData.measuredProperty,
                     }}
                   />
@@ -222,8 +220,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     inputProps={{
                       type: "string",
                       placeholder: "",
-                      value: animoAcidSequence || projectData && projectData.proteinAminoAcidSequence,
-                      // defaultValue: projectData && projectData.proteinAminoAcidSequence,
+                      value: animoAcidSequence
                     }}
                     name="proteinAminoAcidSequence"
                     register={register}

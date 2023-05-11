@@ -28,6 +28,7 @@ import { setUser } from "../../../store/slices/authSlice";
 import { useAppDispatch } from "../../../store/store";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
 import useNavigation from "../../../hooks/useNavigation";
+import utils from "../../../utils";
 
 const Login = () => {
   const [show, setShow] = useState(false);
@@ -62,8 +63,7 @@ const Login = () => {
         handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
       }
     } catch (error: any) {
-      const errorMessage =
-        error.data.message || error.response.data.message || error.message;
+      const errorMessage = utils.getErrorMessage(error);
       toast.error(errorMessage);
     }
   };

@@ -132,7 +132,10 @@ export const useUpdateProject = (projectId: string) => {
   } = useGetProteinSequenceQuery({ uniprotId });
 
   useEffect(() => {
-    if (project) setProjectData(project?.data);
+    if (project) {
+      setProjectData(project?.data);
+      setAminoAcidSequence(project?.data.proteinAminoAcidSequence);
+    };
   }, [project]);
 
   useEffect(() => {

@@ -1,3 +1,4 @@
+import { Request, Response } from "express";
 import { PDB_BASE_URL } from "../../../config/environmentConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
@@ -5,6 +6,7 @@ import { IUpdateProject, IProject, IGetProjects } from "../types/types";
 import { ERROR_MESSAGES } from "../types/constants";
 import { AppError } from "../../../common/middleware/appError";
 import { GENERAL_ERROR } from "../../../config/appConstants";
+import projectMiddleware from "../middleware/projectMiddleware";
 
 const { name, statusCode } = GENERAL_ERROR.ERROR_MSG;
 
@@ -63,8 +65,8 @@ class ProjectService {
 
       const totalCount = await projectRepository.countProjects(query);
       const totalPages = Math.ceil(totalCount / limit);
-      const projects = await projectRepository.getAllProjects(query, page, limit);
 
+      const projects = projectRepository.getAllProjects(query, page, limit);
       return {
         projects,
         totalPages,
