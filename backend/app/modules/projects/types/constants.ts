@@ -1,7 +1,7 @@
-export const res_msg = {
+export const RES_MSG = {
   projectCreated: "Project created successfully",
   projectsFetched: "Projects fetched successfully",
-  projectFetched: "Project fetched successfully",
+  PROJECT_FETCHED: "Project fetched successfully",
   projectUpdated: "Project updated successfully",
   proteinSequenceFetched: "Protein sequence fetched successfully",
   projectNotFound: "Project not found",

@@ -31,6 +31,10 @@ class ProjectRepository {
       { $set: projectData },
       { new: true }).exec();
   }
+
+  public async deleteProject(projectId: string) {
+    return await Project.findOneAndDelete({ _id: projectId }).exec();
+  }
 }
 
 export default new ProjectRepository();
