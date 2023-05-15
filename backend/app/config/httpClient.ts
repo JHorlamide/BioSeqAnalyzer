@@ -1,8 +1,8 @@
 import axios, { AxiosInstance } from "axios";
-import { UNIPROT_BASE_URL } from "./environmentConfig";
+import config from "./appConfig";
 
 export const httpClient: AxiosInstance = axios.create({
-  baseURL: UNIPROT_BASE_URL,
+  baseURL: config.uniprot_base_url,
   headers: {
     "Content-Type": "application/json",
     "User-Agent": "node.js"

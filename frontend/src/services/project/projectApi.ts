@@ -47,7 +47,7 @@ export const projectApi = createApi({
     }),
 
     getProteinSequence: builder.query<IGetProteinSequenceRes, IGetProteinSequenceReq>({
-      query: ({ uniprotId }) => `/projects/uniprot/${uniprotId}`
+      query: ({ uniprotId }) => `/uniprot/${uniprotId}`
     }),
 
     getProjects: builder.query<IGetProjectsRes, IGetProjectQueryParam>({

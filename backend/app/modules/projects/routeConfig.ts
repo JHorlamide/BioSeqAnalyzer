@@ -1,9 +1,11 @@
 import { Application } from "express";
 import { CommonRoutesConfig } from "../../common/CommonRouteConfig";
-import { APP_PREFIX_PATH } from "../../constants/AppConstants";
 import jwtMiddleware from "../auth/middleware/jwtMiddleware";
 import projectController from "./controller/projectController";
 import projectMiddleware from "./middleware/projectMiddleware";
+import config from "../../config/appConfig";
+
+const APP_PREFIX_PATH = config.prefix;
 
 export class ProjectRoute extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -23,17 +25,6 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route GET: /api/projects/uniprot/:uniprotId
-    * @desc Get Protein Sequence
-    * @access Private
-    * ***/
-    this.app.get(`${APP_PREFIX_PATH}/projects/uniprot/:uniprotId`, [
-      jwtMiddleware.validJWTNeeded,
-      projectMiddleware.validateReqParam,
-      projectController.getProteinSequence
-    ])
-
-    /***
     * @route GET: /api/projects
     * @desc Get All Projects
     * @access Private
@@ -46,7 +37,7 @@ export class ProjectRoute extends CommonRoutesConfig {
 
     /***
     * @route GET: /api/projects/:projectId
-    * @desc Get Project Details
+    * @desc  Get Project Details
     * @access Private
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/projects/:projectId`, [
@@ -64,6 +55,17 @@ export class ProjectRoute extends CommonRoutesConfig {
       projectMiddleware.validateProjectBelongsToUser,
       projectMiddleware.validateRequestBodyField,
       projectController.updateProjectDetails
+    ])
+
+    /***
+    * @route GET: /api/uniprot/:uniprotId
+    * @desc Get Protein Sequence
+    * @access Private
+    * ***/
+    this.app.get(`${APP_PREFIX_PATH}/uniprot/:uniprotId`, [
+      jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateReqParam,
+      projectController.getProteinSequence
     ])
 
     return this.app;

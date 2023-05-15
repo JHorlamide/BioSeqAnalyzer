@@ -1,14 +1,14 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { JWT_SECRETE } from "../../../config/environmentConfig";
 import { Jwt } from "../types/authTypes";
+import config from "../../../config/appConfig";
 import responseHandler from "../../../common/responseHandler";
 import userService from "../../users/services/userService";
-import requestBodyValidator from "../../../common/requestValidation";
+import requestBodyValidator from "../../../common/middleware/requestValidation";
 import { tokenRefresh } from "../validation/authSchema";
-import { AppError } from "../../../common/middleware/appError";
-import { ERROR_MESSAGES } from "../../users/types/constants";
+import { ERR_MSG } from "../../users/types/constants";
+import { ClientError } from "../../../common/exceptions/clientError";
 
 class JwtMiddleware {
   public verifyRefreshBodyField = requestBodyValidator(tokenRefresh);
@@ -22,11 +22,12 @@ class JwtMiddleware {
           return responseHandler.unAuthorizedResponse("Invalid authorization token", res);
         }
 
-        res.locals.jwt = jwt.verify(authorization[1], JWT_SECRETE) as Jwt;
+        res.locals.jwt = jwt.verify(authorization[1], config.jwt.secret) as Jwt;
         return next();
       } catch (error: any) {
+        // throw new ForbiddenError("Not authorize");
         return responseHandler
-          .forbiddenResponse(`Not authorized ${error}`, res);
+          .forbiddenResponse(`Not authorize ${error}`, res);
       }
     }
 
@@ -41,12 +42,11 @@ class JwtMiddleware {
     const salt = crypto.createSecretKey(Buffer.from(refreshKey.data));
     const hash = crypto
       .createHmac("sha512", salt)
-      .update(userId + JWT_SECRETE)
+      .update(userId + config.jwt.secret)
       .digest("base64");
 
     if (!user) {
-      const { name, statusCode, message } = ERROR_MESSAGES.USER_FOUND_ERROR;
-      throw new AppError(name, statusCode, message, true);
+      throw new ClientError(ERR_MSG.USER_NOT_FOUND);
     }
 
     if (hash === refreshToken) {

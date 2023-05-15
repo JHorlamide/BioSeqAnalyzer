@@ -5,8 +5,8 @@ import { useTreblle } from "treblle";
 
 import { requestLogger } from "./requestLogger";
 import { CommonRoutesConfig } from "../common/CommonRouteConfig";
-import errorMiddleware from "../common/middleware/errorMiddleware";
-import { NODE_ENV, TREBLE_API_KEY, TREBLLE_PROJECT_ID } from "./environmentConfig";
+import config from "./appConfig";
+import { errorHandler } from "../common/middleware/errorHandler";
 
 // Routes imports
 import { AuthRoute } from "../modules/auth/routeConfig";
@@ -17,8 +17,8 @@ const app = express();
 const routes: CommonRoutesConfig[] = [];
 
 useTreblle(app, {
-  apiKey: TREBLE_API_KEY,
-  projectId: TREBLLE_PROJECT_ID
+  apiKey: config.treble.api_key,
+  projectId: config.treble.project_id
 })
 
 // Middleware that enables Cross-Origin Resource Sharing (CORS) for the server.
@@ -43,7 +43,7 @@ app.use(express.json({ limit: "5mb" }));
 // allowing rich objects and arrays to be encoded into the URL - encoded format
 app.use(express.urlencoded({ extended: false }));
 
-if (NODE_ENV !== "test") {
+if (config.node_env !== "test") {
   app.use(requestLogger);
 }
 
@@ -53,6 +53,6 @@ routes.push(new AuthRoute(app));
 routes.push(new UserRoute(app));
 
 // Error handing middleware
-app.use(errorMiddleware);
+app.use(errorHandler);
 
 export { app, routes };

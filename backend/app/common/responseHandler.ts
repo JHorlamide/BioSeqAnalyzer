@@ -1,6 +1,7 @@
 import { Response } from "express";
 import HttpStatus, { } from "http-status";
 import { HttpStatusCode } from "./types";
+import httpStatus from "http-status";
 
 /**
  * A class for handling HTTP responses with generic data type T.
@@ -39,6 +40,20 @@ class ResponseHandler<T extends object> {
     return res
       .status(HttpStatus.FORBIDDEN)
       .json({ status: "Failure", message })
+  }
+
+  public serverError(message: string, res: Response): Response {
+    return res
+      .status(HttpStatus.INTERNAL_SERVER_ERROR)
+      .json({ status: httpStatus.INTERNAL_SERVER_ERROR, message })
+  }
+
+  public customResponse(
+    status: number,
+    responsePayload: any,
+    res: Response): Response {
+    return res
+      .status(status).type("json").send(JSON.stringify(responsePayload))
   }
 }
 

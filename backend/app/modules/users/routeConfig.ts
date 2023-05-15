@@ -1,8 +1,10 @@
 import { Application } from "express";
 import { CommonRoutesConfig } from "../../common/CommonRouteConfig"
-import { APP_PREFIX_PATH } from "../../constants/AppConstants";
 import userMiddleware from "./middleware/userMiddleware";
 import userController from "./controller/userController";
+import config from "../../config/appConfig";
+
+const APP_PREFIX_PATH = config.prefix;
 
 export class UserRoute extends CommonRoutesConfig {
   constructor(app: Application) {

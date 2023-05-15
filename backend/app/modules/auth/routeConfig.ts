@@ -2,8 +2,10 @@ import { Application } from "express";
 import { CommonRoutesConfig } from "../../common/CommonRouteConfig";
 import authMiddleware from "./middleware/authMiddleware";
 import jwtMiddleware from "./middleware/jwtMiddleware"
-import { APP_PREFIX_PATH } from "../../constants/AppConstants";
+import config from "../../config/appConfig";
 import authController from "./controller/authController";
+
+const APP_PREFIX_PATH = config.prefix;
 
 export class AuthRoute extends CommonRoutesConfig {
   constructor(app: Application) {

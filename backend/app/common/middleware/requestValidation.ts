@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import responseHandler from "./responseHandler";
+import responseHandler from "../responseHandler";
 
 const requestBodyValidator = (schema: any) => {
   return (req: Request, res: Response, next: NextFunction) => {

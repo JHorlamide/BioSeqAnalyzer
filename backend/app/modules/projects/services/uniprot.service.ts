@@ -1,11 +1,11 @@
-import { AppError } from "../../../common/middleware/appError";
+import { ClientError } from "../../../common/exceptions/clientError";
 import { httpClient } from "../../../config/httpClient";
 import { ERR_MSG } from "../types/constants";
 
 class UniProtService {
   public async getProteinSequence(uniprotId: string) {
     if (!uniprotId) {
-      throw new AppError("invalidUniProtId", 400, ERR_MSG.requiredPDBIdError, true);
+      throw new ClientError(ERR_MSG.PDB_ID_REQUIRED)
     }
 
     const response = await httpClient.get(`/${uniprotId}.fasta`);

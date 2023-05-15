@@ -2,12 +2,12 @@ import { Request, Response } from "express";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
 import responseHandler from "../../../common/responseHandler";
-import asyncHandler from "../../../common/asyncHandler";
-import { JWT_SECRETE, TOKEN_EXPIRATION } from "../../../config/environmentConfig";
+import asyncHandler from "../../../common/middleware/asyncHandler";
+import config from "../../../config/appConfig";
 
 class AuthController {
   public createUserJWT = asyncHandler(async (req: Request, res: Response) => {
-    const refreshId = req.body.userId + JWT_SECRETE;
+    const refreshId = req.body.userId + config.jwt.secret;
     const salt = crypto.createSecretKey(crypto.randomBytes(16));
     const hash = crypto
       .createHmac("sha512", salt)
@@ -17,8 +17,8 @@ class AuthController {
     req.body.refreshKey = salt.export();
     const accessToken = jwt.sign(
       req.body,
-      JWT_SECRETE,
-      { expiresIn: TOKEN_EXPIRATION }
+      config.jwt.secret,
+      { expiresIn: config.jwt.token_expiration }
     );
 
     delete req.body.refreshKey;

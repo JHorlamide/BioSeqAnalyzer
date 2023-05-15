@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import { onError } from "./requestLogger";
-import { DATABASE_URL } from "./environmentConfig";
+import config from "./appConfig";
 import { logger } from "./logger";
 
 let count = 0;
@@ -9,8 +9,8 @@ mongoose.set("strictQuery", false);
 const DBConnectWithRetry = async () => {
   try {
     logger.info("Attempting MongoDB connection (will retry if needed)");
-    await mongoose.connect(DATABASE_URL);
-    logger.info(`Database connected successfully to ${DATABASE_URL}...`);
+    await mongoose.connect(config.database_url);
+    logger.info(`Database connected successfully to ${config.database_url}...`);
   } catch (error) {
     const retrySeconds = 5;
     logger.error(`MongoDB connection unsuccessful (will retry in #${count} after ${retrySeconds} seconds)`, error);

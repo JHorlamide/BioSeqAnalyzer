@@ -1,14 +1,11 @@
-import { Request, Response } from "express";
-import { PDB_BASE_URL } from "../../../config/environmentConfig";
+import mongoose from "mongoose";
+import config from "../../../config/appConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
 import { IUpdateProject, IProject, IGetProjects } from "../types/types";
-import { ERROR_MESSAGES } from "../types/constants";
-import { AppError } from "../../../common/middleware/appError";
-import { GENERAL_ERROR } from "../../../config/appConstants";
-import projectMiddleware from "../middleware/projectMiddleware";
-
-const { name, statusCode } = GENERAL_ERROR.ERROR_MSG;
+import { ERR_MSG } from "../types/constants";
+import { ClientError } from "../../../common/exceptions/clientError";
+import { NotFoundError } from "../../../common/exceptions/notFoundError";
 
 class ProjectService {
   /**
@@ -20,23 +17,13 @@ class ProjectService {
   public async createProject(projectData: IProject) {
     // Ensure that the necessary data is provided to create the project
     if (Object.keys(projectData).length === 0) {
-      const { REQUIRED_PROJECT_DATA } = ERROR_MESSAGES;
-
-      throw new AppError(
-        REQUIRED_PROJECT_DATA.name,
-        REQUIRED_PROJECT_DATA.statusCode,
-        REQUIRED_PROJECT_DATA.message, true);
+      throw new ClientError(ERR_MSG.INVALID_PROJECT_DATA);
     }
 
     const { uniprotId, proteinPDBID, user } = projectData;
 
     if (!user) {
-      const { REQUIRED_USER_ID } = ERROR_MESSAGES;
-
-      throw new AppError(
-        REQUIRED_USER_ID.name,
-        REQUIRED_USER_ID.statusCode,
-        REQUIRED_USER_ID.message, true);
+      throw new ClientError(ERR_MSG.USER_ID_REQUIRED);
     }
 
     if (uniprotId) return this.createProjectIfUniprotIdExist(projectData);
@@ -73,36 +60,26 @@ class ProjectService {
         totalCount,
       };
     } catch (error: any) {
-      throw new AppError(name, statusCode, error.message, true);
+      throw new ClientError(error.message);
     }
   }
 
   // Get a single project by the given projectId
   public async getProjectById(projectId: string) {
-    if (!projectId) {
-      const { REQUIRED_PROJECT_ID } = ERROR_MESSAGES;
-
-      throw new AppError(
-        REQUIRED_PROJECT_ID.name,
-        REQUIRED_PROJECT_ID.statusCode,
-        REQUIRED_PROJECT_ID.message, true);
+    if (!projectId && this.isMongooseObjectId(projectId)) {
+      throw new ClientError(ERR_MSG.PROJECT_ID_REQUIRED)
     }
 
     try {
       const project = await projectRepository.getProjectById(projectId);
 
       if (!project) {
-        const { PROJECT_NOT_FOUND } = ERROR_MESSAGES;
-
-        throw new AppError(
-          PROJECT_NOT_FOUND.name,
-          PROJECT_NOT_FOUND.statusCode,
-          PROJECT_NOT_FOUND.message, true);
+        throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
       }
 
       return project;
     } catch (error: any) {
-      throw new AppError(name, statusCode, error.message, true);
+      throw new ClientError(error.message);
     }
   }
 
@@ -111,58 +88,36 @@ class ProjectService {
       const project = await projectRepository.getProjectByUserId(userId);
 
       if (!project) {
-        const { PROJECT_NOT_FOUND } = ERROR_MESSAGES;
-
-        throw new AppError(
-          PROJECT_NOT_FOUND.name,
-          PROJECT_NOT_FOUND.statusCode,
-          PROJECT_NOT_FOUND.message, true);
+        throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
       }
 
       return project;
     } catch (error: any) {
-      throw new AppError(name, statusCode, error.message, true);
+      throw new ClientError(error.message);
     }
   }
 
   public async updateProject(projectUpdateData: IUpdateProject) {
     const { projectId, projectData } = projectUpdateData;
 
-    console.log({ serviceLevel: projectId })
-
     if (!projectId) {
-      const { REQUIRED_PROJECT_ID } = ERROR_MESSAGES;
-
-      throw new AppError(
-        REQUIRED_PROJECT_ID.name,
-        REQUIRED_PROJECT_ID.statusCode,
-        REQUIRED_PROJECT_ID.message, true);
+      throw new ClientError(ERR_MSG.PROJECT_ID_REQUIRED)
     }
 
     // Ensure that the necessary data is provided to create the project
     if (Object.keys(projectData).length === 0) {
-      const { REQUIRED_PROJECT_DATA } = ERROR_MESSAGES;
-
-      throw new AppError(
-        REQUIRED_PROJECT_DATA.name,
-        REQUIRED_PROJECT_DATA.statusCode,
-        REQUIRED_PROJECT_DATA.message, true);
+      throw new ClientError(ERR_MSG.INVALID_PROJECT_DATA)
     }
 
     try {
       const updatedProject = await projectRepository.updateProject(projectUpdateData)
       if (!updatedProject) {
-        const { PROJECT_NOT_FOUND } = ERROR_MESSAGES;
-
-        throw new AppError(
-          PROJECT_NOT_FOUND.name,
-          PROJECT_NOT_FOUND.statusCode,
-          PROJECT_NOT_FOUND.message, true);
+        throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
       }
 
       return updatedProject;
     } catch (error: any) {
-      throw new AppError(name, statusCode, error.message, true);
+      throw new ClientError(error.message);
     }
   }
 
@@ -181,7 +136,7 @@ class ProjectService {
 
   private async createProjectIfPDBIDExist(projectData: IProject) {
     // If proteinPDBID is provided, add the PDB URL to the project data and create the project
-    const PDBID = `${PDB_BASE_URL}/${projectData.proteinPDBID}`;
+    const PDBID = `${config.pdb_base_url}/${projectData.proteinPDBID}`;
 
     const projectWithPDBID = {
       ...projectData,
@@ -195,9 +150,18 @@ class ProjectService {
     try {
       return await projectRepository.createProject(projectData);
     } catch (error: any) {
-      throw new AppError(name, statusCode, error.message, true);
+      throw new ClientError(error.message);
     }
   }
+
+  private isMongooseObjectId(id: any): boolean {
+    if (id && typeof id === 'string') {
+      return mongoose.Types.ObjectId.isValid(id);
+    }
+
+    return false;
+  }
+
 }
 
 export default new ProjectService();

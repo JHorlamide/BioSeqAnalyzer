@@ -1,8 +1,8 @@
 import winston from "winston";
-import { NODE_ENV } from "./environmentConfig";
+import config from "./appConfig";
 
 const isDevEnvironment = () => {
-  return NODE_ENV === "development" ? true : false
+  return config.node_env === "development" ? true : false
 }
 
 const customLevels = {

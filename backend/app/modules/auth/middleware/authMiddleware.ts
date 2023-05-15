@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { userLogin } from "../validation/authSchema";
-import requestBodyValidator from "../../../common/requestValidation";
+import requestBodyValidator from "../../../common/middleware/requestValidation";
 import userService from "../../users/services/userService"
 import responseHandler from "../../../common/responseHandler";
 import { ERR_MSG } from "../../users/types/constants";

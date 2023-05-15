@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import argon2 from "argon2";
-import asyncHandler from "../../../common/asyncHandler";
+import asyncHandler from "../../../common/middleware/asyncHandler";
 import responseHandler from "../../../common/responseHandler";
 import userService from "../services/userService";
 import { RES_MSG } from "../types/constants";

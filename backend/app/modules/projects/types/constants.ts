@@ -1,6 +1,4 @@
-import httpStatus from "http-status";
-
-export const RES_MSG = {
+export const res_msg = {
   projectCreated: "Project created successfully",
   projectsFetched: "Projects fetched successfully",
   projectFetched: "Project fetched successfully",
@@ -10,40 +8,11 @@ export const RES_MSG = {
 }
 
 export const ERR_MSG = {
-  requiredUniprotIdError: "uniprotId is required",
-  invalidUniprotIdError: "Invalid uniprotId",
-  requiredPDBIdError: "proteinPDBID is required",
+  UNIPROT_ID_REQUIRED: "uniprotId is required",
+  INVALID_UNIPROT_ID: "Invalid uniprotId",
+  PDB_ID_REQUIRED: "proteinPDBID is required",
+  USER_ID_REQUIRED: "userId is required",
+  PROJECT_ID_REQUIRED: "projectId is a required fields",
+  PROJECT_NOT_FOUND: "Project not found",
+  INVALID_PROJECT_DATA: "projectTitle, projectGoal, and, measuredProperty are required fields"
 }
-
-export const ERROR_MESSAGES = {
-  REQUIRED_USER_ID: {
-    name: "InvalidUserId",
-    statusCode: httpStatus.BAD_REQUEST,
-    message: "userId is required"
-  },
-
-  REQUIRED_PROJECT_DATA: {
-    name: "InvalidInputError",
-    statusCode: httpStatus.BAD_REQUEST,
-    message: "projectTitle, projectGoal, and, measuredProperty are required fields"
-  },
-
-  REQUIRED_PROJECT_ID: {
-    name: "InvalidProjectId",
-    statusCode: httpStatus.BAD_REQUEST,
-    message: "projectId is a required fields"
-  },
-
-  PROJECT_NOT_FOUND: {
-    name: 'ProjectNotFoundError',
-    statusCode: httpStatus.NOT_FOUND,
-    message: 'Project not found',
-  },
-};
-
-// Example usage:
-// throw new AppError(
-//   ERROR_MESSAGES.NOT_FOUND_ERROR.name,
-//   ERROR_MESSAGES.NOT_FOUND_ERROR.statusCode,
-//   ERROR_MESSAGES.NOT_FOUND_ERROR.message
-// );

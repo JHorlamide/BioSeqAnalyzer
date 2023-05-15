@@ -25,7 +25,6 @@ class ProjectRepository {
 
   public async updateProject(updateBodyField: IUpdateProject) {
     const { projectId, projectData } = updateBodyField;
-    console.log({ repositoryLevel: projectId })
 
     return await Project.findOneAndUpdate(
       { _id: projectId },
