@@ -54,7 +54,6 @@ class ProjectService {
       const totalPages = Math.ceil(totalCount / limit);
 
       const projects = await projectRepository.getAllProjects(query, page, limit);
-      console.log(projects);
       return {
         projects,
         totalPages,
