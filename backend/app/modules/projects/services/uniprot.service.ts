@@ -3,9 +3,9 @@ import { httpClient } from "../../../config/httpClient";
 import { ERR_MSG } from "../types/constants";
 
 class UniProtService {
-  public async getProteinSequence(uniprotId: string) {
+  public async getProteinSequence(uniprotId: string | undefined) {
     if (!uniprotId) {
-      throw new ClientError(ERR_MSG.PDB_ID_REQUIRED)
+      throw new ClientError(ERR_MSG.PDB_ID_REQUIRED);
     }
 
     const response = await httpClient.get(`/${uniprotId}.fasta`);

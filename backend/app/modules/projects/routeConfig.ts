@@ -58,6 +58,17 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
+    * @route DELETE: /api/projects/:projectId
+    * @desc Delete Project
+    * @access Private
+    * ***/
+    this.app.delete(`${APP_PREFIX_PATH}/projects/:projectId`, [
+      jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectBelongsToUser,
+      projectController.deleteProject
+    ])
+
+    /***
     * @route GET: /api/uniprot/:uniprotId
     * @desc Get Protein Sequence
     * @access Private

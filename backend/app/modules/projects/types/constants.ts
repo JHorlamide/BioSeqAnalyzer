@@ -1,10 +1,11 @@
 export const RES_MSG = {
-  projectCreated: "Project created successfully",
-  projectsFetched: "Projects fetched successfully",
+  PROJECT_CREATED: "Project created successfully",
+  PROJECTS_FETCHED: "Projects fetched successfully",
   PROJECT_FETCHED: "Project fetched successfully",
-  projectUpdated: "Project updated successfully",
-  proteinSequenceFetched: "Protein sequence fetched successfully",
-  projectNotFound: "Project not found",
+  PROJECT_UPDATED: "Project updated successfully",
+  PROTEIN_SEQUENCE_FETCHED: "Protein sequence fetched successfully",
+  PROJECT_NOT_FOUND: "Project not found",
+  PROJECT_DELETED: "Project deleted successfully"
 }
 
 export const ERR_MSG = {

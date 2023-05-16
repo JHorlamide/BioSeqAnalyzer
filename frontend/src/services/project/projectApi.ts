@@ -10,7 +10,9 @@ import {
   IGetProjectReq,
   IGetProjectRes,
   IUpdateProjectRes,
-  IUpdateProjectReq
+  IUpdateProjectReq,
+  IDeleteProject,
+  IDeleteProjectRes
 } from "./type";
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
@@ -71,7 +73,16 @@ export const projectApi = createApi({
         method: "PUT",
         body: data,
       }),
-      
+
+      invalidatesTags: ["Projects"]
+    }),
+
+    deleteProject: builder.mutation<IDeleteProjectRes, IDeleteProject>({
+      query: ({ projectId }) => ({
+        url: `/projects/${projectId}`,
+        method: "DELETE"
+      }),
+
       invalidatesTags: ["Projects"]
     })
   }),
@@ -86,4 +97,5 @@ export const {
   useGetProjectsQuery,
   useGetProjectQuery,
   useUpdateProjectMutation,
+  useDeleteProjectMutation
 } = projectApi;

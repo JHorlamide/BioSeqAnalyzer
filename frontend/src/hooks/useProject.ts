@@ -11,6 +11,7 @@ import {
 import { toast } from "react-hot-toast";
 import useNavigation from "./useNavigation";
 import { APP_PREFIX_PATH } from "../config/AppConfig";
+import utils from "../utils";
 
 const getFilledForm = (projectField: ProjectFormData) => {
   return Object.fromEntries(
@@ -34,31 +35,33 @@ export const useProject = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
+  const [createProject, { isLoading }] = useCreateProjectMutation();
 
   const uniprotId = watch("uniprotId");
 
-  const [createProject, { isLoading }] = useCreateProjectMutation();
-
   const {
-    data: proteinSequence,
-    error: proteinSequenceError,
-    isLoading: proteinSequenceIsLoading
+    data: proteinSequence = null,
+    error: proteinSequenceError = null,
+    isLoading: proteinSequenceIsLoading = false
   } = useGetProteinSequenceQuery({ uniprotId });
 
   useEffect(() => {
-    setLoading(proteinSequenceIsLoading);
-    setError("");
+    if (uniprotId) {
 
-    if (proteinSequence) {
-      setAminoAcidSequence(proteinSequence.data);
-      setLoading(false);
-    }
+      setLoading(proteinSequenceIsLoading);
+      setError("");
 
-    if (proteinSequenceError) {
-      setLoading(false);
-      setError("Error fetching sequence");
+      if (proteinSequence) {
+        setAminoAcidSequence(proteinSequence.data);
+        setLoading(false);
+      }
+
+      if (proteinSequenceError) {
+        setLoading(false);
+        setError("Error fetching sequence");
+      }
     }
-  }, [proteinSequence, proteinSequenceError, proteinSequenceIsLoading]);
+  }, [uniprotId, proteinSequence, proteinSequenceError, proteinSequenceIsLoading]);
 
   const toggleShowUniProtInput = () => {
     setInputVisibility((prevState) => ({
@@ -173,7 +176,7 @@ export const useUpdateProject = (projectId: string) => {
 
       toast.error(response.message);
     } catch (error: any) {
-      const errorMessage = error.response?.data.message || error.data.message || error.message;
+      const errorMessage = utils.getErrorMessage(error);
       toast.error(errorMessage);
     }
   }

@@ -9,13 +9,13 @@ class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
     const { userId } = res.locals.jwt;
     const project = await projectService.createProject({ user: userId, ...req.body });
-    responseHandler.successfullyCreated(RES_MSG.projectCreated, project, res);
+    responseHandler.successfullyCreated(RES_MSG.PROJECT_CREATED, project, res);
   })
 
   public getProteinSequence = asyncHandler(async (req: Request, res: Response) => {
     const { uniprotId } = req.params;
     const proteinSequence = await uniprotService.getProteinSequence(uniprotId);
-    responseHandler.successResponse(RES_MSG.proteinSequenceFetched, proteinSequence, res);
+    responseHandler.successResponse(RES_MSG.PROTEIN_SEQUENCE_FETCHED, proteinSequence, res);
   })
 
   public getAllProjects = asyncHandler(async (req: Request, res: Response) => {
@@ -34,7 +34,7 @@ class ProjectController {
     }
 
     const projects = await projectService.getAllProjects(getProjectPrams);
-    responseHandler.successResponse(RES_MSG.PROJECT_FETCHED, projects, res);
+    responseHandler.successResponse(RES_MSG.PROJECTS_FETCHED, projects, res);
   })
 
   public getProjectDetail = asyncHandler(async (req: Request, res: Response) => {
@@ -45,9 +45,14 @@ class ProjectController {
 
   public updateProjectDetails = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
-    console.log({ controllerLevel: projectId })
     const updatedProject = await projectService.updateProject({ projectId, projectData: req.body });
-    responseHandler.successResponse(RES_MSG.projectUpdated, updatedProject, res);
+    responseHandler.successResponse(RES_MSG.PROJECT_UPDATED, updatedProject, res);
+  })
+
+  public deleteProject = asyncHandler(async (req: Request, res: Response) => {
+    const { projectId } = req.params;
+    await projectService.deleteProject(projectId);
+    responseHandler.noContent(RES_MSG.PROJECT_DELETED, res);
   })
 }
 

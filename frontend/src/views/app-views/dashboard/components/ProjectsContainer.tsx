@@ -22,7 +22,7 @@ const ProjectsContainer = ({ projects }: Props) => {
         <GridItem key={project._id}>
           <ProjectCard
             projectTitle={project.projectTitle}
-            updatedAt={project.updateAt}
+            updatedAt={project.updatedAt}
             projectId={project._id}
           />
         </GridItem>

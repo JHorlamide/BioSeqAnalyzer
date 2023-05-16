@@ -121,6 +121,18 @@ class ProjectService {
     }
   }
 
+  public async deleteProject(projectId: string) {
+    if(!projectId && this.isMongooseObjectId(projectId)) {
+      throw new ClientError(ERR_MSG.PROJECT_ID_REQUIRED)
+    }
+
+    try {
+      await projectRepository.deleteProject(projectId);
+    } catch (error: any) {
+      throw new ClientError(error.message);
+    }
+  }
+
   private async createProjectIfUniprotIdExist(projectData: IProject) {
     // If uniprotId is provided, retrieve the protein sequence
     const proteinSequence = await uniprotService.getProteinSequence(projectData.uniprotId!!);

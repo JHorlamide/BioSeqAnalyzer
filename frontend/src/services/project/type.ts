@@ -17,7 +17,7 @@ export interface Projects extends IProject {
   _id: string;
   user: string;
   createdAt: string;
-  updateAt: string;
+  updatedAt: string;
 }
 
 export interface IGetProjectsRes extends IBaseResponse {
@@ -50,3 +50,9 @@ export interface IUpdateProjectReq {
 export interface IUpdateProjectRes extends IBaseResponse {
   data: IProject;
 }
+
+export interface IDeleteProject {
+  projectId: string;
+}
+
+export interface IDeleteProjectRes extends IBaseResponse {};
