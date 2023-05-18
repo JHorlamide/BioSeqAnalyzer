@@ -1,8 +1,10 @@
 import mongoose from "mongoose";
+import { Readable } from "stream";
+import csvParser from "csv-parser";
 import config from "../../../config/appConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
-import { IUpdateProject, IProject, IGetProjects } from "../types/types";
+import { IUpdateProject, IProject, IGetProjects, ProjectFields } from "../types/types";
 import { ERR_MSG } from "../types/constants";
 import { ClientError } from "../../../common/exceptions/clientError";
 import { NotFoundError } from "../../../common/exceptions/notFoundError";
@@ -136,6 +138,51 @@ class ProjectService {
     } catch (error: any) {
       throw new ServerError(error.message);
     }
+  }
+
+  public async parseCSVFile(fileBuffer: Buffer): Promise<any[]> {
+    const csvData: any[] = await new Promise((resolve, reject) => {
+      const readableStream = Readable.from(fileBuffer.toString());
+      const results: any[] = [];
+      readableStream
+        .pipe(csvParser())
+        .on("data", (data: any) => {
+          results.push(data);
+        })
+        .on("end", () => {
+          resolve(results);
+        })
+        .on("error", (error: Error) => {
+          reject(error);
+        });
+    });
+
+    return csvData;
+  }
+
+  public validateCSVStructure(csvData: any[]): boolean {
+    const expectedColumns = ['sequence', 'fitness', 'muts'];
+    return csvData.length > 0 && expectedColumns.every((column) => csvData[0].hasOwnProperty(column));;
+  }
+
+  public hasWildTypeSequence(csvData: any[]): boolean {
+    return csvData.some((row) => row.muts === 'WT');
+  }
+
+  public async uploadProjectFile(projectId: string, data: any) {
+    const project = await projectRepository.getProjectById(projectId);
+
+    if (!project) {
+      throw new ClientError(ERR_MSG.PROJECT_NOT_FOUND);
+    }
+
+    project.projectFile = data.map((row: ProjectFields) => ({
+      sequence: row.sequence,
+      fitness: parseFloat(row.fitness),
+      muts: row.muts,
+    }));
+
+    return await project.save();
   }
 
   private async createProjectIfUniprotIdExist(projectData: IProject) {

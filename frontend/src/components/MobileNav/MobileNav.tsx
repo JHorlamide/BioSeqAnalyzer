@@ -6,7 +6,7 @@ import {
   DrawerContent,
   DrawerCloseButton,
 } from "@chakra-ui/react";
-import { MenuItem } from "../MenuItem/MenuItem";
+import { Navigation } from "../MenuItem/MenuItem";
 
 interface Props {
   isOpen: boolean;
@@ -22,7 +22,7 @@ const MobileNav = ({ isOpen, onClose }: Props) => {
         <DrawerHeader>ProteinAnalyzer</DrawerHeader>
 
         <DrawerBody>
-          <MenuItem />
+          <Navigation />
         </DrawerBody>
       </DrawerContent>
     </Drawer>

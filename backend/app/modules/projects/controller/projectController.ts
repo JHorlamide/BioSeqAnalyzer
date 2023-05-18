@@ -4,6 +4,10 @@ import projectService from "../services/projectService";
 import responseHandler from "../../../common/responseHandler";
 import { RES_MSG } from "../types/constants";
 import uniprotService from "../services/uniprot.service";
+import csvParser from "csv-parser";
+import { Readable } from "stream";
+import { ServerError } from "../../../common/exceptions/serverError";
+import { ClientError } from "../../../common/exceptions/clientError";
 
 class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
@@ -53,6 +57,36 @@ class ProjectController {
     const { projectId } = req.params;
     await projectService.deleteProject(projectId);
     responseHandler.noContent(RES_MSG.PROJECT_DELETED, res);
+  })
+
+  public uploadProjectCSV = asyncHandler(async (req: Request, res: Response) => {
+    const { projectId } = req.body;
+
+    if (!req.file) {
+      return responseHandler.failureResponse("No file uploaded", res);
+    }
+
+    try {
+      // Read and parse the CSV file
+      const csvData = await projectService.parseCSVFile(req.file.buffer);
+
+      // Validate the CSV structure
+      if (!projectService.validateCSVStructure(csvData)) {
+        return responseHandler.failureResponse("CSV file must contain columns: sequence, fitness, muts", res);
+      }
+
+      // Check for wild type sequence
+      if (!projectService.hasWildTypeSequence(csvData)) {
+        return responseHandler.failureResponse("CSV file must contain at least one row with muts = WT", res);
+      }
+
+      // Update the project with the new projectFile data
+      const uploadResult = await projectService.uploadProjectFile(projectId, csvData);
+      return responseHandler.successResponse("File uploaded and data saved successfully", uploadResult, res);
+    } catch (error: any) {
+      console.error(error.message);
+      return responseHandler.failureResponse(`Error processing CSV file: ${error.message}`, res);
+    }
   })
 }
 

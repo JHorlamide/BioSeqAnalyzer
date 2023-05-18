@@ -31,7 +31,14 @@ const projectSchema = new Schema<ProjectModel>({
 
   proteinPDBID: { type: String },
   uniprotId: { type: String },
-  proteinAminoAcidSequence: { type: String }
+  proteinAminoAcidSequence: { type: String },
+  projectFile: [
+    {
+      sequence: { type: String },
+      fitness: { type: Number },
+      muts: { type: String },
+    },
+  ],
 }, { timestamps: true })
 
 export default model<ProjectModel>("Project", projectSchema);

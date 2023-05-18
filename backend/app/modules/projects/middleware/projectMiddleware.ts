@@ -1,13 +1,15 @@
 import { Request, Response, NextFunction } from "express";
 import requestBodyValidator from "../../../common/middleware/requestValidation";
-import { createProjectSchema, paginationParams } from "../validation/projectSchema";
+import { createProjectSchema, paginationParams, projectUploadSchema } from "../validation/projectSchema";
 import responseHandler from "../../../common/responseHandler";
 import projectService from "../services/projectService";
 
 class ProjectMiddleware {
   public validateRequestBodyField = requestBodyValidator(createProjectSchema);
 
-  public validateReqParam(req: Request, res: Response, next: NextFunction) {
+  public validateUploadParam = requestBodyValidator(projectUploadSchema);
+
+  public validateUniProtIdParam(req: Request, res: Response, next: NextFunction) {
     const { uniprotId } = req.params;
 
     if (!uniprotId) {
@@ -36,6 +38,8 @@ class ProjectMiddleware {
     if (!project) {
       return responseHandler.forbiddenResponse("Not authorized", res);
     }
+    
+    console.log("I was called: ProjectMiddleware");
 
     next();
   }

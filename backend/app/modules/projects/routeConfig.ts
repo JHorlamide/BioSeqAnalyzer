@@ -4,6 +4,7 @@ import jwtMiddleware from "../auth/middleware/jwtMiddleware";
 import projectController from "./controller/projectController";
 import projectMiddleware from "./middleware/projectMiddleware";
 import config from "../../config/appConfig";
+import { upload } from "../../config/multerConfig";
 
 const APP_PREFIX_PATH = config.prefix;
 
@@ -69,13 +70,25 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
+    * @route POST: /api/projects/csv-upload
+    * @desc Upload project experimental data
+    * @access Private
+    * ***/
+    this.app.post(`${APP_PREFIX_PATH}/projects/csv-upload`, upload.single("file"), [
+      jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectBelongsToUser,
+      projectMiddleware.validateUploadParam,
+      projectController.uploadProjectCSV
+    ])
+
+    /***
     * @route GET: /api/uniprot/:uniprotId
     * @desc Get Protein Sequence
     * @access Private
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/uniprot/:uniprotId`, [
       jwtMiddleware.validJWTNeeded,
-      projectMiddleware.validateReqParam,
+      projectMiddleware.validateUniProtIdParam,
       projectController.getProteinSequence
     ])
 

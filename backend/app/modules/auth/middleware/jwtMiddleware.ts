@@ -25,7 +25,6 @@ class JwtMiddleware {
         res.locals.jwt = jwt.verify(authorization[1], config.jwt.secret) as Jwt;
         return next();
       } catch (error: any) {
-        // throw new ForbiddenError("Not authorize");
         return responseHandler
           .forbiddenResponse(`Not authorize ${error}`, res);
       }

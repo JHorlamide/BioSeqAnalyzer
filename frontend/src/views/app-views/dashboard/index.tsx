@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack } from "@chakra-ui/react";
 import EmptyProject from "../../../components/EmptyProject/EmptyProject";
 import Button from "../../../components/CustomBtn/Button";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
@@ -8,10 +8,8 @@ import ProjectsContainer from "./components/ProjectsContainer";
 import AppLoader from "../../../components/Loading/AppLoader";
 import { useGetProjectsQuery } from "../../../services/project/projectApi";
 import Pagination from "../../../components/Pagination/Pagination";
-import { useAppDispatch } from "../../../store/store";
 
 const Dashboard = () => {
-  const dispatch = useAppDispatch();
   const { handleNavigate } = useNavigation();
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 9;
@@ -46,7 +44,7 @@ const Dashboard = () => {
         </Button>
       </Flex>
 
-      <Box marginY={10}>
+      <Box marginY={10} width="full" height="full">
         {projects && projects.data.projects.length > 0 ? (
           <Fragment>
             <ProjectsContainer projects={projects.data.projects} />
@@ -57,7 +55,6 @@ const Dashboard = () => {
               onPageChange={handlePageChange}
             />
           </Fragment>
-
         ) : (
           <EmptyProject />
         )}

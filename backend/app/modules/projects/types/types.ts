@@ -34,4 +34,12 @@ export interface IGetProjects {
   userId: string;
 }
 
-export interface ProjectModel extends IProject { }
+export interface ProjectFields {
+  sequence: string;
+  fitness: string;
+  muts: string;
+}
+
+export interface ProjectModel extends IProject {
+  projectFile: Array<ProjectFields>;
+}

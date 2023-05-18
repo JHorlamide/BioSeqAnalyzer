@@ -1,5 +1,5 @@
-import { Text, Flex, Stack, Center, Show } from "@chakra-ui/react";
-import { MenuItem } from "../MenuItem/MenuItem";
+import { Flex, Show } from "@chakra-ui/react";
+import { Navigation } from "../MenuItem/MenuItem";
 
 const SideNav = () => {
   return (
@@ -16,16 +16,7 @@ const SideNav = () => {
         paddingY={3}
         paddingX={3}
       >
-        <Stack spacing={5}>
-          <Center>
-            <Text fontWeight="bold" fontSize="24">
-              ProteinAnalyzer
-            </Text>
-          </Center>
-
-          {/* Menu Items */}
-          <MenuItem />
-        </Stack>
+        <Navigation />
       </Flex>
     </Show>
   );

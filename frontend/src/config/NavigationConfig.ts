@@ -1,5 +1,4 @@
 import { FaProjectDiagram, FaUsers } from "react-icons/fa";
-import { SiPolymerproject } from "react-icons/si";
 import { APP_PREFIX_PATH } from "./AppConfig";
 
 const navigationConfig = [
@@ -8,13 +7,6 @@ const navigationConfig = [
     path: `${APP_PREFIX_PATH}/dashboard`,
     title: 'Dashboard',
     icon: FaProjectDiagram,
-  },
-
-  {
-    key: 'dashboards-projects',
-    path: `${APP_PREFIX_PATH}/create-project`,
-    title: 'Projects',
-    icon: SiPolymerproject,
   },
 
   {

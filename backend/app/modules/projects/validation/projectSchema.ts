@@ -14,3 +14,7 @@ export const paginationParams = Joi.object({
   limit: Joi.number().optional(),
   search: Joi.string().allow("").empty().optional(),
 })
+
+export const projectUploadSchema = Joi.object({
+  projectId: Joi.string().length(24).required()
+})

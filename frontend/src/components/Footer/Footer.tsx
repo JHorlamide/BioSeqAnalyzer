@@ -60,16 +60,15 @@ export default function SmallCentered() {
             width={{ base: "full", md: "container.md" }}
             display={{ base: "full", md: isLargeScreen ? "block" : "none" }}
         >
-            <Box position="absolute" top={5}>
+            <Box position="absolute" top="8px">
                 <Container
                     as={Stack}
                     maxW={'6xl'}
-                    py={4}
                     direction={{ base: 'column', md: 'row' }}
                     spacing={4}
                     justify={{ base: 'center', md: 'start' }}
                     align={{ base: 'center', md: 'center' }}>
-                    <Text>© 2023 Olamide Jubril. All rights reserved.</Text>
+                    <Text fontSize="12px">© 2023 Olamide Jubril. All rights reserved.</Text>
 
                     <Stack direction={'row'} spacing={6}>
                         <SocialButton label={'Twitter'} href={TwitterProfile}>

@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
-import HeaderNav from "../HeaderNav/HeaderNav";
-import SideNav from "../SideNav/SideNav";
+import HeaderNav from "../HeaderNavigation/HeaderNavigation";
+import SideNav from "../SideNavigation/SideNavigation";
 import Footer from "../Footer/Footer";
 import Footer2 from "../Footer/Footer";
 import { Fragment, Suspense } from "react";

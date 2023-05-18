@@ -9,9 +9,7 @@ const UNAUTHORIZED_STATUS = {
   NOT_AUTHORIZED: 401
 }
 
-export const unAuthenticatedMiddleware: Middleware = ({
-  dispatch
-}) => (next) => (action) => {
+export const unAuthenticatedMiddleware: Middleware = ({dispatch}) => (next) => (action) => {
   if (isRejectedWithValue(action) && action.payload.status === UNAUTHORIZED_STATUS.NOT_AUTHORIZED) {
     toast.error(action.payload.data.message);
     dispatch(resetStateAction());
@@ -23,7 +21,7 @@ export const unAuthenticatedMiddleware: Middleware = ({
   }
 
   if (isRejectedWithValue(action) && action.payload.status === SERVER_ERROR) {
-    toast.error(`Server Error: ${action.payload.data.message}`);
+    toast.error(action.payload.data.message);
   }
 
   return next(action);
