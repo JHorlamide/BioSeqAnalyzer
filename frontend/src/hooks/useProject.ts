@@ -37,29 +37,26 @@ export const useProject = () => {
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
   const [createProject, { isLoading }] = useCreateProjectMutation();
 
-  const uniprotId = watch("uniprotId");
+  const uniprotId = watch("uniprotId") || "";
 
   const {
-    data: proteinSequence = null,
+    data: proteinSequence,
     error: proteinSequenceError = null,
     isLoading: proteinSequenceIsLoading = false
   } = useGetProteinSequenceQuery({ uniprotId });
 
   useEffect(() => {
-    if (uniprotId) {
+    setLoading(proteinSequenceIsLoading);
+    setError("");
 
-      setLoading(proteinSequenceIsLoading);
-      setError("");
+    if (proteinSequence) {
+      setAminoAcidSequence(proteinSequence.data);
+      setLoading(false);
+    }
 
-      if (proteinSequence) {
-        setAminoAcidSequence(proteinSequence.data);
-        setLoading(false);
-      }
-
-      if (proteinSequenceError) {
-        setLoading(false);
-        setError("Error fetching sequence");
-      }
+    if (proteinSequenceError) {
+      setLoading(false);
+      setError("Error fetching sequence");
     }
   }, [uniprotId, proteinSequence, proteinSequenceError, proteinSequenceIsLoading]);
 
@@ -126,7 +123,7 @@ export const useUpdateProject = (projectId: string) => {
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
 
   // Watch for the uniprotId input change
-  const uniprotId = watch("uniprotId");
+  const uniprotId = watch("uniprotId") || "";
 
   const {
     data: proteinSequence,

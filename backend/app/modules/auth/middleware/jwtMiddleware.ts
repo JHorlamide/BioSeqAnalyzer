@@ -8,7 +8,7 @@ import userService from "../../users/services/userService";
 import requestBodyValidator from "../../../common/middleware/requestValidation";
 import { tokenRefresh } from "../validation/authSchema";
 import { ERR_MSG } from "../../users/types/constants";
-import { ClientError } from "../../../common/exceptions/clientError";
+import { NotFoundError } from "../../../common/exceptions/notFoundError";
 
 class JwtMiddleware {
   public verifyRefreshBodyField = requestBodyValidator(tokenRefresh);
@@ -46,7 +46,7 @@ class JwtMiddleware {
       .digest("base64");
 
     if (!user) {
-      throw new ClientError(ERR_MSG.USER_NOT_FOUND);
+      throw new NotFoundError(ERR_MSG.USER_NOT_FOUND);
     }
 
     if (hash === refreshToken) {

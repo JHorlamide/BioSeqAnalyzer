@@ -9,15 +9,11 @@ import httpStatus from "http-status";
  */
 class ResponseHandler<T extends object> {
   public successfullyCreated(message: string, data: T, res: Response): Response {
-    return res
-      .status(HttpStatus.CREATED)
-      .json({ status: "Success", message, data })
+    return res.status(HttpStatus.CREATED).json({ status: "Success", message, data })
   }
 
   public successResponse(message: string, data: T, res: Response): Response {
-    return res
-      .status(HttpStatus.OK)
-      .json({ status: "Success", message, data })
+    return res.status(HttpStatus.OK).json({ status: "Success", message, data })
   }
 
   public noContent(message: string, res: Response) {
@@ -29,9 +25,7 @@ class ResponseHandler<T extends object> {
     res: Response,
     statusCode: HttpStatusCode = HttpStatus.BAD_REQUEST
   ): Response {
-    return res
-      .status(statusCode)
-      .json({ status: "Failure", message })
+    return res.status(statusCode).json({ status: "Failure", message })
   }
 
   public unAuthorizedResponse(message: string, res: Response): Response {
@@ -56,8 +50,7 @@ class ResponseHandler<T extends object> {
     status: number,
     responsePayload: any,
     res: Response): Response {
-    return res
-      .status(status).type("json").send(JSON.stringify(responsePayload))
+    return res.status(status).type("json").send(JSON.stringify(responsePayload))
   }
 }
 

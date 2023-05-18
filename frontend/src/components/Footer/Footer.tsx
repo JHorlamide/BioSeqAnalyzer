@@ -19,6 +19,10 @@ interface SocialButtonProps {
     href: string;
 }
 
+const GitHubProfile = "https://github.com/JHorlamide";
+const TwitterProfile = "https://twitter.com/J_Horlamide";
+const LinkedInProfile = "https://www.linkedin.com/in/olamide-jubril-b80442194/";
+
 const SocialButton = (props: SocialButtonProps) => {
     const { children, label, href, } = props;
 
@@ -31,6 +35,7 @@ const SocialButton = (props: SocialButtonProps) => {
             cursor={'pointer'}
             as={'a'}
             href={href}
+            target='_blank'
             display={'inline-flex'}
             alignItems={'center'}
             justifyContent={'center'}
@@ -67,15 +72,15 @@ export default function SmallCentered() {
                     <Text>© 2023 Olamide Jubril. All rights reserved.</Text>
 
                     <Stack direction={'row'} spacing={6}>
-                        <SocialButton label={'Twitter'} href={'#'}>
+                        <SocialButton label={'Twitter'} href={TwitterProfile}>
                             <FaTwitter />
                         </SocialButton>
 
-                        <SocialButton label={'Twitter'} href={'#'}>
+                        <SocialButton label={'GitHub'} href={GitHubProfile}>
                             <BsGithub />
                         </SocialButton>
 
-                        <SocialButton label={'Twitter'} href={'#'}>
+                        <SocialButton label={'LinkedIn'} href={LinkedInProfile}>
                             <AiFillLinkedin />
                         </SocialButton>
                     </Stack>

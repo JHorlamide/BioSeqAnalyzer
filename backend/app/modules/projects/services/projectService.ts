@@ -6,6 +6,7 @@ import { IUpdateProject, IProject, IGetProjects } from "../types/types";
 import { ERR_MSG } from "../types/constants";
 import { ClientError } from "../../../common/exceptions/clientError";
 import { NotFoundError } from "../../../common/exceptions/notFoundError";
+import { ServerError } from "../../../common/exceptions/serverError";
 
 class ProjectService {
   /**
@@ -60,7 +61,7 @@ class ProjectService {
         totalCount,
       };
     } catch (error: any) {
-      throw new ClientError(error.message);
+      throw new ServerError(error.message);
     }
   }
 
@@ -79,7 +80,7 @@ class ProjectService {
 
       return project;
     } catch (error: any) {
-      throw new ClientError(error.message);
+      throw new ServerError(error.message);
     }
   }
 
@@ -93,7 +94,7 @@ class ProjectService {
 
       return project;
     } catch (error: any) {
-      throw new ClientError(error.message);
+      throw new ServerError(error.message);
     }
   }
 
@@ -117,19 +118,23 @@ class ProjectService {
 
       return updatedProject;
     } catch (error: any) {
-      throw new ClientError(error.message);
+      throw new ServerError(error.message);
     }
   }
 
   public async deleteProject(projectId: string) {
-    if(!projectId && this.isMongooseObjectId(projectId)) {
+    if (!projectId || !this.isMongooseObjectId(projectId)) {
       throw new ClientError(ERR_MSG.PROJECT_ID_REQUIRED)
     }
 
     try {
-      await projectRepository.deleteProject(projectId);
+      const project = await projectRepository.deleteProject(projectId);
+
+      if (!project) {
+        throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
+      }
     } catch (error: any) {
-      throw new ClientError(error.message);
+      throw new ServerError(error.message);
     }
   }
 
@@ -147,13 +152,13 @@ class ProjectService {
   }
 
   private async createProjectIfPDBIDExist(projectData: IProject) {
-    // If proteinPDBID is provided, add the PDB URL to the project data and create the project
+    /*
+      If proteinPDBID is provided, add the PDB URL
+      to the project data and create the project
+    */
     const PDBID = `${config.pdb_base_url}/${projectData.proteinPDBID}`;
 
-    const projectWithPDBID = {
-      ...projectData,
-      proteinPDBID: PDBID
-    };
+    const projectWithPDBID = { ...projectData, proteinPDBID: PDBID };
 
     return await this.createProteinProject(projectWithPDBID);
   }
@@ -162,11 +167,11 @@ class ProjectService {
     try {
       return await projectRepository.createProject(projectData);
     } catch (error: any) {
-      throw new ClientError(error.message);
+      throw new ServerError(error.message);
     }
   }
 
-  private isMongooseObjectId(id: any): boolean {
+  private isMongooseObjectId(id: string): boolean {
     if (id && typeof id === 'string') {
       return mongoose.Types.ObjectId.isValid(id);
     }

@@ -1,6 +1,6 @@
 import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 import { Projects } from "../../../../services/project/type";
-import ProjectCard from "../../../../components/ProjectCard/ProjectCard";
+import ProjectCard from "./ProjectCard";
 
 interface Props {
   projects: Projects[];
@@ -24,6 +24,7 @@ const ProjectsContainer = ({ projects }: Props) => {
             projectTitle={project.projectTitle}
             updatedAt={project.updatedAt}
             projectId={project._id}
+            projectName={project.projectTitle}
           />
         </GridItem>
       ))}

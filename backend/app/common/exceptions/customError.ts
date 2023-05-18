@@ -1,3 +1,8 @@
+export interface IResponseError {
+  message: string;
+  additionalInfo?: string;
+}
+
 export class CustomError extends Error {
   message!: string;
   status!: number;
@@ -9,9 +14,4 @@ export class CustomError extends Error {
     this.status = status;
     this.additionalInfo = additionalInfo;
   }
-}
-
-export interface IResponseError {
-  message: string;
-  additionalInfo?: string;
 }

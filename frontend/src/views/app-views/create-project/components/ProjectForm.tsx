@@ -73,14 +73,16 @@ const ProjectForm = (props: ProjectFormProps) => {
             >
               {showRawSeqInput && (
                 <FormControl>
-                  <Flex justifyContent="space-between" alignContent="center">
+                  <Flex justifyContent="space-between" alignItems="center">
                     <FormLabel>Raw sequence (Optional)</FormLabel>
 
                     <Button
                       onClick={toggleShowUniProtInput}
-                      variant="unstyled"
-                      bg="none"
-                      borderRadius="0"
+                      bg="brand.100"
+                      marginBottom={1}
+                      _hover={{
+                        bg: "brand.100"
+                      }}
                     >
                       Use ID instead
                     </Button>
@@ -109,13 +111,15 @@ const ProjectForm = (props: ProjectFormProps) => {
 
               {showUniProtInput && (
                 <FormControl>
-                  <Flex justifyContent="space-between">
+                  <Flex justifyContent="space-between" alignItems="center">
                     <FormLabel>UniProt ID (Optional)</FormLabel>
                     <Button
                       onClick={toggleShowUniProtInput}
-                      variant="unstyled"
-                      bg="none"
-                      borderRadius="0"
+                      bg="brand.100"
+                      marginBottom={1}
+                      _hover={{
+                        bg: "brand.100"
+                      }}
                     >
                       Use raw sequence instead
                     </Button>

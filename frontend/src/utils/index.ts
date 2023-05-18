@@ -2,7 +2,7 @@ class Utils {
   static navigate(path: string) { }
 
   static getErrorMessage(error: any) {
-    return error.data.message || error.response.data.message || error.message;
+    return error.data.message || error.response?.data?.message || error.message;
   }
 }
 

@@ -6,7 +6,7 @@ export const createProjectSchema = Joi.object({
   measuredProperty: Joi.string().valid("Activity", "Solubility", "Thermostability").required(),
   uniprotId: Joi.string().max(6).optional(),
   proteinPDBID: Joi.string().max(4).optional(),
-  proteinAminoAcidSequence: Joi.string().max(5).optional()
+  proteinAminoAcidSequence: Joi.string().optional()
 })
 
 export const paginationParams = Joi.object({
