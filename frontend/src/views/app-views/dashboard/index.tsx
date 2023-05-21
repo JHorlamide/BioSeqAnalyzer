@@ -1,18 +1,20 @@
 import { Fragment, useState } from "react";
-import { Box, Flex, Text, VStack } from "@chakra-ui/react";
+import { Box, Flex, Text, VStack, Grid, useMediaQuery } from "@chakra-ui/react";
 import EmptyProject from "../../../components/EmptyProject/EmptyProject";
 import Button from "../../../components/CustomBtn/Button";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
 import useNavigation from "../../../hooks/useNavigation";
 import ProjectsContainer from "./components/ProjectsContainer";
-import AppLoader from "../../../components/Loading/AppLoader";
 import { useGetProjectsQuery } from "../../../services/project/projectApi";
 import Pagination from "../../../components/Pagination/Pagination";
+import ProjectCardSkeleton from "./components/ProjectCardSkeleton";
 
 const Dashboard = () => {
+  const isLargeScreen = useMediaQuery("(min-width: 1440px)");
   const { handleNavigate } = useNavigation();
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 9;
+  const skeletons = [1, 2, 3, 4, 5, 6];
 
   const { data: projects, isLoading, refetch } = useGetProjectsQuery({
     page: currentPage,
@@ -26,7 +28,15 @@ const Dashboard = () => {
   };
 
   if (isLoading) {
-    return <AppLoader />;
+    return <Grid gap={4}
+      templateColumns={{
+        base: "repeat(1, 1fr)",
+        md: "repeat(2, 1fr)",
+        lg: isLargeScreen ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
+      }}>
+
+      {isLoading && skeletons.map((skeleton) => <ProjectCardSkeleton key={skeleton} />)}
+    </Grid>;
   }
 
   return (
@@ -47,7 +57,7 @@ const Dashboard = () => {
       <Box marginY={10} width="full" height="full">
         {projects && projects.data.projects.length > 0 ? (
           <Fragment>
-            <ProjectsContainer projects={projects.data.projects} />
+            <ProjectsContainer projects={projects.data.projects} isLoading={isLoading}/>
 
             <Pagination
               currentPage={currentPage}

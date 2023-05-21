@@ -1,9 +1,9 @@
 import React from 'react'
 
-const index = () => {
+const ProjectMembers = () => {
   return (
     <div>Project Member Feature Coming Soon!</div>
   )
 }
 
-export default index
+export default ProjectMembers

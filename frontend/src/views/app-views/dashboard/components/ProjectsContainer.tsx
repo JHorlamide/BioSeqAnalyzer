@@ -1,14 +1,18 @@
 import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 import { Projects } from "../../../../services/project/type";
 import ProjectCard from "./ProjectCard";
+import ProjectCardSkeleton from "./ProjectCardSkeleton";
 
 interface Props {
   projects: Projects[];
+  isLoading: boolean;
 }
 
-const ProjectsContainer = ({ projects }: Props) => {
+const ProjectsContainer = ({ projects, isLoading }: Props) => {
   const isLargeScreen = useMediaQuery("(min-width: 1440px)");
 
+  console.log({ isLoading });
+  
   return (
     <Grid
       gap={4}

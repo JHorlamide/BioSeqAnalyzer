@@ -37,10 +37,10 @@ const ConfirmationModal = (props: Props) => {
             </Button>
 
             <Button
-              ml={5}
+              ml={3}
               bg='red'
               _hover={{ bg: "red" }}
-              onClick={handleConfirm}>Delete Project</Button>
+              onClick={handleConfirm}>Delete</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

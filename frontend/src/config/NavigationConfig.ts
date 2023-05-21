@@ -1,19 +1,27 @@
 import { FaProjectDiagram, FaUsers } from "react-icons/fa";
 import { APP_PREFIX_PATH } from "./AppConfig";
+import { IconType } from 'react-icons';
 
-const navigationConfig = [
+interface NavConfigProps {
+  key: string;
+  title: string;
+  path: string;
+  Icon: IconType;
+}
+
+const navigationConfig: NavConfigProps[] = [
   {
     key: 'dashboard',
     path: `${APP_PREFIX_PATH}/dashboard`,
     title: 'Dashboard',
-    icon: FaProjectDiagram,
+    Icon: FaProjectDiagram,
   },
 
   {
     key: 'dashboards-members',
     path: `${APP_PREFIX_PATH}/project-members`,
     title: 'Project Members',
-    icon: FaUsers,
+    Icon: FaUsers,
   },
 ]
 

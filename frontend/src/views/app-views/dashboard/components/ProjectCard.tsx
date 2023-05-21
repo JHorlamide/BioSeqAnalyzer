@@ -3,26 +3,18 @@ import {
   Card,
   CardBody,
   CardHeader,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Stack,
   Text,
   useDisclosure
 } from "@chakra-ui/react";
+import { Fragment } from "react";
 import { BsFolderFill } from "react-icons/bs";
-import { SlOptions } from "react-icons/sl";
-import { BiEditAlt } from "react-icons/bi";
 import moment from 'moment';
-import { MdOutlineDeleteOutline } from "react-icons/md";
-import useNavigation from "../../../../hooks/useNavigation";
-import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useDeleteProjectMutation } from "../../../../services/project/projectApi";
 import { toast } from "react-hot-toast";
 import utils from "../../../../utils";
 import ConfirmationModal from "./ConfirmationModal";
-import { Fragment } from "react";
+import CardMenu from "./CardMenu";
 
 interface ProjectCardProps {
   projectTitle: string;
@@ -32,15 +24,9 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = (props: ProjectCardProps) => {
-  const { projectTitle, projectId, projectName, updatedAt  } = props;
-
-  const { handleNavigate } = useNavigation();
+  const { projectTitle, projectId, projectName, updatedAt } = props;
   const [deleteProject] = useDeleteProjectMutation();
   const { isOpen, onOpen, onClose } = useDisclosure()
-
-  const navigateToEditProjectPage = () => {
-    handleNavigate(`${APP_PREFIX_PATH}/project/update/${projectId}`);
-  }
 
   async function handleDelete() {
     try {
@@ -87,31 +73,8 @@ const ProjectCard = (props: ProjectCardProps) => {
           <Box>
             <BsFolderFill size={20} />
           </Box>
-
-          <Menu>
-            <MenuButton
-              bg="white"
-              rounded="full"
-              padding={1}
-              _hover={{
-                cursor: "pointer",
-              }}
-            >
-              <SlOptions size={20} color="black" />
-            </MenuButton>
-
-            <MenuList>
-              <MenuItem display="flex" onClick={navigateToEditProjectPage}>
-                <BiEditAlt size={20} />
-                <Text marginLeft={3}>Edit details</Text>
-              </MenuItem>
-
-              <MenuItem display="flex" onClick={onOpen}>
-                <MdOutlineDeleteOutline size={20} />
-                <Text marginLeft={3}>Delete project</Text>
-              </MenuItem>
-            </MenuList>
-          </Menu>
+          
+          <CardMenu projectId={projectId} onOpen={onOpen} />
         </CardHeader>
 
         <CardBody marginTop={-6}>

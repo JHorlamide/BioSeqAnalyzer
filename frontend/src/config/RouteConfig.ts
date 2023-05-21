@@ -50,6 +50,6 @@ export const protectedRoute: IRoute[] = [
   {
     key: "project-members",
     path: `${APP_PREFIX_PATH}/project-members`,
-    component: React.lazy(() => import("../views/app-views/project-members"))
+    component: React.lazy(() => import("../views/app-views/project-members/ProjectMembers"))
   },
 ]

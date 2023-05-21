@@ -1,4 +1,4 @@
-import { HStack, VStack, Box, Center, Text, Tooltip } from "@chakra-ui/react";
+import { HStack, VStack, Center, Text } from "@chakra-ui/react";
 import { IoIosLogOut } from "react-icons/io";
 import navigationConfig from "../../config/NavigationConfig";
 import { Link, useLocation } from "react-router-dom";
@@ -34,15 +34,15 @@ export const Navigation = () => {
           </Text>
         </Center>
 
-        {navigationConfig.map((navItem) => (
+        {navigationConfig.map(({key, path, title, Icon}) => (
           <HStack
-            key={navItem.key}
+            key={key}
             width="full"
             alignSelf="start"
-            {...selectedNavItemStyle(navItem.path)}
+            {...selectedNavItemStyle(path)}
           >
-            <navItem.icon />
-            <Link to={navItem.path}>{navItem.title}</Link>
+            <Icon />
+            <Link to={path}>{title}</Link>
           </HStack>
         ))}
       </VStack>
