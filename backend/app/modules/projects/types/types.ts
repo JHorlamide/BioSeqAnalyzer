@@ -44,3 +44,9 @@ export interface S3UploadRes {
 export interface ProjectModel extends IProject {
   projectFile: S3UploadRes;
 }
+
+export interface CSVColumnDataType {
+  sequence: string;
+  fitness: number;
+  muts: string;
+}

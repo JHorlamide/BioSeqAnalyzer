@@ -84,6 +84,18 @@ export class ProjectRoute extends CommonRoutesConfig {
       projectMiddleware.validateUploadReq,
       projectController.uploadProjectCSV
     ])
+    
+    /***
+    * @route GET: /api/projects/:projectId/csv-upload
+    * @desc Get data from the uploaded CSV
+    * @access Private
+    * ***/
+    this.app.get(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload`, [
+      jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectExist,
+      projectMiddleware.validateProjectBelongsToUser,
+      projectController.processCVSFile
+    ])
 
     /***
     * @route GET: /api/uniprot/:uniprotId

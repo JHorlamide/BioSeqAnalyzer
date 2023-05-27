@@ -4,8 +4,10 @@ import projectService from "../services/projectService";
 import responseHandler from "../../../common/responseHandler";
 import { RES_MSG, ERR_MSG } from "../types/constants";
 import uniprotService from "../services/uniprot.service";
-import { s3Service } from "../../s3Service/s3Service";
-import { S3UploadRes } from "../types/types";
+import csvParser from "csv-parser";
+import config from "../../../config/appConfig";
+import s3Service from "../../s3Service/s3Service";
+import { CSVColumnDataType } from "../types/types";
 
 class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
@@ -62,69 +64,69 @@ class ProjectController {
     const { projectId } = req.params;
 
     if (!file) {
-      console.log("uploadProjectCSV -> controller");
       return responseHandler.badRequest(ERR_MSG.NO_FILE_UPLOAD, res);
     }
 
-    try {
-      const response = await s3Service(file)
-      const uploadRes = {
-        fileName: file.originalname,
-        Bucket: response.Bucket,
-        Key: response.Key,
-      }
+    const response = await s3Service.uploadFile(file)
+    const uploadRes = {
+      fileName: file.originalname,
+      Bucket: response.Bucket,
+      Key: response.Key,
+    }
 
-      // Update the project with the new projectFile data
-      const uploadResult = await projectService.uploadProjectFile(projectId, uploadRes);
-      return responseHandler.successResponse(RES_MSG.FILE_UPLOADED, uploadResult, res);
+    // Update the project with the new projectFile data
+    const uploadResult = await projectService.uploadProjectFile(projectId, uploadRes);
+    return responseHandler.successResponse(RES_MSG.FILE_UPLOADED, uploadResult, res);
+  })
+
+  public processCVSFile = asyncHandler(async (req: Request, res: Response) => {
+    const { projectId } = req.params;
+
+    const project = await projectService.getProjectById(projectId);
+    const { projectFile } = project;
+
+    const s3ReadStream = s3Service.getFile(projectFile.Key);
+    const csvData = await projectService.parseS3ReadStream(s3ReadStream);
+
+    try {
+      const totalSequence = projectService.getTotalNumberOfSequence(csvData);
+      // 1. Distribution of fitness scores as a histogram
+      // The reference sequence should be highlighted in the histogram
+      const histogramWithReference = projectService.getHistogramData(csvData);
+
+      // 2. List of the 10 mutants with the highest fitness values
+      const topMutants = projectService.getTopMutants(csvData);
+
+      // 3. Distribution of the number of mutations per sequence
+      const mutationDistribution = projectService.getMutationDistribution(csvData);
+
+      // 4. For each individual mutation, the range of scores for sequences that include this mutation
+      const mutationRanges = projectService.getMutationRange(csvData);
+
+      // 5. Number of sequences with a score above the reference sequence (with value "WT" in "muts" column)
+      const numSequencesAboveReference = projectService.getSequencesAboveReference(csvData);
+
+      // 6. Value of the sequence with the highest fitness value
+      const highestFitness = projectService.getHighestFitness(csvData);
+
+      // 7. Fold Improvement over wild type
+      const foldImprovement = projectService.getFoldImprovement(csvData);
+
+      responseHandler.successResponse("Data fetched for rendering", {
+        histogramData: histogramWithReference,
+        totalSequence,
+        topMutants,
+        mutationDistribution,
+        mutationRanges,
+        numSequencesAboveReference,
+        percentageSequencesAboveReference: numSequencesAboveReference.hitRate,
+        highestFitness,
+        foldImprovement,
+      }, res);
     } catch (error: any) {
-      console.error(error.message);
-      return responseHandler.badRequest(`${ERR_MSG.ERR_PROCESSING_CSV}: ${error.message}`, res);
+      return responseHandler.serverError(error.message, res);
     }
   })
 }
 
 export default new ProjectController();
-
-/** Initial File Upload Method Handler **/
-// public uploadProjectCSV = asyncHandler(async (req: Request, res: Response) => {
-//   const file = req.file;
-//   const { projectId } = req.params;
-
-//   if (!file) {
-//     return responseHandler.failureResponse(ERR_MSG.NO_FILE_UPLOAD, res);
-//   }
-
-//   try {
-//     // Read and parse the CSV file
-//     const csvData = await projectService.parseCSVFile(file.buffer);
-
-//     // Validate the CSV structure
-//     if (!projectService.validateCSVStructure(csvData)) {
-//       return responseHandler.failureResponse(ERR_MSG.INVALID_CSV_STRUCTURE, res);
-//     }
-
-//     // Check for wild type sequence
-//     if (!projectService.hasWildTypeSequence(csvData)) {
-//       return responseHandler.failureResponse(ERR_MSG.MUT_NOT_FOUND, res);
-//     }
-
-//     // Update the project with the new projectFile data
-//     const uploadResult = await projectService.uploadProjectFile(projectId, csvData);
-//     return responseHandler.successResponse(RES_MSG.FILE_UPLOADED, uploadResult, res);
-//   } catch (error: any) {
-//     console.error(error.message);
-//     return responseHandler.failureResponse(`${ERR_MSG.ERR_PROCESSING_CSV}: ${error.message}`, res);
-//   }
-// })
-
-/** CSV Structure validation **/
-// Validate the CSV structure
-//  if (!projectService.validateCSVStructure(csvData)) {
-//   return responseHandler.failureResponse(ERR_MSG.INVALID_CSV_STRUCTURE, res);
-// }
-
-// Check for wild type sequence
-// if (!projectService.hasWildTypeSequence(csvData)) {
-//   return responseHandler.failureResponse(ERR_MSG.MUT_NOT_FOUND, res);
-// }

@@ -63,7 +63,7 @@ class ProjectMiddleware {
 
       next();
     } catch (error: any) {
-      return responseHandler.serverError(error.message, res);
+      return responseHandler.badRequest(error.message, res);
     }
   }
 
@@ -87,7 +87,6 @@ class ProjectMiddleware {
     const file = req.file;
 
     if (!file) {
-      console.log("validateUploadedCSV -> Middleware")
       return responseHandler.badRequest(ERR_MSG.NO_FILE_VALIDATION, res);
     }
 

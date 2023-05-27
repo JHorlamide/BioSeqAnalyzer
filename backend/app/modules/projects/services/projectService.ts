@@ -1,15 +1,14 @@
 import mongoose from "mongoose";
-import { Readable } from "stream";
+import internal, { Readable } from "stream";
 import csvParser from "csv-parser";
 import config from "../../../config/appConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
-import { IUpdateProject, IProject, IGetProjects, S3UploadRes } from "../types/types";
+import { IUpdateProject, IProject, IGetProjects, S3UploadRes, CSVColumnDataType } from "../types/types";
 import { ERR_MSG } from "../types/constants";
 import { ClientError } from "../../../common/exceptions/clientError";
 import { NotFoundError } from "../../../common/exceptions/notFoundError";
 import { ServerError } from "../../../common/exceptions/serverError";
-import { ManagedUpload } from "aws-sdk/clients/s3";
 
 class ProjectService {
   /**
@@ -143,7 +142,7 @@ class ProjectService {
 
   public async parseCSVFile(fileBuffer: Buffer): Promise<any[]> {
     try {
-      const csvData: any[] = await new Promise((resolve, reject) => {
+      const csvData: CSVColumnDataType[] = await new Promise((resolve, reject) => {
         const readableStream = Readable.from(fileBuffer.toString());
         const results: any[] = [];
         readableStream
@@ -161,11 +160,34 @@ class ProjectService {
 
       return csvData;
     } catch (error: any) {
-      throw new ServerError(`Failed to parse CSV file: ${error.message}`);
+      throw new ServerError(`${ERR_MSG.PARSE_CSV_FAILED}: ${error.message}`);
     }
   }
 
-  public validateCSVStructure(csvData: any[]): boolean {
+  public async parseS3ReadStream(s3ReadStream: internal.Readable) {
+    try {
+      const csvData: CSVColumnDataType[] = await new Promise((resolve, reject) => {
+        const results: CSVColumnDataType[] = [];
+        s3ReadStream
+          .pipe(csvParser())
+          .on("data", (data: any) => {
+            results.push(data);
+          })
+          .on("end", () => {
+            resolve(results);
+          })
+          .on("error", (error: Error) => {
+            reject(error);
+          });
+      });
+
+      return csvData;
+    } catch (error: any) {
+      throw new ServerError(`${ERR_MSG.PARSE_CSV_FAILED}: ${error.message}`);
+    }
+  }
+
+  public validateCSVStructure(csvData: CSVColumnDataType[]): boolean {
     const expectedColumns = ['sequence', 'fitness', 'muts'];
     const hasExpectedColumns = csvData.length > 0 && expectedColumns.every((column) => csvData[0].hasOwnProperty(column));
     const hasExpectedWildTypeSequence = csvData.some((row) => row.muts === 'WT');
@@ -188,6 +210,180 @@ class ProjectService {
     } catch (error: any) {
       throw new ServerError(error.message);
     }
+  }
+
+  // Get total number of sequence
+  public getTotalNumberOfSequence(csvData: CSVColumnDataType[]) {
+    return csvData.length;
+  }
+
+  // Get Histogram Data
+  public getHistogramData(csvData: CSVColumnDataType[]) {
+    // Calculate the histogram data
+    const histogramData: { label: string, count: number }[] = [];
+    const countByLabel: { [key: string]: number } = {};
+
+    csvData.forEach((row) => {
+      const label = row.muts;
+      countByLabel[label] = (countByLabel[label] || 0) + 1;
+    });
+
+    for (const label in countByLabel) {
+      histogramData.push({ label, count: countByLabel[label] });
+    }
+
+    // 1. Distribution of fitness scores as a histogram
+    // The reference sequence should be highlighted in the histogram
+    const fitnessScores: number[] = csvData.map((row) => row.fitness);
+    const referenceSequence = 'WT'; // Assuming the reference sequence is denoted as 'WT'
+    const histogramWithReference = histogramData.map((item) => ({
+      label: item.label,
+      count: item.label === referenceSequence ? item.count : 0, // Highlight the reference sequence in the histogram
+    }));
+
+    return histogramWithReference
+  }
+
+  // Get top 10 mutation
+  public getTopMutants(csvData: CSVColumnDataType[]) {
+    const topMutants = csvData
+      .sort((a, b) => b.fitness - a.fitness)
+      .slice(0, 10);
+
+    return topMutants;
+  }
+
+  // Get mutation distribution
+  public getMutationDistribution(csvData: CSVColumnDataType[]) {
+    // First implementation -> Count the number of mutations per sequence and create a distribution object
+    // const mutationDistribution: { [numMutations: number]: number } = {};
+    // for (const entry of csvData) {
+    //   const numMutations = entry.muts.split(',').length;
+    //   if (mutationDistribution[numMutations]) {
+    //     mutationDistribution[numMutations]++;
+    //   } else {
+    //     mutationDistribution[numMutations] = 1;
+    //   }
+    // }
+
+    const mutationCounts: number[] = csvData.map((row) => row.muts.split(',').length);
+    const mutationDistribution: { mutationCount: number; count: number }[] = [];
+    const countByMutationCount: { [key: number]: number } = {};
+
+    mutationCounts.forEach((count) => {
+      countByMutationCount[count] = (countByMutationCount[count] || 0) + 1;
+    });
+
+    for (const count in countByMutationCount) {
+      mutationDistribution.push({ mutationCount: parseInt(count), count: countByMutationCount[count] });
+    }
+
+    return mutationDistribution;
+  }
+
+  // Get mutation range
+  public getMutationRange(csvData: CSVColumnDataType[]) {
+    const mutations = csvData.flatMap((row) => row.muts.split(','));
+    const mutationRanges: { mutation: string; scoreRange: { min: number; max: number } }[] = [];
+    const scoresByMutation: { [key: string]: number[] } = {};
+
+    mutations.forEach((mutation, index) => {
+      const fitnessScore = csvData[index].fitness;
+
+      if (!scoresByMutation[mutation]) {
+        scoresByMutation[mutation] = [];
+      }
+      scoresByMutation[mutation].push(fitnessScore);
+    });
+
+    for (const mutation in scoresByMutation) {
+      const scores = scoresByMutation[mutation];
+
+      mutationRanges.push({
+        mutation,
+        scoreRange: {
+          min: Math.min(...scores),
+          max: Math.max(...scores),
+        },
+      });
+    }
+
+    return mutationRanges;
+  }
+
+  // Get highest fitness
+  public getHighestFitness(csvData: CSVColumnDataType[]) {
+    // Find the sequence with the highest fitness value
+    const highestFitnessEntry = csvData.reduce((prev, curr) => {
+      return curr.fitness > prev.fitness ? curr : prev;
+    });
+
+    const highestFitnessSequence = highestFitnessEntry.sequence;
+    const highestFitnessValue = highestFitnessEntry.fitness;
+
+    const result = {
+      sequence: highestFitnessSequence,
+      fitness: highestFitnessValue,
+    };
+
+    return result
+  }
+
+  // Get fold improvement
+  public getFoldImprovement = (csvData: CSVColumnDataType[]) => {
+    const wildTypeFitness = this.getWildTypeFitness(csvData);
+    const bestFitnessEntry = this.getBestFitnessEntry(csvData);
+
+    const bestFitness = bestFitnessEntry.fitness;
+    const foldImprovement = bestFitness / wildTypeFitness;
+
+    const result = {
+      foldImprovement,
+    };
+
+    return result;
+  }
+
+  // Get sequence above reference
+  public getSequencesAboveReference = (csvData: CSVColumnDataType[]) => {
+    // Filter the csvData to get sequences with mutations and scores above the reference sequence (wild type)
+    const sequencesAboveReference = csvData.filter((entry) => {
+      return entry.muts.includes('WT') && entry.fitness > this.getReferenceFitness(csvData);
+    });
+
+    const totalSequences = csvData.length;
+    const sequencesAboveReferenceCount = sequencesAboveReference.length;
+    const hitRate = (sequencesAboveReferenceCount / totalSequences) * 100;
+
+    const result = {
+      totalSequences,
+      sequencesAboveReferenceCount,
+      hitRate,
+    };
+
+    return result;
+  }
+
+  // Helper function to get the fitness score of the reference sequence (wild type)
+  private getReferenceFitness(csvData: CSVColumnDataType[]) {
+    for (const entry of csvData) {
+      if (entry.muts.includes('WT')) {
+        return entry.fitness;
+      }
+    }
+
+    return 0; // Default value if reference sequence is not found
+  }
+
+  // Helper function to get the fitness score of the wild type sequence
+  private getWildTypeFitness(csvData: CSVColumnDataType[]) {
+    const wildTypeEntry = csvData.find((entry) => entry.muts.includes('WT'));
+    return wildTypeEntry ? wildTypeEntry.fitness : 0;
+  }
+
+  // Helper function to get the entry with the best fitness score
+  public getBestFitnessEntry(csvData: CSVColumnDataType[]) {
+    return csvData.reduce((prev, curr) => (curr.fitness > prev.fitness ? curr : prev));
   }
 
   private async createProjectIfUniprotIdExist(projectData: IProject) {
