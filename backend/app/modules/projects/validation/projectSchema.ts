@@ -1,4 +1,5 @@
 import Joi from "joi"
+import config from "../../../config/appConfig"
 
 export const createProjectSchema = Joi.object({
   projectTitle: Joi.string().min(5).required(),
@@ -16,5 +17,8 @@ export const paginationParams = Joi.object({
 })
 
 export const projectUploadSchema = Joi.object({
-  projectId: Joi.string().length(24).required()
+  file: Joi.object({
+    mimetype: Joi.string().valid('text/csv').required(),
+    size: Joi.number().max(config.MaxFileSize).required(),
+  }).unknown(true).required()
 })

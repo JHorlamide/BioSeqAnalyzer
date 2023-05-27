@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Flex,
   HStack,
@@ -13,6 +13,8 @@ import { logoutUser } from "../../store/slices/authSlice";
 import MobileNav from "../MobileNav/MobileNav";
 import { CgMenuGridO } from "react-icons/cg";
 import ProfileMenu from "./components/ProfileMenu";
+import { useLocation } from "react-router-dom";
+import { APP_PREFIX_PATH } from "../../config/AppConfig";
 
 interface MenuIconProps {
   onOpen: () => void;
@@ -28,8 +30,14 @@ const MenuIcon = ({ onOpen }: MenuIconProps) => {
 
 const HeaderNav = () => {
   const dispatch = useAppDispatch();
+  const location = useLocation();
+  const [isDashboardPage, setIsDashboardPage] = useState(false);
   const { email, fullName } = useAppSelector((state) => state.auth.user);
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  useEffect(() => {
+    setIsDashboardPage(location.pathname === `${APP_PREFIX_PATH}/dashboard`);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     dispatch(logoutUser());
@@ -40,21 +48,20 @@ const HeaderNav = () => {
       <MobileNav isOpen={isOpen} onClose={onClose} />
 
       <Flex
-        justifyContent="space-between"
+        justifyContent={isDashboardPage ? "space-between" : "flex-end"}
         alignItems="center"
         width="full"
         mb={6}
       >
         {/* Menu Icon */}
         <MenuIcon onOpen={onOpen} />
-
         {/* Search Input */}
-        <SearchInput />
+        {isDashboardPage && <SearchInput />}
 
         <HStack spacing={3} alignItems="center" marginLeft={{ base: 1, sm: 1 }}>
           <Show breakpoint="(min-width: 844px)">
             <HStack spacing={1} alignItems="center">
-              <CiUser color="brand.50" />
+              <CiUser color="brand_blue.50" />
               <Text>{email}</Text>
             </HStack>
           </Show>

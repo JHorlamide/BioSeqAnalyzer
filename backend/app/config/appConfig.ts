@@ -7,20 +7,27 @@ const config = {
     secret: process.env.JWT_SECRETE as string,
     audience: process.env.JWT_AUDIENCE,
     issuer: process.env.JWT_ISSUER,
-    token_expiration: process.env.TOKEN_EXPIRATION as string
+    tokenExpiration: process.env.TOKEN_EXPIRATION as string
   },
 
   treble: {
-    api_key: process.env.TREBLLE_API_KEY,
-    project_id: process.env.TREBLLE_PROJECT_ID
+    apiKey: process.env.TREBLLE_API_KEY,
+    projectId: process.env.TREBLLE_PROJECT_ID
+  },
+
+  aws: {
+    secrete: process.env.AWS_SECRET,
+    accessKey: process.env.AWS_ACCESS_KEY_ID,
+    bucketName: process.env.AWS_BUCKET_NAME as string,
   },
 
   port: process.env.PORT,
   prefix: "/api",
   node_env: process.env.NODE_ENV,
-  database_url: process.env.DATABASE_URL as string,
-  uniprot_base_url: process.env.UNIPROT_BASE_URL,
-  pdb_base_url: process.env.PDB_BASE_URL,
+  databaseUrl: process.env.DATABASE_URL as string,
+  uniprotBaseUrl: process.env.UNIPROT_BASE_URL,
+  pdbBaseUrl: process.env.PDB_BASE_URL,
+  MaxFileSize: 5 * 1024 * 1024, // Maximum file size of 5MB
 }
 
 export default config;

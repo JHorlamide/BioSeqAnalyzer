@@ -4,11 +4,12 @@ import csvParser from "csv-parser";
 import config from "../../../config/appConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
-import { IUpdateProject, IProject, IGetProjects, ProjectFields } from "../types/types";
+import { IUpdateProject, IProject, IGetProjects, S3UploadRes } from "../types/types";
 import { ERR_MSG } from "../types/constants";
 import { ClientError } from "../../../common/exceptions/clientError";
 import { NotFoundError } from "../../../common/exceptions/notFoundError";
 import { ServerError } from "../../../common/exceptions/serverError";
+import { ManagedUpload } from "aws-sdk/clients/s3";
 
 class ProjectService {
   /**
@@ -141,48 +142,52 @@ class ProjectService {
   }
 
   public async parseCSVFile(fileBuffer: Buffer): Promise<any[]> {
-    const csvData: any[] = await new Promise((resolve, reject) => {
-      const readableStream = Readable.from(fileBuffer.toString());
-      const results: any[] = [];
-      readableStream
-        .pipe(csvParser())
-        .on("data", (data: any) => {
-          results.push(data);
-        })
-        .on("end", () => {
-          resolve(results);
-        })
-        .on("error", (error: Error) => {
-          reject(error);
-        });
-    });
+    try {
+      const csvData: any[] = await new Promise((resolve, reject) => {
+        const readableStream = Readable.from(fileBuffer.toString());
+        const results: any[] = [];
+        readableStream
+          .pipe(csvParser())
+          .on("data", (data: any) => {
+            results.push(data);
+          })
+          .on("end", () => {
+            resolve(results);
+          })
+          .on("error", (error: Error) => {
+            reject(error);
+          });
+      });
 
-    return csvData;
+      return csvData;
+    } catch (error: any) {
+      throw new ServerError(`Failed to parse CSV file: ${error.message}`);
+    }
   }
 
   public validateCSVStructure(csvData: any[]): boolean {
     const expectedColumns = ['sequence', 'fitness', 'muts'];
-    return csvData.length > 0 && expectedColumns.every((column) => csvData[0].hasOwnProperty(column));;
+    const hasExpectedColumns = csvData.length > 0 && expectedColumns.every((column) => csvData[0].hasOwnProperty(column));
+    const hasExpectedWildTypeSequence = csvData.some((row) => row.muts === 'WT');
+
+    return hasExpectedColumns && hasExpectedWildTypeSequence;
   }
 
-  public hasWildTypeSequence(csvData: any[]): boolean {
-    return csvData.some((row) => row.muts === 'WT');
-  }
+  public async uploadProjectFile(projectId: string, uploadRes: S3UploadRes) {
+    const { fileName, Bucket, Key } = uploadRes;
 
-  public async uploadProjectFile(projectId: string, data: any) {
-    const project = await projectRepository.getProjectById(projectId);
+    try {
+      const project = await projectRepository.getProjectById(projectId);
 
-    if (!project) {
-      throw new ClientError(ERR_MSG.PROJECT_NOT_FOUND);
+      if (!project) {
+        throw new ClientError(ERR_MSG.PROJECT_NOT_FOUND);
+      }
+
+      project.projectFile = { fileName, Bucket, Key };
+      return await project.save();
+    } catch (error: any) {
+      throw new ServerError(error.message);
     }
-
-    project.projectFile = data.map((row: ProjectFields) => ({
-      sequence: row.sequence,
-      fitness: parseFloat(row.fitness),
-      muts: row.muts,
-    }));
-
-    return await project.save();
   }
 
   private async createProjectIfUniprotIdExist(projectData: IProject) {
@@ -203,10 +208,10 @@ class ProjectService {
       If proteinPDBID is provided, add the PDB URL
       to the project data and create the project
     */
-    const PDBID = `${config.pdb_base_url}/${projectData.proteinPDBID}`;
+    const { proteinPDBID } = projectData;
+    const pdbFileUrl = `${config.pdbBaseUrl}/${proteinPDBID}`;
 
-    const projectWithPDBID = { ...projectData, proteinPDBID: PDBID };
-
+    const projectWithPDBID = { ...projectData, proteinPDBID, pdbFileUrl };
     return await this.createProteinProject(projectWithPDBID);
   }
 
@@ -229,3 +234,7 @@ class ProjectService {
 }
 
 export default new ProjectService();
+
+// public hasWildTypeSequence(csvData: any[]): boolean {
+//   return csvData.some((row) => row.muts === 'WT');
+// }

@@ -1,5 +1,5 @@
 import { Fragment, useState } from "react";
-import { Box, Flex, Text, VStack, Grid, useMediaQuery } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import EmptyProject from "../../../components/EmptyProject/EmptyProject";
 import Button from "../../../components/CustomBtn/Button";
 import { APP_PREFIX_PATH } from "../../../config/AppConfig";
@@ -7,19 +7,18 @@ import useNavigation from "../../../hooks/useNavigation";
 import ProjectsContainer from "./components/ProjectsContainer";
 import { useGetProjectsQuery } from "../../../services/project/projectApi";
 import Pagination from "../../../components/Pagination/Pagination";
-import ProjectCardSkeleton from "./components/ProjectCardSkeleton";
+import { useAppSelector } from "../../../store/store";
 
 const Dashboard = () => {
-  const isLargeScreen = useMediaQuery("(min-width: 1440px)");
+  const searchTerm = useAppSelector((state) => state.search);
   const { handleNavigate } = useNavigation();
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 9;
-  const skeletons = [1, 2, 3, 4, 5, 6];
 
   const { data: projects, isLoading, refetch } = useGetProjectsQuery({
     page: currentPage,
     limit: totalPages,
-    search: ""
+    search: searchTerm
   });
 
   const handlePageChange = (page: number) => {
@@ -27,16 +26,8 @@ const Dashboard = () => {
     refetch();
   };
 
-  if (isLoading) {
-    return <Grid gap={4}
-      templateColumns={{
-        base: "repeat(1, 1fr)",
-        md: "repeat(2, 1fr)",
-        lg: isLargeScreen ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
-      }}>
-
-      {isLoading && skeletons.map((skeleton) => <ProjectCardSkeleton key={skeleton} />)}
-    </Grid>;
+  const createProjectPage = () => {
+    handleNavigate(`${APP_PREFIX_PATH}/create-project`);
   }
 
   return (
@@ -48,7 +39,8 @@ const Dashboard = () => {
 
         {/* Only show when there is more than one project created */}
         <Button
-          onClick={() => handleNavigate(`${APP_PREFIX_PATH}/create-project`)}
+          bg="brand_blue.100"
+          onClick={createProjectPage}
         >
           Create new project
         </Button>
@@ -57,7 +49,10 @@ const Dashboard = () => {
       <Box marginY={10} width="full" height="full">
         {projects && projects.data.projects.length > 0 ? (
           <Fragment>
-            <ProjectsContainer projects={projects.data.projects} isLoading={isLoading}/>
+            <ProjectsContainer
+              projects={projects.data.projects}
+              isLoading={isLoading}
+            />
 
             <Pagination
               currentPage={currentPage}
@@ -74,12 +69,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-{
-  /* <Fragment key={project._id}>
-  <ProjectCard
-    projectTitle={project.projectTitle}
-    updatedAt={project.updateAt}
-  />
-</Fragment>; */
-}

@@ -9,15 +9,17 @@ const UNAUTHORIZED_STATUS = {
   NOT_AUTHORIZED: 401
 }
 
-export const unAuthenticatedMiddleware: Middleware = ({dispatch}) => (next) => (action) => {
+export const unAuthenticatedMiddleware: Middleware = ({ dispatch }) => (next) => (action) => {
   if (isRejectedWithValue(action) && action.payload.status === UNAUTHORIZED_STATUS.NOT_AUTHORIZED) {
     toast.error(action.payload.data.message);
     dispatch(resetStateAction());
   }
 
   if (isRejectedWithValue(action) && action.payload.status === UNAUTHORIZED_STATUS.FORBIDDEN) {
-    toast.error(SESSION_EXPIRE_ERROR);
-    dispatch(resetStateAction());
+    setTimeout(() => {
+      toast.error(SESSION_EXPIRE_ERROR);
+      dispatch(resetStateAction());
+    }, 3000);
   }
 
   if (isRejectedWithValue(action) && action.payload.status === SERVER_ERROR) {

@@ -41,7 +41,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
       >
         <Button
           onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
+          isDisabled={currentPage === 1}
           mr={2}
           marginBottom={{ base: 5, md: 0 }}
         >
@@ -52,7 +52,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
           {pages.map((page) => (
             <Button
               key={page}
-              bg={page === currentPage ? "gray.700" : "gray.500"}
+              bg={page === currentPage ? "brand_blue.300" : "blue.100"}
               onClick={() => handlePageChange(page)}
               variant={page === currentPage ? "solid" : "outline"}
               mr={{ base: 1, md: 2 }}

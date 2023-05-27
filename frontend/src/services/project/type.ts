@@ -1,6 +1,21 @@
 import { IBaseResponse } from "../../schemas";
 import { IProject, ProjectFormData } from "../../schemas/project.schema";
 
+export interface ProjectFields {
+  sequence: string;
+  fitness: string;
+  muts: string;
+}
+
+export interface Projects extends IProject {
+  _id: string;
+  user: string;
+  projectFile: ProjectFields[]
+  pdbFileUrl: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface ICreateProjectRes extends IBaseResponse {
   data: IProject;
 }
@@ -11,13 +26,6 @@ export interface IGetProteinSequenceRes extends IBaseResponse {
 
 export interface IGetProteinSequenceReq {
   uniprotId: string | undefined;
-}
-
-export interface Projects extends IProject {
-  _id: string;
-  user: string;
-  createdAt: string;
-  updatedAt: string;
 }
 
 export interface IGetProjectsRes extends IBaseResponse {
@@ -51,8 +59,17 @@ export interface IUpdateProjectRes extends IBaseResponse {
   data: IProject;
 }
 
+export interface IUploadProjectFileReq {
+  data: FormData;
+  projectId: string;
+}
+
+export interface IUploadProjectRes extends IBaseResponse {
+  data: Projects
+}
+
 export interface IDeleteProject {
   projectId: string;
 }
 
-export interface IDeleteProjectRes extends IBaseResponse {};
+export interface IDeleteProjectRes extends IBaseResponse { };

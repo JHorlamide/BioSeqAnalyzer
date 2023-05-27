@@ -8,7 +8,7 @@ const SideNav = () => {
         alignSelf="center"
         height="90%"
         width="20%"
-        bg="brand.100"
+        bg="brand_blue.300"
         borderRadius={12}
         overflow="auto"
         position="relative"

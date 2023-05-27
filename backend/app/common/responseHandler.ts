@@ -20,7 +20,7 @@ class ResponseHandler<T extends object> {
     return res.status(httpStatus.NO_CONTENT).json({ status: "Success", message })
   }
 
-  public failureResponse(
+  public badRequest(
     message: string,
     res: Response,
     statusCode: HttpStatusCode = HttpStatus.BAD_REQUEST

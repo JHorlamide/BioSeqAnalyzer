@@ -9,8 +9,8 @@ mongoose.set("strictQuery", false);
 const DBConnectWithRetry = async () => {
   try {
     logger.info("Attempting MongoDB connection (will retry if needed)");
-    await mongoose.connect(config.database_url);
-    logger.info(`Database connected successfully to ${config.database_url}...`);
+    await mongoose.connect(config.databaseUrl);
+    logger.info(`Database connected successfully to ${config.databaseUrl}...`);
   } catch (error) {
     const retrySeconds = 5;
     logger.error(`MongoDB connection unsuccessful (will retry in #${count} after ${retrySeconds} seconds)`, error);

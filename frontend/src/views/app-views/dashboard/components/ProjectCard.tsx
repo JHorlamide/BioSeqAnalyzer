@@ -26,7 +26,7 @@ interface ProjectCardProps {
 const ProjectCard = (props: ProjectCardProps) => {
   const { projectTitle, projectId, projectName, updatedAt } = props;
   const [deleteProject] = useDeleteProjectMutation();
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   async function handleDelete() {
     try {
@@ -62,6 +62,7 @@ const ProjectCard = (props: ProjectCardProps) => {
       <Card
         width={{ base: "100%", md: "322px" }}
         height="140px"
+        bg="brand_blue.300"
         borderRadius={10}
         paddingTop={-3}
       >
@@ -83,7 +84,7 @@ const ProjectCard = (props: ProjectCardProps) => {
               {projectTitle}
             </Text>
 
-            <Text color="gray.400">{formattedDate}</Text>
+            <Text color="gray.300">{formattedDate}</Text>
           </Stack>
         </CardBody>
       </Card>

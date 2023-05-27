@@ -15,7 +15,7 @@ class AuthMiddleware {
     try {
       const user = await userService.getUserByEmail(email);
       if (!user) {
-        return responseHandler.failureResponse(ERR_MSG.USER_NOT_FOUND, res);
+        return responseHandler.badRequest(ERR_MSG.USER_NOT_FOUND, res);
       }
 
       const passwordHash = user.password;
@@ -29,7 +29,7 @@ class AuthMiddleware {
         return next();
       }
 
-      return responseHandler.failureResponse("Invalid email and/or password", res);
+      return responseHandler.badRequest("Invalid email and/or password", res);
     } catch (error) {
       next(error);
     }

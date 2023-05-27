@@ -17,8 +17,8 @@ const app = express();
 const routes: CommonRoutesConfig[] = [];
 
 useTreblle(app, {
-  apiKey: config.treble.api_key,
-  projectId: config.treble.project_id
+  apiKey: config.treble.apiKey,
+  projectId: config.treble.projectId
 })
 
 // Middleware that enables Cross-Origin Resource Sharing (CORS) for the server.

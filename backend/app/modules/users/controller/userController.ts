@@ -13,7 +13,7 @@ class UserController {
       const user = await userService.createUser({ ...req.body, password: passwordHash });
       responseHandler.successfullyCreated(RES_MSG.USER_CREATE, user, res);
     } catch (error: any) {
-      return responseHandler.failureResponse(error.message, res);
+      return responseHandler.badRequest(error.message, res);
     }
   }
   

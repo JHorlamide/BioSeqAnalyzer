@@ -38,15 +38,15 @@ const ProjectInput = forwardRef(
         <Input
           _placeholder={{
             opacity: "0.6",
-            color: "gray.500",
+            color: "brand_blue.100",
             fontSize: "15px",
           }}
           pl="35px"
           width="100%"
           height="45px"
-          bg={"gray.700"}
-          border="none"
-          focusBorderColor="none"
+          border="1px solid white"
+          bg="brand_blue.300"
+          focusBorderColor="white"
           borderRadius={"20px"}
           id={name}
           {...inputProps}
@@ -84,6 +84,7 @@ export const SelectInput = forwardRef(
             {...rest}
             {...register(name)}
             _focus={{ border: "none", borderColor: "white" }}
+            border="0.5px solid white"
           >
             {selectOptions.map((option) => (
               <option key={option.label} value={option.value}>

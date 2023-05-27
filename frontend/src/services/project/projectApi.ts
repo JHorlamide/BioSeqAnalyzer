@@ -12,7 +12,9 @@ import {
   IUpdateProjectRes,
   IUpdateProjectReq,
   IDeleteProject,
-  IDeleteProjectRes
+  IDeleteProjectRes,
+  IUploadProjectRes,
+  IUploadProjectFileReq
 } from "./type";
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
@@ -77,6 +79,14 @@ export const projectApi = createApi({
       invalidatesTags: ["Projects"]
     }),
 
+    uploadProjectFile: builder.mutation<IUploadProjectRes, IUploadProjectFileReq>({
+      query: ({ data, projectId }) => ({
+        url: `/projects/${projectId}/csv-upload`,
+        method: "POST",
+        body: data
+      })
+    }),
+
     deleteProject: builder.mutation<IDeleteProjectRes, IDeleteProject>({
       query: ({ projectId }) => ({
         url: `/projects/${projectId}`,
@@ -97,5 +107,6 @@ export const {
   useGetProjectsQuery,
   useGetProjectQuery,
   useUpdateProjectMutation,
-  useDeleteProjectMutation
+  useDeleteProjectMutation,
+  useUploadProjectFileMutation
 } = projectApi;

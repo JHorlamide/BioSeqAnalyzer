@@ -3,6 +3,7 @@ import { Button as ChakraButton, ButtonProps } from "@chakra-ui/react";
 interface Props extends ButtonProps {
   light?: boolean;
   isDisabled?: boolean;
+  htmlFor?: string;
 }
 
 const Button = (props: Props) => {

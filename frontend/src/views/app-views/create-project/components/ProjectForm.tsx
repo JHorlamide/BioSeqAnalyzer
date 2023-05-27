@@ -65,7 +65,7 @@ const ProjectForm = (props: ProjectFormProps) => {
           <VStack spacing={3} paddingY={2}>
             <VStack
               spacing={3}
-              bg="brand.50"
+              bg="brand_blue.300"
               borderRadius={10}
               paddingY={3}
               paddingX={3}
@@ -78,10 +78,10 @@ const ProjectForm = (props: ProjectFormProps) => {
 
                     <Button
                       onClick={toggleShowUniProtInput}
-                      bg="brand.100"
+                      bg="brand_blue.100"
                       marginBottom={1}
                       _hover={{
-                        bg: "brand.100"
+                        bg: "brand_blue.50"
                       }}
                     >
                       Use ID instead
@@ -92,7 +92,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     <InputLeftElement
                       pt="5px"
                       pointerEvents={"none"}
-                      children={<GiGooeyMolecule color="gray.3000" />}
+                      children={<GiGooeyMolecule color="brand_blue.2000" />}
                     />
 
                     <ProjectInput
@@ -115,10 +115,10 @@ const ProjectForm = (props: ProjectFormProps) => {
                     <FormLabel>UniProt ID (Optional)</FormLabel>
                     <Button
                       onClick={toggleShowUniProtInput}
-                      bg="brand.100"
+                      bg="brand_blue.100"
                       marginBottom={1}
                       _hover={{
-                        bg: "brand.100"
+                        bg: "brand_blue.100"
                       }}
                     >
                       Use raw sequence instead
@@ -152,7 +152,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                   <InputLeftElement
                     pt="5px"
                     pointerEvents={"none"}
-                    children={<SiMoleculer color="gray.3000" />}
+                    children={<SiMoleculer color="brand_blue.2000" />}
                   />
 
                   <ProjectInput
@@ -171,7 +171,7 @@ const ProjectForm = (props: ProjectFormProps) => {
 
             <VStack
               spacing={3}
-              bg="brand.50"
+              bg="brand_blue.300"
               borderRadius={10}
               paddingY={5}
               paddingX={3}
@@ -236,7 +236,7 @@ const ProjectForm = (props: ProjectFormProps) => {
 
             <VStack
               spacing={3}
-              bg="brand.50"
+              bg="brand_blue.300"
               borderRadius={10}
               paddingY={5}
               paddingX={3}
@@ -248,7 +248,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                   <InputLeftElement
                     pt="5px"
                     pointerEvents={"none"}
-                    children={<MdOutlineTitle color="gray.3000" />}
+                    children={<MdOutlineTitle color="brand_blue.2000" />}
                   />
 
                   <ProjectInput

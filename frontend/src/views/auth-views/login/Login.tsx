@@ -14,59 +14,23 @@ import { Link } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import { AUTH_PREFIX_PATH, APP_PREFIX_PATH } from "../../../config/AppConfig";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Fragment, useState } from "react";
-import { loginSchema, LoginFormData } from "../../../schemas/login.schema";
+import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
+import { Fragment } from "react";
 import Button from "../../../components/CustomBtn/Button";
 import { LoginInput } from "./components/LoginInput";
-import { useLoginUserMutation } from "../../../services/auth/authApi";
-import { toast } from "react-hot-toast";
-import { setToken, setRefreshToken } from "../../../store/slices/authSlice";
-import { setUser } from "../../../store/slices/authSlice";
-import { useAppDispatch } from "../../../store/store";
-import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
-import useNavigation from "../../../hooks/useNavigation";
-import utils from "../../../utils";
+import { useLogin } from "../../../hooks/useAuth";
 
 const Login = () => {
-  const [show, setShow] = useState(false);
-  const [loginUser, { isLoading, isError }] = useLoginUserMutation();
-  const dispatch = useAppDispatch();
-  const { handleNavigate } = useNavigation();
-
   const {
-    register,
+    errors,
+    show,
+    isValid,
+    isLoading,
+    handleShowPassword,
     handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
-
-  const handleShowPassword = () => setShow(!show);
-
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      const response = await loginUser(data).unwrap();
-
-      if (response.status === "Success") {
-        const { accessToken, refreshToken, user } = response.data;
-
-        toast.success(response.message);
-
-        // Update the state
-        dispatch(setUser(user));
-        dispatch(setToken(accessToken));
-        dispatch(setRefreshToken(refreshToken));
-
-        localStorage.setItem(AUTH_TOKEN, accessToken);
-        localStorage.setItem(REFRESH_TOKEN, refreshToken);
-        handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
-      }
-    } catch (error: any) {
-      const errorMessage = utils.getErrorMessage(error);
-      toast.error(errorMessage);
-    }
-  };
+    onSubmit,
+    register,
+  } = useLogin();
 
   return (
     <Fragment>

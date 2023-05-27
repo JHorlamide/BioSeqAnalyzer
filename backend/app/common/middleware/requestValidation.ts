@@ -6,7 +6,7 @@ const requestBodyValidator = (schema: any) => {
     const { error } = schema.validate(req.body);
 
     if (error) {
-      return responseHandler.failureResponse(error.details[0].message, res);
+      return responseHandler.badRequest(error.details[0].message, res);
     }
 
     next();

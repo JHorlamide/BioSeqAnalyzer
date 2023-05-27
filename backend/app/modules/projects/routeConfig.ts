@@ -43,6 +43,7 @@ export class ProjectRoute extends CommonRoutesConfig {
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/projects/:projectId`, [
       jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectExist,
       projectController.getProjectDetail
     ])
 
@@ -53,6 +54,7 @@ export class ProjectRoute extends CommonRoutesConfig {
     * ***/
     this.app.put(`${APP_PREFIX_PATH}/projects/:projectId`, [
       jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
       projectMiddleware.validateRequestBodyField,
       projectController.updateProjectDetails
@@ -65,19 +67,21 @@ export class ProjectRoute extends CommonRoutesConfig {
     * ***/
     this.app.delete(`${APP_PREFIX_PATH}/projects/:projectId`, [
       jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
       projectController.deleteProject
     ])
 
     /***
-    * @route POST: /api/projects/csv-upload
+    * @route POST: /api/projects/:projectId/csv-upload
     * @desc Upload project experimental data
     * @access Private
     * ***/
-    this.app.post(`${APP_PREFIX_PATH}/projects/csv-upload`, upload.single("file"), [
+    this.app.post(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload`, [
       jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
-      projectMiddleware.validateUploadParam,
+      projectMiddleware.validateUploadReq,
       projectController.uploadProjectCSV
     ])
 

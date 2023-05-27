@@ -1,4 +1,5 @@
 import { ObjectId } from "mongoose";
+
 export enum ProjectGoal {
   MAXIMIZE = "Maximize",
   MINIMIZE = "Minimize"
@@ -16,8 +17,8 @@ export interface IProject {
   measuredProperty: MeasuredProperty;
   projectGoal: ProjectGoal;
 
-  //OPTIONAL PROPERTY
   proteinPDBID?: string;
+  pdbFileUrl?: string;
   uniprotId?: string;
   proteinAminoAcidSequence?: string;
 }
@@ -34,12 +35,12 @@ export interface IGetProjects {
   userId: string;
 }
 
-export interface ProjectFields {
-  sequence: string;
-  fitness: string;
-  muts: string;
+export interface S3UploadRes {
+  fileName: string;
+  Bucket: string;
+  Key: string;
 }
 
 export interface ProjectModel extends IProject {
-  projectFile: Array<ProjectFields>;
+  projectFile: S3UploadRes;
 }

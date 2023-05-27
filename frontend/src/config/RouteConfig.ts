@@ -32,17 +32,17 @@ export const protectedRoute: IRoute[] = [
   {
     key: "dashboard",
     path: `${APP_PREFIX_PATH}/dashboard`,
-    component: React.lazy(() => import("../views/app-views/dashboard"))
+    component: React.lazy(() => import("../views/app-views/dashboard/Dashboard"))
   },
 
   {
-    key: "projects",
+    key: "create-projects",
     path: `${APP_PREFIX_PATH}/create-project`,
     component: React.lazy(() => import("../views/app-views/create-project/CreateProjectForm"))
   },
 
   {
-    key: "projects",
+    key: "update-projects",
     path: `${APP_PREFIX_PATH}/project/update/:projectId`,
     component: React.lazy(() => import("../views/app-views/create-project/UpdateProjectForm"))
   },
@@ -51,5 +51,11 @@ export const protectedRoute: IRoute[] = [
     key: "project-members",
     path: `${APP_PREFIX_PATH}/project-members`,
     component: React.lazy(() => import("../views/app-views/project-members/ProjectMembers"))
+  },
+
+  {
+    key: "project-overview",
+    path: `${APP_PREFIX_PATH}/project-overview/:projectId`,
+    component: React.lazy(() => import("../views/app-views/project-overview/ProjectOverview"))
   },
 ]

@@ -15,46 +15,22 @@ import { MdDriveFileRenameOutline } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Fragment, useState } from "react";
-import {
-  registrationSchema,
-  RegisterFormData,
-} from "../../../schemas/register.schema";
+import { Fragment } from "react";
 import { RegisterInput } from "./components/RegisterInput";
 import Button from "../../../components/CustomBtn/Button";
-import { useRegisterUserMutation } from "../../../services/auth/registerApi";
-import { toast } from "react-hot-toast";
-import useNavigation from "../../../hooks/useNavigation";
+import { useRegister } from "../../../hooks/useAuth";
 
 const Register = () => {
-  const { handleNavigate } = useNavigation();
-  const [show, setShow] = useState(false);
   const {
-    register,
+    handleShowPassword,
     handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<RegisterFormData>({ resolver: zodResolver(registrationSchema) });
-  const [registerUser, { isLoading, isError }] = useRegisterUserMutation();
-
-  const handleShowPassword = () => setShow(!show);
-
-  const onSubmit = async (data: RegisterFormData) => {
-    try {
-      const response = await registerUser(data).unwrap();
-
-      if (response.status === "Success") {
-        toast.success(response.message);
-        setTimeout(() => {
-          handleNavigate(`${AUTH_PREFIX_PATH}/login`);
-        }, 2000);
-      }
-    } catch (error: any) {
-      const errorMessage = error.response.data.message || error.message;
-      toast.error(errorMessage);
-    }
-  };
+    onSubmit,
+    register,
+    errors,
+    show,
+    isLoading,
+    isValid
+  } = useRegister();
 
   return (
     <Fragment>

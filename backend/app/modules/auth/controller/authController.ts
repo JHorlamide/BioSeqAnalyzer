@@ -18,7 +18,7 @@ class AuthController {
     const accessToken = jwt.sign(
       req.body,
       config.jwt.secret,
-      { expiresIn: config.jwt.token_expiration }
+      { expiresIn: config.jwt.tokenExpiration }
     );
 
     delete req.body.refreshKey;

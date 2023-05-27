@@ -14,6 +14,7 @@ import {
 import storage from "redux-persist/lib/storage";
 import { unAuthenticatedMiddleware } from "./middleware/unAuthenticatedMiddleware";
 import { authReducer, authSlice } from "./slices/authSlice";
+import { searchReducer, searchSlice} from "./slices/searchSlice";
 import { RESET_STATE_ACTION_TYPE } from "./actions/resetStateAction";
 import { AUTH_TOKEN } from "../constants/AuthConstant";
 import { authApi, AUTH_API_REDUCER_KEY } from "../services/auth/authApi";
@@ -21,6 +22,7 @@ import { registerApi, REGISTER_API_REDUCER_KEY } from "../services/auth/register
 import { projectApi, PROJECT_API_REDUCER_KEY } from "../services/project/projectApi";
 
 const reducers = {
+  [searchSlice.name]: searchReducer,
   [authSlice.name]: authReducer,
   [AUTH_API_REDUCER_KEY]: authApi.reducer,
   [REGISTER_API_REDUCER_KEY]: registerApi.reducer,

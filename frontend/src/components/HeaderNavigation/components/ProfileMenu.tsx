@@ -19,15 +19,16 @@ const ProfileMenu = ({ fullName, logout }: ProfileMenuProp) => {
     <Menu>
       <MenuButton as={ChakraButton}>
         <Box _hover={{ cursor: "pointer" }}>
-          <IoIosArrowDown color="brand.50" />
+          <IoIosArrowDown color="brand_blue.50" />
         </Box>
       </MenuButton>
 
-      <MenuList paddingX={3}>
+      <MenuList paddingX={3} bg="brand_blue.50">
         <MenuGroup title={fullName}>
-          <MenuItem borderRadius={16}>Profile</MenuItem>
-          <MenuItem borderRadius={16}>Setting</MenuItem>
+          <MenuItem borderRadius={16} bg="brand_blue.50">Profile</MenuItem>
+          <MenuItem borderRadius={16} bg="brand_blue.50">Setting</MenuItem>
           <MenuItem
+            bg="brand_blue.50"
             as="div"
             icon={<IoIosLogOut size={18} />}
             borderRadius={16}

@@ -7,7 +7,7 @@ const AppLoader = () => {
         mt={100}
         thickness="4px"
         speed="0.65s"
-        emptyColor="gray.500"
+        emptyColor="white"
         color="blue"
         size="xl"
       />

@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import {
   Modal,
   Text,
@@ -21,30 +20,32 @@ const ConfirmationModal = (props: Props) => {
   const { projectName, isOpen, onClose, handleConfirm } = props;
 
   return (
-    <Fragment>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader fontSize="18px">Are you sure you want to delete project ({projectName})?
-          </ModalHeader>
-          <ModalBody>
-            <Text>This is a permanent action and you’ll lose all the information you’ve created within this project.</Text>
-          </ModalBody>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <ModalOverlay />
+      <ModalContent bg="brand_blue.300">
+        <ModalHeader fontSize="18px">Are you sure you want to delete project ({projectName})?
+        </ModalHeader>
 
-          <ModalFooter>
-            <Button bg="brand.100" onClick={onClose}>
-              Cancel
-            </Button>
+        <ModalBody>
+          <Text>This is a permanent action and you’ll lose all the information you’ve created within this project.</Text>
+        </ModalBody>
 
-            <Button
-              ml={3}
-              bg='red'
-              _hover={{ bg: "red" }}
-              onClick={handleConfirm}>Delete</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </Fragment>
+        <ModalFooter>
+          <Button bg="brand_blue.100" onClick={onClose}>
+            Cancel
+          </Button>
+
+          <Button
+            ml={3}
+            bg='red'
+            _hover={{ bg: "red" }}
+            onClick={handleConfirm}
+          >
+            Delete
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   )
 }
 

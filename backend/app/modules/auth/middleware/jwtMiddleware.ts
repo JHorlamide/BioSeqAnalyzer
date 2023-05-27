@@ -58,7 +58,7 @@ class JwtMiddleware {
       return next();
     }
 
-    responseHandler.failureResponse("Invalid refresh token", res);
+    responseHandler.badRequest("Invalid refresh token", res);
   }
 }
 

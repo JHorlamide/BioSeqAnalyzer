@@ -13,7 +13,7 @@ class UserMiddleware {
     const user = await userRepository.getUserByEmail(email);
 
     if (user) {
-      return responseHandler.failureResponse(ERR_MSG.USER_EXIT, res);
+      return responseHandler.badRequest(ERR_MSG.USER_EXIT, res);
     }
 
     next();

@@ -2,12 +2,10 @@ import { Request, Response } from "express";
 import asyncHandler from "../../../common/middleware/asyncHandler";
 import projectService from "../services/projectService";
 import responseHandler from "../../../common/responseHandler";
-import { RES_MSG } from "../types/constants";
+import { RES_MSG, ERR_MSG } from "../types/constants";
 import uniprotService from "../services/uniprot.service";
-import csvParser from "csv-parser";
-import { Readable } from "stream";
-import { ServerError } from "../../../common/exceptions/serverError";
-import { ClientError } from "../../../common/exceptions/clientError";
+import { s3Service } from "../../s3Service/s3Service";
+import { S3UploadRes } from "../types/types";
 
 class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
@@ -60,34 +58,73 @@ class ProjectController {
   })
 
   public uploadProjectCSV = asyncHandler(async (req: Request, res: Response) => {
-    const { projectId } = req.body;
+    const file = req.file;
+    const { projectId } = req.params;
 
-    if (!req.file) {
-      return responseHandler.failureResponse("No file uploaded", res);
+    if (!file) {
+      console.log("uploadProjectCSV -> controller");
+      return responseHandler.badRequest(ERR_MSG.NO_FILE_UPLOAD, res);
     }
 
     try {
-      // Read and parse the CSV file
-      const csvData = await projectService.parseCSVFile(req.file.buffer);
-
-      // Validate the CSV structure
-      if (!projectService.validateCSVStructure(csvData)) {
-        return responseHandler.failureResponse("CSV file must contain columns: sequence, fitness, muts", res);
-      }
-
-      // Check for wild type sequence
-      if (!projectService.hasWildTypeSequence(csvData)) {
-        return responseHandler.failureResponse("CSV file must contain at least one row with muts = WT", res);
+      const response = await s3Service(file)
+      const uploadRes = {
+        fileName: file.originalname,
+        Bucket: response.Bucket,
+        Key: response.Key,
       }
 
       // Update the project with the new projectFile data
-      const uploadResult = await projectService.uploadProjectFile(projectId, csvData);
-      return responseHandler.successResponse("File uploaded and data saved successfully", uploadResult, res);
+      const uploadResult = await projectService.uploadProjectFile(projectId, uploadRes);
+      return responseHandler.successResponse(RES_MSG.FILE_UPLOADED, uploadResult, res);
     } catch (error: any) {
       console.error(error.message);
-      return responseHandler.failureResponse(`Error processing CSV file: ${error.message}`, res);
+      return responseHandler.badRequest(`${ERR_MSG.ERR_PROCESSING_CSV}: ${error.message}`, res);
     }
   })
 }
 
 export default new ProjectController();
+
+/** Initial File Upload Method Handler **/
+// public uploadProjectCSV = asyncHandler(async (req: Request, res: Response) => {
+//   const file = req.file;
+//   const { projectId } = req.params;
+
+//   if (!file) {
+//     return responseHandler.failureResponse(ERR_MSG.NO_FILE_UPLOAD, res);
+//   }
+
+//   try {
+//     // Read and parse the CSV file
+//     const csvData = await projectService.parseCSVFile(file.buffer);
+
+//     // Validate the CSV structure
+//     if (!projectService.validateCSVStructure(csvData)) {
+//       return responseHandler.failureResponse(ERR_MSG.INVALID_CSV_STRUCTURE, res);
+//     }
+
+//     // Check for wild type sequence
+//     if (!projectService.hasWildTypeSequence(csvData)) {
+//       return responseHandler.failureResponse(ERR_MSG.MUT_NOT_FOUND, res);
+//     }
+
+//     // Update the project with the new projectFile data
+//     const uploadResult = await projectService.uploadProjectFile(projectId, csvData);
+//     return responseHandler.successResponse(RES_MSG.FILE_UPLOADED, uploadResult, res);
+//   } catch (error: any) {
+//     console.error(error.message);
+//     return responseHandler.failureResponse(`${ERR_MSG.ERR_PROCESSING_CSV}: ${error.message}`, res);
+//   }
+// })
+
+/** CSV Structure validation **/
+// Validate the CSV structure
+//  if (!projectService.validateCSVStructure(csvData)) {
+//   return responseHandler.failureResponse(ERR_MSG.INVALID_CSV_STRUCTURE, res);
+// }
+
+// Check for wild type sequence
+// if (!projectService.hasWildTypeSequence(csvData)) {
+//   return responseHandler.failureResponse(ERR_MSG.MUT_NOT_FOUND, res);
+// }

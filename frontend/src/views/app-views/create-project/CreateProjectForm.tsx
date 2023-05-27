@@ -5,7 +5,6 @@ import { APP_PREFIX_PATH } from "../../../config/AppConfig";
 import useNavigation from "../../../hooks/useNavigation";
 import ProjectForm from "./components/ProjectForm";
 import { useProject } from "../../../hooks/useProject";
-import { Fragment } from "react";
 
 const CreateProject = () => {
   const { handleNavigate } = useNavigation();
@@ -13,6 +12,7 @@ const CreateProject = () => {
   return (
     <Box width="full">
       <Button
+        bg="brand_blue.100"
         leftIcon={<BsArrowLeft />}
         onClick={() => handleNavigate(`${APP_PREFIX_PATH}/dashboard`)}
       >

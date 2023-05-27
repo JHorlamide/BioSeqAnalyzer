@@ -8,8 +8,8 @@ import { useUpdateProject } from "../../../hooks/useProject";
 import { useParams } from "react-router-dom";
 
 const UpdateProjectForm = () => {
-  const { projectId } = useParams();
   const { handleNavigate } = useNavigation();
+  const { projectId } = useParams();
   const id = String(projectId);
   const updateProjectHook = { projectId, ...useUpdateProject(id) };
 

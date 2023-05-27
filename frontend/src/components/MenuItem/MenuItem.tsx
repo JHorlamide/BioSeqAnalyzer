@@ -9,17 +9,19 @@ import { logoutUser } from "../../store/slices/authSlice";
 export const Navigation = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
+  
+  const activeNavStyle = {
+    bg: "brand_blue.100",
+    borderLeft: "5px solid",
+    paddingY: 1.5,
+    paddingX: 2,
+    borderRightColor: "blue",
+    cursor: "pointer",
+  }
 
   const selectedNavItemStyle = (path: string) => {
     if (location.pathname === path) {
-      return {
-        bg: "brand.200",
-        borderLeft: "5px solid",
-        paddingY: 1.5,
-        paddingX: 2,
-        borderRightColor: "brand.50",
-        cursor: "pointer",
-      };
+      return activeNavStyle;
     }
 
     return null;
@@ -34,16 +36,13 @@ export const Navigation = () => {
           </Text>
         </Center>
 
-        {navigationConfig.map(({key, path, title, Icon}) => (
-          <HStack
-            key={key}
-            width="full"
-            alignSelf="start"
-            {...selectedNavItemStyle(path)}
-          >
-            <Icon />
-            <Link to={path}>{title}</Link>
-          </HStack>
+        {navigationConfig.map(({ key, path, title, Icon }) => (
+          <Link key={key} to={path} style={{ display: "flex", width: "100%", alignSelf: "start" }}>
+            <HStack {...selectedNavItemStyle(path)} width="full">
+              <Icon /> <Text>{title}</Text>
+            </HStack>
+          </Link>
+
         ))}
       </VStack>
 
