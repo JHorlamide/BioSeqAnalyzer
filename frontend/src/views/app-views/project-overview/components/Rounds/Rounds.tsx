@@ -6,6 +6,7 @@ import TableOfPerformingVariants from './TableOfPerformingVariants/TableOfPerfor
 import ScoreDistribution from './ScoreDistribution/ScoreDistribution';
 import FoldImprovement from './FoldImprovement/FoldImprovement';
 import ProteinSequenceViewer from '../Overview/ProteinSequenceViewer';
+import { useGetProcessCSVDataQuery } from '../../../../../services/project/projectApi';
 
 interface Props {
   projectId: string;
@@ -18,6 +19,18 @@ const Rounds = ({ projectFile, projectId, proteinPDBID }: Props) => {
     return <DocumentUpload projectId={projectId} />
   }
 
+  const { data, isLoading, isError } = useGetProcessCSVDataQuery({ projectId });
+
+  if (isLoading) {
+    return <p>Loading data...</p>
+  }
+
+  if (isError) {
+    return <p>{isError}</p>
+  }
+
+  console.log({ data });
+
   const containerStyle = {
     width: "40%",
     height: "600px",
@@ -27,21 +40,26 @@ const Rounds = ({ projectFile, projectId, proteinPDBID }: Props) => {
   }
 
   return (
-    <Box width="full" height="full" overflow="auto">
-      <HStack spacing={5} justifyContent="space-between">
-        <VStack spacing={3}>
-          <SummaryTable />
-          <TableOfPerformingVariants />
-          <ScoreDistribution />
-          <FoldImprovement />
-        </VStack>
+    <HStack
+      spacing={5}
+      width="full"
+      height="full"
+      overflow="auto"
+      justifyContent="space-between"
+      alignItems="self-start"
+    >
+      <VStack spacing={3} maxWidth="xl" width="full" height="full">
+        <SummaryTable />
+        <TableOfPerformingVariants />
+        <ScoreDistribution />
+        <FoldImprovement />
+      </VStack>
 
-        <ProteinSequenceViewer
-          proteinPDBID={proteinPDBID}
-          containerStyle={containerStyle}
-        />
-      </HStack>
-    </Box>
+      <ProteinSequenceViewer
+        proteinPDBID={proteinPDBID}
+        containerStyle={containerStyle}
+      />
+    </HStack>
   )
 }
 

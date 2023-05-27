@@ -25,8 +25,8 @@ const ProfileMenu = ({ fullName, logout }: ProfileMenuProp) => {
 
       <MenuList paddingX={3} bg="brand_blue.50">
         <MenuGroup title={fullName}>
-          <MenuItem borderRadius={16} bg="brand_blue.50">Profile</MenuItem>
-          <MenuItem borderRadius={16} bg="brand_blue.50">Setting</MenuItem>
+          <MenuItem borderRadius={16} bg="brand_blue.50" _hover={{ bg: "brand_blue.200" }}>Profile</MenuItem>
+          <MenuItem borderRadius={16} bg="brand_blue.50" _hover={{ bg: "brand_blue.200" }}>Setting</MenuItem>
           <MenuItem
             bg="brand_blue.50"
             as="div"
@@ -34,6 +34,7 @@ const ProfileMenu = ({ fullName, logout }: ProfileMenuProp) => {
             borderRadius={16}
             onClick={logout}
             _hover={{
+              bg: "brand_blue.200",
               cursor: "pointer"
             }}
           >

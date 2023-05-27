@@ -68,6 +68,14 @@ export interface IUploadProjectRes extends IBaseResponse {
   data: Projects
 }
 
+export interface IGetProteinDataReq {
+  projectId: string;
+}
+
+export interface IGetProteinDataRes {
+  data: any;
+}
+
 export interface IDeleteProject {
   projectId: string;
 }

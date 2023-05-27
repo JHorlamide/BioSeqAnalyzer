@@ -116,7 +116,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     <Button
                       onClick={toggleShowUniProtInput}
                       bg="brand_blue.100"
-                      marginBottom={1}
+                      marginBottom={1.5}
                       _hover={{
                         bg: "brand_blue.100"
                       }}

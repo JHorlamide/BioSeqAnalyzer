@@ -14,7 +14,9 @@ import {
   IDeleteProject,
   IDeleteProjectRes,
   IUploadProjectRes,
-  IUploadProjectFileReq
+  IUploadProjectFileReq,
+  IGetProteinDataReq,
+  IGetProteinDataRes
 } from "./type";
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
@@ -87,6 +89,12 @@ export const projectApi = createApi({
       })
     }),
 
+    getProcessCSVData: builder.query<IGetProteinDataRes, IGetProteinDataReq>({
+      query: ({ projectId }) => ({
+        url: `/projects/${projectId}/csv-upload`,
+      })
+    }),
+
     deleteProject: builder.mutation<IDeleteProjectRes, IDeleteProject>({
       query: ({ projectId }) => ({
         url: `/projects/${projectId}`,
@@ -108,5 +116,6 @@ export const {
   useGetProjectQuery,
   useUpdateProjectMutation,
   useDeleteProjectMutation,
-  useUploadProjectFileMutation
+  useUploadProjectFileMutation,
+  useGetProcessCSVDataQuery
 } = projectApi;
