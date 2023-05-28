@@ -4,10 +4,7 @@ import projectService from "../services/projectService";
 import responseHandler from "../../../common/responseHandler";
 import { RES_MSG, ERR_MSG } from "../types/constants";
 import uniprotService from "../services/uniprot.service";
-import csvParser from "csv-parser";
-import config from "../../../config/appConfig";
-import s3Service from "../../s3Service/s3Service";
-import { CSVColumnDataType } from "../types/types";
+import s3Service from "../s3Service/s3Service";
 
 class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
@@ -79,13 +76,48 @@ class ProjectController {
     return responseHandler.successResponse(RES_MSG.FILE_UPLOADED, uploadResult, res);
   })
 
+  public getSummaryOfMainMatricesData = asyncHandler(async (req: Request, res: Response) => {
+    const { projectId } = req.params;
+    const projectFileKey = await projectService.getProjectFileKey(projectId);
+    const s3ReadStream = s3Service.getFile(projectFileKey);
+    const csvData = await projectService.parseS3ReadStream(s3ReadStream);
+
+    // Total number of sequence
+    const totalSequence = projectService.getTotalNumberOfSequence(csvData);
+
+    // 5. Number of sequences with a score above the reference sequence (with value "WT" in "muts" column)
+    const numSequencesAboveReference = projectService.getSequencesAboveReference(csvData);
+
+    // 2. List of the 10 mutants with the highest fitness values
+    const topMutants = projectService.getTopMutants(csvData);
+
+    // 6. Value of the sequence with the highest fitness value
+    const highestFitness = projectService.getHighestFitness(csvData);
+
+    // 7. Fold Improvement over wild type
+    const foldImprovement = projectService.getFoldImprovement(csvData);
+
+    const resData = {
+      totalSequence,
+      topMutants,
+      numSequencesAboveReference,
+      percentageSequencesAboveReference: numSequencesAboveReference.hitRate,
+      highestFitness,
+      foldImprovement,
+    }
+
+    responseHandler.successResponse(RES_MSG.SUMMARY_FETCHED, resData, res);
+  })
+
+  public getTopPerformingVariantsData = asyncHandler(async (req: Request, res: Response) => {
+    
+  })
+
   public processCVSFile = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
 
-    const project = await projectService.getProjectById(projectId);
-    const { projectFile } = project;
-
-    const s3ReadStream = s3Service.getFile(projectFile.Key);
+    const projectFileKey = await projectService.getProjectFileKey(projectId);
+    const s3ReadStream = s3Service.getFile(projectFileKey);
     const csvData = await projectService.parseS3ReadStream(s3ReadStream);
 
     try {

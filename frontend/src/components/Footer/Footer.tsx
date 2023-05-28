@@ -54,13 +54,13 @@ export default function SmallCentered() {
 
     return (
         <Box
-            marginLeft={{ base: 0, sm: isLargeScreen ? -60 : -60 }}
             bottom={5}
-            position={{ base: "inherit", md: "absolute" }}
+            marginLeft={{ base: 0, sm: isLargeScreen ? -60 : -60 }}
+            position={{ base: "unset", md: "absolute" }}
             width={{ base: "full", md: "container.md" }}
-            display={{ base: "full", md: isLargeScreen ? "block" : "none" }}
+            display={{ base: "none", md: isLargeScreen ? "block" : "none" }}
         >
-            <Box position="absolute" top="8px">
+            <Box position={{ base: "unset", md: "absolute" }} top="12.5px">
                 <Container
                     as={Stack}
                     maxW={'6xl'}

@@ -9,14 +9,22 @@ import { logoutUser } from "../../store/slices/authSlice";
 export const Navigation = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  
+
   const activeNavStyle = {
     bg: "brand_blue.100",
     borderLeft: "5px solid",
     paddingY: 1.5,
     paddingX: 2,
+    borderRadius: 3,
     borderRightColor: "blue",
     cursor: "pointer",
+  }
+
+  const linkStyle = {
+    display: "flex",
+    width: "100%",
+    alignSelf: "start",
+    color: "white"
   }
 
   const selectedNavItemStyle = (path: string) => {
@@ -28,16 +36,26 @@ export const Navigation = () => {
   };
 
   return (
-    <VStack justifyContent="space-between" alignItems="center" width="full">
+    <VStack
+      width="full"
+      justifyContent="space-between"
+      alignItems="center"
+      spacing={{ base: 580, md: "auto" }}
+    >
       <VStack spacing={5} width="full">
         <Center>
-          <Text fontWeight="bold" fontSize="24">
+          <Text
+            color="white"
+            fontWeight="bold"
+            fontSize="24"
+            display={{ base: "none", md: "block" }}
+          >
             ProteinAnalyzer
           </Text>
         </Center>
 
         {navigationConfig.map(({ key, path, title, Icon }) => (
-          <Link key={key} to={path} style={{ display: "flex", width: "100%", alignSelf: "start" }}>
+          <Link key={key} to={path} style={linkStyle}>
             <HStack {...selectedNavItemStyle(path)} width="full">
               <Icon /> <Text>{title}</Text>
             </HStack>
@@ -49,7 +67,11 @@ export const Navigation = () => {
       <Button
         leftIcon={<IoIosLogOut />}
         width="full"
+        color="white"
+        bg="brand_blue.200"
+        _hover={{ bg: "brand_blue.200" }}
         onClick={() => dispatch(logoutUser())}
+        alignSelf="flex-end"
       >
         Logout
       </Button>

@@ -55,14 +55,15 @@ const HeaderNav = () => {
       >
         {/* Menu Icon */}
         <MenuIcon onOpen={onOpen} />
+
         {/* Search Input */}
         {isDashboardPage && <SearchInput />}
 
         <HStack spacing={3} alignItems="center" marginLeft={{ base: 1, sm: 1 }}>
           <Show breakpoint="(min-width: 844px)">
             <HStack spacing={1} alignItems="center">
-              <CiUser color="brand_blue.50" />
-              <Text>{email}</Text>
+              <CiUser color="white" fontWeight="bold" />
+              <Text color="white">{email}</Text>
             </HStack>
           </Show>
 

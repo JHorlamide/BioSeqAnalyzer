@@ -62,6 +62,7 @@ const ProjectCard = (props: ProjectCardProps) => {
       <Card
         width={{ base: "100%", md: "322px" }}
         height="140px"
+        color="white"
         bg="brand_blue.300"
         borderRadius={10}
         paddingTop={-3}

@@ -17,9 +17,16 @@ const MobileNav = ({ isOpen, onClose }: Props) => {
   return (
     <Drawer isOpen={isOpen} onClose={onClose} placement="left">
       <DrawerOverlay />
-      <DrawerContent>
+
+      <DrawerContent bg="brand_blue.300">
         <DrawerCloseButton />
-        <DrawerHeader>ProteinAnalyzer</DrawerHeader>
+        <DrawerHeader
+          color="white"
+          fontSize="24"
+          fontWeight="bold"
+        >
+          ProteinAnalyzer
+        </DrawerHeader>
 
         <DrawerBody>
           <Navigation />

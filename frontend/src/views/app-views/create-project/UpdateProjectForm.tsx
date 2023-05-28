@@ -16,6 +16,10 @@ const UpdateProjectForm = () => {
   return (
     <Box width="full">
       <Button
+        marginTop={-20}
+        color="white"
+        bg="brand_blue.300"
+        _hover={{ bg: "brand_blue.200" }}
         leftIcon={<BsArrowLeft />}
         onClick={() => handleNavigate(`${APP_PREFIX_PATH}/dashboard`)}
       >

@@ -1,15 +1,12 @@
 import { S3 } from "aws-sdk";
 import { v4 as uuidV4 } from "uuid";
-import config from "../../config/appConfig";
+import config from "../../../config/appConfig";
 import { PutObjectRequest, GetObjectRequest } from "aws-sdk/clients/s3";
 
 
 class S3Service {
   private s3Client = new S3();
   private aws = config.aws;
-
-  // const s3Client = new S3();
-  // const { aws } = config;
 
   public uploadFile(file: Express.Multer.File) {
     const param: PutObjectRequest = {

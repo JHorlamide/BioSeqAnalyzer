@@ -5,16 +5,16 @@ const FoldImprovement = () => {
   return (
     <Fragment>
       <Box alignSelf="self-start">
-        <Text fontWeight="semibold">Performance</Text>
+        <Text fontWeight="semibold" color="white">Performance</Text>
       </Box>
 
       <Box
         borderRadius="10px"
-        bg="brand_blue.100"
+        bg="brand_blue.300"
+        color="white"
         width="full"
         paddingY={4}
       >
-
         <Stack spacing={3} divider={<StackDivider width="full" height="0.5px" />}>
           <Box paddingX={3}>
             <Text fontWeight="semibold">Total number of sequence</Text>

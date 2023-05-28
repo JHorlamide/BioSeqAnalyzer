@@ -5,13 +5,14 @@ const ScoreDistribution = () => {
   return (
     <Fragment>
       <Box alignSelf="self-start">
-        <Text fontWeight="semibold">Performance</Text>
+        <Text fontWeight="semibold" color="white">Performance</Text>
       </Box>
 
       <Box
         borderRadius="10px"
-        bg="brand_blue.100"
+        bg="brand_blue.300"
         width="full"
+        color="white"
         paddingY={4}
       >
 

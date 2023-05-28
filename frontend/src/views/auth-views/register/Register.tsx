@@ -35,7 +35,7 @@ const Register = () => {
   return (
     <Fragment>
       <Stack pb={10}>
-        <Text textAlign="center">
+        <Text textAlign="center" color="white">
           Already have an account?{" "}
           <Box as="small" fontSize={16} color="blue">
             <Link to={`${AUTH_PREFIX_PATH}/login`}>Login</Link>
@@ -46,12 +46,12 @@ const Register = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={8}>
           <FormControl>
-            <FormLabel>Full Name</FormLabel>
+            <FormLabel color="white">Full Name</FormLabel>
             <InputGroup flexDirection="column" width="100%">
               <InputLeftElement
                 paddingTop={"5px"}
                 pointerEvents={"none"}
-                children={<MdDriveFileRenameOutline color="gray.3000" />}
+                children={<MdDriveFileRenameOutline color="white" />}
               />
 
               <RegisterInput
@@ -65,13 +65,13 @@ const Register = () => {
           </FormControl>
 
           <FormControl>
-            <FormLabel>Email Address</FormLabel>
+            <FormLabel color="white">Email Address</FormLabel>
 
             <InputGroup flexDirection="column" width="100%">
               <InputLeftElement
                 paddingTop={"5px"}
                 pointerEvents={"none"}
-                children={<HiOutlineMail color="gray.3000" />}
+                children={<HiOutlineMail color="white" />}
               />
 
               <RegisterInput
@@ -85,12 +85,12 @@ const Register = () => {
           </FormControl>
 
           <FormControl>
-            <FormLabel>Password</FormLabel>
+            <FormLabel color="white">Password</FormLabel>
             <InputGroup flexDirection="column" width="100%">
               <InputLeftElement
                 paddingTop={"5px"}
                 pointerEvents={"none"}
-                children={<RiLockPasswordLine color="gray.3000" />}
+                children={<RiLockPasswordLine color="white" />}
               />
 
               <RegisterInput
@@ -105,12 +105,12 @@ const Register = () => {
                 {show ? (
                   <AiOutlineEye
                     onClick={handleShowPassword}
-                    color="gray.3000"
+                    color="white"
                   />
                 ) : (
                   <AiOutlineEyeInvisible
                     onClick={handleShowPassword}
-                    color="gray.3000"
+                    color="white"
                   />
                 )}
               </InputRightElement>
@@ -122,6 +122,8 @@ const Register = () => {
           isLoading={isLoading}
           isDisabled={!isValid}
           my={6}
+          color="white"
+          bg="brand_blue.50"
           width="full"
           type="submit"
         >

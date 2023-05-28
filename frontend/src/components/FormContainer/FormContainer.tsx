@@ -8,10 +8,10 @@ interface Props {
 
 const FormContainer = ({ formHeading, showHeading, children }: Props) => {
   return (
-    <Flex justify="center" align="center" py="10%">
+    <Flex justify="center" align="center" py="10%" bg="brand_blue.300" height="100vh">
       <Box
-        border={{ sm: "none", md: "1px" }}
-        borderRadius={5}
+        border={{ sm: "none", md: "1px solid white" }}
+        borderRadius={10}
         width="500px"
         py="30px"
         px="20px"
@@ -20,7 +20,7 @@ const FormContainer = ({ formHeading, showHeading, children }: Props) => {
       >
         {showHeading && (
           <Stack>
-            <Text fontSize={35} fontWeight="bold" textAlign="center">
+            <Text fontSize={35} fontWeight="bold" textAlign="center" color="white">
               {formHeading ? formHeading : "ProteinAnalyzer"}
             </Text>
           </Stack>

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import StackedHalf from "../../assets/Stacked_half.webp";
 import Button from "../CustomBtn/Button";
-import { AiOutlineCloudUpload } from "react-icons/ai"
+import { AiOutlineCloudUpload, AiOutlineCloudDownload } from "react-icons/ai"
 import { SAMPLE_CSV_LINK } from '../../config/AppConfig';
 import { useUploadProjectFileMutation } from '../../services/project/projectApi';
 import { toast } from 'react-hot-toast';
@@ -85,21 +85,26 @@ const DocumentUpload = ({ projectId }: Props) => {
         <ModalOverlay />
         <ModalContent bg="brand_blue.300" width="full">
           <Flex justifyContent="space-between" alignItems="center">
-            <ModalHeader fontSize="18px">Result</ModalHeader>
-            {isLoading && <Text>Uploading...</Text>}
-
-            <Button
-              leftIcon={<AiOutlineCloudUpload />}
-              fontWeight="semibold"
-              onClick={downloadSampleCSVFile}
-            >
-              Download template
-            </Button>
+            <ModalHeader fontSize="18px" color="white">Result</ModalHeader>
+            {isLoading ? (
+              <Text>Uploading...</Text>
+            ) : (
+              <Button
+                color="white"
+                bg="brand_blue.200"
+                leftIcon={<AiOutlineCloudDownload />}
+                fontWeight="semibold"
+                onClick={downloadSampleCSVFile}
+                _hover={{ bg: "brand_blue.200" }}
+              >
+                Download template
+              </Button>
+            )}
           </Flex>
 
           <ModalBody width="full"
             p={4}
-            border="2px dotted"
+            border="2px dotted white"
             borderColor={isDragOver ? 'blue.500' : 'gray.200'}
             borderRadius="md"
             textAlign="center"
@@ -113,6 +118,7 @@ const DocumentUpload = ({ projectId }: Props) => {
                 as="label"
                 bg="none"
                 width="full"
+                color="white"
                 htmlFor="fileInput"
                 leftIcon={<AiOutlineCloudUpload size={20} />}
                 _hover={{ bg: "none", cursor: "pointer" }}
@@ -143,17 +149,25 @@ const DocumentUpload = ({ projectId }: Props) => {
           <Image src={StackedHalf} boxSize="100px" />
 
           <Box paddingY={4} display="flex" flexDirection="column">
-            <Text as="h1" fontWeight="bold" fontSize="18px">
+            <Text as="h1" fontWeight="bold" fontSize="19px" color="white">
               Upload your result
             </Text>
 
-            <Text as="p" pt={2}>
+            <Text as="p" pt={2} color="white" fontStyle="italic">
               Here’s a quick and clear explanation of how results work
               here so you know what you are about to do next.
             </Text>
           </Box>
 
-          <Button onClick={onOpen}>Upload Result</Button>
+          <Button
+            color="white"
+            bg="brand_blue.300"
+            onClick={onOpen}
+            leftIcon={<AiOutlineCloudUpload size={20} />}
+            _hover={{ bg: "brand_blue.200" }}
+          >
+            Upload Result
+          </Button>
         </Flex>
       </Center>
     </Fragment>

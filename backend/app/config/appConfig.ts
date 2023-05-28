@@ -28,6 +28,7 @@ const config = {
   uniprotBaseUrl: process.env.UNIPROT_BASE_URL,
   pdbBaseUrl: process.env.PDB_BASE_URL,
   MaxFileSize: 5 * 1024 * 1024, // Maximum file size of 5MB
+  summaryCacheKey: "summary-csv-data"
 }
 
 export default config;

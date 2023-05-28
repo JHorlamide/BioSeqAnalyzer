@@ -19,6 +19,10 @@ const ProjectOverview = () => {
     projectFile
   } = project?.data || {};
 
+  if (isLoading) {
+    return <Text color="white" textAlign="center">Loading Project...</Text>
+  }
+
   return (
     <Tabs variant="soft-rounded" colorScheme="gray" marginTop="-6%">
       <TabList
@@ -28,30 +32,30 @@ const ProjectOverview = () => {
         marginRight="75.9%"
       >
         <HStack spacing={5}>
-          <Tab _selected={{ bg: "brand_blue.300" }}>Overview</Tab>
-          <Tab _selected={{ bg: "brand_blue.300" }}>Rounds</Tab>
+          <Tab _selected={{ bg: "brand_blue.300" }} color="white">Overview</Tab>
+          <Tab _selected={{ bg: "brand_blue.300" }} color="white">Rounds</Tab>
         </HStack>
       </TabList>
 
       <TabPanels>
         <TabPanel>
-          {isLoading ? (
-            <Text>Loading Project...</Text>
-          ) : (
-            project && (
-              <Overview
-                proteinPDBID={proteinPDBID}
-                projectTitle={projectTitle}
-                projectGoal={projectGoal}
-                measuredProperty={measuredProperty}
-                pdbFileUrl={pdbFileUrl}
-              />
-            )
+          {project && (
+            <Overview
+              proteinPDBID={proteinPDBID}
+              projectTitle={projectTitle}
+              projectGoal={projectGoal}
+              measuredProperty={measuredProperty}
+              pdbFileUrl={pdbFileUrl}
+            />
           )}
         </TabPanel>
 
         <TabPanel>
-          <Rounds projectId={id} projectFile={projectFile} proteinPDBID={proteinPDBID} />
+          <Rounds
+            projectId={id}
+            projectFile={projectFile}
+            proteinPDBID={proteinPDBID}
+          />
         </TabPanel>
       </TabPanels>
     </Tabs>

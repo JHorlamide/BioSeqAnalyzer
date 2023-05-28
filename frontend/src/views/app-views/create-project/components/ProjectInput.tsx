@@ -47,7 +47,7 @@ const ProjectInput = forwardRef(
           border="1px solid white"
           bg="brand_blue.300"
           focusBorderColor="white"
-          borderRadius={"20px"}
+          borderRadius="20px"
           id={name}
           {...inputProps}
           {...register(name)}

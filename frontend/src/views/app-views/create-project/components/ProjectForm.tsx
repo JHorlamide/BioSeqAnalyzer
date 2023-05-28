@@ -48,11 +48,12 @@ const ProjectForm = (props: ProjectFormProps) => {
   } = props;
 
   return (
-    <Center mt="-45px" justifyContent={{ base: "start", md: "center" }}>
+    <Center mt="-45px" justifyContent={{ base: "start", md: "center" }} color="white">
       <Box width={{ base: "full", md: "50%" }}>
         <Box alignContent="start">
           <Text
             as="h2"
+            color="white"
             fontWeight="semibold"
             fontSize="24px"
             textAlign={{ base: "end", md: "start" }}
@@ -268,8 +269,11 @@ const ProjectForm = (props: ProjectFormProps) => {
             <Button
               isLoading={isLoading}
               isDisabled={!isValid}
+              bg="brand_blue.300"
+              color="white"
               alignSelf="end"
               type="submit"
+              _hover={{ bg: "brand_blue.200"}}
             >
               Create Project
             </Button>

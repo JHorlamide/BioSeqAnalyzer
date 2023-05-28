@@ -26,18 +26,16 @@ const SearchInput = () => {
           <InputGroup>
             <InputLeftElement
               pointerEvents={"none"}
-              children={<FiSearch color="brand_blue.50" />}
+              children={<FiSearch color="white" />}
             />
 
             <Input
-              _placeholder={{ fontSize: "15px" }}
-              _focus={{ border: "2px solid white", outlineColor: "white" }}
+              _placeholder={{ fontSize: "15px", color: "white" }}
               pl="35px"
-              // bg="brand_blue.100"
-              // border="none"
-              border="2px solid white"
-              focusBorderColor="none"
-              borderRadius={"20px"}
+              color="white"
+              border="1px solid white"
+              focusBorderColor="white"
+              borderRadius="full"
               placeholder="Search projects"
               value={searchTerm}
               onChange={handleSearch}

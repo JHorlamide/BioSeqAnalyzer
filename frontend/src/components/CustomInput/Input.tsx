@@ -16,11 +16,11 @@ const FormInput = forwardRef(
 
     return (
       <FormControl {...rest}>
-        <FormLabel htmlFor={id}>{label}</FormLabel>
+        <FormLabel htmlFor={id} color="white">{label}</FormLabel>
         <Input
           _placeholder={{
             opacity: "0.6",
-            color: "gray.500",
+            color: "white",
             fontSize: "15px",
           }}
           id={name}
@@ -28,8 +28,11 @@ const FormInput = forwardRef(
           {...rest}
           {...rest}
           height="45px"
-          bg={"gray.700"}
+          color="white"
+          bg="brand_blue.300"
           borderRadius="20px"
+          border="1px solid white"
+          focusBorderColor="white"
         />
       </FormControl>
     );

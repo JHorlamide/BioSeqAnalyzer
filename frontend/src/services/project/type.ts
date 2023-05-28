@@ -2,15 +2,15 @@ import { IBaseResponse } from "../../schemas";
 import { IProject, ProjectFormData } from "../../schemas/project.schema";
 
 export interface ProjectFields {
-  sequence: string;
-  fitness: string;
-  muts: string;
+  fileName: string;
+  Bucket: string;
+  Key: string
 }
 
 export interface Projects extends IProject {
   _id: string;
   user: string;
-  projectFile: ProjectFields[]
+  projectFile: ProjectFields
   pdbFileUrl: string;
   createdAt: string;
   updatedAt: string;
@@ -68,13 +68,35 @@ export interface IUploadProjectRes extends IBaseResponse {
   data: Projects
 }
 
-export interface IGetProteinDataReq {
+export interface IGetSummaryReq {
   projectId: string;
 }
 
-export interface IGetProteinDataRes {
-  data: any;
+export interface Sequence {
+  sequence: string;
+  fitness: string;
+  muts: string;
 }
+
+export interface IGetSummaryRes {
+  data: {
+    totalSequence: number;
+    foldImprovement: number;
+    percentageSequencesAboveReference: number;
+    topMutants: Sequence[];
+    highestFitness: {
+      sequence: string;
+      fitness: string;
+    }
+    numSequencesAboveReference: {
+      totalSequence: string;
+      sequencesAboveReferenceCount: number
+      hitRate: number;
+    },
+  };
+}
+
+
 
 export interface IDeleteProject {
   projectId: string;

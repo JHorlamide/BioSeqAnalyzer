@@ -22,17 +22,18 @@ export const LoginInput = forwardRef(
         <Input
           _placeholder={{
             opacity: "0.6",
-            color: "gray.500",
+            color: "white",
             fontSize: "15px",
           }}
+          id={name}
           pl="35px"
+          color="white"
           width="100%"
           height="45px"
-          bg={"gray.700"}
-          border="none"
-          focusBorderColor="none"
-          borderRadius={"20px"}
-          id={name}
+          bg="brand_blue.300"
+          border="1px solid white"
+          focusBorderColor="white"
+          borderRadius="20px"
           {...rest}
           {...register(name)}
         />

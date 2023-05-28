@@ -2,6 +2,7 @@ import userRepository from "../repository/userRepository";
 import { ERR_MSG } from "../types/constants";
 import { IUser } from "../types/types";
 import { ClientError } from "../../../common/exceptions/clientError";
+import { NotFoundError } from "../../../common/exceptions/notFoundError";
 
 class UserService {
   public async createUser(userBodyField: IUser) {
@@ -27,7 +28,7 @@ class UserService {
       const user = await userRepository.getUserByEmail(email);
 
       if (!user) {
-        throw new ClientError(ERR_MSG.USER_NOT_FOUND);
+        throw new NotFoundError(ERR_MSG.USER_NOT_FOUND);
       }
 
       return user;

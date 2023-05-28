@@ -6,7 +6,8 @@ export const RES_MSG = {
   PROTEIN_SEQUENCE_FETCHED: "Protein sequence fetched successfully",
   PROJECT_NOT_FOUND: "Project not found",
   PROJECT_DELETED: "Project deleted successfully",
-  FILE_UPLOADED: "File uploaded and data saved successfully"
+  FILE_UPLOADED: "File uploaded and data saved successfully",
+  SUMMARY_FETCHED: "Summary of main matrices fetched"
 }
 
 export const ERR_MSG = {

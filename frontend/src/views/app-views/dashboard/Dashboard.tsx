@@ -8,6 +8,7 @@ import ProjectsContainer from "./components/ProjectsContainer";
 import { useGetProjectsQuery } from "../../../services/project/projectApi";
 import Pagination from "../../../components/Pagination/Pagination";
 import { useAppSelector } from "../../../store/store";
+import { GiMolecule } from "react-icons/gi";
 
 const Dashboard = () => {
   const searchTerm = useAppSelector((state) => state.search);
@@ -33,20 +34,23 @@ const Dashboard = () => {
   return (
     <Box width="full">
       <Flex justify="space-between">
-        <Text fontWeight="medium" fontSize="24px">
+        <Text fontWeight="medium" fontSize="24px" color="white">
           Projects
         </Text>
 
         {/* Only show when there is more than one project created */}
         <Button
-          bg="brand_blue.100"
+          color="white"
+          bg="brand_blue.300"
+          _hover={{ bg: "brand_blue.200" }}
+          leftIcon={<GiMolecule size={20} />}
           onClick={createProjectPage}
         >
           Create new project
         </Button>
       </Flex>
 
-      <Box marginY={10} width="full" height="full">
+      <Box marginTop={5} width="full" height="full">
         {projects && projects.data.projects.length > 0 ? (
           <Fragment>
             <ProjectsContainer

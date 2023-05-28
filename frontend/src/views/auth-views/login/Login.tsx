@@ -35,7 +35,7 @@ const Login = () => {
   return (
     <Fragment>
       <Stack pb={10}>
-        <Text textAlign="center">
+        <Text textAlign="center" color="white">
           Don't have an account?{" "}
           <Box as="small" fontSize={16} color="blue">
             <Link to={`${AUTH_PREFIX_PATH}/register`}>Register</Link>
@@ -46,12 +46,12 @@ const Login = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={8}>
           <FormControl>
-            <FormLabel>Email</FormLabel>
+            <FormLabel color="white">Email</FormLabel>
             <InputGroup>
               <InputLeftElement
                 pt="5px"
                 pointerEvents={"none"}
-                children={<HiOutlineMail color="gray.3000" />}
+                children={<HiOutlineMail color="white" />}
               />
 
               <LoginInput
@@ -66,12 +66,12 @@ const Login = () => {
           </FormControl>
 
           <FormControl>
-            <FormLabel>Password</FormLabel>
+            <FormLabel color="white">Password</FormLabel>
             <InputGroup>
               <InputLeftElement
                 paddingTop={"5px"}
                 pointerEvents={"none"}
-                children={<RiLockPasswordLine color="gray.3000" />}
+                children={<RiLockPasswordLine color="white" />}
               />
 
               <LoginInput
@@ -86,12 +86,12 @@ const Login = () => {
                 {show ? (
                   <AiOutlineEye
                     onClick={handleShowPassword}
-                    color="gray.3000"
+                    color="white"
                   />
                 ) : (
                   <AiOutlineEyeInvisible
                     onClick={handleShowPassword}
-                    color="gray.3000"
+                    color="white"
                   />
                 )}
               </InputRightElement>
@@ -111,6 +111,8 @@ const Login = () => {
           isLoading={isLoading}
           isDisabled={!isValid}
           my={6}
+          color="white"
+          bg="brand_blue.50"
           width="full"
           type="submit"
         >

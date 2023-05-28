@@ -4,8 +4,9 @@ const TableOfPerformingVariants = () => {
   return (
     <Box
       borderRadius="10px"
-      bg="brand_blue.100"
+      bg="brand_blue.300"
       width="full"
+      color="white"
       paddingY={4}
     >
       <Stack spacing={3} divider={<StackDivider width="full" height="0.5px" />}>

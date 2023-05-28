@@ -1,35 +1,30 @@
-import { Box, HStack, VStack } from '@chakra-ui/react';
+import { HStack, VStack } from '@chakra-ui/react';
 import DocumentUpload from '../../../../../components/DocumentUpload/DocumentUpload';
 import { ProjectFields } from '../../../../../services/project/type';
 import SummaryTable from './SummaryTable/SummaryTable';
 import TableOfPerformingVariants from './TableOfPerformingVariants/TableOfPerformingVariants';
 import ScoreDistribution from './ScoreDistribution/ScoreDistribution';
 import FoldImprovement from './FoldImprovement/FoldImprovement';
-import ProteinSequenceViewer from '../Overview/ProteinSequenceViewer';
-import { useGetProcessCSVDataQuery } from '../../../../../services/project/projectApi';
+import ProteinSequenceViewer from '../ProteinSequenceViewer/ProteinSequenceViewer';
 
 interface Props {
   projectId: string;
   proteinPDBID?: string;
-  projectFile?: Array<ProjectFields>;
+  projectFile?: ProjectFields;
 }
 
 const Rounds = ({ projectFile, projectId, proteinPDBID }: Props) => {
-  if (!projectFile || projectFile.length === 0) {
+  if (!projectFile || !projectFile.fileName) {
     return <DocumentUpload projectId={projectId} />
   }
 
-  const { data, isLoading, isError } = useGetProcessCSVDataQuery({ projectId });
+  // if (isLoading) {
+  //   return <p>Loading data...</p>
+  // }
 
-  if (isLoading) {
-    return <p>Loading data...</p>
-  }
-
-  if (isError) {
-    return <p>{isError}</p>
-  }
-
-  console.log({ data });
+  // if (isError) {
+  //   return <p>{isError}</p>
+  // }
 
   const containerStyle = {
     width: "40%",
@@ -49,7 +44,8 @@ const Rounds = ({ projectFile, projectId, proteinPDBID }: Props) => {
       alignItems="self-start"
     >
       <VStack spacing={3} maxWidth="xl" width="full" height="full">
-        <SummaryTable />
+        <SummaryTable projectId={projectId} />
+        
         <TableOfPerformingVariants />
         <ScoreDistribution />
         <FoldImprovement />

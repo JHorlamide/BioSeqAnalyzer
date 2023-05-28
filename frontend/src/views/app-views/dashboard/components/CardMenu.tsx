@@ -79,7 +79,13 @@ const CardMenu = ({ projectId, onOpen }: Props) => {
 
       <MenuList bg="brand_blue.300">
         {menuItems.map(({ key, menuTitle, MenuIcon, action }) => (
-          <MenuItem key={key} display="flex" onClick={action} bg="brand_blue.300">
+          <MenuItem
+            key={key}
+            display="flex"
+            onClick={action}
+            bg="brand_blue.300"
+            _hover={{ bg: "brand_blue.100"}}
+          >
             <MenuIcon size={20} />
             <Text marginLeft={3}>{menuTitle}</Text>
           </MenuItem>

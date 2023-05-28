@@ -44,16 +44,19 @@ const ForgotPassword = () => {
             type="submit"
             width="full"
             alignSelf={"end"}
+            color="white"
+            bg="brand_blue.50"
             isDisabled={!isValid}
           >
             Send
           </Button>
 
           <Button
+            _hover={{ bg: "white" }}
             type="button"
-            width="1/2"
+            width="full"
             onClick={() => handleNavigate(`${AUTH_PREFIX_PATH}/login`)}
-            leftIcon={<BsArrowLeftShort size={25} color="gray.3000" />}
+            leftIcon={<BsArrowLeftShort size={25} color="black" />}
           >
             Back
           </Button>

@@ -4,7 +4,6 @@ import jwtMiddleware from "../auth/middleware/jwtMiddleware";
 import projectController from "./controller/projectController";
 import projectMiddleware from "./middleware/projectMiddleware";
 import config from "../../config/appConfig";
-import { upload } from "../../config/multerConfig";
 
 const APP_PREFIX_PATH = config.prefix;
 
@@ -84,10 +83,34 @@ export class ProjectRoute extends CommonRoutesConfig {
       projectMiddleware.validateUploadReq,
       projectController.uploadProjectCSV
     ])
-    
+
+    /***
+    * @route GET: /api/projects/:projectId/csv-upload/summary-table-of-main-matrices
+    * @desc Get summary of main matrices data from CSV
+    * @access Private
+    * ***/
+    this.app.get(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload/summary-table-of-main-matrices`, [
+      jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectExist,
+      projectMiddleware.validateProjectBelongsToUser,
+      projectController.getSummaryOfMainMatricesData
+    ])
+
+    /***
+    * @route GET: /api/projects/:projectId/csv-upload/top-performing-variants
+    * @desc Get top performing variants data from CSV
+    * @access Private
+    * ***/
+    this.app.get(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload/top-performing-variants`, [
+      jwtMiddleware.validJWTNeeded,
+      projectMiddleware.validateProjectExist,
+      projectMiddleware.validateProjectBelongsToUser,
+      projectController.getTopPerformingVariantsData
+    ])
+
     /***
     * @route GET: /api/projects/:projectId/csv-upload
-    * @desc Get data from the uploaded CSV
+    * @desc Get top performing variants data from CSV
     * @access Private
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload`, [

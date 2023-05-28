@@ -15,8 +15,8 @@ import {
   IDeleteProjectRes,
   IUploadProjectRes,
   IUploadProjectFileReq,
-  IGetProteinDataReq,
-  IGetProteinDataRes
+  IGetSummaryReq,
+  IGetSummaryRes
 } from "./type";
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
@@ -89,9 +89,9 @@ export const projectApi = createApi({
       })
     }),
 
-    getProcessCSVData: builder.query<IGetProteinDataRes, IGetProteinDataReq>({
+    getSummaryMainMatrices: builder.query<IGetSummaryRes, IGetSummaryReq>({
       query: ({ projectId }) => ({
-        url: `/projects/${projectId}/csv-upload`,
+        url: `/projects/${projectId}/csv-upload/summary-table-of-main-matrices`,
       })
     }),
 
@@ -117,5 +117,5 @@ export const {
   useUpdateProjectMutation,
   useDeleteProjectMutation,
   useUploadProjectFileMutation,
-  useGetProcessCSVDataQuery
+  useGetSummaryMainMatricesQuery
 } = projectApi;

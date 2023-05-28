@@ -1,6 +1,6 @@
 import { Box, Flex, HStack, Link, Stack, Text } from '@chakra-ui/react';
 import { BsFolderFill } from 'react-icons/bs';
-import ProteinSequenceViewer from './ProteinSequenceViewer';
+import ProteinSequenceViewer from '../ProteinSequenceViewer/ProteinSequenceViewer';
 
 export interface OverviewProps {
   proteinPDBID?: string;
@@ -21,6 +21,7 @@ const ProteinViewer = (props: OverviewProps) => {
 
   const headingStyle = {
     fontWeight: 600,
+    color: "white",
     fontStyle: "italic",
   }
 
@@ -36,25 +37,26 @@ const ProteinViewer = (props: OverviewProps) => {
     <Stack spacing={5}>
       <Stack spacing={3}>
         <Box display="flex" alignItems="center">
-          <Text fontSize={20} fontWeight="normal">
+          <Text fontSize={20} fontWeight="normal" color="white">
             Project Title:
           </Text>
 
           <HStack ml={2} justify="space-between">
-            <BsFolderFill size={20} />
+            <BsFolderFill size={20} color="white" />
             <span style={headingStyle}>{projectTitle}</span>
           </HStack>
         </Box>
 
         <Box display="flex" justifyContent="space-between" alignItems="center">
           <Flex>
-            <Text fontSize={20} fontWeight="normal">Objectives: </Text>
+            <Text fontSize={20} fontWeight="normal" color="white">Objectives: </Text>
 
             <HStack ml={2}>
               <Text
                 bg="brand_blue.300"
                 paddingX={4}
                 paddingY={1}
+                color="white"
                 borderRadius="full"
               >
                 Project Goal: <span style={headingStyle}>{projectGoal}</span>
@@ -64,6 +66,7 @@ const ProteinViewer = (props: OverviewProps) => {
                 bg="brand_blue.300"
                 paddingX={4}
                 paddingY={1}
+                color="white"
                 borderRadius="full"
               >
                 Measured Property: <span style={headingStyle}>{measuredProperty}</span>

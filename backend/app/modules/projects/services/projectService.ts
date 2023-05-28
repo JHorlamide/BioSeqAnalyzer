@@ -100,6 +100,21 @@ class ProjectService {
     }
   }
 
+  public getProjectFileKey = async (projectId: string) => {
+    try {
+      const project = await this.getProjectById(projectId);
+      const { Key } = project.projectFile;
+
+      if (!Key) {
+        throw new ClientError(ERR_MSG.NO_FILE_UPLOAD);
+      }
+
+      return project.projectFile.Key;
+    } catch (error: any) {
+      throw new ClientError(error.message);
+    }
+  }
+
   public async updateProject(projectUpdateData: IUpdateProject) {
     const { projectId, projectData } = projectUpdateData;
 
@@ -337,11 +352,7 @@ class ProjectService {
     const bestFitness = bestFitnessEntry.fitness;
     const foldImprovement = bestFitness / wildTypeFitness;
 
-    const result = {
-      foldImprovement,
-    };
-
-    return result;
+    return foldImprovement;
   }
 
   // Get sequence above reference

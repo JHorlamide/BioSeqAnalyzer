@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
-import { toast } from 'react-hot-toast';
 import { PluginSpec } from 'molstar/lib/mol-plugin/spec';
 import { FILE_FORMAT, PDB_BASE_URL } from '../../../../../config/AppConfig';
+import { toast } from 'react-hot-toast';
 
 interface containerStyle {
   width: string;
@@ -28,7 +28,6 @@ const ProteinSequenceViewer = ({ proteinPDBID, containerStyle }: Props) => {
     const { PluginCommands } = await import("molstar/lib/mol-plugin/commands");
     const { ColorNames } = await import("molstar/lib/mol-util/color/names");
 
-
     const MySpec: PluginSpec = {
       ...DefaultPluginSpec(),
       config: [
@@ -42,11 +41,11 @@ const ProteinSequenceViewer = ({ proteinPDBID, containerStyle }: Props) => {
     const canvas = canvasRef.current;
     const parent = containerRef.current;
     if (!plugin.initViewer(canvas, parent)) {
-      toast.error("Failed to init Mol*");
+      toast.error("Failed to init Mol*")
       return;
     }
 
-    const data = await plugin.builders.data.download({ url: pdbDownloadUrl },{ state: { isGhost: true } });
+    const data = await plugin.builders.data.download({ url: pdbDownloadUrl }, { state: { isGhost: true } });
     const trajectory = await plugin.builders.structure.parseTrajectory(data, FILE_FORMAT);
     await plugin.builders.structure.hierarchy.applyPreset(trajectory, 'default');
     const renderer = plugin.canvas3d!.props.renderer;
@@ -64,5 +63,33 @@ const ProteinSequenceViewer = ({ proteinPDBID, containerStyle }: Props) => {
   )
 }
 
-export default ProteinSequenceViewer
+export default ProteinSequenceViewer;
+
+// const LoadMolFailed = ({ error }: { error: string }) => {
+//   return (
+//     <Box marginTop="60px">
+//       <Text
+//         color="red.500"
+//         fontSize={24}
+//         fontWeight="semibold"
+//         textAlign="center"
+//       >
+//         {error}
+//       </Text>
+//     </Box>
+//   )
+// }
+
+// const LoadingMol = () => {
+//   return (
+//     <Text
+//       color="white"
+//       textAlign="center"
+//       fontStyle="italic"
+//       fontSize={20}
+//     >
+//       Loading Mol* ...
+//     </Text>
+//   )
+// }
 
