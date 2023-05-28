@@ -16,8 +16,8 @@ const config = {
   },
 
   aws: {
-    secrete: process.env.AWS_SECRET,
-    accessKey: process.env.AWS_ACCESS_KEY_ID,
+    secrete: process.env.AWS_SECRET as string,
+    accessKey: process.env.AWS_ACCESS_KEY_ID as string,
     bucketName: process.env.AWS_BUCKET_NAME as string,
   },
 
@@ -28,7 +28,8 @@ const config = {
   uniprotBaseUrl: process.env.UNIPROT_BASE_URL,
   pdbBaseUrl: process.env.PDB_BASE_URL,
   MaxFileSize: 5 * 1024 * 1024, // Maximum file size of 5MB
-  summaryCacheKey: "summary-csv-data"
+  summaryCacheKey: "summary-csv-data",
+  topVariantCacheKey: "top-variant-csv-data"
 }
 
 export default config;

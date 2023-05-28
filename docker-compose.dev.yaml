@@ -1,6 +1,15 @@
 version: '3.8'
 
 services:
+  redis-cache:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - redis-cache:/data
+
   mongodb:
     image: mongo:4.4
     container_name: mongodb
@@ -9,13 +18,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "1234"
-
-  redis:
-    image: redis
-    ports:
-      - 6379:6379
-    volumes:
-      - redis_data:/data
 
   backend-server:
     container_name: backend-server
@@ -29,7 +31,11 @@ services:
       - ./backend/app:/backend/app:cached,ro
     env_file: [ ./backend/.env ]
     command: npm run dev #This will override the command in the Dockerfile
-    depends_on: [ "mongodb" ]
+    depends_on: [ "mongodb", "redis-cache" ]
+    environment:
+      REDIS_HOST: "redis-cache"
+      REDIS_PORT: 6379
+      REDIS_PASSWORD: "123@p@ass"
 
   protein-frontend:
     container_name: protein-frontend
@@ -41,3 +47,7 @@ services:
       - ./frontend/public:/frontend/public:cached,ro
       - ./frontend/src:/frontend/src:cached,ro
     depends_on: [ "backend-server" ]
+
+volumes:
+  redis-cache:
+    driver: local

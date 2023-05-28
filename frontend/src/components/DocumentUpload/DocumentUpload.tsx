@@ -105,7 +105,6 @@ const DocumentUpload = ({ projectId }: Props) => {
           <ModalBody width="full"
             p={4}
             border="2px dotted white"
-            borderColor={isDragOver ? 'blue.500' : 'gray.200'}
             borderRadius="md"
             textAlign="center"
             onDragOver={handleDragOver}

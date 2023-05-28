@@ -5,6 +5,8 @@ import responseHandler from "../../../common/responseHandler";
 import { RES_MSG, ERR_MSG } from "../types/constants";
 import uniprotService from "../services/uniprot.service";
 import s3Service from "../s3Service/s3Service";
+import config from "../../../config/appConfig";
+import { getCacheData, setCacheData } from "../RedisCash/redisCash";
 
 class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
@@ -78,9 +80,15 @@ class ProjectController {
 
   public getSummaryOfMainMatricesData = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
+    const { summaryCacheKey } = config;
     const projectFileKey = await projectService.getProjectFileKey(projectId);
     const s3ReadStream = s3Service.getFile(projectFileKey);
     const csvData = await projectService.parseS3ReadStream(s3ReadStream);
+
+    const summaryCachedData = await getCacheData(summaryCacheKey);
+    if (summaryCachedData) {
+      return responseHandler.successResponse("Cached data fetched", { summaryCacheKey }, res);
+    }
 
     // Total number of sequence
     const totalSequence = projectService.getTotalNumberOfSequence(csvData);
@@ -106,11 +114,21 @@ class ProjectController {
       foldImprovement,
     }
 
+    // Cache the data for future requests
+    // Cache for 1 hour (3600 seconds)
+    await setCacheData(summaryCacheKey, resData, 3600);
     responseHandler.successResponse(RES_MSG.SUMMARY_FETCHED, resData, res);
   })
 
   public getTopPerformingVariantsData = asyncHandler(async (req: Request, res: Response) => {
-    
+    const { projectId } = req.params;
+    const projectFileKey = await projectService.getProjectFileKey(projectId);
+    const s3ReadStream = s3Service.getFile(projectFileKey);
+    const csvData = await projectService.parseS3ReadStream(s3ReadStream);
+
+    // 4. For each individual mutation, the range of scores for sequences that include this mutation
+    const mutationRanges = projectService.getMutationRange(csvData);
+    responseHandler.successResponse("Top performing variants", { mutationRanges }, res);
   })
 
   public processCVSFile = asyncHandler(async (req: Request, res: Response) => {

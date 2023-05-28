@@ -96,7 +96,23 @@ export interface IGetSummaryRes {
   };
 }
 
+interface TopVariants {
+  mutation: string;
+  scoreRange: {
+    min: number;
+    max: number;
+  }
+};
 
+export interface IGetTopVariantsRes {
+  data: {
+    mutationRanges: TopVariants[]
+  }
+}
+
+export interface IGetTopVariantsReq {
+  projectId: string;
+}
 
 export interface IDeleteProject {
   projectId: string;

@@ -1,8 +1,12 @@
-import { Spinner, Center } from "@chakra-ui/react";
+import { Spinner, Center, SpinnerProps } from "@chakra-ui/react";
 
-const AppLoader = () => {
+interface Props {
+  spinnerProps?: SpinnerProps
+}
+
+const AppLoader = ({ spinnerProps, ...rest }: Props) => {
   return (
-    <Center justifyContent="center" alignItems="center">
+    <Center justifyContent="center" alignItems="center" {...spinnerProps} {...rest}>
       <Spinner
         mt={100}
         thickness="4px"

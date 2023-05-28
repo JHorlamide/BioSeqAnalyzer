@@ -16,7 +16,9 @@ import {
   IUploadProjectRes,
   IUploadProjectFileReq,
   IGetSummaryReq,
-  IGetSummaryRes
+  IGetSummaryRes,
+  IGetTopVariantsRes,
+  IGetTopVariantsReq
 } from "./type";
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
@@ -94,6 +96,12 @@ export const projectApi = createApi({
         url: `/projects/${projectId}/csv-upload/summary-table-of-main-matrices`,
       })
     }),
+ 
+    getTopVariants: builder.query<IGetTopVariantsRes, IGetTopVariantsReq>({
+      query: ({ projectId }) => ({
+        url: `/projects/${projectId}/csv-upload/top-performing-variants`,
+      })
+    }),
 
     deleteProject: builder.mutation<IDeleteProjectRes, IDeleteProject>({
       query: ({ projectId }) => ({
@@ -117,5 +125,6 @@ export const {
   useUpdateProjectMutation,
   useDeleteProjectMutation,
   useUploadProjectFileMutation,
-  useGetSummaryMainMatricesQuery
+  useGetSummaryMainMatricesQuery,
+  useGetTopVariantsQuery
 } = projectApi;

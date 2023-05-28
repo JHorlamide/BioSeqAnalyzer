@@ -45,8 +45,8 @@ const Rounds = ({ projectFile, projectId, proteinPDBID }: Props) => {
     >
       <VStack spacing={3} maxWidth="xl" width="full" height="full">
         <SummaryTable projectId={projectId} />
-        
-        <TableOfPerformingVariants />
+
+        <TableOfPerformingVariants projectId={projectId} />
         <ScoreDistribution />
         <FoldImprovement />
       </VStack>

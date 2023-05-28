@@ -1,6 +1,5 @@
 import { Response } from "express";
 import HttpStatus, { } from "http-status";
-import { HttpStatusCode } from "./types";
 import httpStatus from "http-status";
 
 /**
@@ -9,23 +8,27 @@ import httpStatus from "http-status";
  */
 class ResponseHandler<T extends object> {
   public successfullyCreated(message: string, data: T, res: Response): Response {
-    return res.status(HttpStatus.CREATED).json({ status: "Success", message, data })
+    return res
+      .status(HttpStatus.CREATED)
+      .json({ status: "Success", message, data })
   }
 
   public successResponse(message: string, data: T, res: Response): Response {
-    return res.status(HttpStatus.OK).json({ status: "Success", message, data })
+    return res
+      .status(HttpStatus.OK)
+      .json({ status: "Success", message, data })
   }
 
   public noContent(message: string, res: Response) {
-    return res.status(httpStatus.NO_CONTENT).json({ status: "Success", message })
+    return res
+      .status(httpStatus.NO_CONTENT)
+      .json({ status: "Success", message })
   }
 
-  public badRequest(
-    message: string,
-    res: Response,
-    statusCode: HttpStatusCode = HttpStatus.BAD_REQUEST
-  ): Response {
-    return res.status(statusCode).json({ status: "Failure", message })
+  public badRequest(message: string, res: Response): Response {
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .json({ status: "Failure", message })
   }
 
   public unAuthorizedResponse(message: string, res: Response): Response {

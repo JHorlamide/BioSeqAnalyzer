@@ -41,7 +41,7 @@ const ProteinSequenceViewer = ({ proteinPDBID, containerStyle }: Props) => {
     const canvas = canvasRef.current;
     const parent = containerRef.current;
     if (!plugin.initViewer(canvas, parent)) {
-      toast.error("Failed to init Mol*")
+      // toast.error("Failed to init Mol*")
       return;
     }
 
