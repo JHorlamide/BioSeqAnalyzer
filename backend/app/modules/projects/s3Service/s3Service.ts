@@ -9,7 +9,7 @@ class S3Service {
   private aws = config.aws;
   private s3Client = new S3();
 
-  public uploadFile(file: any) { //Express.Multer.File
+  public uploadFile(file: Express.Multer.File) {
     const bucketParams = {
       Bucket: this.aws.bucketName,
       Key: `upload/${uuidV4()}-${file.originalname}`,

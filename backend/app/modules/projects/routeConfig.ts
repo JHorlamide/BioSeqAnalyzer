@@ -93,6 +93,7 @@ export class ProjectRoute extends CommonRoutesConfig {
       jwtMiddleware.validJWTNeeded,
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
+      projectMiddleware.getCachedSummaryData,
       projectController.getSummaryOfMainMatricesData
     ])
 
@@ -105,6 +106,7 @@ export class ProjectRoute extends CommonRoutesConfig {
       jwtMiddleware.validJWTNeeded,
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
+      projectMiddleware.getCachedTopPermingVariantData,
       projectController.getTopPerformingVariantsData
     ])
 

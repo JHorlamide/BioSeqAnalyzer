@@ -14,10 +14,10 @@ import { RegisterFormData, registrationSchema } from "../schemas/register.schema
 import { useRegisterUserMutation } from "../services/auth/registerApi";
 
 export const useLogin = () => {
-  const [show, setShow] = useState(false);
-  const [loginUser, { isLoading }] = useLoginUserMutation();
   const dispatch = useAppDispatch();
+  const [show, setShow] = useState(false);
   const { handleNavigate } = useNavigation();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
 
   const {
     register,

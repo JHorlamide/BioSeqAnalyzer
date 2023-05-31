@@ -1,4 +1,4 @@
-import { configureStore, combineReducers, Reducer, AnyAction } from "@reduxjs/toolkit";
+import { configureStore, Store, combineReducers, Reducer, AnyAction } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query"
 import { TypedUseSelectorHook, useSelector, useDispatch } from "react-redux";
 import {
@@ -46,7 +46,7 @@ export const rootReducer: Reducer = persistReducer(persistConfig, (state: RootSt
 });
 
 // Store Configuration
-export const store = configureStore({
+export const store: Store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
     serializableCheck: {

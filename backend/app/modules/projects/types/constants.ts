@@ -7,7 +7,8 @@ export const RES_MSG = {
   PROJECT_NOT_FOUND: "Project not found",
   PROJECT_DELETED: "Project deleted successfully",
   FILE_UPLOADED: "File uploaded and data saved successfully",
-  SUMMARY_FETCHED: "Summary of main matrices fetched"
+  SUMMARY_FETCHED: "Summary of main matrices fetched",
+  TOP_PERFORMING_VARIANTS_FETCHED: "Top performing variants",
 }
 
 export const ERR_MSG = {

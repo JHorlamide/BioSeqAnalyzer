@@ -60,7 +60,6 @@ export const Navigation = () => {
               <Icon /> <Text>{title}</Text>
             </HStack>
           </Link>
-
         ))}
       </VStack>
 

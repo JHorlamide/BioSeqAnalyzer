@@ -6,7 +6,7 @@ import { RES_MSG, ERR_MSG } from "../types/constants";
 import uniprotService from "../services/uniprot.service";
 import s3Service from "../s3Service/s3Service";
 import config from "../../../config/appConfig";
-import { getCacheData, setCacheData } from "../RedisCash/redisCash";
+import redisCash from "../RedisCash/redisCash";
 
 class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
@@ -66,32 +66,18 @@ class ProjectController {
       return responseHandler.badRequest(ERR_MSG.NO_FILE_UPLOAD, res);
     }
 
-    const response = await s3Service.uploadFile(file)
-    const uploadRes = {
-      fileName: file.originalname,
-      Bucket: response.Bucket,
-      Key: response.Key,
-    }
-
-    // Update the project with the new projectFile data
-    const uploadResult = await projectService.uploadProjectFile(projectId, uploadRes);
-    return responseHandler.successResponse(RES_MSG.FILE_UPLOADED, uploadResult, res);
+    await projectService.uploadProjectFile(projectId, file);
+    return responseHandler.noContent(RES_MSG.FILE_UPLOADED, res);
   })
 
   public getSummaryOfMainMatricesData = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
     const { summaryCacheKey } = config;
+    const cacheKey = `${summaryCacheKey}-${projectId}`;
+
     const projectFileKey = await projectService.getProjectFileKey(projectId);
     const s3ReadStream = s3Service.getFile(projectFileKey);
     const csvData = await projectService.parseS3ReadStream(s3ReadStream);
-
-    const summaryCachedData = await getCacheData(summaryCacheKey);
-    if (summaryCachedData) {
-      return responseHandler.successResponse("Cached data fetched", { summaryCacheKey }, res);
-    }
-
-    // Total number of sequence
-    const totalSequence = projectService.getTotalNumberOfSequence(csvData);
 
     // 5. Number of sequences with a score above the reference sequence (with value "WT" in "muts" column)
     const numSequencesAboveReference = projectService.getSequencesAboveReference(csvData);
@@ -106,7 +92,7 @@ class ProjectController {
     const foldImprovement = projectService.getFoldImprovement(csvData);
 
     const resData = {
-      totalSequence,
+      totalSequence: numSequencesAboveReference.totalSequences,
       topMutants,
       numSequencesAboveReference,
       percentageSequencesAboveReference: numSequencesAboveReference.hitRate,
@@ -116,30 +102,37 @@ class ProjectController {
 
     // Cache the data for future requests
     // Cache for 1 hour (3600 seconds)
-    await setCacheData(summaryCacheKey, resData, 3600);
+    await redisCash.setCacheData2(cacheKey, 3600, resData)
     responseHandler.successResponse(RES_MSG.SUMMARY_FETCHED, resData, res);
   })
 
   public getTopPerformingVariantsData = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
+    const { topVariantCacheKey } = config;
+    const cachedKey = `${topVariantCacheKey}-${projectId}`;
+
     const projectFileKey = await projectService.getProjectFileKey(projectId);
     const s3ReadStream = s3Service.getFile(projectFileKey);
     const csvData = await projectService.parseS3ReadStream(s3ReadStream);
 
     // 4. For each individual mutation, the range of scores for sequences that include this mutation
     const mutationRanges = projectService.getMutationRange(csvData);
-    responseHandler.successResponse("Top performing variants", { mutationRanges }, res);
+
+    // Cache the data for future requests
+    // Cache for 1 hour (3600 seconds)
+    await redisCash.setCacheData2(cachedKey, 3600, mutationRanges);
+    responseHandler.successResponse(RES_MSG.TOP_PERFORMING_VARIANTS_FETCHED, {
+      mutationRanges
+    }, res);
   })
 
   public processCVSFile = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
-
     const projectFileKey = await projectService.getProjectFileKey(projectId);
     const s3ReadStream = s3Service.getFile(projectFileKey);
     const csvData = await projectService.parseS3ReadStream(s3ReadStream);
 
     try {
-      const totalSequence = projectService.getTotalNumberOfSequence(csvData);
       // 1. Distribution of fitness scores as a histogram
       // The reference sequence should be highlighted in the histogram
       const histogramWithReference = projectService.getHistogramData(csvData);
@@ -163,15 +156,15 @@ class ProjectController {
       const foldImprovement = projectService.getFoldImprovement(csvData);
 
       responseHandler.successResponse("Data fetched for rendering", {
-        histogramData: histogramWithReference,
-        totalSequence,
         topMutants,
-        mutationDistribution,
-        mutationRanges,
-        numSequencesAboveReference,
-        percentageSequencesAboveReference: numSequencesAboveReference.hitRate,
-        highestFitness,
         foldImprovement,
+        mutationRanges,
+        highestFitness,
+        mutationDistribution,
+        numSequencesAboveReference,
+        histogramData: histogramWithReference,
+        totalSequence: numSequencesAboveReference.totalSequences,
+        percentageSequencesAboveReference: numSequencesAboveReference.hitRate,
       }, res);
     } catch (error: any) {
       return responseHandler.serverError(error.message, res);

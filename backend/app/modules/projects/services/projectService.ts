@@ -9,6 +9,7 @@ import { ERR_MSG } from "../types/constants";
 import { ClientError } from "../../../common/exceptions/clientError";
 import { NotFoundError } from "../../../common/exceptions/notFoundError";
 import { ServerError } from "../../../common/exceptions/serverError";
+import s3Service from "../s3Service/s3Service";
 
 class ProjectService {
   /**
@@ -210,26 +211,26 @@ class ProjectService {
     return hasExpectedColumns && hasExpectedWildTypeSequence;
   }
 
-  public async uploadProjectFile(projectId: string, uploadRes: S3UploadRes) {
-    const { fileName, Bucket, Key } = uploadRes;
-
+  public async uploadProjectFile(projectId: string, file: Express.Multer.File) {
     try {
       const project = await projectRepository.getProjectById(projectId);
-
       if (!project) {
         throw new ClientError(ERR_MSG.PROJECT_NOT_FOUND);
       }
 
-      project.projectFile = { fileName, Bucket, Key };
+      const response = await s3Service.uploadFile(file);
+
+      // Update the project with the new projectFile data
+      project.projectFile = {
+        fileName: file.originalname,
+        Bucket: response.Bucket,
+        Key: response.Key
+      };
+
       return await project.save();
     } catch (error: any) {
       throw new ServerError(error.message);
     }
-  }
-
-  // Get total number of sequence
-  public getTotalNumberOfSequence(csvData: CSVColumnDataType[]) {
-    return csvData.length;
   }
 
   // Get Histogram Data
@@ -357,9 +358,10 @@ class ProjectService {
 
   // Get sequence above reference
   public getSequencesAboveReference = (csvData: CSVColumnDataType[]) => {
-    // Filter the csvData to get sequences with mutations and scores above the reference sequence (wild type)
+    // Filter the csvData to get sequences with mutations
+    // and scores above the reference sequence (wild type)
     const sequencesAboveReference = csvData.filter((entry) => {
-      return entry.muts.includes('WT') && entry.fitness > this.getReferenceFitness(csvData);
+      return entry.muts.includes("WT") && entry.fitness > this.getReferenceFitness(csvData);
     });
 
     const totalSequences = csvData.length;
@@ -378,7 +380,7 @@ class ProjectService {
   // Helper function to get the fitness score of the reference sequence (wild type)
   private getReferenceFitness(csvData: CSVColumnDataType[]) {
     for (const entry of csvData) {
-      if (entry.muts.includes('WT')) {
+      if (entry.muts.includes("WT")) {
         return entry.fitness;
       }
     }

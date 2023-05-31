@@ -7,7 +7,7 @@ import {
   MenuGroup,
   MenuItem,
 } from "@chakra-ui/react";
-import { IconType, icons } from "react-icons";
+import { IconType } from "react-icons";
 import { IoIosArrowDown, IoIosLogOut } from "react-icons/io";
 
 interface ProfileMenuProp {
@@ -15,7 +15,7 @@ interface ProfileMenuProp {
   logout: () => void;
 }
 
-interface MenuItem {
+interface MenuItemType {
   key: string;
   title: string;
   action?: () => void;
@@ -23,7 +23,7 @@ interface MenuItem {
 }
 
 const ProfileMenu = ({ fullName, logout }: ProfileMenuProp) => {
-  const MenuItems: MenuItem[] = [
+  const MenuItems: MenuItemType[] = [
     {
       key: "profile.key",
       title: "Profile",

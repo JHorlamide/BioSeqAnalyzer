@@ -33,6 +33,15 @@ const ProteinViewer = (props: OverviewProps) => {
     justifyContent: "center",
   }
 
+  const linkStyle = {
+    target: "_blank",
+    bg: "brand_blue.100",
+    fontWeight: "500",
+    borderRadius: "full",
+    paddingX: 4,
+    paddingY: 2,
+  }
+
   return (
     <Stack spacing={5}>
       <Stack spacing={3}>
@@ -77,16 +86,9 @@ const ProteinViewer = (props: OverviewProps) => {
           {pdbFileUrl && (
             <Link
               href={pdbFileUrl}
-              target="_blank"
-              bg="brand_blue.100"
-              fontWeight="500"
               fontSize={["0.875rem", "1rem"]}
-              borderRadius="full"
-              paddingX={4}
-              paddingY={2}
-              _hover={{
-                fontStyle: "none"
-              }}
+              _hover={{ fontStyle: "none" }}
+              {...linkStyle}
             >
               View protein structure on RCSB
             </Link>

@@ -33,9 +33,10 @@ services:
     command: npm run dev #This will override the command in the Dockerfile
     depends_on: [ "mongodb", "redis-cache" ]
     environment:
-      REDIS_HOST: "redis-cache"
       REDIS_PORT: 6379
-      REDIS_PASSWORD: "123@p@ass"
+      REDIS_HOST: "awesomeredis"
+      REDIS_USERNAME: "proteinUsername"
+      REDIS_PASSWORD: "SuperPassword"
 
   protein-frontend:
     container_name: protein-frontend

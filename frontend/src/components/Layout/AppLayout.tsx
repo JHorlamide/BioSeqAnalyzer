@@ -33,7 +33,6 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         <Navigation />
       </Flex>
 
-
       <Box
         paddingY={{ md: 6, base: 5 }}
         paddingX={{ md: 6, base: 3 }}
@@ -41,7 +40,9 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         overflow="auto"
       >
         <HeaderNav />
-        <Suspense fallback={<AppLoader />}>{children}</Suspense>
+        <Suspense fallback={<AppLoader />}>
+          {children}
+        </Suspense>
         <Footer />
       </Box>
     </Flex>

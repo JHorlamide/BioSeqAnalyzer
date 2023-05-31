@@ -12,12 +12,12 @@ import {
   Text
 } from "@chakra-ui/react";
 import StackedHalf from "../../assets/Stacked_half.webp";
-import Button from "../CustomBtn/Button";
+import Button from "../../../../../../components/CustomBtn/Button";
 import { AiOutlineCloudUpload, AiOutlineCloudDownload } from "react-icons/ai"
-import { SAMPLE_CSV_LINK } from '../../config/AppConfig';
-import { useUploadProjectFileMutation } from '../../services/project/projectApi';
+import { SAMPLE_CSV_LINK } from '../../../../../../config/AppConfig';
+import { useUploadProjectFileMutation } from '../../../../../../services/project/projectApi';
 import { toast } from 'react-hot-toast';
-import Utils from '../../utils';
+import Utils from '../../../../../../utils';
 
 interface Props {
   projectId: string;

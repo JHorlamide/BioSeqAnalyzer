@@ -1,5 +1,5 @@
 import { HStack, VStack } from '@chakra-ui/react';
-import DocumentUpload from '../../../../../components/DocumentUpload/DocumentUpload';
+import DocumentUpload from './DocumentUpload/DocumentUpload';
 import { ProjectFields } from '../../../../../services/project/type';
 import SummaryTable from './SummaryTable/SummaryTable';
 import TableOfPerformingVariants from './TableOfPerformingVariants/TableOfPerformingVariants';

@@ -1,11 +1,13 @@
-import { Request, Response, NextFunction } from "express";
 import fs from "fs";
+import { Request, Response, NextFunction } from "express";
 import requestBodyValidator from "../../../common/middleware/requestValidation";
 import { createProjectSchema, paginationParams, projectUploadSchema } from "../validation/projectSchema";
 import responseHandler from "../../../common/responseHandler";
 import projectService from "../services/projectService";
 import { upload } from "../../../config/multerConfig";
-import { ERR_MSG } from "../types/constants";
+import { ERR_MSG, RES_MSG } from "../types/constants";
+import redisCash from "../RedisCash/redisCash";
+import config from "../../../config/appConfig"
 
 class ProjectMiddleware {
   public validateRequestBodyField = requestBodyValidator(createProjectSchema);
@@ -75,6 +77,42 @@ class ProjectMiddleware {
 
       if (!project) {
         return responseHandler.forbiddenResponse("Not authorized", res);
+      }
+
+      next();
+    } catch (error: any) {
+      return responseHandler.serverError(error.message, res);
+    }
+  }
+
+  public async getCachedSummaryData(req: Request, res: Response, next: NextFunction) {
+    const { projectId } = req.params;
+    const { summaryCacheKey } = config;
+    const cacheKey = `${summaryCacheKey}-${projectId}`;
+
+    try {
+      const cachedSummaryData = await redisCash.getCacheData2(cacheKey);
+      if (cachedSummaryData !== null) {
+        const resData = JSON.parse(cachedSummaryData);
+        return responseHandler.successResponse(RES_MSG.SUMMARY_FETCHED, resData, res);
+      }
+
+      next();
+    } catch (error: any) {
+      return responseHandler.serverError(error.message, res);
+    }
+  }
+
+  public async getCachedTopPermingVariantData(req: Request, res: Response, next: NextFunction) {
+    const { projectId } = req.params;
+    const { topVariantCacheKey } = config;
+    const cacheKey =  `${topVariantCacheKey}-${projectId}`;
+
+    try {
+      const cachedTopPerformingVariantData = await redisCash.getCacheData2(cacheKey);
+      if (cachedTopPerformingVariantData !== null) {
+        const resData = JSON.parse(cachedTopPerformingVariantData);
+        return responseHandler.successResponse(RES_MSG.SUMMARY_FETCHED, resData, res);
       }
 
       next();

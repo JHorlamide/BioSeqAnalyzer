@@ -1,8 +1,10 @@
-import React from 'react'
+import { Text } from '@chakra-ui/react'
 
 const ProjectMembers = () => {
   return (
-    <div>Project Member Feature Coming Soon!</div>
+    <Text color="white" fontSize={18} fontWeight="semibold">
+      Project Member Feature Coming Soon!
+    </Text>
   )
 }
 

@@ -1,14 +1,15 @@
-import redis, { RedisClientType, createClient } from 'redis';
-import { promisify } from "util";
+import { createClient, RedisClientType } from "redis";
 import { ServerError } from '../../../common/exceptions/serverError';
-import { error } from 'console';
+import { promisify } from "util";
 
-const client = createClient();
-client.on('error', err => {
-  console.log('Redis Client Error', err)
-});
+console.log({ redisPort: process.env.REDIS_PORT });
+
+// Construct the Redis URL using the environment variables
+const redisUrl = `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
 
 export const getCacheData = async (cacheKey: string) => {
+  const client = createClient();
+
   try {
     const cachedData = await client.get(cacheKey) as string;
     return JSON.parse(cachedData);
@@ -19,6 +20,8 @@ export const getCacheData = async (cacheKey: string) => {
 }
 
 export const setCacheData = async (cacheKey: string, data: any, expiration = 3600): Promise<void> => {
+  const client = createClient();
+
   try {
     const serializedData = JSON.stringify(data);
     await client.set(cacheKey, serializedData);
@@ -28,83 +31,67 @@ export const setCacheData = async (cacheKey: string, data: any, expiration = 360
   }
 }
 
-// class RedisCache {
-//   private client: RedisClientType;
-//   private getAsync: (key: string) => Promise<string | null>;
-//   private setAsync: (key: string, value: string, mode: string, duration: number) => Promise<string>;
+class RedisCache {
+  private client: RedisClientType;
+  private getAsync: (key: string) => Promise<string | null>;
+  private setAsync: (key: string,  ttl: number, value: string) => Promise<string>;
 
-//   constructor() {
-//     this.client = createClient();
-//     this.getAsync = promisify(this.client.get).bind(this.client);
-//     this.setAsync = promisify(this.client.set).bind(this.client);
-//     // this.connectRedis()
-//     //   .then(() => console.log('Redis connection established'))
-//     //   .catch((err) => {
-//     //     console.error('Error connecting to Redis', err);
-//     //     throw new ServerError("Error connecting to redis");
-//     //   });
-//   }
+  constructor() {
+    this.client = createClient({ url: redisUrl });
+    this.getAsync = promisify(this.client.get).bind(this.client);
+    this.setAsync = promisify(this.client.setEx).bind(this.client);
 
-//   async initialize(): Promise<void> {
-//     this.client.on('error', err => console.log('Redis Client Error', err));
-//     await this.client.connect();
-//     // await this.connectRedis();
-//   }
+    this.client.on("connect", () => {
+      console.log(`Redis connection established`);
+    });
 
-//   async getCacheData(cacheKey: string): Promise<any> {
-//     try {
-//       const cachedData = await this.getAsync(cacheKey) as string;
-//       return JSON.parse(cachedData);
-//     } catch (error) {
-//       console.error('Error retrieving cached data:', error);
-//       throw new ServerError("Internal Server Error");
-//     }
-//   }
+    this.client.on("error", (error) => {
+      console.error(`Redis error, service degraded: ${error}`);
+    });
+  }
 
-//   async setCacheData(cacheKey: string, data: any, expiration = 3600): Promise<void> {
-//     try {
-//       const serializedData = JSON.stringify(data);
-//       await this.setAsync(cacheKey, serializedData, 'EX', expiration);
-//     } catch (error) {
-//       console.error('Error setting cached data:', error);
-//       throw new ServerError('Internal Server Error');
-//     }
-//   }
+  public async getCacheData2(cacheKey: string): Promise<any> {
+    try {
+      const cachedData = await this.getAsync(cacheKey) as string;
+      return JSON.parse(cachedData);
+    } catch (error) {
+      console.error('Error retrieving cached data:', error);
+      throw new Error('Internal Server Error');
+    }
+  }
 
-//   private async connectRedis(): Promise<void> {
-//     await this.client.connect();
+  public async setCacheData2(cacheKey: string, ttl = 3600, data: any): Promise<void> {
+    try {
+      const serializedData = JSON.stringify(data);
+      await this.setAsync(cacheKey, ttl, serializedData);
+    } catch (error) {
+      console.error('Error setting cached data:', error);
+      throw new Error('Internal Server Error');
+    }
+  }
 
-//     return new Promise<void>((resolve, reject) => {
-//       this.client.on('ready', () => {
-//         console.log('Redis connection established');
-//         resolve();
-//       });
+  public async getCacheData(cacheKey: string): Promise<any> {
+    try {
+      const cachedData = await this.client.get(cacheKey) as string;
+      return JSON.parse(cachedData);
+    } catch (error) {
+      console.error('Error retrieving cached data:', error);
+      throw new ServerError("Internal Server Error");
+    }
+  }
 
-//       this.client.on('error', (err) => {
-//         reject(err);
-//         throw new ServerError(`Error connecting to Redis: ${error}`)
-//       });
-//     });
-//   }
-// }
+  public async setCacheData(
+    cacheKey: string,
+    data: any,
+    expiration = 3600): Promise<void> {
+    try {
+      const serializedData = JSON.stringify(data);
+      await this.client.setEx(cacheKey, expiration, serializedData);
+    } catch (error) {
+      console.error('Error setting cached data:', error);
+      throw new ServerError('Internal Server Error');
+    }
+  }
+}
 
-// const redisCache = new RedisCache();
-// redisCache.initialize().catch((err) => {
-//   console.error('Error connecting to Redis', err);
-//   throw new ServerError("Error connecting to Redis");
-// });
-
-// export default redisCache;
-
-  // private async connectRedis(): Promise<void> {
-  //   return new Promise<void>((resolve, reject) => {
-  //     this.client.on('error', (err) => {
-  //       console.error('Redis Client Error', err);
-  //       reject(err);
-  //     });
-
-  //     this.client.on('ready', () => {
-  //       resolve();
-  //     });
-  //   });
-  // }
+export default new RedisCache();

@@ -10,10 +10,10 @@ const AppRouter = () => {
     <Routes>
       {/* Protected Routes */}
       <Route path="/" element={<ProtectedRoute />}>
-        <Route
+        {/* <Route
           path="/"
           element={<Navigate replace to={AUTHENTICATED_ENTRY} />}
-        />
+        /> */}
 
         {protectedRoute.map((route, index) => (
           <Route

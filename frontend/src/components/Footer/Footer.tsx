@@ -28,20 +28,23 @@ const SocialButton = (props: SocialButtonProps) => {
 
     return (
         <chakra.button
-            bg={useColorModeValue('blackAlpha.100', 'whiteAlpha.100')}
+            bg={useColorModeValue('brand_blue.300', 'brand_blue.100')}
+            href={href}
             rounded={'full'}
-            w={8}
-            h={8}
+            w={5}
+            h={5}
+            padding={1}
+            color="white"
             cursor={'pointer'}
             as={'a'}
-            href={href}
             target='_blank'
             display={'inline-flex'}
             alignItems={'center'}
             justifyContent={'center'}
             transition={'background 0.3s ease'}
             _hover={{
-                bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+                color: "white",
+                bg: useColorModeValue('brand_blue.50', 'whiteAlpha.200'),
             }}>
             <VisuallyHidden>{label}</VisuallyHidden>
             {children}
@@ -60,7 +63,7 @@ export default function SmallCentered() {
             width={{ base: "full", md: "container.md" }}
             display={{ base: "none", md: isLargeScreen ? "block" : "none" }}
         >
-            <Box position={{ base: "unset", md: "absolute" }} top="12.5px">
+            <Box position={{ base: "unset", md: "absolute" }} top="20.5px">
                 <Container
                     as={Stack}
                     maxW={'6xl'}

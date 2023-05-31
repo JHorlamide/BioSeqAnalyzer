@@ -19,6 +19,6 @@ export const paginationParams = Joi.object({
 export const projectUploadSchema = Joi.object({
   file: Joi.object({
     mimetype: Joi.string().valid('text/csv').required(),
-    size: Joi.number().max(config.MaxFileSize).required(),
+    size: Joi.number().max(config.MAX_FILE_SIZE).required(),
   }).unknown(true).required()
 })

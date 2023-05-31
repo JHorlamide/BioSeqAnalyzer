@@ -19,7 +19,7 @@ function checkFileType(file: any, callBack: any) {
 const storage = multer.memoryStorage();
 export const upload = multer({
   storage,
-  limits: { fileSize: config.MaxFileSize },
+  limits: { fileSize: config.MAX_FILE_SIZE },
   fileFilter: function (req: any, file: any, callBack: FileFilterCallback) {
     checkFileType(file, callBack);
   }
