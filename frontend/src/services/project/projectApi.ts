@@ -18,7 +18,9 @@ import {
   IGetSummaryReq,
   IGetSummaryRes,
   IGetTopVariantsRes,
-  IGetTopVariantsReq
+  IGetTopVariantsReq,
+  IGetScoreDistributionRes,
+  IGetScoreDistributionReq
 } from "./type";
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
@@ -102,6 +104,12 @@ export const projectApi = createApi({
         url: `/projects/${projectId}/csv-upload/top-performing-variants`,
       })
     }),
+ 
+    getScoreDistribution: builder.query<IGetScoreDistributionRes, IGetScoreDistributionReq>({
+      query: ({ projectId }) => ({
+        url: `/projects/${projectId}/csv-upload/score-distribution`,
+      })
+    }),
 
     deleteProject: builder.mutation<IDeleteProjectRes, IDeleteProject>({
       query: ({ projectId }) => ({
@@ -126,5 +134,6 @@ export const {
   useDeleteProjectMutation,
   useUploadProjectFileMutation,
   useGetSummaryMainMatricesQuery,
-  useGetTopVariantsQuery
+  useGetTopVariantsQuery,
+  useGetScoreDistributionQuery
 } = projectApi;

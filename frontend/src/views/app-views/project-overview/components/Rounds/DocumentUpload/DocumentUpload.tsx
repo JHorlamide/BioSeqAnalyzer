@@ -11,7 +11,7 @@ import {
   HStack,
   Text
 } from "@chakra-ui/react";
-import StackedHalf from "../../assets/Stacked_half.webp";
+import StackedHalf from "../../../../../../assets/stacked.webp";
 import Button from "../../../../../../components/CustomBtn/Button";
 import { AiOutlineCloudUpload, AiOutlineCloudDownload } from "react-icons/ai"
 import { SAMPLE_CSV_LINK } from '../../../../../../config/AppConfig';
@@ -87,7 +87,7 @@ const DocumentUpload = ({ projectId }: Props) => {
           <Flex justifyContent="space-between" alignItems="center">
             <ModalHeader fontSize="18px" color="white">Result</ModalHeader>
             {isLoading ? (
-              <Text>Uploading...</Text>
+              <Text paddingX={3}>Uploading...</Text>
             ) : (
               <Button
                 color="white"

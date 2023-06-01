@@ -1,9 +1,9 @@
+import React from "react";
 import { Box, Text, Stack, StackDivider, Flex, HStack } from '@chakra-ui/react'
 import { HiStar } from 'react-icons/hi'
 import { useGetSummaryMainMatricesQuery } from '../../../../../../services/project/projectApi'
-import { Fragment } from 'react';
 import { Sequence } from '../../../../../../services/project/type';
-import AppLoader from '../../../../../../components/Loading/AppLoader';
+import DataLoadingStatus from '../../DataLoadingStatus/DataLoadingStatus';
 
 interface SummaryTableProps {
   totalSequence: number;
@@ -23,7 +23,7 @@ const SummaryData = (props: SummaryTableProps) => {
   } = props;
 
   return (
-    <Fragment>
+    <Stack spacing={3} divider={<StackDivider width="full" height="0.5px" />}>
       <Box paddingX={3}>
         <Text>Total number of sequence</Text>
         <Text fontWeight="bold">{totalSequence}</Text>
@@ -38,6 +38,7 @@ const SummaryData = (props: SummaryTableProps) => {
         <HStack spacing={2} justifyContent="center" alignItems="center">
           <HiStar size={20} color="white" />
           <Text fontWeight="semibold" textAlign="center">Best sequence</Text>
+          <HiStar size={20} color="white" />
         </HStack>
 
         <Text>Mutations</Text>
@@ -57,35 +58,7 @@ const SummaryData = (props: SummaryTableProps) => {
         <Text>Fold improvement over wild type</Text>
         <Text fontWeight="bold">{foldImprovement}</Text>
       </Box>
-    </Fragment>
-  )
-}
-
-const DataLoadingState = () => {
-  const containerStyle = {
-    borderRadius: "10px",
-    bg: "brand_blue.300",
-    width: "full",
-    color: "white",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingY: 20,
-    paddingX: 20
-  }
-
-  return (
-    <Box {...containerStyle}>
-      {/* <Text
-        color="white"
-        fontSize={18}
-        textAlign="center"
-        fontWeight="semibold"
-      >
-        loading summary results...
-      </Text> */}
-
-      <AppLoader spinnerProps={{ marginTop: -20 }} />
-    </Box>
+    </Stack>
   )
 }
 
@@ -93,17 +66,7 @@ const SummaryTable = ({ projectId }: { projectId: string }) => {
   const { data, isLoading, isError } = useGetSummaryMainMatricesQuery({ projectId });
 
   if (isLoading) {
-    return <DataLoadingState />
-  }
-
-  if (isError) {
-    return <Text
-      textAlign="center"
-      fontSize={18}
-      color="red.500"
-    >
-      Unable to summary of main matrices results. Please try again later
-    </Text>
+    return <DataLoadingStatus isError={isError} />
   }
 
   if (!data?.data) {
@@ -131,15 +94,17 @@ const SummaryTable = ({ projectId }: { projectId: string }) => {
           totalSequence={data.data.totalSequence}
           hitRate={data.data.numSequencesAboveReference.hitRate}
           topMutants={data.data.topMutants}
-          sequencesAboveReferenceCount={data.data.numSequencesAboveReference.sequencesAboveReferenceCount}
           foldImprovement={data.data.foldImprovement}
+          sequencesAboveReferenceCount={data.data.numSequencesAboveReference.sequencesAboveReferenceCount}
         />
       </Stack>
     </Box>
   )
 }
 
-export default SummaryTable
+const MemoizedSummaryTable = React.memo(SummaryTable);
+
+export default MemoizedSummaryTable
 
 {/* <Box paddingX={3}>
 <Text>Total number of sequence</Text>

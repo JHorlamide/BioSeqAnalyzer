@@ -1,7 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { PluginSpec } from 'molstar/lib/mol-plugin/spec';
 import { FILE_FORMAT, PDB_BASE_URL } from '../../../../../config/AppConfig';
-import { toast } from 'react-hot-toast';
 
 interface containerStyle {
   width: string;
@@ -41,7 +40,6 @@ const ProteinSequenceViewer = ({ proteinPDBID, containerStyle }: Props) => {
     const canvas = canvasRef.current;
     const parent = containerRef.current;
     if (!plugin.initViewer(canvas, parent)) {
-      // toast.error("Failed to init Mol*")
       return;
     }
 
@@ -58,7 +56,7 @@ const ProteinSequenceViewer = ({ proteinPDBID, containerStyle }: Props) => {
 
   return (
     <div ref={containerRef} style={containerStyle}>
-      <canvas ref={canvasRef} style={{ borderRadius: "20px" }}></canvas>
+      <canvas ref={canvasRef} style={{ borderRadius: "16px" }}></canvas>
     </div>
   )
 }

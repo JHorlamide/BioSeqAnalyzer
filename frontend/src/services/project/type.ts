@@ -104,13 +104,24 @@ interface TopVariants {
   }
 };
 
+interface ScoreDistribution {
+  label: string;
+  count: number;
+}
+
 export interface IGetTopVariantsRes {
-  data: {
-    mutationRanges: TopVariants[]
-  }
+  data: TopVariants[]
 }
 
 export interface IGetTopVariantsReq {
+  projectId: string;
+}
+
+export interface IGetScoreDistributionRes {
+  data: ScoreDistribution[];
+}
+
+export interface IGetScoreDistributionReq {
   projectId: string;
 }
 

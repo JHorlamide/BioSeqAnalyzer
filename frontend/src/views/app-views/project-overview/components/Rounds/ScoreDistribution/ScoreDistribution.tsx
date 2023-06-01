@@ -1,7 +1,20 @@
-import { Box, Text, Stack, StackDivider, Flex } from "@chakra-ui/react"
 import { Fragment } from "react"
+import { Box, Text, Stack, StackDivider } from "@chakra-ui/react";
+import DataLoadingStatus from "../../DataLoadingStatus/DataLoadingStatus";
+import Histogram from "./components/Histogram";
+import { useGetScoreDistributionQuery } from "../../../../../../services/project/projectApi";
 
-const ScoreDistribution = () => {
+const ScoreDistribution = ({ projectId }: { projectId: string }) => {
+  const { data, isLoading, isError } = useGetScoreDistributionQuery({ projectId });
+
+  if (isLoading) {
+    return <DataLoadingStatus isError={isError} />
+  }
+
+  if (!data?.data) {
+    return null;
+  }
+
   return (
     <Fragment>
       <Box alignSelf="self-start">
@@ -14,39 +27,14 @@ const ScoreDistribution = () => {
         width="full"
         color="white"
         paddingY={4}
+        paddingX={2}
       >
-
-        <Stack spacing={3} divider={<StackDivider width="full" height="0.5px" />}>
-          <Box paddingX={3}>
-            <Text fontWeight="semibold">Total number of sequence</Text>
-            <Text fontWeight="bold">384</Text>
-          </Box>
-
-          <Box paddingX={3}>
-            <Text fontWeight="semibold">Number hits</Text>
-            <Text fontWeight="bold">60 (15.62%) hit rate</Text>
-          </Box>
-
-          <Box paddingX={3}>
-            <Text fontWeight="semibold" textAlign="center">Best sequence</Text>
-            <Text fontWeight="semibold">Mutations</Text>
-            <Flex justifyContent="space-between">
-              {["L215F", "R219V", "L249F", "T317F", "T318C", "L349D"].map((item, idx) => (
-                <Text fontWeight="bold" key={idx}>{item}</Text>
-              ))}
-            </Flex>
-          </Box>
-
-          <Box paddingX={3}>
-            <Text fontWeight="semibold">Fitness score</Text>
-            <Text fontWeight="bold">158</Text>
-          </Box>
-
-          <Box paddingX={3}>
-            <Text fontWeight="semibold">Fold improvement over wild type</Text>
-            <Text fontWeight="bold">13.6</Text>
-          </Box>
-        </Stack>
+        <Box paddingX={3} paddingBottom={0}>
+          <Text fontWeight="semibold" >
+            Score distribution
+          </Text>
+        </Box>
+        <Histogram data={data.data} />
       </Box>
     </Fragment>
   )
