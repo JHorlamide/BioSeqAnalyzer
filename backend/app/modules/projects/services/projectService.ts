@@ -458,7 +458,6 @@ class ProjectService {
 
     return false;
   }
-
 }
 
 export default new ProjectService();
