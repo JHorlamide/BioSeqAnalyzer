@@ -28,7 +28,7 @@ const SocialButton = (props: SocialButtonProps) => {
 
     return (
         <chakra.button
-            bg={useColorModeValue('brand_blue.300', 'brand_blue.100')}
+            bg={useColorModeValue('gray.100', 'gray.200')}
             href={href}
             rounded={'full'}
             w={5}
@@ -44,7 +44,7 @@ const SocialButton = (props: SocialButtonProps) => {
             transition={'background 0.3s ease'}
             _hover={{
                 color: "white",
-                bg: useColorModeValue('brand_blue.50', 'whiteAlpha.200'),
+                bg: useColorModeValue('whiteAlpha.50', 'whiteAlpha.200'),
             }}>
             <VisuallyHidden>{label}</VisuallyHidden>
             {children}
