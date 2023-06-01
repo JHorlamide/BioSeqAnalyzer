@@ -4,7 +4,7 @@ import csvParser from "csv-parser";
 import config from "../../../config/appConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
-import { IUpdateProject, IProject, IGetProjects, S3UploadRes, CSVColumnDataType } from "../types/types";
+import { IUpdateProject, IProject, IGetProjects, CSVColumnDataType } from "../types/types";
 import { ERR_MSG } from "../types/constants";
 import { ClientError } from "../../../common/exceptions/clientError";
 import { NotFoundError } from "../../../common/exceptions/notFoundError";
@@ -234,7 +234,9 @@ class ProjectService {
   }
 
   // Get Histogram Data
-  public getHistogramData(csvData: CSVColumnDataType[]) {
+  public async getHistogramData(projectId: string) {
+    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+
     // Calculate the histogram data
     const histogramData: { label: string, count: number }[] = [];
     const countByLabel: { [key: string]: number } = {};
@@ -254,14 +256,16 @@ class ProjectService {
     const referenceSequence = 'WT'; // Assuming the reference sequence is denoted as 'WT'
     const histogramWithReference = histogramData.map((item) => ({
       label: item.label,
-      count: item.label === referenceSequence ? item.count : 0, // Highlight the reference sequence in the histogram
+      count: item.label === referenceSequence ? item.count : item.count, // Highlight the reference sequence in the histogram
     }));
 
-    return histogramWithReference
+    return histogramWithReference;
   }
 
   // Get top 10 mutation
-  public getTopMutants(csvData: CSVColumnDataType[]) {
+  public async getTopMutants(projectId: string) {
+    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+
     const topMutants = csvData
       .sort((a, b) => b.fitness - a.fitness)
       .slice(0, 10);
@@ -270,7 +274,7 @@ class ProjectService {
   }
 
   // Get mutation distribution
-  public getMutationDistribution(csvData: CSVColumnDataType[]) {
+  public getMutationDistribution = async (projectId: string) => {
     // First implementation -> Count the number of mutations per sequence and create a distribution object
     // const mutationDistribution: { [numMutations: number]: number } = {};
     // for (const entry of csvData) {
@@ -281,7 +285,7 @@ class ProjectService {
     //     mutationDistribution[numMutations] = 1;
     //   }
     // }
-
+    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
     const mutationCounts: number[] = csvData.map((row) => row.muts.split(',').length);
     const mutationDistribution: { mutationCount: number; count: number }[] = [];
     const countByMutationCount: { [key: number]: number } = {};
@@ -298,7 +302,9 @@ class ProjectService {
   }
 
   // Get mutation range
-  public getMutationRange(csvData: CSVColumnDataType[]) {
+  public async getMutationRange(projectId: string) {
+    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+
     const mutations = csvData.flatMap((row) => row.muts.split(','));
     const mutationRanges: { mutation: string; scoreRange: { min: number; max: number } }[] = [];
     const scoresByMutation: { [key: string]: number[] } = {};
@@ -328,7 +334,9 @@ class ProjectService {
   }
 
   // Get highest fitness
-  public getHighestFitness(csvData: CSVColumnDataType[]) {
+  public async getHighestFitness(projectId: string) {
+    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+
     // Find the sequence with the highest fitness value
     const highestFitnessEntry = csvData.reduce((prev, curr) => {
       return curr.fitness > prev.fitness ? curr : prev;
@@ -346,18 +354,21 @@ class ProjectService {
   }
 
   // Get fold improvement
-  public getFoldImprovement = (csvData: CSVColumnDataType[]) => {
+  public getFoldImprovement = async (projectId: string) => {
+    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+
     const wildTypeFitness = this.getWildTypeFitness(csvData);
     const bestFitnessEntry = this.getBestFitnessEntry(csvData);
 
     const bestFitness = bestFitnessEntry.fitness;
     const foldImprovement = bestFitness / wildTypeFitness;
-
     return foldImprovement;
   }
 
   // Get sequence above reference
-  public getSequencesAboveReference = (csvData: CSVColumnDataType[]) => {
+  public getSequencesAboveReference = async (projectId: string) => {
+    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+
     // Filter the csvData to get sequences with mutations
     // and scores above the reference sequence (wild type)
     const sequencesAboveReference = csvData.filter((entry) => {
@@ -369,9 +380,9 @@ class ProjectService {
     const hitRate = (sequencesAboveReferenceCount / totalSequences) * 100;
 
     const result = {
+      hitRate,
       totalSequences,
       sequencesAboveReferenceCount,
-      hitRate,
     };
 
     return result;
@@ -397,6 +408,14 @@ class ProjectService {
   // Helper function to get the entry with the best fitness score
   public getBestFitnessEntry(csvData: CSVColumnDataType[]) {
     return csvData.reduce((prev, curr) => (curr.fitness > prev.fitness ? curr : prev));
+  }
+
+  // Get file from aws
+  private getFile = async (projectId: string) => {
+    const projectFileKey = await this.getProjectFileKey(projectId);
+    const s3ReadStream = s3Service.getFile(projectFileKey);
+    const csvData = await this.parseS3ReadStream(s3ReadStream);
+    return csvData;
   }
 
   private async createProjectIfUniprotIdExist(projectData: IProject) {

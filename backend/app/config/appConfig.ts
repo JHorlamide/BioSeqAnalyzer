@@ -29,7 +29,9 @@ const config = {
   pdbBaseUrl: process.env.PDB_BASE_URL,
   MAX_FILE_SIZE: 5 * 1024 * 1024, // Maximum file size of 5MB
   summaryCacheKey: "summary-csv-data",
-  topVariantCacheKey: "top-variant-csv-data"
+  topVariantCacheKey: "top-variant-csv-data",
+  scoreDistributionKey: "score-distribution-data",
+  cached_ttl: 3600
 }
 
 export default config;

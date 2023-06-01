@@ -3,6 +3,7 @@ import { GetObjectRequest } from "aws-sdk/clients/s3";
 import { v4 as uuidV4 } from "uuid";
 import config from "../../../config/appConfig";
 import { ServerError } from "../../../common/exceptions/serverError";
+import redisCash from "../RedisCash/redisCash";
 // import { PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 
 class S3Service {

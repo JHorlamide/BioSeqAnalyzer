@@ -9,6 +9,7 @@ export const RES_MSG = {
   FILE_UPLOADED: "File uploaded and data saved successfully",
   SUMMARY_FETCHED: "Summary of main matrices fetched",
   TOP_PERFORMING_VARIANTS_FETCHED: "Top performing variants",
+  HISTOGRAM_DATA: "Histogram data fetched",
 }
 
 export const ERR_MSG = {

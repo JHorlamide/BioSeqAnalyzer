@@ -3,7 +3,7 @@ version: '3.8'
 services:
   redis-cache:
     image: redis:alpine
-    restart: always
+    # restart: always
     ports:
       - "6379:6379"
     command: redis-server --save 20 1 --loglevel warning
@@ -34,9 +34,9 @@ services:
     depends_on: [ "mongodb", "redis-cache" ]
     environment:
       REDIS_PORT: 6379
-      REDIS_HOST: "awesomeredis"
-      REDIS_USERNAME: "proteinUsername"
-      REDIS_PASSWORD: "SuperPassword"
+      REDIS_HOST: "redis-cache"
+      REDIS_USERNAME: "protein"
+      REDIS_PASSWORD: "protein-12345"
 
   protein-frontend:
     container_name: protein-frontend

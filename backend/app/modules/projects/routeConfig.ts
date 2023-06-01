@@ -3,6 +3,7 @@ import { CommonRoutesConfig } from "../../common/CommonRouteConfig";
 import jwtMiddleware from "../auth/middleware/jwtMiddleware";
 import projectController from "./controller/projectController";
 import projectMiddleware from "./middleware/projectMiddleware";
+import cacheMiddleware from "./middleware/cacheMiddleware";
 import config from "../../config/appConfig";
 
 const APP_PREFIX_PATH = config.prefix;
@@ -93,7 +94,7 @@ export class ProjectRoute extends CommonRoutesConfig {
       jwtMiddleware.validJWTNeeded,
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
-      projectMiddleware.getCachedSummaryData,
+      cacheMiddleware.getCachedSummaryData,
       projectController.getSummaryOfMainMatricesData
     ])
 
@@ -106,20 +107,21 @@ export class ProjectRoute extends CommonRoutesConfig {
       jwtMiddleware.validJWTNeeded,
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
-      projectMiddleware.getCachedTopPermingVariantData,
+      cacheMiddleware.getCachedTopPermingVariantData,
       projectController.getTopPerformingVariantsData
     ])
-
+    
     /***
-    * @route GET: /api/projects/:projectId/csv-upload
-    * @desc Get top performing variants data from CSV
+    * @route GET: /api/projects/:projectId/csv-upload/score-distribution
+    * @desc Get top score distribution data from CSV
     * @access Private
     * ***/
-    this.app.get(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload`, [
+    this.app.get(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload/score-distribution`, [
       jwtMiddleware.validJWTNeeded,
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
-      projectController.processCVSFile
+      cacheMiddleware.getCachedScoreDistribution,
+      projectController.getScoreDistribution
     ])
 
     /***

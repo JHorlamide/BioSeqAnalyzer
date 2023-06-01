@@ -72,24 +72,20 @@ class ProjectController {
 
   public getSummaryOfMainMatricesData = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
-    const { summaryCacheKey } = config;
+    const { summaryCacheKey, cached_ttl } = config;
     const cacheKey = `${summaryCacheKey}-${projectId}`;
 
-    const projectFileKey = await projectService.getProjectFileKey(projectId);
-    const s3ReadStream = s3Service.getFile(projectFileKey);
-    const csvData = await projectService.parseS3ReadStream(s3ReadStream);
-
     // 5. Number of sequences with a score above the reference sequence (with value "WT" in "muts" column)
-    const numSequencesAboveReference = projectService.getSequencesAboveReference(csvData);
+    const numSequencesAboveReference = await projectService.getSequencesAboveReference(projectId);
 
     // 2. List of the 10 mutants with the highest fitness values
-    const topMutants = projectService.getTopMutants(csvData);
+    const topMutants = await projectService.getTopMutants(projectId);
 
     // 6. Value of the sequence with the highest fitness value
-    const highestFitness = projectService.getHighestFitness(csvData);
+    const highestFitness = await projectService.getHighestFitness(projectId);
 
     // 7. Fold Improvement over wild type
-    const foldImprovement = projectService.getFoldImprovement(csvData);
+    const foldImprovement = await projectService.getFoldImprovement(projectId);
 
     const resData = {
       totalSequence: numSequencesAboveReference.totalSequences,
@@ -100,60 +96,62 @@ class ProjectController {
       foldImprovement,
     }
 
-    // Cache the data for future requests
-    // Cache for 1 hour (3600 seconds)
-    await redisCash.setCacheData2(cacheKey, 3600, resData)
+    await redisCash.setCacheData(cacheKey, cached_ttl, resData)
     responseHandler.successResponse(RES_MSG.SUMMARY_FETCHED, resData, res);
   })
 
   public getTopPerformingVariantsData = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
-    const { topVariantCacheKey } = config;
+    const { topVariantCacheKey, cached_ttl } = config;
     const cachedKey = `${topVariantCacheKey}-${projectId}`;
 
-    const projectFileKey = await projectService.getProjectFileKey(projectId);
-    const s3ReadStream = s3Service.getFile(projectFileKey);
-    const csvData = await projectService.parseS3ReadStream(s3ReadStream);
-
     // 4. For each individual mutation, the range of scores for sequences that include this mutation
-    const mutationRanges = projectService.getMutationRange(csvData);
+    const mutationRanges = await projectService.getMutationRange(projectId);
 
-    // Cache the data for future requests
-    // Cache for 1 hour (3600 seconds)
-    await redisCash.setCacheData2(cachedKey, 3600, mutationRanges);
+    await redisCash.setCacheData(cachedKey, cached_ttl, mutationRanges);
     responseHandler.successResponse(RES_MSG.TOP_PERFORMING_VARIANTS_FETCHED, {
       mutationRanges
     }, res);
   })
 
+  public getScoreDistribution = asyncHandler(async (req: Request, res: Response) => {
+    const { projectId } = req.params;
+    const { scoreDistributionKey, cached_ttl } = config;
+    const cachedKey = `${scoreDistributionKey}-${projectId}`;
+
+    // 1. Distribution of fitness scores as a histogram
+    // The reference sequence should be highlighted in the histogram
+    const scoreDistribution = await projectService.getHistogramData(projectId);
+    
+    await redisCash.setCacheData(cachedKey, cached_ttl, scoreDistribution);
+    responseHandler.successResponse(RES_MSG.HISTOGRAM_DATA, scoreDistribution, res);
+  })
+
   public processCVSFile = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
-    const projectFileKey = await projectService.getProjectFileKey(projectId);
-    const s3ReadStream = s3Service.getFile(projectFileKey);
-    const csvData = await projectService.parseS3ReadStream(s3ReadStream);
 
     try {
       // 1. Distribution of fitness scores as a histogram
       // The reference sequence should be highlighted in the histogram
-      const histogramWithReference = projectService.getHistogramData(csvData);
+      const histogramWithReference = projectService.getHistogramData(projectId);
 
       // 2. List of the 10 mutants with the highest fitness values
-      const topMutants = projectService.getTopMutants(csvData);
+      const topMutants = await projectService.getTopMutants(projectId);
 
       // 3. Distribution of the number of mutations per sequence
-      const mutationDistribution = projectService.getMutationDistribution(csvData);
+      const mutationDistribution = await projectService.getMutationDistribution(projectId);
 
       // 4. For each individual mutation, the range of scores for sequences that include this mutation
-      const mutationRanges = projectService.getMutationRange(csvData);
+      const mutationRanges = await projectService.getMutationRange(projectId);
 
       // 5. Number of sequences with a score above the reference sequence (with value "WT" in "muts" column)
-      const numSequencesAboveReference = projectService.getSequencesAboveReference(csvData);
+      const numSequencesAboveReference = await projectService.getSequencesAboveReference(projectId);
 
       // 6. Value of the sequence with the highest fitness value
-      const highestFitness = projectService.getHighestFitness(csvData);
+      const highestFitness = await projectService.getHighestFitness(projectId);
 
       // 7. Fold Improvement over wild type
-      const foldImprovement = projectService.getFoldImprovement(csvData);
+      const foldImprovement = await projectService.getFoldImprovement(projectId);
 
       responseHandler.successResponse("Data fetched for rendering", {
         topMutants,
@@ -173,3 +171,7 @@ class ProjectController {
 }
 
 export default new ProjectController();
+
+// const projectFileKey = await projectService.getProjectFileKey(projectId);
+// const s3ReadStream = s3Service.getFile(projectFileKey);
+// const csvData = await projectService.parseS3ReadStream(s3ReadStream);
