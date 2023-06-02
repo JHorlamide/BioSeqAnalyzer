@@ -215,12 +215,14 @@ class ProjectService {
     try {
       const project = await projectRepository.getProjectById(projectId);
       if (!project) {
-        throw new ClientError(ERR_MSG.PROJECT_NOT_FOUND);
+        throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
       }
 
       const response = await s3Service.uploadFile(file);
+      if (!response) {
+        throw new ServerError(ERR_MSG.FILE_UPLOAD_ERROR);
+      }
 
-      // Update the project with the new projectFile data
       project.projectFile = {
         fileName: file.originalname,
         Bucket: response.Bucket,

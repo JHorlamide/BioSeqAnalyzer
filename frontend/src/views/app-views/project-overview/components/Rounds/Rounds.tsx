@@ -2,11 +2,6 @@ import React from 'react';
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import DocumentUpload from './DocumentUpload/DocumentUpload';
 import { ProjectFields } from '../../../../../services/project/type';
-// import SummaryTable from './SummaryTable/SummaryTable';
-// import TableOfPerformingVariants from './TableOfPerformingVariants/TableOfPerformingVariants';
-// import ScoreDistribution from './ScoreDistribution/ScoreDistribution';
-// import FoldImprovement from './FoldImprovement/FoldImprovement';
-// import ProteinSequenceViewer from '../ProteinSequenceViewer/ProteinSequenceViewer';
 
 const SummaryTable = React.lazy(() => import("./SummaryTable/SummaryTable"));
 const TableOfPerformingVariants = React.lazy(() => import("./TableOfPerformingVariants/TableOfPerformingVariants"));
@@ -46,9 +41,7 @@ const Rounds = ({ projectFile, projectId, proteinPDBID }: Props) => {
       >
         <VStack spacing={3} maxWidth="xl" width="full" height="full">
           <SummaryTable projectId={projectId} />
-
           <TableOfPerformingVariants projectId={projectId} />
-          {/* <FoldImprovement /> */}
         </VStack>
 
         <ProteinSequenceViewer

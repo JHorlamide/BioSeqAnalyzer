@@ -1,3 +1,4 @@
+import { Box, Text } from '@chakra-ui/react';
 import { useEffect, useRef } from 'react';
 import { PluginSpec } from 'molstar/lib/mol-plugin/spec';
 import { FILE_FORMAT, PDB_BASE_URL } from '../../../../../config/AppConfig';
@@ -15,7 +16,29 @@ interface Props {
   containerStyle: containerStyle;
 }
 
+const EmptyProteinSequenceViewer = () => {
+  return (
+    <Box
+      bg="brand_blue.300"
+      width="full"
+      justifyContent="center"
+      alignItems="center"
+      borderRadius={8}
+      paddingY={40}
+      marginTop="20%"
+    >
+      <Text textAlign="center">
+        No Protein PDB ID Provided. To view protein structure please provide a PDB ID
+      </Text>
+    </Box>
+  )
+}
+
 const ProteinSequenceViewer = ({ proteinPDBID, containerStyle }: Props) => {
+  if (!proteinPDBID) {
+    return <EmptyProteinSequenceViewer />
+  }
+
   const containerRef = useRef<HTMLDivElement | any>(null);
   const canvasRef = useRef<HTMLCanvasElement | any>(null);
   const pdbDownloadUrl = `${PDB_BASE_URL}/${proteinPDBID}.${FILE_FORMAT}`;
@@ -62,32 +85,3 @@ const ProteinSequenceViewer = ({ proteinPDBID, containerStyle }: Props) => {
 }
 
 export default ProteinSequenceViewer;
-
-// const LoadMolFailed = ({ error }: { error: string }) => {
-//   return (
-//     <Box marginTop="60px">
-//       <Text
-//         color="red.500"
-//         fontSize={24}
-//         fontWeight="semibold"
-//         textAlign="center"
-//       >
-//         {error}
-//       </Text>
-//     </Box>
-//   )
-// }
-
-// const LoadingMol = () => {
-//   return (
-//     <Text
-//       color="white"
-//       textAlign="center"
-//       fontStyle="italic"
-//       fontSize={20}
-//     >
-//       Loading Mol* ...
-//     </Text>
-//   )
-// }
-

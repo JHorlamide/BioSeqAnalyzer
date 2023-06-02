@@ -25,7 +25,10 @@ const TableOfPerformingVariants = ({ projectId }: { projectId: string }) => {
   ], []);
 
   if (isLoading) {
-    return <DataLoadingStatus isError={isError} />
+    return <DataLoadingStatus 
+      isError={isError} 
+      DataLoadingName="top performing variant"
+    />
   }
 
   if (!data?.data) {
@@ -52,7 +55,7 @@ const TableOfPerformingVariants = ({ projectId }: { projectId: string }) => {
         <CustomTable
           maxTableData={5}
           columns={columns}
-          mutationRanges={data.data}
+          mutationRanges={data.data ?? []}
         />
       </Stack>
     </Box>

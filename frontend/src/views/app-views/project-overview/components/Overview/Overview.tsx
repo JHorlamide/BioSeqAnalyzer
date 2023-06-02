@@ -1,6 +1,8 @@
+import React from 'react';
 import { Box, Flex, HStack, Link, Stack, Text } from '@chakra-ui/react';
 import { BsFolderFill } from 'react-icons/bs';
-import ProteinSequenceViewer from '../ProteinSequenceViewer/ProteinSequenceViewer';
+
+const ProteinSequenceViewer = React.lazy(() => import("../ProteinSequenceViewer/ProteinSequenceViewer"));
 
 export interface OverviewProps {
   proteinPDBID?: string;

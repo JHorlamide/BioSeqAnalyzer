@@ -12,8 +12,12 @@ interface TableProps {
 
 const CustomTable: React.FC<TableProps> = (props) => {
   const { columns, mutationRanges, tableProps, maxTableData } = props;
-  const data = maxTableData !== 0 ? mutationRanges.slice(0, maxTableData) : mutationRanges;
+  const isMaxTableDataValid = maxTableData !== 0;
+  const areMutationRangesAvailable = mutationRanges.length > 0;
+  const data = isMaxTableDataValid && areMutationRangesAvailable ? mutationRanges.slice(0, maxTableData) : mutationRanges;
 
+  console.log({ tableData: data });
+  
   const {
     getTableProps,
     getTableBodyProps,

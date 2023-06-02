@@ -66,7 +66,10 @@ const SummaryTable = ({ projectId }: { projectId: string }) => {
   const { data, isLoading, isError } = useGetSummaryMainMatricesQuery({ projectId });
 
   if (isLoading) {
-    return <DataLoadingStatus isError={isError} />
+    return <DataLoadingStatus
+      isError={isError}
+      DataLoadingName="summary of main matrices"
+    />
   }
 
   if (!data?.data) {
@@ -105,37 +108,3 @@ const SummaryTable = ({ projectId }: { projectId: string }) => {
 const MemoizedSummaryTable = React.memo(SummaryTable);
 
 export default MemoizedSummaryTable
-
-{/* <Box paddingX={3}>
-<Text>Total number of sequence</Text>
-<Text fontWeight="bold">{data.data.totalSequence}</Text>
-</Box>
-
-<Box paddingX={3}>
-<Text>Number hits</Text>
-<Text fontWeight="bold">({data.data.numSequencesAboveReference.hitRate}) hit rate</Text>
-</Box>
-
-<Box paddingX={3}>
-<HStack spacing={2} justifyContent="center" alignItems="center">
-  <HiStar size={20} color="white" />
-  <Text fontWeight="semibold" textAlign="center">Best sequence</Text>
-</HStack>
-
-<Text>Mutations</Text>
-<Flex justifyContent="space-between">
-  {data.data.topMutants.map(({ muts, fitness, sequence }, idx) => (
-    <Text key={idx} fontWeight="bold">{muts},</Text>
-  ))}
-</Flex>
-</Box>
-
-<Box paddingX={3}>
-<Text>Fitness score</Text>
-<Text fontWeight="bold">{data.data.numSequencesAboveReference.sequencesAboveReferenceCount}</Text>
-</Box>
-
-<Box paddingX={3}>
-<Text>Fold improvement over wild type</Text>
-<Text fontWeight="bold">{data.data.foldImprovement}</Text>
-</Box> */}

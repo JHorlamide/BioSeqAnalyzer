@@ -20,7 +20,7 @@ const ProjectOverview = () => {
   } = project?.data || {};
 
   if (isLoading) {
-    return <Text color="white" textAlign="center">Loading Project...</Text>
+    return <Text color="white" textAlign="center">Loading project details...</Text>
   }
 
   return (
@@ -62,11 +62,4 @@ const ProjectOverview = () => {
   )
 }
 
-export default ProjectOverview
-{/* <Overview
-                proteinPDBID={proteinPDBID}
-                projectTitle={project?.data.projectTitle}
-                projectGoal={project?.data.projectGoal}
-                measuredProperty={project?.data.measuredProperty}
-                pdbFileUrl={project?.data?.pdbFileUrl}
-              /> */}
+export default ProjectOverview;

@@ -26,10 +26,10 @@ ENV NODE_ENV=${NODE_ENV}
 WORKDIR /backend
 
 # Copy package.json and package-lock.json to the working directory
-COPY package.json yarn.lock ./
+COPY package.json package-lock.json ./
 
 # Install only development packages
-RUN yarn install --only=production
+RUN npm install --only=production
 
 # Copy the built app from the development stage to the production stage
 COPY --from=development /backend/dist ./dist

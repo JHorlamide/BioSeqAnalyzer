@@ -66,8 +66,8 @@ class ProjectController {
       return responseHandler.badRequest(ERR_MSG.NO_FILE_UPLOAD, res);
     }
 
-    await projectService.uploadProjectFile(projectId, file);
-    return responseHandler.noContent(RES_MSG.FILE_UPLOADED, res);
+    const projectWithFile = await projectService.uploadProjectFile(projectId, file);
+    return responseHandler.successResponse(RES_MSG.FILE_UPLOADED, projectWithFile, res);
   })
 
   public getSummaryOfMainMatricesData = asyncHandler(async (req: Request, res: Response) => {

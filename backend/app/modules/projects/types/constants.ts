@@ -26,5 +26,6 @@ export const ERR_MSG = {
   NO_FILE_UPLOAD: "No file uploaded",
   NO_FILE_VALIDATION: "No file was uploaded for validation",
   FILE_VALIDATION_ERROR: "An error occurred during CSV validation",
-  PARSE_CSV_FAILED: "Failed to parse CSV file"
+  PARSE_CSV_FAILED: "Failed to parse CSV file",
+  FILE_UPLOAD_ERROR: "Could not upload file. Please try again later",
 }

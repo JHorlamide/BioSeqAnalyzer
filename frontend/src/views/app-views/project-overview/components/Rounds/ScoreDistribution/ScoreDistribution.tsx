@@ -8,7 +8,10 @@ const ScoreDistribution = ({ projectId }: { projectId: string }) => {
   const { data, isLoading, isError } = useGetScoreDistributionQuery({ projectId });
 
   if (isLoading) {
-    return <DataLoadingStatus isError={isError} />
+    return <DataLoadingStatus 
+      isError={isError} 
+      DataLoadingName="score distribution"
+    />
   }
 
   if (!data?.data) {
