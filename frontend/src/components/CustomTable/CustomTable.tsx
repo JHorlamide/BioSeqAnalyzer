@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTable } from "react-table";
-import { Box, ChakraProps, Table, Tbody, Td, Text, Th, Thead, Tr, VStack } from "@chakra-ui/react";
-import Button from "../CustomBtn/Button";
+import { Box, ChakraProps, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 
 interface TableProps {
   columns: any[];
@@ -14,17 +13,22 @@ const CustomTable: React.FC<TableProps> = (props) => {
   const { columns, mutationRanges, tableProps, maxTableData } = props;
   const isMaxTableDataValid = maxTableData !== 0;
   const areMutationRangesAvailable = mutationRanges.length > 0;
-  const data = isMaxTableDataValid && areMutationRangesAvailable ? mutationRanges.slice(0, maxTableData) : mutationRanges;
+  // const data = isMaxTableDataValid && areMutationRangesAvailable ? mutationRanges.slice(0, maxTableData) : mutationRanges;
 
-  console.log({ tableData: data });
-  
+  // Ensure mutationRanges is always an array
+  const data = Array.isArray(mutationRanges) ? mutationRanges : [];
+
+  // Slice the mutationRanges array based on maxTableData
+  const slicedData = isMaxTableDataValid && areMutationRangesAvailable ? data.slice(0, maxTableData) : data;
+  console.log({ slicedData });
+
   const {
     getTableProps,
     getTableBodyProps,
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data });
+  } = useTable({ columns, data: slicedData });
 
 
   return (

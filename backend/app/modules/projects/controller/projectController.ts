@@ -4,7 +4,6 @@ import projectService from "../services/projectService";
 import responseHandler from "../../../common/responseHandler";
 import { RES_MSG, ERR_MSG } from "../types/constants";
 import uniprotService from "../services/uniprot.service";
-import s3Service from "../s3Service/s3Service";
 import config from "../../../config/appConfig";
 import redisCash from "../RedisCash/redisCash";
 
