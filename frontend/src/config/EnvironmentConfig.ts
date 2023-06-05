@@ -3,7 +3,7 @@ const dev = {
 }
 
 const prod = {
-  API_ENDPOINT_URL: "http://localhost:8080/api"
+  API_ENDPOINT_URL: "http://3.91.48.155:8080/api"
 };
 
 const test = {

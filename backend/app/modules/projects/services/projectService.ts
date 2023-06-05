@@ -277,16 +277,6 @@ class ProjectService {
 
   // Get mutation distribution
   public getMutationDistribution = async (projectId: string) => {
-    // First implementation -> Count the number of mutations per sequence and create a distribution object
-    // const mutationDistribution: { [numMutations: number]: number } = {};
-    // for (const entry of csvData) {
-    //   const numMutations = entry.muts.split(',').length;
-    //   if (mutationDistribution[numMutations]) {
-    //     mutationDistribution[numMutations]++;
-    //   } else {
-    //     mutationDistribution[numMutations] = 1;
-    //   }
-    // }
     const csvData: CSVColumnDataType[] = await this.getFile(projectId);
     const mutationCounts: number[] = csvData.map((row) => row.muts.split(',').length);
     const mutationDistribution: { mutationCount: number; count: number }[] = [];
@@ -414,10 +404,14 @@ class ProjectService {
 
   // Get file from aws
   private getFile = async (projectId: string) => {
-    const projectFileKey = await this.getProjectFileKey(projectId);
-    const s3ReadStream = s3Service.getFile(projectFileKey);
-    const csvData = await this.parseS3ReadStream(s3ReadStream);
-    return csvData;
+    try {
+      const projectFileKey = await this.getProjectFileKey(projectId);
+      const s3ReadStream = s3Service.getFile(projectFileKey);
+      const csvData = await this.parseS3ReadStream(s3ReadStream);
+      return csvData;
+    } catch (error: any) {
+      throw new ServerError("Server error. Please try again later", error);
+    }
   }
 
   private async createProjectIfUniprotIdExist(projectData: IProject) {
