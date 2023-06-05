@@ -10,17 +10,17 @@ services:
     volumes:
       - redis-cache:/data
 
-  mongodb:
+  mongodb-server:
     image: mongo:4.4
-    container_name: mongodb
+    container_name: mongodb-server
     ports:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "1234"
 
-  backend-server:
-    container_name: backend-server
+  protein-backend:
+    container_name: protein-backend
     build:
       context: backend
       target: production
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./backend/app:/backend/app:cached,ro
     env_file: [ ./backend/.env ]
-    depends_on: [ "mongodb", "redis-cache" ]
+    depends_on: [ "mongodb-server", "redis-cache" ]
     environment:
       REDIS_PORT: 6379
       REDIS_HOST: "redis-cache"
@@ -46,7 +46,7 @@ services:
     volumes:
       - ./frontend/public:/frontend/public:cached,ro
       - ./frontend/src:/frontend/src:cached,ro
-    depends_on: [ "backend-server" ]
+    depends_on: [ "protein-backend" ]
 
 volumes:
   redis-cache:
