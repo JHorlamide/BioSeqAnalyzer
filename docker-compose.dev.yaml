@@ -19,8 +19,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "1234"
 
-  backend-server:
-    container_name: backend-server
+  protein-server:
+    container_name: protein-server
     build:
       context: backend
       target: development
@@ -47,7 +47,8 @@ services:
     volumes:
       - ./frontend/public:/frontend/public:cached,ro
       - ./frontend/src:/frontend/src:cached,ro
-    depends_on: [ "backend-server" ]
+    env_file: [ ./frontend/.env ]
+    depends_on: [ "protein-server" ]
 
 volumes:
   redis-cache:

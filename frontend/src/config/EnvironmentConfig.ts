@@ -11,7 +11,7 @@ const test = {
 };
 
 const getEnv = () => {
-  switch (process.env.NODE_ENV) {
+  switch (import.meta.env.VITE_NODE_ENV) {
     case "development":
       console.log({ dev })
       return dev

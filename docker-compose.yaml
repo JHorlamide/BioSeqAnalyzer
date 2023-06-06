@@ -46,6 +46,7 @@ services:
     volumes:
       - ./frontend/public:/frontend/public:cached,ro
       - ./frontend/src:/frontend/src:cached,ro
+    env_file: [ ./frontend/.env ]
     depends_on: [ "protein-backend" ]
 
 volumes:
