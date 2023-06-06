@@ -1,5 +1,4 @@
 import { Box, Center, Flex, Image, Text } from "@chakra-ui/react";
-import Knot from "../../assets/knot.webp";
 import Button from "../CustomBtn/Button";
 import { APP_PREFIX_PATH } from "../../config/AppConfig";
 import useNavigation from "../../hooks/useNavigation";
@@ -16,7 +15,7 @@ const EmptyProject = () => {
         maxWidth="250px"
         marginTop="100px"
       >
-        <Image src={Knot} boxSize="100px" />
+        <Image src="/knot.webp" boxSize="100px" />
 
         <Box paddingY={4} display="flex" flexDirection="column">
           <Text as="h1" fontWeight="bold" fontSize="19px" color="white">

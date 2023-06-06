@@ -16,7 +16,7 @@ interface Props {
 }
 
 const Rounds = ({ projectFile, projectId, proteinPDBID }: Props) => {
-  if (!projectFile || !projectFile.fileName) {
+  if (!projectFile) {
     return <DocumentUpload projectId={projectId} />
   }
 

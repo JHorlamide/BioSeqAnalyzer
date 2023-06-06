@@ -90,7 +90,9 @@ export const projectApi = createApi({
         url: `/projects/${projectId}/csv-upload`,
         method: "POST",
         body: data
-      })
+      }),
+
+      invalidatesTags: ["Projects"]
     }),
 
     getSummaryMainMatrices: builder.query<IGetSummaryRes, IGetSummaryReq>({

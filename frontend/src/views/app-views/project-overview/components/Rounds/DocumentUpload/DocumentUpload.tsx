@@ -11,7 +11,6 @@ import {
   HStack,
   Text
 } from "@chakra-ui/react";
-import StackedHalf from "../../../../../../assets/stacked.webp";
 import Button from "../../../../../../components/CustomBtn/Button";
 import { AiOutlineCloudUpload, AiOutlineCloudDownload } from "react-icons/ai"
 import { SAMPLE_CSV_LINK } from '../../../../../../config/AppConfig';
@@ -37,7 +36,6 @@ const DocumentUpload = ({ projectId }: Props) => {
 
       if (response.status === "Success") {
         toast.success(response.message);
-        handleReload();
         onClose();
       }
     } catch (error: any) {
@@ -78,10 +76,6 @@ const DocumentUpload = ({ projectId }: Props) => {
   const downloadSampleCSVFile = () => {
     window.open(SAMPLE_CSV_LINK, "_blank")
   }
-
-  const handleReload = () => {
-    window.location.reload();
-  };
 
   return (
     <Fragment>
@@ -149,7 +143,7 @@ const DocumentUpload = ({ projectId }: Props) => {
           maxWidth="250px"
           marginTop="100px"
         >
-          <Image src={StackedHalf} boxSize="100px" />
+          <Image src="/stacked.webp" boxSize="100px" />
 
           <Box paddingY={4} display="flex" flexDirection="column">
             <Text as="h1" fontWeight="bold" fontSize="19px" color="white">
