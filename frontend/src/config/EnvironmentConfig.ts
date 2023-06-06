@@ -13,13 +13,10 @@ const test = {
 const getEnv = () => {
   switch (import.meta.env.VITE_NODE_ENV) {
     case "development":
-      console.log({ dev })
       return dev
     case "production":
-      console.log({ prod })
       return prod
     case "test":
-      console.log({ test })
       return test
     default:
       break;

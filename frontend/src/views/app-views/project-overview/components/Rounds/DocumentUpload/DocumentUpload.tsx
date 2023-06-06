@@ -34,10 +34,10 @@ const DocumentUpload = ({ projectId }: Props) => {
       const form = new FormData();
       form.append("file", file);
       const response = await uploadProjectFile({ data: form, projectId }).unwrap();
-      console.log({ response });
 
       if (response.status === "Success") {
-        toast.success(response.message)
+        toast.success(response.message);
+        handleReload();
         onClose();
       }
     } catch (error: any) {
@@ -78,6 +78,10 @@ const DocumentUpload = ({ projectId }: Props) => {
   const downloadSampleCSVFile = () => {
     window.open(SAMPLE_CSV_LINK, "_blank")
   }
+
+  const handleReload = () => {
+    window.location.reload();
+  };
 
   return (
     <Fragment>

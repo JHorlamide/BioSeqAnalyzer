@@ -46,7 +46,7 @@ const config = {
   summaryCacheKey: "summary-csv-data",
   topVariantCacheKey: "top-variant-csv-data",
   scoreDistributionKey: "score-distribution-data",
-  cached_ttl: 3600
+  cached_ttl: 4600
 }
 
 export default config;

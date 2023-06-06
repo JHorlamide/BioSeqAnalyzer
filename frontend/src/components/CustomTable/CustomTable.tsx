@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useTable } from "react-table";
 import { Box, ChakraProps, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 
@@ -15,12 +15,13 @@ const CustomTable: React.FC<TableProps> = (props) => {
   const areMutationRangesAvailable = mutationRanges.length > 0;
   // const data = isMaxTableDataValid && areMutationRangesAvailable ? mutationRanges.slice(0, maxTableData) : mutationRanges;
 
-  // Ensure mutationRanges is always an array
-  const data = Array.isArray(mutationRanges) ? mutationRanges : [];
+  // const data = Array.isArray(mutationRanges) ? mutationRanges : [];
+  // const slicedData = isMaxTableDataValid && areMutationRangesAvailable ? data.slice(0, maxTableData) : data;
 
-  // Slice the mutationRanges array based on maxTableData
-  const slicedData = isMaxTableDataValid && areMutationRangesAvailable ? data.slice(0, maxTableData) : data;
-  console.log({ slicedData });
+  const slicedData = useMemo(() => {
+    const data = Array.isArray(mutationRanges) ? mutationRanges : [];
+    return isMaxTableDataValid && areMutationRangesAvailable ? data.slice(0, maxTableData) : data;
+  }, [mutationRanges, maxTableData, isMaxTableDataValid, areMutationRangesAvailable]);
 
   const {
     getTableProps,
@@ -32,16 +33,16 @@ const CustomTable: React.FC<TableProps> = (props) => {
 
 
   return (
-    <Box width="full">
+    <Box>
       <Table {...getTableProps()} {...tableProps}>
         <Thead>
           {headerGroups.map((headerGroup) => (
             <Tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
                 <Th
-                  {...column.getHeaderProps()}
-                  bg="brand_blue.100"
                   color="white"
+                  bg="brand_blue.100"
+                  {...column.getHeaderProps()}
                 >
                   {column.render("Header")}
                 </Th>

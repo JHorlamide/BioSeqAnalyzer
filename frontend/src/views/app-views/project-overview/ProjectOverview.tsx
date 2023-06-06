@@ -1,15 +1,20 @@
-import React from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel, HStack, Text } from '@chakra-ui/react'
-import { useParams } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Tabs, TabList, TabPanels, Tab, TabPanel, HStack, Text, Box } from '@chakra-ui/react'
+import { useParams, useNavigate } from 'react-router-dom';
+import { BsArrowLeft } from "react-icons/bs";
 import { useGetProjectQuery } from '../../../services/project/projectApi';
+import Button from '../../../components/CustomBtn/Button';
 
 const Overview = React.lazy(() => import("./components/Overview/Overview"));
 const Rounds = React.lazy(() => import("./components/Rounds/Rounds"))
 
 const ProjectOverview = () => {
+  const navigate = useNavigate();
   const { projectId } = useParams();
   const id = String(projectId);
   const { data: project, isLoading } = useGetProjectQuery({ projectId: id });
+  const [activeTab, setActiveTab] = useState(0);
+
   const {
     proteinPDBID,
     projectTitle,
@@ -19,19 +24,57 @@ const ProjectOverview = () => {
     projectFile
   } = project?.data || {};
 
-  if (isLoading) {
-    return <Text color="white" textAlign="center">Loading project details...</Text>
+  useEffect(() => {
+    const storedActiveTab = localStorage.getItem("activeTab");
+    setActiveTab(Number(storedActiveTab));
+  }, []);
+
+  const handleTabChange = (index: number) => {
+    setActiveTab(index);
+    localStorage.setItem("activeTab", String(index));
+  };
+
+  const handleGoBack = () => {
+    navigate(-1);
+    localStorage.setItem("activeTab", "");
+  };
+
+  const tabStyle = {
+    variant: "soft-rounded",
+    colorScheme: "gray",
+    marginTop: "-6%"
   }
 
+  // if (isLoading) {
+  //   return <Text color="white" textAlign="center">Loading project details...</Text>
+  // }
+
+  const loading = isLoading;
+
   return (
-    <Tabs variant="soft-rounded" colorScheme="gray" marginTop="-6%">
+    <Tabs
+      {...tabStyle}
+      index={activeTab}
+      onChange={handleTabChange}
+    >
       <TabList
+        width="full"
         display="flex"
-        justifyContent="center"
+        justifyContent="flex-start"
         alignItems="center"
-        marginRight="75.9%"
       >
-        <HStack spacing={5}>
+        <HStack spacing={5} display="flex" alignItems="center" alignSelf="flex-start">
+          <Button
+            color="white"
+            bg="brand_blue.300"
+            _hover={{ bg: "brand_blue.200" }}
+            leftIcon={<BsArrowLeft />}
+            onClick={handleGoBack}
+            marginRight={60}
+          >
+            Back
+          </Button>
+
           <Tab _selected={{ bg: "brand_blue.300" }} color="white">Overview</Tab>
           <Tab _selected={{ bg: "brand_blue.300" }} color="white">Rounds</Tab>
         </HStack>
@@ -39,14 +82,18 @@ const ProjectOverview = () => {
 
       <TabPanels>
         <TabPanel>
-          {project && (
-            <Overview
-              proteinPDBID={proteinPDBID}
-              projectTitle={projectTitle}
-              projectGoal={projectGoal}
-              measuredProperty={measuredProperty}
-              pdbFileUrl={pdbFileUrl}
-            />
+          {loading ? (
+            <Text color="white" textAlign="center">Loading project details...</Text>
+          ) : (
+            project && (
+              <Overview
+                proteinPDBID={proteinPDBID}
+                projectTitle={projectTitle}
+                projectGoal={projectGoal}
+                measuredProperty={measuredProperty}
+                pdbFileUrl={pdbFileUrl}
+              />
+            )
           )}
         </TabPanel>
 
