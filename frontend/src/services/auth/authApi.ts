@@ -4,8 +4,6 @@ import { ILoginResponse } from "./type";
 import { API_BASE_URL } from '../../config/AppConfig';
 
 
-console.log({ baseUrl: API_BASE_URL });
-
 export const AUTH_API_REDUCER_KEY = 'authApi';
 export const authApi = createApi({
   reducerPath: AUTH_API_REDUCER_KEY,
