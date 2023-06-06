@@ -24,9 +24,11 @@ useTreblle(app, {
 // Middleware that enables Cross-Origin Resource Sharing (CORS) for the server.
 // This allows the server to handle requests from different domains or origins.
 const corsOptions: CorsOptions = {
-  origin: ["http://localhost:5173", "http://3.91.48.155:5173"],
+  origin: config.endpoint.baseUrl,
   credentials: true,
 }
+
+console.log({ baseUrl: config.endpoint.baseUrl });
 
 app.use(cors(corsOptions));
 

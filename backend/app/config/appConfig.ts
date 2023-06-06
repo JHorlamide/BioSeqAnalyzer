@@ -10,6 +10,21 @@ const config = {
     tokenExpiration: process.env.TOKEN_EXPIRATION as string
   },
 
+  endpoint: {
+    baseUrlDev: process.env.BASE_URL_DEV,
+    baseUrlLive: process.env.BASE_URL_LIVE,
+
+    get baseUrl() {
+      if (process.env.NODE_ENV === "production") {
+        return this.baseUrlLive
+      } else if (process.env.NODE_ENV === "test") {
+        return this.baseUrlDev
+      } else {
+        return this.baseUrlDev
+      }
+    }
+  },
+
   treble: {
     apiKey: process.env.TREBLLE_API_KEY,
     projectId: process.env.TREBLLE_PROJECT_ID

@@ -1,23 +1,26 @@
 const dev = {
-  API_ENDPOINT_URL: "http://localhost:8080/api"
+  API_ENDPOINT_URL: import.meta.env.VITE_API_ENDPOINT_URL_DEV
 }
 
 const prod = {
-  API_ENDPOINT_URL: "http://3.91.48.155:8080/api"
+  API_ENDPOINT_URL: import.meta.env.VITE_API_ENDPOINT_URL
 };
 
 const test = {
-  API_ENDPOINT_URL: "http://localhost:8080/api"
+  API_ENDPOINT_URL: import.meta.env.VITE_API_ENDPOINT_URL_DEV
 };
 
 const getEnv = () => {
   switch (process.env.NODE_ENV) {
     case "development":
-      return dev;
+      console.log({ dev })
+      return dev
     case "production":
-      return prod;
+      console.log({ prod })
+      return prod
     case "test":
-      return test;
+      console.log({ test })
+      return test
     default:
       break;
   }
