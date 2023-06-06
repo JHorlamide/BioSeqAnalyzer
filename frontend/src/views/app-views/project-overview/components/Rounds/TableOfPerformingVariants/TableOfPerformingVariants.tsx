@@ -1,10 +1,9 @@
 import React from "react";
 import { Column } from "react-table";
 import { Box, Text, Stack, StackDivider } from '@chakra-ui/react'
-// import CustomTable from '../../../../../../components/CustomTable/CustomTable'
 import { useGetTopVariantsQuery } from "../../../../../../services/project/projectApi";
 import { MutationRange } from "./sharedTypes"
-import DataLoadingStatus from "../../DataLoadingStatus/DataLoadingStatus";
+import LoadingSkeleton from "./Components/LoadingSkeleton";
 
 const CustomTable = React.lazy(() => import("../../../../../../components/CustomTable/CustomTable"));
 
@@ -25,9 +24,9 @@ const TableOfPerformingVariants = ({ projectId }: { projectId: string }) => {
   ], []);
 
   if (isLoading) {
-    return <DataLoadingStatus 
-      isError={isError} 
-      DataLoadingName="top performing variant"
+    return <LoadingSkeleton
+      isError={isError}
+      DataLoadingName="Top performing variants"
     />
   }
 

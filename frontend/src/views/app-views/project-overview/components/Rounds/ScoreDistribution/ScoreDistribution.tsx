@@ -1,16 +1,17 @@
 import { Fragment } from "react"
-import { Box, Text, Stack, StackDivider } from "@chakra-ui/react";
-import DataLoadingStatus from "../../DataLoadingStatus/DataLoadingStatus";
+import { Box, Text } from "@chakra-ui/react";
 import Histogram from "./components/Histogram";
 import { useGetScoreDistributionQuery } from "../../../../../../services/project/projectApi";
+import HistogramSkeleton from "./components/HistogramSkeleton";
 
 const ScoreDistribution = ({ projectId }: { projectId: string }) => {
   const { data, isLoading, isError } = useGetScoreDistributionQuery({ projectId });
 
   if (isLoading) {
-    return <DataLoadingStatus 
-      isError={isError} 
-      DataLoadingName="score distribution"
+    return <HistogramSkeleton
+      isError={isError}
+      barCount={40}
+      DataLoadingName="Score distribution"
     />
   }
 
@@ -37,6 +38,7 @@ const ScoreDistribution = ({ projectId }: { projectId: string }) => {
             Score distribution
           </Text>
         </Box>
+
         <Histogram data={data.data} />
       </Box>
     </Fragment>

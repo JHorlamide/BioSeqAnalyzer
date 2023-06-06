@@ -3,7 +3,7 @@ import { Box, Text, Stack, StackDivider, Flex, HStack } from '@chakra-ui/react'
 import { HiStar } from 'react-icons/hi'
 import { useGetSummaryMainMatricesQuery } from '../../../../../../services/project/projectApi'
 import { Sequence } from '../../../../../../services/project/type';
-import DataLoadingStatus from '../../DataLoadingStatus/DataLoadingStatus';
+import SummaryTableSkeleton from "./SummaryTableSkeleton";
 
 interface SummaryTableProps {
   totalSequence: number;
@@ -66,9 +66,9 @@ const SummaryTable = ({ projectId }: { projectId: string }) => {
   const { data, isLoading, isError } = useGetSummaryMainMatricesQuery({ projectId });
 
   if (isLoading) {
-    return <DataLoadingStatus
+    return <SummaryTableSkeleton
       isError={isError}
-      DataLoadingName="summary of main matrices"
+      DataLoadingName="Summary table of main matrices"
     />
   }
 

@@ -91,7 +91,7 @@ const DocumentUpload = ({ projectId }: Props) => {
           <Flex justifyContent="space-between" alignItems="center">
             <ModalHeader fontSize="18px" color="white">Result</ModalHeader>
             {isLoading ? (
-              <Text paddingX={3}>Uploading...</Text>
+              <Text paddingX={3} color="white">Uploading...</Text>
             ) : (
               <Button
                 color="white"
