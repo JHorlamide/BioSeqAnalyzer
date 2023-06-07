@@ -23,14 +23,14 @@ const ConfirmationModal = (props: Props) => {
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent bg="brand_blue.300">
-        <ModalHeader fontSize="18px">Are you sure you want to delete project ({projectName})?
+        <ModalHeader fontSize="18px" color="white">Are you sure you want to delete project ({projectName})?
         </ModalHeader>
 
-        <ModalBody>
+        <ModalBody color="white">
           <Text>This is a permanent action and you’ll lose all the information you’ve created within this project.</Text>
         </ModalBody>
 
-        <ModalFooter>
+        <ModalFooter color="white">
           <Button bg="brand_blue.100" onClick={onClose}>
             Cancel
           </Button>
