@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Column } from "react-table";
 import { MutationRange } from "../../sharedTypes"
 import { Box, Text } from "@chakra-ui/react";
-import CustomTable from "../../../../../../../../components/CustomTable/CustomTable";
+import CustomTable from "../CustomTable/CustomTable";
 
 interface Props {
   mutationRanges: MutationRange[];

@@ -13,10 +13,6 @@ const CustomTable: React.FC<TableProps> = (props) => {
   const { columns, mutationRanges, tableProps, maxTableData } = props;
   const isMaxTableDataValid = maxTableData !== 0;
   const areMutationRangesAvailable = mutationRanges.length > 0;
-  // const data = isMaxTableDataValid && areMutationRangesAvailable ? mutationRanges.slice(0, maxTableData) : mutationRanges;
-
-  // const data = Array.isArray(mutationRanges) ? mutationRanges : [];
-  // const slicedData = isMaxTableDataValid && areMutationRangesAvailable ? data.slice(0, maxTableData) : data;
 
   const slicedData = useMemo(() => {
     const data = Array.isArray(mutationRanges) ? mutationRanges : [];
@@ -70,5 +66,5 @@ const CustomTable: React.FC<TableProps> = (props) => {
   );
 }
 
-
-export default CustomTable;
+const CustomTableMemo = React.memo(CustomTable);
+export default CustomTableMemo;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel, HStack, Text, Box, Stack, Skeleton } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, HStack, Box, Skeleton, Stack } from '@chakra-ui/react'
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from "react-icons/bs";
 import { useGetProjectQuery } from '../../../services/project/projectApi';
@@ -9,23 +9,16 @@ import Rounds from './components/Rounds/Rounds';
 
 const LoadingSkeleton = () => {
   return (
-    <Box>
-      <Box paddingX={3}>
-        <Skeleton height="20px" width="60%" />
-        <Skeleton height="20px" width="40%" marginY={1} />
-        <Skeleton height="20px" width="80%" marginY={1} />
-      </Box>
+    <Stack spacing={5}>
+      <HStack spacing={3} paddingX={3}>
+        <Skeleton height="20px" width="30%" />
+        <Skeleton height="20px" width="60%" marginY={1} />
+      </HStack>
 
       <Box paddingX={3}>
-        <Skeleton height="20px" width="80%" />
-        <Skeleton height="20px" width="40%" marginY={1} />
+        <Skeleton height="80px" width="100%" />
       </Box>
-
-      <Box paddingX={3}>
-        <Skeleton height="20px" width="80%" />
-        <Skeleton height="20px" width="40%" marginY={1} />
-      </Box>
-    </Box>
+    </Stack>
   )
 }
 
@@ -66,10 +59,6 @@ const ProjectOverview = () => {
     marginTop: "-6%"
   }
 
-  if (isLoading) {
-    return <LoadingSkeleton />
-  }
-
   return (
     <Tabs
       {...tabStyle}
@@ -101,14 +90,16 @@ const ProjectOverview = () => {
 
       <TabPanels>
         <TabPanel>
-          {project && (
-            <Overview
-              proteinPDBID={proteinPDBID}
-              projectTitle={projectTitle}
-              projectGoal={projectGoal}
-              measuredProperty={measuredProperty}
-              pdbFileUrl={pdbFileUrl}
-            />
+          {isLoading ? (<LoadingSkeleton />) : (
+            project && (
+              <Overview
+                proteinPDBID={proteinPDBID}
+                projectTitle={projectTitle}
+                projectGoal={projectGoal}
+                measuredProperty={measuredProperty}
+                pdbFileUrl={pdbFileUrl}
+              />
+            )
           )}
         </TabPanel>
 
