@@ -9,14 +9,14 @@ import Rounds from './components/Rounds/Rounds';
 
 const LoadingSkeleton = () => {
   return (
-    <Stack spacing={5}>
+    <Stack spacing={8}>
       <HStack spacing={3} paddingX={3}>
         <Skeleton height="20px" width="30%" />
         <Skeleton height="20px" width="60%" marginY={1} />
       </HStack>
 
       <Box paddingX={3}>
-        <Skeleton height="80px" width="100%" />
+        <Skeleton height="50%" width="100%" />
       </Box>
     </Stack>
   )
