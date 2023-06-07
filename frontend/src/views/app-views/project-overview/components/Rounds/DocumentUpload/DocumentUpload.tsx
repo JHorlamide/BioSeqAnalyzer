@@ -14,7 +14,7 @@ import {
 import Button from "../../../../../../components/CustomBtn/Button";
 import { AiOutlineCloudUpload, AiOutlineCloudDownload } from "react-icons/ai"
 import { SAMPLE_CSV_LINK } from '../../../../../../config/AppConfig';
-import { useUploadProjectFileMutation } from '../../../../../../services/project/projectApi';
+import { useUploadProjectFileMutation, useGetProjectQuery } from '../../../../../../services/project/projectApi';
 import { toast } from 'react-hot-toast';
 import Utils from '../../../../../../utils';
 
