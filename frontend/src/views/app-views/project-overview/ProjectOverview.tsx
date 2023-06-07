@@ -16,7 +16,7 @@ const LoadingSkeleton = () => {
       </HStack>
 
       <Box paddingX={3}>
-        <Skeleton height="50%" width="100%" />
+        <Skeleton height="20%" width="100%" />
       </Box>
     </Stack>
   )
