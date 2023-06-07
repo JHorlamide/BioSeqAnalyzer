@@ -26,10 +26,9 @@ import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
 
 export const PROJECT_API_REDUCER_KEY = "projectsApi";
-
 export const projectApi = createApi({
   reducerPath: PROJECT_API_REDUCER_KEY,
-  tagTypes: ["GetAllProjects", "GetProjectDetails", "CreateProject", "Projects", "User", "ProteinSequence"],
+  tagTypes: ["GetAllProjects", "GetProjectDetails", "CreateProject", "ProteinSequence"],
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_BASE_URL}`,
     prepareHeaders: async (headers, { getState }) => {
@@ -122,7 +121,7 @@ export const projectApi = createApi({
         method: "DELETE"
       }),
 
-      invalidatesTags: ["Projects"]
+      invalidatesTags: ["GetAllProjects"]
     })
   }),
 

@@ -2,12 +2,11 @@ import React from 'react';
 import { Box, HStack, VStack } from '@chakra-ui/react';
 import DocumentUpload from './DocumentUpload/DocumentUpload';
 import { ProjectFields } from '../../../../../services/project/type';
+import ProteinSequenceViewer from '../ProteinSequenceViewer/ProteinSequenceViewer';
 
 const SummaryTable = React.lazy(() => import("./SummaryTable/SummaryTable"));
 const TableOfPerformingVariants = React.lazy(() => import("./TableOfPerformingVariants/TableOfPerformingVariants"));
 const ScoreDistribution = React.lazy(() => import("./ScoreDistribution/ScoreDistribution"));
-const ProteinSequenceViewer = React.lazy(() => import("../ProteinSequenceViewer/ProteinSequenceViewer"));
-// const FoldImprovement = React.lazy(() => import("./FoldImprovement/FoldImprovement"));
 
 interface Props {
   projectId: string;

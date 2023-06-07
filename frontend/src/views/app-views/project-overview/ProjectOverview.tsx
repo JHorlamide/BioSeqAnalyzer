@@ -1,11 +1,33 @@
 import { useEffect, useState } from 'react';
-import { Tabs, TabList, TabPanels, Tab, TabPanel, HStack, Text, Box } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, HStack, Text, Box, Stack, Skeleton } from '@chakra-ui/react'
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from "react-icons/bs";
 import { useGetProjectQuery } from '../../../services/project/projectApi';
 import Button from '../../../components/CustomBtn/Button';
 import Overview from "./components/Overview/Overview"
 import Rounds from './components/Rounds/Rounds';
+
+const LoadingSkeleton = () => {
+  return (
+    <Box>
+      <Box paddingX={3}>
+        <Skeleton height="20px" width="60%" />
+        <Skeleton height="20px" width="40%" marginY={1} />
+        <Skeleton height="20px" width="80%" marginY={1} />
+      </Box>
+
+      <Box paddingX={3}>
+        <Skeleton height="20px" width="80%" />
+        <Skeleton height="20px" width="40%" marginY={1} />
+      </Box>
+
+      <Box paddingX={3}>
+        <Skeleton height="20px" width="80%" />
+        <Skeleton height="20px" width="40%" marginY={1} />
+      </Box>
+    </Box>
+  )
+}
 
 const ProjectOverview = () => {
   const navigate = useNavigate();
@@ -44,11 +66,9 @@ const ProjectOverview = () => {
     marginTop: "-6%"
   }
 
-  const loading = isLoading;
-
-  // if (isLoading) {
-  //   return <Text color="white" textAlign="center">Loading project details...</Text>
-  // }
+  if (isLoading) {
+    return <LoadingSkeleton />
+  }
 
   return (
     <Tabs
@@ -81,18 +101,14 @@ const ProjectOverview = () => {
 
       <TabPanels>
         <TabPanel>
-          {loading ? (
-            <Text color="white" textAlign="center">Loading project details...</Text>
-          ) : (
-            project && (
-              <Overview
-                proteinPDBID={proteinPDBID}
-                projectTitle={projectTitle}
-                projectGoal={projectGoal}
-                measuredProperty={measuredProperty}
-                pdbFileUrl={pdbFileUrl}
-              />
-            )
+          {project && (
+            <Overview
+              proteinPDBID={proteinPDBID}
+              projectTitle={projectTitle}
+              projectGoal={projectGoal}
+              measuredProperty={measuredProperty}
+              pdbFileUrl={pdbFileUrl}
+            />
           )}
         </TabPanel>
 
