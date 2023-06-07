@@ -31,7 +31,11 @@ const ConfirmationModal = (props: Props) => {
         </ModalBody>
 
         <ModalFooter color="white">
-          <Button bg="brand_blue.100" onClick={onClose}>
+          <Button
+            bg="brand_blue.100"
+            onClick={onClose}
+            _hover={{ bg: "brand_blue.200" }}
+          >
             Cancel
           </Button>
 

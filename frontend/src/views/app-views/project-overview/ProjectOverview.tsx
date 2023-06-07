@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Tabs, TabList, TabPanels, Tab, TabPanel, HStack, Text, Box } from '@chakra-ui/react'
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from "react-icons/bs";
 import { useGetProjectQuery } from '../../../services/project/projectApi';
 import Button from '../../../components/CustomBtn/Button';
-
-const Overview = React.lazy(() => import("./components/Overview/Overview"));
-const Rounds = React.lazy(() => import("./components/Rounds/Rounds"))
+import Overview from "./components/Overview/Overview"
+import Rounds from './components/Rounds/Rounds';
 
 const ProjectOverview = () => {
   const navigate = useNavigate();
@@ -45,11 +44,11 @@ const ProjectOverview = () => {
     marginTop: "-6%"
   }
 
+  const loading = isLoading;
+
   // if (isLoading) {
   //   return <Text color="white" textAlign="center">Loading project details...</Text>
   // }
-
-  const loading = isLoading;
 
   return (
     <Tabs

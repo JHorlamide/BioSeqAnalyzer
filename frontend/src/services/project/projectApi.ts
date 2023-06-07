@@ -29,7 +29,7 @@ export const PROJECT_API_REDUCER_KEY = "projectsApi";
 
 export const projectApi = createApi({
   reducerPath: PROJECT_API_REDUCER_KEY,
-  tagTypes: ["Projects", "User"],
+  tagTypes: ["GetAllProjects", "GetProjectDetails", "CreateProject", "Projects", "User", "ProteinSequence"],
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_BASE_URL}`,
     prepareHeaders: async (headers, { getState }) => {
@@ -53,11 +53,12 @@ export const projectApi = createApi({
         body: data
       }),
 
-      invalidatesTags: ["Projects"]
+      invalidatesTags: ["GetAllProjects"]
     }),
 
     getProteinSequence: builder.query<IGetProteinSequenceRes, IGetProteinSequenceReq>({
-      query: ({ uniprotId }) => `/uniprot/${uniprotId}`
+      query: ({ uniprotId }) => `/uniprot/${uniprotId}`,
+      providesTags: ["ProteinSequence"]
     }),
 
     getProjects: builder.query<IGetProjectsRes, IGetProjectQueryParam>({
@@ -66,13 +67,15 @@ export const projectApi = createApi({
         params: { page, limit, search }
       }),
 
-      providesTags: ["Projects"]
+      providesTags: ["GetAllProjects"]
     }),
 
     getProject: builder.query<IGetProjectRes, IGetProjectReq>({
       query: ({ projectId }) => ({
         url: `/projects/${projectId}`
-      })
+      }),
+
+      providesTags: ["GetProjectDetails"]
     }),
 
     updateProject: builder.mutation<IUpdateProjectRes, IUpdateProjectReq>({
@@ -82,7 +85,7 @@ export const projectApi = createApi({
         body: data,
       }),
 
-      invalidatesTags: ["Projects"]
+      invalidatesTags: ["GetProjectDetails"]
     }),
 
     uploadProjectFile: builder.mutation<IUploadProjectRes, IUploadProjectFileReq>({
@@ -92,7 +95,7 @@ export const projectApi = createApi({
         body: data
       }),
 
-      invalidatesTags: ["Projects"]
+      invalidatesTags: ["GetProjectDetails"]
     }),
 
     getSummaryMainMatrices: builder.query<IGetSummaryRes, IGetSummaryReq>({
@@ -100,13 +103,13 @@ export const projectApi = createApi({
         url: `/projects/${projectId}/csv-upload/summary-table-of-main-matrices`,
       })
     }),
- 
+
     getTopVariants: builder.query<IGetTopVariantsRes, IGetTopVariantsReq>({
       query: ({ projectId }) => ({
         url: `/projects/${projectId}/csv-upload/top-performing-variants`,
       })
     }),
- 
+
     getScoreDistribution: builder.query<IGetScoreDistributionRes, IGetScoreDistributionReq>({
       query: ({ projectId }) => ({
         url: `/projects/${projectId}/csv-upload/score-distribution`,

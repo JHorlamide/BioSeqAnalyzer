@@ -115,6 +115,7 @@ const Login = () => {
           bg="brand_blue.50"
           width="full"
           type="submit"
+          _hover={{ bg: "brand_blue.200"}}
         >
           Login
         </Button>

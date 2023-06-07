@@ -84,8 +84,9 @@ const DocumentUpload = ({ projectId }: Props) => {
         <ModalContent bg="brand_blue.300" width="full">
           <Flex justifyContent="space-between" alignItems="center">
             <ModalHeader fontSize="18px" color="white">Result</ModalHeader>
+            {isError && <Text color="red.500">Failed to upload the csv file. Please try again</Text>}
             {isLoading ? (
-              <Text paddingX={3} color="white">Uploading...</Text>
+              <Text paddingX={4} color="white">Uploading...</Text>
             ) : (
               <Button
                 color="white"
