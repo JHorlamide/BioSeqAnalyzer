@@ -4,12 +4,12 @@ import csvParser from "csv-parser";
 import config from "../../../config/appConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
-import { IUpdateProject, IProject, IGetProjects, CSVColumnDataType } from "../types/types";
+import s3Service from "../s3Service/s3Service";
 import { ERR_MSG } from "../types/constants";
 import { ClientError } from "../../../common/exceptions/clientError";
 import { NotFoundError } from "../../../common/exceptions/notFoundError";
 import { ServerError } from "../../../common/exceptions/serverError";
-import s3Service from "../s3Service/s3Service";
+import { IUpdateProject, IProject, IGetProjects, CSVColumnDataType } from "../types/types";
 
 class ProjectService {
   /**
@@ -118,18 +118,38 @@ class ProjectService {
 
   public async updateProject(projectUpdateData: IUpdateProject) {
     const { projectId, projectData } = projectUpdateData;
+    let pdbFileUrl;
+    let proteinPDBID;
+    let proteinAminoAcidSequence;
 
     if (!projectId) {
       throw new ClientError(ERR_MSG.PROJECT_ID_REQUIRED)
     }
 
-    // Ensure that the necessary data is provided to create the project
+    // Ensure that the necessary data is provided to update the project
     if (Object.keys(projectData).length === 0) {
       throw new ClientError(ERR_MSG.INVALID_PROJECT_DATA)
     }
 
+    // If uniprotId is provided, retrieve the protein sequence
+    if (projectData.uniprotId) {
+      proteinAminoAcidSequence = await this.getProteinSequenceFromUniProt(projectData.uniprotId!!);
+    }
+
+
+    // If proteinPDBID is provided, add the PDB URL
+    // to the project data
+    if (projectData.proteinPDBID) {
+      proteinPDBID = projectData.proteinPDBID
+      pdbFileUrl = `${config.pdbBaseUrl}/${projectData.proteinPDBID}`;
+    }
+
     try {
-      const updatedProject = await projectRepository.updateProject(projectUpdateData)
+      const updatedProject = await projectRepository.updateProject({
+        projectId, 
+        projectData: { ...projectData, proteinAminoAcidSequence, pdbFileUrl }
+      })
+
       if (!updatedProject) {
         throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
       }
@@ -391,15 +411,15 @@ class ProjectService {
     return 0; // Default value if reference sequence is not found
   }
 
+  // Helper function to get the entry with the best fitness score
+  private getBestFitnessEntry(csvData: CSVColumnDataType[]) {
+    return csvData.reduce((prev, curr) => (curr.fitness > prev.fitness ? curr : prev));
+  }
+
   // Helper function to get the fitness score of the wild type sequence
   private getWildTypeFitness(csvData: CSVColumnDataType[]) {
     const wildTypeEntry = csvData.find((entry) => entry.muts.includes('WT'));
     return wildTypeEntry ? wildTypeEntry.fitness : 0;
-  }
-
-  // Helper function to get the entry with the best fitness score
-  public getBestFitnessEntry(csvData: CSVColumnDataType[]) {
-    return csvData.reduce((prev, curr) => (curr.fitness > prev.fitness ? curr : prev));
   }
 
   // Get file from aws
@@ -416,14 +436,10 @@ class ProjectService {
 
   private async createProjectIfUniprotIdExist(projectData: IProject) {
     // If uniprotId is provided, retrieve the protein sequence
-    const proteinSequence = await uniprotService.getProteinSequence(projectData.uniprotId!!);
+    const proteinAminoAcidSequence = await this.getProteinSequenceFromUniProt(projectData.uniprotId!!);
 
     // Add the protein sequence to the project data and create the project
-    const projectWithSequence = {
-      ...projectData,
-      proteinAminoAcidSequence: proteinSequence
-    };
-
+    const projectWithSequence = { ...projectData, proteinAminoAcidSequence };
     return await this.createProteinProject(projectWithSequence);
   }
 
@@ -454,10 +470,23 @@ class ProjectService {
 
     return false;
   }
+
+  private async getProteinSequenceFromUniProt(uniprotId: string) {
+    try {
+      const proteinSequence = await uniprotService.getProteinSequence(uniprotId);
+      if (!proteinSequence) {
+        throw new ServerError("Server error. Please try again later")
+      }
+
+      return proteinSequence;
+    } catch (error: unknown) {
+      if (error instanceof ClientError) {
+        throw error;
+      } else {
+        throw new ClientError((error as Error).message);
+      }
+    }
+  }
 }
 
 export default new ProjectService();
-
-// public hasWildTypeSequence(csvData: any[]): boolean {
-//   return csvData.some((row) => row.muts === 'WT');
-// }

@@ -15,6 +15,7 @@ import { toast } from "react-hot-toast";
 import utils from "../../../../utils";
 import ConfirmationModal from "./ConfirmationModal";
 import CardMenu from "./CardMenu";
+import useErrorToast from "../../../../hooks/useErrorToast";
 
 interface ProjectCardProps {
   projectTitle: string;
@@ -24,6 +25,7 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = (props: ProjectCardProps) => {
+  const { handleOnError } = useErrorToast();
   const { projectTitle, projectId, projectName, updatedAt } = props;
   const [deleteProject] = useDeleteProjectMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -31,10 +33,13 @@ const ProjectCard = (props: ProjectCardProps) => {
   async function handleDelete() {
     try {
       const response = await deleteProject({ projectId }).unwrap();
-      toast.error(response.message);
+
+      handleOnError(response.message);
+      // toast.error(response.message);
     } catch (error) {
       const errorMessage = utils.getErrorMessage(error);
-      toast.error(errorMessage);
+      handleOnError(errorMessage);
+      // toast.error(errorMessage);
     }
   }
 
@@ -75,7 +80,7 @@ const ProjectCard = (props: ProjectCardProps) => {
           <Box>
             <BsFolderFill size={20} />
           </Box>
-          
+
           <CardMenu projectId={projectId} onOpen={onOpen} />
         </CardHeader>
 

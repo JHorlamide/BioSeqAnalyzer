@@ -4,7 +4,6 @@ import responseHandler from "../responseHandler";
 
 export function errorHandler(error: any, req: Request, res: Response, next: NextFunction) {
   if (!(error instanceof CustomError)) {
-    console.error(error);
     return responseHandler.serverError(`Server error, please try again later`, res);
   }
 

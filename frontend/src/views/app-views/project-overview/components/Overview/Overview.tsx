@@ -38,6 +38,7 @@ const ProteinViewer = (props: OverviewProps) => {
     bg: "brand_blue.100",
     fontWeight: "500",
     borderRadius: "full",
+    color: "white",
     paddingX: 4,
     paddingY: 2,
   }

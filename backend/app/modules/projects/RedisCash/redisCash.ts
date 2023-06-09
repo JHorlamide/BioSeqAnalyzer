@@ -3,7 +3,6 @@ import { ServerError } from '../../../common/exceptions/serverError';
 
 // const redisUrl = `redis://${process.env.REDIS_USERNAME}:${process.env.REDIS_PASSWORD}@${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
 const redisUrl = `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`;
-console.log({ redisPort: process.env.REDIS_PORT });
 
 class RedisCache {
   private client: RedisClientType;

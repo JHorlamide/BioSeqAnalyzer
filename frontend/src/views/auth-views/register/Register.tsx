@@ -66,7 +66,6 @@ const Register = () => {
 
           <FormControl>
             <FormLabel color="white">Email Address</FormLabel>
-
             <InputGroup flexDirection="column" width="100%">
               <InputLeftElement
                 paddingTop={"5px"}

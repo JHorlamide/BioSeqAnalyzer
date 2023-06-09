@@ -12,8 +12,10 @@ import { APP_PREFIX_PATH, AUTH_PREFIX_PATH } from "../config/AppConfig";
 import utils from "../utils";
 import { RegisterFormData, registrationSchema } from "../schemas/register.schema";
 import { useRegisterUserMutation } from "../services/auth/registerApi";
+import useErrorToast from "./useErrorToast";
 
 export const useLogin = () => {
+  const { handleOnError } = useErrorToast();
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const { handleNavigate } = useNavigation();
@@ -28,7 +30,6 @@ export const useLogin = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data).unwrap();
-
       if (response.status === "Success") {
         const { accessToken, refreshToken, user } = response.data;
 
@@ -45,7 +46,7 @@ export const useLogin = () => {
       }
     } catch (error: any) {
       const errorMessage = utils.getErrorMessage(error);
-      toast.error(errorMessage);
+      handleOnError(errorMessage);
     }
   };
 
@@ -65,6 +66,7 @@ export const useLogin = () => {
 }
 
 export const useRegister = () => {
+  const { handleOnError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [show, setShow] = useState(false);
   const {
@@ -79,7 +81,6 @@ export const useRegister = () => {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       const response = await registerUser(data).unwrap();
-
       if (response.status === "Success") {
         toast.success(response.message);
         setTimeout(() => {
@@ -88,7 +89,7 @@ export const useRegister = () => {
       }
     } catch (error: any) {
       const errorMessage = error.response.data.message || error.message;
-      toast.error(errorMessage);
+      handleOnError(errorMessage);
     }
   };
 

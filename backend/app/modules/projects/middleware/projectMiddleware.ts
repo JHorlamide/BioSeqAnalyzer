@@ -31,16 +31,6 @@ class ProjectMiddleware {
     });
   }
 
-  public validateUniProtIdParam(req: Request, res: Response, next: NextFunction) {
-    const { uniprotId } = req.params;
-
-    if (!uniprotId) {
-      return responseHandler.badRequest("Invalid uniprotId", res);
-    }
-
-    next();
-  }
-
   public validatePaginationParams(req: Request, res: Response, next: NextFunction) {
     const { page, limit, search } = req.query;
 

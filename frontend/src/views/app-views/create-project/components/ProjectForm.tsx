@@ -8,11 +8,10 @@ import {
   InputRightElement,
   VStack,
   Flex,
-  Spinner,
   Center,
   HStack,
 } from "@chakra-ui/react";
-import { GiMolecule, GiGooeyMolecule, GiAcid } from "react-icons/gi";
+import { GiMolecule, GiGooeyMolecule } from "react-icons/gi";
 import { SiMoleculer } from "react-icons/si";
 import { MdOutlineTitle } from "react-icons/md";
 import ProjectInput, { SelectInput } from "./ProjectInput";
@@ -33,18 +32,16 @@ const measuredPropertyOption = [
 const ProjectForm = (props: ProjectFormProps) => {
   const {
     errors,
-    loading,
     isValid,
     isLoading,
     projectId,
     projectData,
-    showRawSeqInput,
     showUniProtInput,
-    animoAcidSequence,
     register,
     handleSubmit,
     submitProject,
-    toggleShowUniProtInput,
+    showRawSeqInput,
+    toggleShowUniProtInput
   } = props;
 
   return (
@@ -63,7 +60,7 @@ const ProjectForm = (props: ProjectFormProps) => {
         </Box>
 
         <form onSubmit={handleSubmit(submitProject)}>
-          <VStack spacing={3} paddingY={2}>
+          <VStack spacing={5} paddingY={2}>
             <VStack
               spacing={3}
               bg="brand_blue.300"
@@ -93,18 +90,24 @@ const ProjectForm = (props: ProjectFormProps) => {
                     <InputLeftElement
                       pt="5px"
                       pointerEvents={"none"}
-                      children={<GiGooeyMolecule color="brand_blue.2000" />}
+                      children={<GiGooeyMolecule color="gray.3000" />}
+                    />
+
+                    <InputRightElement
+                      pt="5px"
+                      pointerEvents={"none"}
+                    // children={loading && <Spinner size="sm" />}
                     />
 
                     <ProjectInput
                       inputProps={{
                         type: "string",
-                        placeholder: "Copy and past raw sequence here...",
-                        defaultValue: projectData && projectData?.uniprotId
+                        name: "proteinAminoAcidSequence",
+                        defaultValue: projectData && projectData.proteinAminoAcidSequence,
                       }}
-                      name="uniprotId"
+                      name="proteinAminoAcidSequence"
                       register={register}
-                      error={errors.uniprotId?.message}
+                      error={errors.proteinAminoAcidSequence?.message}
                     />
                   </InputGroup>
                 </FormControl>
@@ -137,7 +140,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                       inputProps={{
                         type: "string",
                         placeholder: "Enter UniProtId here...",
-                        defaultValue: projectData && projectData.uniprotId
+                        defaultValue: projectData && projectData.uniprotId,
                       }}
                       name="uniprotId"
                       register={register}
@@ -188,7 +191,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                     error={errors.projectGoal?.message}
                     selectProps={{
                       value: projectData && projectData.projectGoal,
-                      // defaultValue: projectData && projectData.projectGoal
                     }}
                   />
 
@@ -204,34 +206,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                     }}
                   />
                 </HStack>
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Amino Acid sequence (Optional)</FormLabel>
-                <InputGroup>
-                  <InputLeftElement
-                    pt="5px"
-                    pointerEvents={"none"}
-                    children={<GiAcid color="gray.3000" />}
-                  />
-
-                  <InputRightElement
-                    pt="5px"
-                    pointerEvents={"none"}
-                    children={loading && <Spinner size="sm" />}
-                  />
-
-                  <ProjectInput
-                    inputProps={{
-                      type: "string",
-                      placeholder: "",
-                      value: animoAcidSequence
-                    }}
-                    name="proteinAminoAcidSequence"
-                    register={register}
-                    error={errors.proteinAminoAcidSequence?.message}
-                  />
-                </InputGroup>
               </FormControl>
             </VStack>
 
@@ -273,7 +247,7 @@ const ProjectForm = (props: ProjectFormProps) => {
               color="white"
               alignSelf="end"
               type="submit"
-              _hover={{ bg: "brand_blue.200"}}
+              _hover={{ bg: "brand_blue.200" }}
             >
               Create Project
             </Button>

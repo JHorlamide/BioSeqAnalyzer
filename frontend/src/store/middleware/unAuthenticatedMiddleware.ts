@@ -16,15 +16,15 @@ export const unAuthenticatedMiddleware: Middleware = ({ dispatch }) => (next) =>
   }
 
   if (isRejectedWithValue(action) && action.payload.status === UNAUTHORIZED_STATUS.FORBIDDEN) {
-    toast.error(SESSION_EXPIRE_ERROR);
-
     setTimeout(() => {
       dispatch(resetStateAction());
     }, 2000);
+
+    return toast.error(SESSION_EXPIRE_ERROR);
   }
 
   if (isRejectedWithValue(action) && action.payload.status === SERVER_ERROR) {
-    toast.error(action.payload.data.message);
+    return toast.error(action.payload.data.message);
   }
 
   return next(action);

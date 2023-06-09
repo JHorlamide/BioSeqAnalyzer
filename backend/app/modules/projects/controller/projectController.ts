@@ -3,21 +3,15 @@ import asyncHandler from "../../../common/middleware/asyncHandler";
 import projectService from "../services/projectService";
 import responseHandler from "../../../common/responseHandler";
 import { RES_MSG, ERR_MSG } from "../types/constants";
-import uniprotService from "../services/uniprot.service";
 import config from "../../../config/appConfig";
 import redisCash from "../RedisCash/redisCash";
+// import uniprotService from "../services/uniprot.service";
 
 class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
     const { userId } = res.locals.jwt;
     const project = await projectService.createProject({ user: userId, ...req.body });
     responseHandler.successfullyCreated(RES_MSG.PROJECT_CREATED, project, res);
-  })
-
-  public getProteinSequence = asyncHandler(async (req: Request, res: Response) => {
-    const { uniprotId } = req.params;
-    const proteinSequence = await uniprotService.getProteinSequence(uniprotId);
-    responseHandler.successResponse(RES_MSG.PROTEIN_SEQUENCE_FETCHED, proteinSequence, res);
   })
 
   public getAllProjects = asyncHandler(async (req: Request, res: Response) => {

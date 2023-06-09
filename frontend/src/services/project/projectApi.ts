@@ -55,11 +55,6 @@ export const projectApi = createApi({
       invalidatesTags: ["GetAllProjects"]
     }),
 
-    getProteinSequence: builder.query<IGetProteinSequenceRes, IGetProteinSequenceReq>({
-      query: ({ uniprotId }) => `/uniprot/${uniprotId}`,
-      providesTags: ["ProteinSequence"]
-    }),
-
     getProjects: builder.query<IGetProjectsRes, IGetProjectQueryParam>({
       query: ({ page, limit, search }) => ({
         url: `/projects`,
@@ -84,7 +79,7 @@ export const projectApi = createApi({
         body: data,
       }),
 
-      invalidatesTags: ["GetProjectDetails"]
+      invalidatesTags: ["GetAllProjects", "GetProjectDetails"]
     }),
 
     uploadProjectFile: builder.mutation<IUploadProjectRes, IUploadProjectFileReq>({
@@ -123,6 +118,11 @@ export const projectApi = createApi({
 
       invalidatesTags: ["GetAllProjects"]
     })
+
+    // getProteinSequence: builder.query<IGetProteinSequenceRes, IGetProteinSequenceReq>({
+    //   query: ({ uniprotId }) => `/uniprot/${uniprotId}`,
+    //   providesTags: ["ProteinSequence"]
+    // }),
   }),
 
   refetchOnFocus: true,
@@ -131,7 +131,6 @@ export const projectApi = createApi({
 
 export const {
   useCreateProjectMutation,
-  useGetProteinSequenceQuery,
   useGetProjectsQuery,
   useGetProjectQuery,
   useUpdateProjectMutation,
@@ -140,4 +139,5 @@ export const {
   useGetSummaryMainMatricesQuery,
   useGetTopVariantsQuery,
   useGetScoreDistributionQuery
+  // useGetProteinSequenceQuery,
 } = projectApi;

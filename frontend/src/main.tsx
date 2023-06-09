@@ -7,6 +7,7 @@ import { store, persistor } from "./store/store";
 import { Toaster } from "react-hot-toast";
 import { theme } from "./theme/theme";
 import App from "./App";
+import { toastStyle } from "./config/AppConfig";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -14,7 +15,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <PersistGate loading={null} persistor={persistor}>
         <ChakraProvider theme={theme}>
           <ColorModeScript />
-          <Toaster toastOptions={{ duration: 4000 }} />
+          <Toaster toastOptions={{ duration: 4000, ...toastStyle }} />
           <App />
         </ChakraProvider>
       </PersistGate>

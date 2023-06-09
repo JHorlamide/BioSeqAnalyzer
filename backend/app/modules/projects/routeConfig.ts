@@ -124,17 +124,6 @@ export class ProjectRoute extends CommonRoutesConfig {
       projectController.getScoreDistribution
     ])
 
-    /***
-    * @route GET: /api/uniprot/:uniprotId
-    * @desc Get Protein Sequence
-    * @access Private
-    * ***/
-    this.app.get(`${APP_PREFIX_PATH}/uniprot/:uniprotId`, [
-      jwtMiddleware.validJWTNeeded,
-      projectMiddleware.validateUniProtIdParam,
-      projectController.getProteinSequence
-    ])
-
     return this.app;
   }
 }

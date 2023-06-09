@@ -5,13 +5,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useCreateProjectMutation,
   useGetProjectQuery,
-  useGetProteinSequenceQuery,
   useUpdateProjectMutation
 } from "../services/project/projectApi";
 import { toast } from "react-hot-toast";
 import useNavigation from "./useNavigation";
 import { APP_PREFIX_PATH } from "../config/AppConfig";
 import utils from "../utils";
+import useErrorToast from "./useErrorToast";
 
 const getFilledForm = (projectField: ProjectFormData) => {
   return Object.fromEntries(
@@ -20,45 +20,19 @@ const getFilledForm = (projectField: ProjectFormData) => {
 }
 
 export const useProject = () => {
+  const { handleOnError } = useErrorToast();
   const { handleNavigate } = useNavigation();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [animoAcidSequence, setAminoAcidSequence] = useState<string | undefined>("");
   const [inputVisibility, setInputVisibility] = useState({
     showRawSeqInput: false,
     showUniProtInput: true,
   });
 
   const {
-    watch,
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
   const [createProject, { isLoading }] = useCreateProjectMutation();
-
-  const uniprotId = watch("uniprotId") || "";
-
-  const {
-    data: proteinSequence,
-    error: proteinSequenceError = null,
-    isLoading: proteinSequenceIsLoading = false
-  } = useGetProteinSequenceQuery({ uniprotId });
-
-  useEffect(() => {
-    setLoading(proteinSequenceIsLoading);
-    setError("");
-
-    if (proteinSequence) {
-      setAminoAcidSequence(proteinSequence.data);
-      setLoading(false);
-    }
-
-    if (proteinSequenceError) {
-      setLoading(false);
-      setError("Error fetching sequence");
-    }
-  }, [uniprotId, proteinSequence, proteinSequenceError, proteinSequenceIsLoading]);
 
   const toggleShowUniProtInput = () => {
     setInputVisibility((prevState) => ({
@@ -68,45 +42,38 @@ export const useProject = () => {
   };
 
   const submitProject = async (data: ProjectFormData) => {
-    const projectInputData = getFilledForm(data);
-
     try {
+      const projectInputData = getFilledForm(data);
       const response = await createProject(projectInputData).unwrap();
-
       if (response.status === "Success") {
         toast.success(response.message);
         return handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
       }
 
-      toast.error(response.message);
+      handleOnError(response.message);
     } catch (error: any) {
-      const errorMessage = error.response?.data.message || error.data.message || error.message;
-      toast.error(errorMessage);
+      const errorMessage = utils.getErrorMessage(error);
+      handleOnError(errorMessage);
     }
   };
 
   return {
-    error,
-    loading,
     errors,
     isValid,
     isLoading,
-    submitProject,
     register,
+    submitProject,
     handleSubmit,
     toggleShowUniProtInput,
-    animoAcidSequence,
     showRawSeqInput: inputVisibility.showRawSeqInput,
     showUniProtInput: inputVisibility.showUniProtInput,
   };
 }
 
 export const useUpdateProject = (projectId: string) => {
+  const { handleOnError } = useErrorToast();
   const { handleNavigate } = useNavigation();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
   const [projectData, setProjectData] = useState<ProjectFormData>();
-  const [animoAcidSequence, setAminoAcidSequence] = useState<string | undefined>("");
   const [inputVisibility, setInputVisibility] = useState({
     showRawSeqInput: false,
     showUniProtInput: true,
@@ -122,36 +89,9 @@ export const useUpdateProject = (projectId: string) => {
     formState: { errors, isValid },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
 
-  // Watch for the uniprotId input change
-  const uniprotId = watch("uniprotId") || "";
-
-  const {
-    data: proteinSequence,
-    error: proteinSequenceError,
-    isLoading: proteinSequenceIsLoading
-  } = useGetProteinSequenceQuery({ uniprotId });
-
   useEffect(() => {
-    if (project) {
-      setProjectData(project?.data);
-      setAminoAcidSequence(project?.data.proteinAminoAcidSequence);
-    };
+    if (project) setProjectData(project?.data);
   }, [project]);
-
-  useEffect(() => {
-    setLoading(proteinSequenceIsLoading);
-    setError("");
-
-    if (proteinSequence) {
-      setAminoAcidSequence(proteinSequence.data);
-      setLoading(false);
-    }
-
-    if (proteinSequenceError) {
-      setLoading(false);
-      setError("Error fetching sequence");
-    }
-  }, [proteinSequence, proteinSequenceError, proteinSequenceIsLoading]);
 
   const toggleShowUniProtInput = () => {
     setInputVisibility((prevState) => ({
@@ -161,26 +101,22 @@ export const useUpdateProject = (projectId: string) => {
   };
 
   const submitProject = async (data: ProjectFormData) => {
-    const projectInputData = getFilledForm(data);
-
     try {
+      const projectInputData = getFilledForm(data);
       const response = await updateProject({ projectId, data: projectInputData }).unwrap();
-
       if (response.status === "Success") {
         toast.success(response.message);
         return handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
       }
 
-      toast.error(response.message);
+      handleOnError(response.message);
     } catch (error: any) {
       const errorMessage = utils.getErrorMessage(error);
-      toast.error(errorMessage);
+      handleOnError(errorMessage);
     }
   }
 
   return {
-    error,
-    loading,
     errors,
     isValid,
     isLoading,
@@ -189,7 +125,6 @@ export const useUpdateProject = (projectId: string) => {
     handleSubmit,
     submitProject,
     toggleShowUniProtInput,
-    animoAcidSequence,
     showRawSeqInput: inputVisibility.showRawSeqInput,
     showUniProtInput: inputVisibility.showUniProtInput,
   };

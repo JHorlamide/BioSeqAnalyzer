@@ -4,8 +4,6 @@ import { ProjectFormData } from "../../../../schemas/project.schema";
 export interface ProjectFormProps {
   projectId?: string;
   projectData?: ProjectFormData;
-  error: string;
-  loading: boolean;
   errors: FieldErrors<ProjectFormData>;
   isValid: boolean;
   isLoading: boolean;
@@ -13,7 +11,6 @@ export interface ProjectFormProps {
   register: UseFormReturn<ProjectFormData>['register'];
   handleSubmit: UseFormReturn<ProjectFormData>['handleSubmit'];
   toggleShowUniProtInput: () => void;
-  animoAcidSequence: string | undefined;
   showRawSeqInput: boolean;
   showUniProtInput: boolean;
 };

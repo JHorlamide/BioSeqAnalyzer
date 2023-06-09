@@ -25,7 +25,8 @@ export interface IGetProteinSequenceRes extends IBaseResponse {
 }
 
 export interface IGetProteinSequenceReq {
-  uniprotId: string | undefined;
+  uniprotId: string;
+  // uniprotId: string | undefined;
 }
 
 export interface IGetProjectsRes extends IBaseResponse {

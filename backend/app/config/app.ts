@@ -28,8 +28,6 @@ const corsOptions: CorsOptions = {
   credentials: true,
 }
 
-console.log({ baseUrl: config.endpoint.baseUrl });
-
 app.use(cors(corsOptions));
 
 // Middleware that sets various HTTP headers for enhanced security.

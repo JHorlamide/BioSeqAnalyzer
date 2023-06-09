@@ -53,7 +53,10 @@ class ResponseHandler<T extends object> {
     status: number,
     responsePayload: any,
     res: Response): Response {
-    return res.status(status).type("json").send(JSON.stringify(responsePayload))
+    return res
+      .status(status)
+      .type("json")
+      .send(JSON.stringify({ ...responsePayload, status: status }))
   }
 }
 

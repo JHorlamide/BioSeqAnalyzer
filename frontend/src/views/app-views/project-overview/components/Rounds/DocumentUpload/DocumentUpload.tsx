@@ -17,12 +17,14 @@ import { useUploadProjectFileMutation } from '../../../../../../services/project
 import { toast } from 'react-hot-toast';
 import Button from "../../../../../../components/CustomBtn/Button";
 import Utils from '../../../../../../utils';
+import useErrorToast from "../../../../../../hooks/useErrorToast";
 
 interface Props {
   projectId: string;
 }
 
 const DocumentUpload = ({ projectId }: Props) => {
+  const { handleOnError } = useErrorToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDragOver, setIsDragOver] = useState(false);
   const [projectFile, setProjectFile] = useState<File | null>();
@@ -40,7 +42,8 @@ const DocumentUpload = ({ projectId }: Props) => {
       }
     } catch (error: any) {
       const errorMessage = Utils.getErrorMessage(error);
-      toast.error(errorMessage);
+      handleOnError(errorMessage);
+      // toast.error(errorMessage);
     }
   };
 
