@@ -1,4 +1,4 @@
-import { Flex, Show } from "@chakra-ui/react";
+import { Show } from "@chakra-ui/react";
 import { Navigation } from "../MenuItem/MenuItem";
 
 const SideNav = () => {

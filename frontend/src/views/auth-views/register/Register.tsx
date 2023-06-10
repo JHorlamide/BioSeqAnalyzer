@@ -19,6 +19,7 @@ import { Fragment } from "react";
 import { RegisterInput } from "./components/RegisterInput";
 import Button from "../../../components/CustomBtn/Button";
 import { useRegister } from "../../../hooks/useAuth";
+import FormContainer from "../../../components/FormContainer/FormContainer";
 
 const Register = () => {
   const {
@@ -33,7 +34,7 @@ const Register = () => {
   } = useRegister();
 
   return (
-    <Fragment>
+    <FormContainer showHeading={true}>
       <Stack pb={10}>
         <Text textAlign="center" color="white">
           Already have an account?{" "}
@@ -129,7 +130,7 @@ const Register = () => {
           Register
         </Button>
       </form>
-    </Fragment>
+    </FormContainer>
   );
 };
 

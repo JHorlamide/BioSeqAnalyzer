@@ -11,6 +11,7 @@ import Button from "../../../components/CustomBtn/Button";
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 import { Fragment } from "react";
 import useNavigation from "../../../hooks/useNavigation";
+import FormContainer from "../../../components/FormContainer/FormContainer";
 
 const ForgotPassword = () => {
   const { handleNavigate } = useNavigation();
@@ -27,7 +28,7 @@ const ForgotPassword = () => {
   };
 
   return (
-    <Fragment>
+    <FormContainer showHeading={true} formHeading="Reset your password">
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           label="Email"
@@ -62,7 +63,7 @@ const ForgotPassword = () => {
           </Button>
         </HStack>
       </form>
-    </Fragment>
+    </FormContainer>
   );
 };
 

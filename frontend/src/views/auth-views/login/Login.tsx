@@ -10,15 +10,16 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 import { Fragment } from "react";
-import Button from "../../../components/CustomBtn/Button";
 import { LoginInput } from "./components/LoginInput";
 import { useLogin } from "../../../hooks/useAuth";
+import Button from "../../../components/CustomBtn/Button";
+import FormContainer from "../../../components/FormContainer/FormContainer";
 
 const Login = () => {
   const {
@@ -33,7 +34,7 @@ const Login = () => {
   } = useLogin();
 
   return (
-    <Fragment>
+    <FormContainer showHeading={true}>
       <Stack pb={10}>
         <Text textAlign="center" color="white">
           Don't have an account?{" "}
@@ -120,7 +121,7 @@ const Login = () => {
           Login
         </Button>
       </form>
-    </Fragment>
+    </FormContainer>
   );
 };
 

@@ -4,17 +4,15 @@ import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import AppRoute from "./AppRoute";
 import { AUTHENTICATED_ENTRY } from "../config/AppConfig";
+import Website from "../views/website/Website";
 
 const AppRouter = () => {
   return (
     <Routes>
+      <Route path="/" element={<Website />} />
+
       {/* Protected Routes */}
       <Route path="/" element={<ProtectedRoute />}>
-        {/* <Route
-          path="/"
-          element={<Navigate replace to={AUTHENTICATED_ENTRY} />}
-        /> */}
-
         {protectedRoute.map((route, index) => (
           <Route
             key={route.key + index}
@@ -23,7 +21,7 @@ const AppRouter = () => {
               <AppRoute
                 routeKey={route.key}
                 component={route.component}
-                // {...route.meta}
+              // {...route.meta}
               />
             }
           />
@@ -42,7 +40,7 @@ const AppRouter = () => {
               <AppRoute
                 routeKey={route.key}
                 component={route.component}
-                // {...route.meta}
+              // {...route.meta}
               />
             }
           />
