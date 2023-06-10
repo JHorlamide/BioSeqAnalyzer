@@ -13,6 +13,7 @@ import utils from "../utils";
 import { RegisterFormData, registrationSchema } from "../schemas/register.schema";
 import { useRegisterUserMutation } from "../services/auth/registerApi";
 import useErrorToast from "./useErrorToast";
+import { projectApi } from "../services/project/projectApi";
 
 export const useLogin = () => {
   const { handleOnError } = useErrorToast();
@@ -30,24 +31,31 @@ export const useLogin = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data).unwrap();
+
       if (response.status === "Success") {
         const { accessToken, refreshToken, user } = response.data;
-
+        handleAuthTokenDispatchAndStorage(user, accessToken, refreshToken);
+        dispatch(projectApi.util.invalidateTags(["GetAllProjects"]));
         toast.success(response.message);
-
-        // Update the state
-        dispatch(setUser(user));
-        dispatch(setToken(accessToken));
-        dispatch(setRefreshToken(refreshToken));
-
-        localStorage.setItem(AUTH_TOKEN, accessToken);
-        localStorage.setItem(REFRESH_TOKEN, refreshToken);
         handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
       }
     } catch (error: any) {
       const errorMessage = utils.getErrorMessage(error);
       handleOnError(errorMessage);
     }
+  };
+
+  const handleAuthTokenDispatchAndStorage = (
+    user: any,
+    accessToken: string,
+    refreshToken: string
+  ) => {
+    dispatch(setUser(user));
+    dispatch(setToken(accessToken));
+    dispatch(setRefreshToken(refreshToken));
+
+    localStorage.setItem(AUTH_TOKEN, accessToken);
+    localStorage.setItem(REFRESH_TOKEN, refreshToken);
   };
 
   const handleShowPassword = () => setShow(!show);
