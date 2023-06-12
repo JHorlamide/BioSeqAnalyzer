@@ -17,7 +17,7 @@ function checkFileType(file: any, callBack: any) {
 // Multer storage configuration
 // Store the uploaded file in memory
 const storage = multer.memoryStorage();
-export const upload = multer({
+export const multerUpload = multer({
   storage,
   limits: { fileSize: config.MAX_FILE_SIZE },
   fileFilter: function (req: any, file: any, callBack: FileFilterCallback) {

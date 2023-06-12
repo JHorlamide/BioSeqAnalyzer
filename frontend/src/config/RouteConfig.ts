@@ -22,6 +22,12 @@ interface IRoute {
 
 export const publicRoute: IRoute[] = [
   {
+    key: "website",
+    path: `/website`,
+    component: Website
+  },
+
+  {
     key: "login",
     path: `${AUTH_PREFIX_PATH}/login`,
     component: Login
@@ -37,16 +43,10 @@ export const publicRoute: IRoute[] = [
     key: "forgot-password",
     path: `${AUTH_PREFIX_PATH}/forgot-password`,
     component: ForgotPassword
-  }
+  },
 ]
 
 export const protectedRoute: IRoute[] = [
-  {
-    key: "website",
-    path: `/`,
-    component: Website
-  },
-
   {
     key: "dashboard",
     path: `${APP_PREFIX_PATH}/dashboard`,

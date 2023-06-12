@@ -3,6 +3,7 @@ import { AUTH_PREFIX_PATH } from "../../config/AppConfig";
 import Button from "../../components/CustomBtn/Button";
 import useNavigation from "../../hooks/useNavigation";
 import Features from "./Features"
+import { Link } from "react-router-dom";
 
 const containerStyle = {
   bg: "brand_blue.300",
@@ -20,7 +21,9 @@ const Website = () => {
   return (
     <Box {...containerStyle}>
       <HStack justifyContent="space-between">
-        <Text fontSize={24} fontWeight="bold">ProteinAnalyzer</Text>
+        <Link to="/website">
+          <Text fontSize={24} fontWeight="bold">ProteinAnalyzer</Text>
+        </Link>
 
         <HStack spacing={5}>
           <Button
@@ -43,7 +46,7 @@ const Website = () => {
         </HStack>
       </HStack>
 
-      <HStack flexDirection={{ base: "column", md: "row"}} justifyContent="space-evenly">
+      <HStack flexDirection={{ base: "column", md: "row" }} justifyContent="space-evenly">
         <Center>
           <VStack
             justifyContent="center"

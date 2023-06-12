@@ -10,12 +10,11 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
-import { Fragment } from "react";
 import { LoginInput } from "./components/LoginInput";
 import { useLogin } from "../../../hooks/useAuth";
 import Button from "../../../components/CustomBtn/Button";
@@ -109,14 +108,14 @@ const Login = () => {
         </Flex>
 
         <Button
-          isLoading={isLoading}
-          isDisabled={!isValid}
           my={6}
           color="white"
           bg="brand_blue.50"
           width="full"
           type="submit"
-          _hover={{ bg: "brand_blue.200"}}
+          isLoading={isLoading}
+          isDisabled={!isValid}
+          _hover={{ bg: "brand_blue.200" }}
         >
           Login
         </Button>

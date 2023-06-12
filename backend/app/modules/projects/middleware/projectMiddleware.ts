@@ -4,7 +4,7 @@ import requestBodyValidator from "../../../common/middleware/requestValidation";
 import { createProjectSchema, paginationParams, projectUploadSchema } from "../validation/projectSchema";
 import responseHandler from "../../../common/responseHandler";
 import projectService from "../services/projectService";
-import { upload } from "../../../config/multerConfig";
+import { multerUpload } from "../../../config/multerConfig";
 import { ERR_MSG } from "../types/constants";
 
 class ProjectMiddleware {
@@ -12,7 +12,7 @@ class ProjectMiddleware {
 
   public validateUploadReq = (req: Request, res: Response, next: NextFunction) => {
     // Multer Upload validation
-    upload(req, res, async (err) => {
+    multerUpload(req, res, async (err) => {
       if (err) {
         return responseHandler.badRequest(err.message, res);
       }

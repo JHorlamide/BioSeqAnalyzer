@@ -119,13 +119,14 @@ const Register = () => {
         </VStack>
 
         <Button
-          isLoading={isLoading}
-          isDisabled={!isValid}
           my={6}
           color="white"
           bg="brand_blue.50"
           width="full"
           type="submit"
+          isLoading={isLoading}
+          isDisabled={!isValid}
+          _hover={{ bg: "brand_blue.200" }}
         >
           Register
         </Button>

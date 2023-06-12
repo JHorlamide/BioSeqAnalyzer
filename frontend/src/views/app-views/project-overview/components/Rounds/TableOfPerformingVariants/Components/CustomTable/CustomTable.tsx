@@ -66,5 +66,4 @@ const CustomTable: React.FC<TableProps> = (props) => {
   );
 }
 
-const CustomTableMemo = React.memo(CustomTable);
-export default CustomTableMemo;
+export default CustomTable;

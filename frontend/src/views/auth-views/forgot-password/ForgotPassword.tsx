@@ -23,9 +23,7 @@ const ForgotPassword = () => {
     resolver: zodResolver(forgotPasswordSchema),
   });
 
-  const onSubmit = (data: FieldValues) => {
-    console.log(data);
-  };
+  const onSubmit = (data: FieldValues) => { };
 
   return (
     <FormContainer showHeading={true} formHeading="Reset your password">

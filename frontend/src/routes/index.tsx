@@ -9,10 +9,13 @@ import Website from "../views/website/Website";
 const AppRouter = () => {
   return (
     <Routes>
-      <Route path="/" element={<Website />} />
-
       {/* Protected Routes */}
       <Route path="/" element={<ProtectedRoute />}>
+        <Route
+          path="/"
+          element={<Navigate replace to={AUTHENTICATED_ENTRY} />}
+        />
+
         {protectedRoute.map((route, index) => (
           <Route
             key={route.key + index}
@@ -32,6 +35,8 @@ const AppRouter = () => {
 
       {/* Public Routes */}
       <Route path="/" element={<PublicRoute />}>
+        {/* <Route path="/" element={<Website />} /> */}
+
         {publicRoute.map((route) => (
           <Route
             key={route.path}

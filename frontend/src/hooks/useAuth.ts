@@ -8,12 +8,13 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 import { setRefreshToken, setToken, setUser } from "../store/slices/authSlice";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../constants/AuthConstant";
-import { APP_PREFIX_PATH, AUTH_PREFIX_PATH } from "../config/AppConfig";
+import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../config/AppConfig";
 import utils from "../utils";
 import { RegisterFormData, registrationSchema } from "../schemas/register.schema";
 import { useRegisterUserMutation } from "../services/auth/registerApi";
 import useErrorToast from "./useErrorToast";
 import { projectApi } from "../services/project/projectApi";
+import Utils from "../utils";
 
 export const useLogin = () => {
   const { handleOnError } = useErrorToast();
@@ -31,13 +32,13 @@ export const useLogin = () => {
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data).unwrap();
-
       if (response.status === "Success") {
         const { accessToken, refreshToken, user } = response.data;
         handleAuthTokenDispatchAndStorage(user, accessToken, refreshToken);
         dispatch(projectApi.util.invalidateTags(["GetAllProjects"]));
+
         toast.success(response.message);
-        handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
+        handleNavigate(`${AUTHENTICATED_ENTRY}`);
       }
     } catch (error: any) {
       const errorMessage = utils.getErrorMessage(error);
@@ -82,9 +83,7 @@ export const useRegister = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<RegisterFormData>({ resolver: zodResolver(registrationSchema) });
-  const [registerUser, { isLoading, isError }] = useRegisterUserMutation();
-
-  const handleShowPassword = () => setShow(!show);
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
 
   const onSubmit = async (data: RegisterFormData) => {
     try {
@@ -96,20 +95,22 @@ export const useRegister = () => {
         }, 2000);
       }
     } catch (error: any) {
-      const errorMessage = error.response.data.message || error.message;
+      const errorMessage = Utils.getErrorMessage(error);
       handleOnError(errorMessage);
     }
   };
 
+  const handleShowPassword = () => setShow(!show);
+
   return {
-    onSubmit,
-    handleSubmit,
-    handleShowPassword,
-    register,
+    show,
     isLoading,
     errors,
     isValid,
-    show
+    register,
+    onSubmit,
+    handleSubmit,
+    handleShowPassword,
   }
 }
 
