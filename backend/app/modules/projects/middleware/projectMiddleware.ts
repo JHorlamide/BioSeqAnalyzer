@@ -6,6 +6,7 @@ import responseHandler from "../../../common/responseHandler";
 import projectService from "../services/projectService";
 import { multerUpload } from "../../../config/multerConfig";
 import { ERR_MSG } from "../types/constants";
+import fileService from "../fileHandler/fileService";
 
 class ProjectMiddleware {
   public validateRequestBodyField = requestBodyValidator(createProjectSchema);
@@ -81,10 +82,10 @@ class ProjectMiddleware {
 
     try {
       // Read and parse the CSV file
-      const csvData = await projectService.parseCSVFile(file.buffer);
+      const csvData = await fileService.parseCSVFile(file.buffer);
 
       // Validate the CSV structure
-      if (!projectService.validateCSVStructure(csvData)) {
+      if (!fileService.validateCSVStructure(csvData)) {
         return responseHandler.badRequest(ERR_MSG.INVALID_CSV_STRUCTURE, res);
       }
 

@@ -27,7 +27,7 @@ const EmptyProteinSequenceViewer = () => {
       paddingY={40}
       marginTop="20%"
     >
-      <Text textAlign="center">
+      <Text textAlign="center" color="white">
         No Protein PDB ID Provided. To view protein structure please provide a PDB ID
       </Text>
     </Box>

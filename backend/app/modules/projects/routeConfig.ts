@@ -3,7 +3,7 @@ import { CommonRoutesConfig } from "../../common/CommonRouteConfig";
 import jwtMiddleware from "../auth/middleware/jwtMiddleware";
 import projectController from "./controller/projectController";
 import projectMiddleware from "./middleware/projectMiddleware";
-import cacheMiddleware from "./middleware/cacheMiddleware";
+import cacheMiddleware from "./middleware/redisCacheMiddleware";
 import config from "../../config/appConfig";
 
 const APP_PREFIX_PATH = config.prefix;

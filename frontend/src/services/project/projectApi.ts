@@ -99,8 +99,8 @@ export const projectApi = createApi({
     }),
 
     getTopVariants: builder.query<IGetTopVariantsRes, IGetTopVariantsReq>({
-      query: ({ projectId }) => ({
-        url: `/projects/${projectId}/csv-upload/top-performing-variants`,
+      query: ({ projectId, limit }) => ({
+        url: `/projects/${projectId}/csv-upload/top-performing-variants?limit=${limit}`,
       })
     }),
 

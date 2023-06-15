@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import internal, { Readable } from "stream";
-import csvParser from "csv-parser";
 import config from "../../../config/appConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
@@ -9,7 +7,14 @@ import { ERR_MSG } from "../types/constants";
 import { ClientError } from "../../../common/exceptions/clientError";
 import { NotFoundError } from "../../../common/exceptions/notFoundError";
 import { ServerError } from "../../../common/exceptions/serverError";
-import { IUpdateProject, IProject, IGetProjects, CSVColumnDataType } from "../types/types";
+import fileService from "../fileHandler/fileService";
+import {
+  IUpdateProject,
+  IProject,
+  IGetProjects,
+  CSVColumnDataType,
+  IMutationRange
+} from "../types/types";
 
 class ProjectService {
   /**
@@ -24,18 +29,11 @@ class ProjectService {
       throw new ClientError(ERR_MSG.INVALID_PROJECT_DATA);
     }
 
-    const { uniprotId, proteinPDBID, user } = projectData;
-
-    if (!user) {
+    if (!projectData.user) {
       throw new ClientError(ERR_MSG.USER_ID_REQUIRED);
     }
 
-    if (uniprotId) return this.createProjectIfUniprotIdExist(projectData);
-
-    if (proteinPDBID) return this.createProjectIfPDBIDExist(projectData);
-
-    // If neither uniprotId nor proteinPDBID is provided, create the project as-is
-    return projectRepository.createProject(projectData);
+    return this.createProteinProject(projectData);
   }
 
   // Fetch all the create project by a given user from the DB
@@ -146,7 +144,7 @@ class ProjectService {
 
     try {
       const updatedProject = await projectRepository.updateProject({
-        projectId, 
+        projectId,
         projectData: { ...projectData, proteinAminoAcidSequence, pdbFileUrl }
       })
 
@@ -174,61 +172,6 @@ class ProjectService {
     } catch (error: any) {
       throw new ServerError(error.message);
     }
-  }
-
-  public async parseCSVFile(fileBuffer: Buffer): Promise<any[]> {
-    try {
-      const csvData: CSVColumnDataType[] = await new Promise((resolve, reject) => {
-        const readableStream = Readable.from(fileBuffer.toString());
-        const results: any[] = [];
-        readableStream
-          .pipe(csvParser())
-          .on("data", (data: any) => {
-            results.push(data);
-          })
-          .on("end", () => {
-            resolve(results);
-          })
-          .on("error", (error: Error) => {
-            reject(error);
-          });
-      });
-
-      return csvData;
-    } catch (error: any) {
-      throw new ServerError(`${ERR_MSG.PARSE_CSV_FAILED}: ${error.message}`);
-    }
-  }
-
-  public async parseS3ReadStream(s3ReadStream: internal.Readable) {
-    try {
-      const csvData: CSVColumnDataType[] = await new Promise((resolve, reject) => {
-        const results: CSVColumnDataType[] = [];
-        s3ReadStream
-          .pipe(csvParser())
-          .on("data", (data: any) => {
-            results.push(data);
-          })
-          .on("end", () => {
-            resolve(results);
-          })
-          .on("error", (error: Error) => {
-            reject(error);
-          });
-      });
-
-      return csvData;
-    } catch (error: any) {
-      throw new ServerError(`${ERR_MSG.PARSE_CSV_FAILED}: ${error.message}`);
-    }
-  }
-
-  public validateCSVStructure(csvData: CSVColumnDataType[]): boolean {
-    const expectedColumns = ['sequence', 'fitness', 'muts'];
-    const hasExpectedColumns = csvData.length > 0 && expectedColumns.every((column) => csvData[0].hasOwnProperty(column));
-    const hasExpectedWildTypeSequence = csvData.some((row) => row.muts === 'WT');
-
-    return hasExpectedColumns && hasExpectedWildTypeSequence;
   }
 
   public async uploadProjectFile(projectId: string, file: Express.Multer.File) {
@@ -313,20 +256,23 @@ class ProjectService {
     return mutationDistribution;
   }
 
-  // Get mutation range
-  public async getMutationRange(projectId: string) {
+  /* Get mutation range */
+  /**
+   * For each individual mutation, the range of scores for
+   * sequences that include this mutation
+   * */
+  public async getMutationRange(projectId: string, limitNumber: number) {
     const csvData: CSVColumnDataType[] = await this.getFile(projectId);
-
     const mutations = csvData.flatMap((row) => row.muts.split(','));
-    const mutationRanges: { mutation: string; scoreRange: { min: number; max: number } }[] = [];
+    const mutationRanges: IMutationRange[] = [];
     const scoresByMutation: { [key: string]: number[] } = {};
 
     mutations.forEach((mutation, index) => {
       const fitnessScore = csvData[index].fitness;
-
       if (!scoresByMutation[mutation]) {
         scoresByMutation[mutation] = [];
       }
+
       scoresByMutation[mutation].push(fitnessScore);
     });
 
@@ -342,7 +288,11 @@ class ProjectService {
       });
     }
 
-    return mutationRanges;
+    // I would refactor this later.
+    // there is genu reason why am slicing the data
+    // I don't just want to send the entire data to client
+    // since am not rendering all the data
+    return mutationRanges.slice(0, limitNumber);
   }
 
   // Get highest fitness
@@ -427,37 +377,31 @@ class ProjectService {
     try {
       const projectFileKey = await this.getProjectFileKey(projectId);
       const s3ReadStream = s3Service.getFile(projectFileKey);
-      const csvData = await this.parseS3ReadStream(s3ReadStream);
+      const csvData = await fileService.parseS3ReadStream(s3ReadStream);
       return csvData;
     } catch (error: any) {
       throw new ServerError("Server error. Please try again later", error);
     }
   }
 
-  private async createProjectIfUniprotIdExist(projectData: IProject) {
-    // If uniprotId is provided, retrieve the protein sequence
-    const proteinAminoAcidSequence = await this.getProteinSequenceFromUniProt(projectData.uniprotId!!);
-
-    // Add the protein sequence to the project data and create the project
-    const projectWithSequence = { ...projectData, proteinAminoAcidSequence };
-    return await this.createProteinProject(projectWithSequence);
-  }
-
-  private async createProjectIfPDBIDExist(projectData: IProject) {
-    /*
-      If proteinPDBID is provided, add the PDB URL
-      to the project data and create the project
-    */
-    const { proteinPDBID } = projectData;
-    const pdbFileUrl = `${config.pdbBaseUrl}/${proteinPDBID}`;
-
-    const projectWithPDBID = { ...projectData, proteinPDBID, pdbFileUrl };
-    return await this.createProteinProject(projectWithPDBID);
-  }
-
   private async createProteinProject(projectData: IProject) {
+    const { proteinPDBID, uniprotId } = projectData;
+    let proteinAminoAcidSequence: string | undefined;
+    let pdbFileUrl: string | undefined;
+
     try {
-      return await projectRepository.createProject(projectData);
+      // If uniprotId is provided, retrieve the protein sequence
+      if (uniprotId) {
+        proteinAminoAcidSequence = await this.getProteinSequenceFromUniProt(uniprotId);
+      }
+
+      // If proteinPDBID is provided, add the PDB URL to the project data
+      if (proteinPDBID) {
+        pdbFileUrl = `${config.pdbBaseUrl}/${proteinPDBID}`;
+      }
+
+      const project: IProject = { ...projectData, proteinAminoAcidSequence, pdbFileUrl };
+      return await projectRepository.createProject(project);
     } catch (error: any) {
       throw new ServerError(error.message);
     }

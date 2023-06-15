@@ -50,3 +50,8 @@ export interface CSVColumnDataType {
   fitness: number;
   muts: string;
 }
+
+export interface IMutationRange { 
+  mutation: string; 
+  scoreRange: { min: number; max: number } 
+}

@@ -31,9 +31,7 @@ const Dashboard = () => {
     handleNavigate(`${APP_PREFIX_PATH}/create-project`);
   }
 
-  const hasProject = projects && projects.data.projects.length > 0;
-
-  if (!hasProject) {
+  if(!projects?.data.projects) {
     return <EmptyProject />
   }
 

@@ -116,6 +116,7 @@ export interface IGetTopVariantsRes {
 
 export interface IGetTopVariantsReq {
   projectId: string;
+  limit: number;
 }
 
 export interface IGetScoreDistributionRes {

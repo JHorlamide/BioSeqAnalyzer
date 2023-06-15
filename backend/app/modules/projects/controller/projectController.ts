@@ -94,13 +94,14 @@ class ProjectController {
   })
 
   public getTopPerformingVariantsData = asyncHandler(async (req: Request, res: Response) => {
+    const { limit } = req.query;
     const { projectId } = req.params;
+
+    const limitNumber = limit ? Number(limit) : 10
     const { topVariantCacheKey, cached_ttl } = config;
     const cachedKey = `${topVariantCacheKey}-${projectId}`;
 
-    // 4. For each individual mutation, the range of scores for sequences that include this mutation
-    const mutationRanges = await projectService.getMutationRange(projectId);
-
+    const mutationRanges = await projectService.getMutationRange(projectId, limitNumber);
     await redisCash.setCacheData(cachedKey, cached_ttl, mutationRanges);
     responseHandler.successResponse(RES_MSG.TOP_PERFORMING_VARIANTS_FETCHED, {
       mutationRanges
@@ -109,6 +110,7 @@ class ProjectController {
 
   public getScoreDistribution = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
+   
     const { scoreDistributionKey, cached_ttl } = config;
     const cachedKey = `${scoreDistributionKey}-${projectId}`;
 
@@ -121,6 +123,9 @@ class ProjectController {
   })
 
   public processCVSFile = asyncHandler(async (req: Request, res: Response) => {
+    const { limit } = req.query;
+
+    const limitNumber = limit ? Number(limit) : 10;
     const { projectId } = req.params;
 
     try {
@@ -135,7 +140,7 @@ class ProjectController {
       const mutationDistribution = await projectService.getMutationDistribution(projectId);
 
       // 4. For each individual mutation, the range of scores for sequences that include this mutation
-      const mutationRanges = await projectService.getMutationRange(projectId);
+      const mutationRanges = await projectService.getMutationRange(projectId, limitNumber);
 
       // 5. Number of sequences with a score above the reference sequence (with value "WT" in "muts" column)
       const numSequencesAboveReference = await projectService.getSequencesAboveReference(projectId);
@@ -164,7 +169,3 @@ class ProjectController {
 }
 
 export default new ProjectController();
-
-// const projectFileKey = await projectService.getProjectFileKey(projectId);
-// const s3ReadStream = s3Service.getFile(projectFileKey);
-// const csvData = await projectService.parseS3ReadStream(s3ReadStream);

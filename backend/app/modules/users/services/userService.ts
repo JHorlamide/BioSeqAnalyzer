@@ -6,14 +6,13 @@ import { NotFoundError } from "../../../common/exceptions/notFoundError";
 
 class UserService {
   public async createUser(userBodyField: IUser) {
-    // Ensure that the necessary data is provided to create a user
     if (Object.keys(userBodyField).length === 0) {
       throw new ClientError(ERR_MSG.INVALID_USER_DATA)
     }
 
     try {
       const user = await userRepository.registerUser(userBodyField);
-      return user.id;
+      return { userId: user.id };
     } catch (error: any) {
       throw new ClientError(error.message);
     }

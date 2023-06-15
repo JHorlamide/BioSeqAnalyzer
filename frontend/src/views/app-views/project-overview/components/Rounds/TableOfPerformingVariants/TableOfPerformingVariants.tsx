@@ -49,7 +49,11 @@ const LoadingSkeleton = ({ isError, DataLoadingName }: LoadingSkeletonProps) => 
 }
 
 const TableOfPerformingVariants = ({ projectId }: { projectId: string }) => {
-  const { data, isLoading, isError } = useGetTopVariantsQuery({ projectId });
+  const totalMutationRange = 5;
+  const { data, isLoading, isError } = useGetTopVariantsQuery({
+    projectId,
+    limit: totalMutationRange
+  });
 
   const columns: Column<MutationRange>[] = React.useMemo(() => [
     {
@@ -93,7 +97,6 @@ const TableOfPerformingVariants = ({ projectId }: { projectId: string }) => {
         </Box>
 
         <CustomTable
-          maxTableData={5}
           columns={columns}
           mutationRanges={data.data ?? []}
         />

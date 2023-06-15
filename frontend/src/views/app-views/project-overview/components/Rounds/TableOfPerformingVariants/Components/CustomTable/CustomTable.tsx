@@ -5,19 +5,15 @@ import { Box, ChakraProps, Table, Tbody, Td, Text, Th, Thead, Tr } from "@chakra
 interface TableProps {
   columns: any[];
   mutationRanges: any[];
-  maxTableData: number;
   tableProps?: ChakraProps;
 }
 
-const CustomTable: React.FC<TableProps> = (props) => {
-  const { columns, mutationRanges, tableProps, maxTableData } = props;
-  const isMaxTableDataValid = maxTableData !== 0;
-  const areMutationRangesAvailable = mutationRanges.length > 0;
+const CustomTable: React.FC<TableProps> = React.memo((props) => {
+  const { columns, mutationRanges, tableProps } = props;
 
-  const slicedData = useMemo(() => {
-    const data = Array.isArray(mutationRanges) ? mutationRanges : [];
-    return isMaxTableDataValid && areMutationRangesAvailable ? data.slice(0, maxTableData) : data;
-  }, [mutationRanges, maxTableData, isMaxTableDataValid, areMutationRangesAvailable]);
+  const mutations = useMemo(() => {
+    return Array.isArray(mutationRanges) ? mutationRanges : [];
+  }, [mutationRanges]);
 
   const {
     getTableProps,
@@ -25,8 +21,7 @@ const CustomTable: React.FC<TableProps> = (props) => {
     headerGroups,
     rows,
     prepareRow,
-  } = useTable({ columns, data: slicedData });
-
+  } = useTable({ columns, data: mutations });
 
   return (
     <Box>
@@ -64,6 +59,6 @@ const CustomTable: React.FC<TableProps> = (props) => {
       </Table>
     </Box>
   );
-}
+})
 
 export default CustomTable;
