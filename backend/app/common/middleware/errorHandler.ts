@@ -11,6 +11,9 @@ export function errorHandler(error: any, req: Request, res: Response, next: Next
   let response = { message: customError.message } as IResponseError;
 
   // Check if there is more info to return.
-  if (customError.additionalInfo) response.additionalInfo = customError.additionalInfo;
+  if (customError.additionalInfo) {
+    response.additionalInfo = customError.additionalInfo;
+  }
+
   responseHandler.customResponse(customError.status, response, res);
 }

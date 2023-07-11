@@ -43,6 +43,9 @@ app.use(express.json({ limit: "5mb" }));
 // allowing rich objects and arrays to be encoded into the URL - encoded format
 app.use(express.urlencoded({ extended: false }));
 
+// Error handing middleware
+app.use(errorHandler);
+
 if (config.node_env !== "test") {
   app.use(requestLogger);
 }
@@ -51,8 +54,5 @@ if (config.node_env !== "test") {
 routes.push(new ProjectRoute(app));
 routes.push(new AuthRoute(app));
 routes.push(new UserRoute(app));
-
-// Error handing middleware
-app.use(errorHandler);
 
 export { app, routes };
