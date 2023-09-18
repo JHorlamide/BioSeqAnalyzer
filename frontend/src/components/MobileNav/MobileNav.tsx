@@ -19,7 +19,7 @@ const MobileNav = ({ isOpen, onClose }: Props) => {
       <DrawerOverlay />
 
       <DrawerContent bg="brand_blue.300">
-        <DrawerCloseButton />
+        <DrawerCloseButton color="white"/>
         <DrawerHeader
           color="white"
           fontSize="24"

@@ -1,11 +1,11 @@
 import { AUTH_PREFIX_PATH, APP_PREFIX_PATH } from "./AppConfig";
 
 /* Protected Components */
-import Dashboard from "../views/app-views/dashboard/Dashboard";
-import CreateProjectForm from "../views/app-views/create-project/CreateProjectForm";
-import UpdateProjectForm from "../views/app-views/create-project/UpdateProjectForm";
-import ProjectOverview from "../views/app-views/project-overview/ProjectOverview";
-import ProjectMembers from "../views/app-views/project-members/ProjectMembers";
+import Dashboard from "../views/app-views/protein-analyzer/Dashboard/Dashboard";
+import CreateProjectForm from "../views/app-views/protein-analyzer/CreateProject/CreateProjectForm";
+import UpdateProjectForm from "../views/app-views/protein-analyzer/CreateProject/UpdateProjectForm";
+import ProjectOverview from "../views/app-views/protein-analyzer/ProjectOverview/ProjectOverview";
+import ProjectMembers from "../views/app-views/protein-analyzer/ProjectMembers/ProjectMembers";
 
 /* Public Components */
 import Website from "../views/website/Website";

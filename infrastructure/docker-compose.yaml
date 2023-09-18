@@ -1,0 +1,99 @@
+version: '3.8'
+
+services:
+  redis-cache:
+    image: redis:alpine
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 20 1 --loglevel warning
+    volumes:
+      - redis-cache:/data
+
+  mongodb-server:
+    image: mongo:4.4
+    container_name: mongodb-server
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "1234"
+
+  mysql-server:
+    container_name: mysql-server
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+
+  user-service:
+    container_name: user-service
+    build:
+      context: ../backend/UserService
+      target: production
+    tty: true
+    restart: unless-stopped
+    ports: [ "7070:7070" ]
+    volumes:
+      - ./backend/UserService/app:/backend/UserService/app:cached,ro
+    env_file: [ ../backend/UserService/.env ]
+    depends_on: [ "mongodb-server" ]
+
+  protein-analyzer-backend:
+    container_name: protein-analyzer-backend
+    build:
+      context: ../backend/protein-analyzer
+      target: production
+    tty: true
+    restart: unless-stopped
+    ports: [ "8080:8080" ]
+    volumes:
+      - ./backend/protein-analyzer/app:/backend/protein-analyzer/app:cached,ro
+    env_file: [ ../backend/protein-analyzer/.env ]
+    depends_on: [ "mongodb-server", "redis-cache" ]
+    environment:
+      REDIS_PORT: 6379
+      REDIS_HOST: "redis-cache"
+      REDIS_USERNAME: "protein"
+      REDIS_PASSWORD: "protein-12345"
+
+  dna-sequence-backend:
+    build:
+      context: ../backend/dna-sequence
+      dockerfile: ../backend/dna-sequence/Dockerfile
+    restart: unless-stopped
+    ports: [ "8000:8000" ]
+    env_file: [ ../backend/dna-sequence/.env ]
+    depends_on: [ "mysql-server" ]
+
+  api-gateway:
+    container_name: api-gateway
+    build:
+      context: ../backend/api-gateway
+      target: production
+    tty: true
+    restart: unless-stopped
+    ports: [ "9090:9090" ]
+    volumes:
+      - ./backend/api-gateway/app:/backend/api-gateway/app:cached,ro
+    env_file: [ ../backend/api-gateway/.env ]
+    depends_on:
+      - protein-analyzer
+      - dna-sequence
+
+  protein-frontend:
+    container_name: protein-frontend
+    build: ../frontend
+    tty: true
+    restart: unless-stopped
+    ports: [ "5173:5173" ]
+    volumes:
+      - ./frontend/public:/frontend/public:cached,ro
+      - ./frontend/src:/frontend/src:cached,ro
+    env_file: [ ../frontend/.env ]
+    depends_on: [ "protein-analyzer-backend", "dna-sequence-backend" ]
+
+volumes:
+  redis-cache:
+    driver: local

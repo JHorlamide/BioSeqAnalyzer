@@ -1,6 +1,10 @@
-import { FaProjectDiagram, FaUsers } from "react-icons/fa";
-import { APP_PREFIX_PATH } from "./AppConfig";
+/* Libraries */
+import { FaProjectDiagram } from "react-icons/fa";
+import { GiDna1 } from "react-icons/gi"
 import { IconType } from 'react-icons';
+
+/* Application Modules */
+import { APP_PREFIX_PATH } from "./AppConfig";
 
 interface NavConfigProps {
   key: string;
@@ -13,15 +17,15 @@ const navigationConfig: NavConfigProps[] = [
   {
     key: 'dashboard',
     path: `${APP_PREFIX_PATH}/dashboard`,
-    title: 'Dashboard',
+    title: 'Protein Analyzer',
     Icon: FaProjectDiagram,
   },
 
   {
     key: 'dashboards-members',
     path: `${APP_PREFIX_PATH}/project-members`,
-    title: 'Project Members',
-    Icon: FaUsers,
+    title: 'DNA Sequence',
+    Icon: GiDna1,
   },
 ]
 

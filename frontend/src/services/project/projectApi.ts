@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { API_BASE_URL } from "../../config/AppConfig";
+import { PROTEIN_API_BASE_URL } from "../../config/AppConfig";
 import { ProjectFormData } from "../../schemas/project.schema";
 import {
   ICreateProjectRes,
@@ -26,11 +26,12 @@ import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
 
 export const PROJECT_API_REDUCER_KEY = "projectsApi";
+
 export const projectApi = createApi({
   reducerPath: PROJECT_API_REDUCER_KEY,
   tagTypes: ["GetAllProjects", "GetProjectDetails", "CreateProject", "ProteinSequence"],
   baseQuery: fetchBaseQuery({
-    baseUrl: `${API_BASE_URL}`,
+    baseUrl: `${PROTEIN_API_BASE_URL}`,
     prepareHeaders: async (headers, { getState }) => {
       const isBrowser = typeof window !== undefined;
       const token = (getState() as RootState).auth.token ||
@@ -47,7 +48,7 @@ export const projectApi = createApi({
   endpoints: (builder) => ({
     createProject: builder.mutation<ICreateProjectRes, ProjectFormData>({
       query: (data) => ({
-        url: `/projects`,
+        url: `/`,
         method: "POST",
         body: data
       }),
@@ -57,7 +58,7 @@ export const projectApi = createApi({
 
     getProjects: builder.query<IGetProjectsRes, IGetProjectQueryParam>({
       query: ({ page, limit, search }) => ({
-        url: `/projects`,
+        url: `/`,
         params: { page, limit, search }
       }),
 
@@ -66,7 +67,7 @@ export const projectApi = createApi({
 
     getProject: builder.query<IGetProjectRes, IGetProjectReq>({
       query: ({ projectId }) => ({
-        url: `/projects/${projectId}`
+        url: `/${projectId}`
       }),
 
       providesTags: ["GetProjectDetails"]
@@ -74,7 +75,7 @@ export const projectApi = createApi({
 
     updateProject: builder.mutation<IUpdateProjectRes, IUpdateProjectReq>({
       query: ({ projectId, data }) => ({
-        url: `/projects/${projectId}`,
+        url: `/${projectId}`,
         method: "PUT",
         body: data,
       }),
@@ -84,7 +85,7 @@ export const projectApi = createApi({
 
     uploadProjectFile: builder.mutation<IUploadProjectRes, IUploadProjectFileReq>({
       query: ({ data, projectId }) => ({
-        url: `/projects/${projectId}/csv-upload`,
+        url: `/${projectId}/csv-upload`,
         method: "POST",
         body: data
       }),
@@ -94,25 +95,25 @@ export const projectApi = createApi({
 
     getSummaryMainMatrices: builder.query<IGetSummaryRes, IGetSummaryReq>({
       query: ({ projectId }) => ({
-        url: `/projects/${projectId}/csv-upload/summary-table-of-main-matrices`,
+        url: `/${projectId}/csv-upload/summary-table-of-main-matrices`,
       })
     }),
 
     getTopVariants: builder.query<IGetTopVariantsRes, IGetTopVariantsReq>({
       query: ({ projectId, limit }) => ({
-        url: `/projects/${projectId}/csv-upload/top-performing-variants?limit=${limit}`,
+        url: `/${projectId}/csv-upload/top-performing-variants?limit=${limit}`,
       })
     }),
 
     getScoreDistribution: builder.query<IGetScoreDistributionRes, IGetScoreDistributionReq>({
       query: ({ projectId }) => ({
-        url: `/projects/${projectId}/csv-upload/score-distribution`,
+        url: `/${projectId}/csv-upload/score-distribution`,
       })
     }),
 
     deleteProject: builder.mutation<IDeleteProjectRes, IDeleteProject>({
       query: ({ projectId }) => ({
-        url: `/projects/${projectId}`,
+        url: `/${projectId}`,
         method: "DELETE"
       }),
 

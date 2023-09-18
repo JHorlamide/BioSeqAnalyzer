@@ -3,19 +3,19 @@ import toast from "react-hot-toast";
 import { resetStateAction } from "../actions/resetStateAction";
 import { SESSION_EXPIRE_ERROR } from "../../config/AppConfig";
 
-const SERVER_ERROR = 500;
-const UNAUTHORIZED_STATUS = {
+const API_ERROR = {
   FORBIDDEN: 403,
-  NOT_AUTHORIZED: 401
+  NOT_AUTHORIZED: 401,
+  SERVER_ERROR: 500
 }
 
 export const unAuthenticatedMiddleware: Middleware = ({ dispatch }) => (next) => (action) => {
-  if (isRejectedWithValue(action) && action.payload.status === UNAUTHORIZED_STATUS.NOT_AUTHORIZED) {
+  if (isRejectedWithValue(action) && action.payload.status === API_ERROR.NOT_AUTHORIZED) {
     toast.error(action.payload.data.message);
     dispatch(resetStateAction());
   }
 
-  if (isRejectedWithValue(action) && action.payload.status === UNAUTHORIZED_STATUS.FORBIDDEN) {
+  if (isRejectedWithValue(action) && action.payload.status === API_ERROR.FORBIDDEN) {
     setTimeout(() => {
       dispatch(resetStateAction());
     }, 2000);
@@ -23,9 +23,9 @@ export const unAuthenticatedMiddleware: Middleware = ({ dispatch }) => (next) =>
     return toast.error(SESSION_EXPIRE_ERROR);
   }
 
-  if (isRejectedWithValue(action) && action.payload.status === SERVER_ERROR) {
-    return toast.error(action.payload.data.message);
-  }
+  // if (isRejectedWithValue(action) && action.payload.status === API_ERROR.SERVER_ERROR) {
+  //   return toast.error(action.payload.data.message);
+  // }
 
   return next(action);
 }

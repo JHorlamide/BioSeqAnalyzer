@@ -24,25 +24,6 @@ export const theme = extendTheme(
         900: "#111"
       },
 
-      // brand: {
-      //   50: "#5c5c5c",
-      //   100: "#333333",
-      //   200: "#3d3d3d",
-      // },
-
-      // brand_blue: {
-      //   50: "#4169E1",
-      //   100: "#4682B4",
-      //   200: "#1E90FF",
-      //   300: "#08355a"
-      // },
-
-      // brand_blue: {
-      //   50: "#00308F",
-      //   100: "#1F4DA0",
-      //   200: "#4876FF",
-      // },
-
       brand_blue: {
         50: "#2B547E",
         100: "#5C89B3",
@@ -54,8 +35,4 @@ export const theme = extendTheme(
     },
   }
 )
-
-// brand_blue.300 = #08355a
-// brand_blue.400 = #006dc6
-// brand_blue.500 = #004f90 
 

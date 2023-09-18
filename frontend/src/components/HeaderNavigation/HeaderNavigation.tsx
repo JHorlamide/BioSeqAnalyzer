@@ -23,7 +23,12 @@ interface MenuIconProps {
 const MenuIcon = ({ onOpen }: MenuIconProps) => {
   return (
     <Show breakpoint="(max-width: 1350px)">
-      <CgMenuGridO onClick={onOpen} size={40} style={{ cursor: "pointer" }} />
+      <CgMenuGridO
+        onClick={onOpen}
+        color="white"
+        size={40}
+        style={{ cursor: "pointer" }}
+      />
     </Show>
   );
 };
