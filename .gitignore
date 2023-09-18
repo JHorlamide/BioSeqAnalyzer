@@ -2,6 +2,6 @@
 keys/
 docker-compose.dev.yaml
 data
-.DS_Store/
+.DS_Store
 .idea/
 
