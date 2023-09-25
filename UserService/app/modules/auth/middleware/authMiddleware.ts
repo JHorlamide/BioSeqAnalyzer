@@ -1,10 +1,13 @@
+/* Libraries */
 import { Request, Response, NextFunction } from "express";
-import { userLogin } from "../validation/authSchema";
+import argon2 from "argon2";
+
+/* Application Modules */
 import requestBodyValidator from "../../../common/middleware/requestValidation";
 import userService from "../../users/services/userService"
 import responseHandler from "../../../common/responseHandler";
 import { ERR_MSG } from "../../users/types/constants";
-import argon2 from "argon2";
+import { userLogin } from "../validation/authSchema";
 
 class AuthMiddleware {
   public validateReqAuthFields = requestBodyValidator(userLogin);

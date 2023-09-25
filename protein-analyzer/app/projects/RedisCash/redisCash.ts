@@ -2,7 +2,7 @@
 import config from "../../config/appConfig";
 import { logger } from "../../config/logger";
 import { createClient, RedisClientType } from "redis";
-import { ServerError } from "../../common/exceptions/customError";
+import { ServerError } from "../../common/exceptions/ApiError";
 
 class RedisCache {
   private client: RedisClientType;

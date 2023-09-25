@@ -1,8 +1,8 @@
+/* Application Modules */
 import userRepository from "../repository/userRepository";
 import { ERR_MSG } from "../types/constants";
 import { IUser } from "../types/types";
-import { ClientError } from "../../../common/exceptions/clientError";
-import { NotFoundError } from "../../../common/exceptions/notFoundError";
+import { ClientError, NotFoundError, ServerError } from "../../../common/exceptions/ApiError";
 
 class UserService {
   public async createUser(userBodyField: IUser) {
@@ -10,7 +10,7 @@ class UserService {
       const user = await userRepository.createUser(userBodyField);
       return { userId: user.id };
     } catch (error: any) {
-      throw new ClientError(error.message);
+      throw new ServerError(error.message);
     }
   }
 
@@ -28,7 +28,7 @@ class UserService {
 
       return user;
     } catch (error: any) {
-      throw new ClientError(error.message);
+      throw new ServerError(error.message);
     }
   }
 }

@@ -5,7 +5,7 @@ import { v4 as uuidV4 } from "uuid";
 
 /* Application Modules */
 import config from "../../config/appConfig";
-import { ServerError } from "../../common/exceptions/customError";
+import { ServerError } from "../../common/exceptions/ApiError";
 
 class S3Service {
   private aws = config.aws;

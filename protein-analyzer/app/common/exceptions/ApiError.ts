@@ -24,7 +24,6 @@ export class NotFoundError extends APIError {
   }
 }
 
-
 export class ServerError extends APIError {
   constructor(message: string) {
     super(message, httpStatus.INTERNAL_SERVER_ERROR);

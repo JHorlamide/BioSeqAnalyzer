@@ -15,7 +15,7 @@ import {
   IMutationRange
 } from "../types/types";
 import { ERR_MSG } from "../types/constants";
-import { ClientError, NotFoundError, ServerError } from "../../common/exceptions/customError";
+import { ClientError, NotFoundError, ServerError } from "../../common/exceptions/ApiError";
 
 class ProjectService {
   /**

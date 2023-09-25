@@ -1,5 +1,8 @@
+/* Libraries */
 import { Request, Response } from "express";
 import argon2 from "argon2";
+
+/* Application Modules */
 import asyncHandler from "../../../common/middleware/asyncHandler";
 import responseHandler from "../../../common/responseHandler";
 import userService from "../services/userService";

@@ -6,7 +6,7 @@ import csvParser from "csv-parser";
 
 /* Application Modules */ 
 import { CSVColumnDataType } from "../types/types";
-import { ServerError } from "../../common/exceptions/customError";
+import { ServerError } from "../../common/exceptions/ApiError";
 import { ERR_MSG } from "../types/constants";
 
 class FileService {

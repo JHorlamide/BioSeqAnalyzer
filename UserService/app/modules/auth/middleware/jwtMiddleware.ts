@@ -1,14 +1,18 @@
+/* Libraries */
 import { Request, Response, NextFunction } from "express";
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { Jwt } from "../types/authTypes";
+
+/* Application Modules */
 import config from "../../../config/appConfig";
 import responseHandler from "../../../common/responseHandler";
 import userService from "../../users/services/userService";
 import requestBodyValidator from "../../../common/middleware/requestValidation";
 import { tokenRefresh } from "../validation/authSchema";
+import { Jwt } from "../types/authTypes";
 import { ERR_MSG } from "../../users/types/constants";
-import { NotFoundError } from "../../../common/exceptions/notFoundError";
+import { NotFoundError } from "../../../common/exceptions/ApiError";
+
 
 class JwtMiddleware {
   public verifyRefreshBodyField = requestBodyValidator(tokenRefresh);

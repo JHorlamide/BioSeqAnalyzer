@@ -1,7 +1,7 @@
 /* Application Modules */
 import { httpClient } from "../../config/httpClient";
 import { ERR_MSG } from "../types/constants";
-import { ClientError, ServerError } from "../../common/exceptions/customError";
+import { ClientError, ServerError } from "../../common/exceptions/ApiError";
 
 class UniProtService {
   public async getProteinSequence(uniprotId: string | undefined) {

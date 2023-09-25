@@ -1,6 +1,9 @@
+/* Libraries */
 import { Request, Response } from "express";
 import crypto from "crypto";
 import jwt from "jsonwebtoken";
+
+/* Application Modules */
 import responseHandler from "../../../common/responseHandler";
 import asyncHandler from "../../../common/middleware/asyncHandler";
 import config from "../../../config/appConfig";

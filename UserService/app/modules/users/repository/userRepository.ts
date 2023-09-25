@@ -2,7 +2,6 @@
 import { PrismaClient, User } from "@prisma/client"
 import { IUser } from '../types/types';
 
-
 class UserRepository {
   private prisma: PrismaClient;
 

@@ -1,9 +1,12 @@
+/* Libraries */
 import { NextFunction, Request, Response } from "express";
+
+/* Application Modules */
 import responseHandler from "../../../common/responseHandler";
 import requestBodyValidator from "../../../common/middleware/requestValidation";
-import { registerUser } from "../validation/userSchema";
 import userRepository from "../repository/userRepository";
 import { ERR_MSG } from "../types/constants";
+import { registerUser } from "../validation/userSchema";
 
 class UserMiddleware {
   public validateReqBodyField = requestBodyValidator(registerUser);

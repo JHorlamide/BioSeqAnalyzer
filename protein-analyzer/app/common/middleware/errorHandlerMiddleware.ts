@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 
 /* Application Module */
 import responseHandler from "../responseHandler";
-import { APIError } from "../exceptions/customError";
+import { APIError } from "../exceptions/ApiError";
 
 export function errorHandler(error: APIError, req: Request, res: Response, next: NextFunction) {
   const statusCode = error.statusCode;
