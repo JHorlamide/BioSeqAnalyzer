@@ -1,8 +1,12 @@
+/* Core */
 import http from "http";
+
+/* Application Modules */
+import config from "./config/appConfig";
 import { app, routes } from "./config/app";
 import { CommonRoutesConfig } from "./common/CommonRouteConfig";
 import { onError } from "./config/requestLogger";
-import config from "./config/appConfig";
+import { logger } from "./config/logger";
 
 function createServer(): http.Server {
   app.set("port", config.port);
@@ -13,11 +17,11 @@ function createServer(): http.Server {
   server.on("listening", () => {
     const addr = server.address();
     const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
-    console.log(`Server listening on ${bind}... 🚀`);
+    logger.info(`Server listening on ${bind}... 🚀`);
 
     if (config.node_env !== "test") {
       routes.forEach((route: CommonRoutesConfig) => {
-        console.log(`Routes configured for -> ${route.getName()}`);
+        logger.info(`Routes configured for -> ${route.getName()}`);
       });
     }
   })

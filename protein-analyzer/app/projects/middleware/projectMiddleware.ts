@@ -4,7 +4,7 @@ import fs from "fs";
 // Application Modules
 import { Request, Response, NextFunction } from "express";
 import requestBodyValidator from "../../common/middleware/requestValidationMiddleware";
-import { createProjectSchema, paginationParams, projectUploadSchema } from "../validation/projectSchema";
+import { createProjectSchema, paginationSchema, projectUploadSchema } from "../validation/projectSchema";
 import responseHandler from "../../common/responseHandler";
 import projectService from "../services/projectService";
 import { multerUpload } from "../../common/middleware/multerMiddleware";
@@ -38,7 +38,7 @@ class ProjectMiddleware {
   public validatePaginationParams(req: Request, res: Response, next: NextFunction) {
     const { page, limit, search } = req.query;
 
-    const { error } = paginationParams.validate({ page, limit, search });
+    const { error } = paginationSchema.validate({ page, limit, search });
     if (error) {
       return responseHandler.badRequest(error.details[0].message, res);
     }

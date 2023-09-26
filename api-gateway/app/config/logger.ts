@@ -1,8 +1,5 @@
-/* Libraries */
 import winston from "winston";
-
-/* Application Modules */
-import config from "./appConfig";
+import config from "./serverConfig";
 
 const isDevEnvironment = () => {
   return config.node_env === "development" ? true : false

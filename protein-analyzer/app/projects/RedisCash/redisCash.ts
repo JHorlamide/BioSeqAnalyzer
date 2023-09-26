@@ -11,7 +11,7 @@ class RedisCache {
     this.client = createClient({ url: config.redisUrl });
 
     this.client.connect()
-      .then(() => console.log("Redis connected successfully"))
+      .then(() => logger.info("Redis connected successfully"))
       .catch((error) => {
         logger.error(error.message);
         throw new ServerError("Error connecting to Redis");

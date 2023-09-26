@@ -10,7 +10,7 @@ export const createProjectSchema = Joi.object({
   proteinAminoAcidSequence: Joi.string().optional()
 })
 
-export const paginationParams = Joi.object({
+export const paginationSchema = Joi.object({
   page: Joi.number().optional(),
   limit: Joi.number().optional(),
   search: Joi.string().allow("").empty().optional(),

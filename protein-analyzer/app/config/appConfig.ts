@@ -41,6 +41,8 @@ const config = {
   scoreDistributionKey: "score-distribution-data",
   cached_ttl: 4600,
   redisUrl: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
+  SPACES_KEY: process.env.DO_SPACES_KEY as string,
+  SPACES_SECRET: process.env.DO_SPACES_SECRET as string
 }
 
 export default config;

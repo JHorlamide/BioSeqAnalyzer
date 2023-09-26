@@ -1,5 +1,8 @@
+/* Libraries */
 import { Request, Response, NextFunction } from "express";
-import { Application } from "express"
+
+/* Application Modules */
+import { logger } from "./logger";
 
 /**
   Logs the incoming requests and outgoing responses of the application to the console.
@@ -21,7 +24,7 @@ export function requestLogger(req: Request, res: Response, next: NextFunction) {
     }
 
     log.push("->", String(res.statusCode));
-    console.log(log.join(" "));
+    logger.info(log.join(" "));
   })
 
   next();

@@ -196,7 +196,7 @@ class ProjectService {
 
       return await project.save();
     } catch (error: any) {
-      throw new ServerError("There was a problem upload the file. Please try again later");
+      throw new ServerError(ERR_MSG.FILE_UPLOAD_ERROR);
     }
   }
 
@@ -258,8 +258,8 @@ class ProjectService {
     return mutationDistribution;
   }
 
-  /* Get mutation range */
   /**
+   * Get mutation range
    * For each individual mutation, the range of scores for
    * sequences that include this mutation
    * */
