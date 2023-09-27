@@ -1,5 +1,8 @@
-import {NextFunction, Request, Response} from "express";
+/* Libraries */
+import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken';
+
+/* Application Modules */
 import responseHandler from "../config/responseHandler";
 import config from "../config/serverConfig";
 
@@ -11,8 +14,9 @@ export type Jwt = {
 
 export const validJWTNeeded = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers["authorization"];
+
   if (!authHeader || !authHeader.startsWith("Bearer ")) {
-    return responseHandler.unAuthorizedResponse("Gateway authorization denied", res);
+    return responseHandler.unAuthorizedResponse("Request denied,  authorization denied", res);
   }
 
   const authToken = authHeader.split(" ")[1];

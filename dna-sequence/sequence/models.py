@@ -5,9 +5,8 @@ import uuid
 class DNASequence(models.Model):
     DNA_NUCLEOTIDE = "D"
     RNA_NUCLEOTIDE = "R"
-
-    CIRCULAR_TOPOLOGY = "C"
     LINEAR_TOPOLOGY = "L"
+    CIRCULAR_TOPOLOGY = "C"
 
     NUCLEOTIDE_TYPES = [
         (DNA_NUCLEOTIDE, 'DNA'),

@@ -38,7 +38,8 @@ const ProjectOverview = () => {
     projectGoal,
     measuredProperty,
     pdbFileUrl,
-    projectFile
+    projectFile,
+    proteinAminoAcidSequence
   } = project?.data || {};
 
   useEffect(() => {
@@ -101,6 +102,7 @@ const ProjectOverview = () => {
                 projectGoal={projectGoal}
                 measuredProperty={measuredProperty}
                 pdbFileUrl={pdbFileUrl}
+                proteinAminoAcidSequence={proteinAminoAcidSequence}
               />
             )
           )}

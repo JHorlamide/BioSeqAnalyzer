@@ -32,6 +32,8 @@
     "react-table": "^7.8.0",
     "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
+    "seqparse": "^0.2.1",
+    "seqviz": "^3.9.1",
     "zod": "^3.21.4"
   },
   "devDependencies": {

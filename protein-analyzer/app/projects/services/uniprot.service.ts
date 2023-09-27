@@ -12,8 +12,8 @@ class UniProtService {
     try {
       const response = await httpClient.get(`/${uniprotId}.fasta`);
       if (response.status === 200) {
-        const sequenceArray = response.data.split("\n");
-        return sequenceArray.slice(1).join("\n");
+        const sequenceArray = response.data;
+        return sequenceArray;
       }
 
       return null;

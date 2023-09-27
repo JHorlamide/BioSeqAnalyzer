@@ -77,6 +77,8 @@ services:
     build:
       context: ../dna-sequence
       dockerfile: ../dna-sequence/Dockerfile
+    volumes:
+      - ../dna-sequence:/app:cached,ro
     restart: unless-stopped
     ports: [ "8000:8000" ]
     env_file: [ ../dna-sequence/.env ]

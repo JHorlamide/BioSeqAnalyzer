@@ -14,6 +14,6 @@ class DnaSequenceViewSet(ModelViewSet):
     def get_serializer_context(self):
         decoded_user_json = self.request.META.get("HTTP_X_DECODED_USER")
         auth_user = json.loads(decoded_user_json)
-        user_id = auth_user["userId"]
-        return {"user_id": user_id}
+        return { "user_id": auth_user["userId"] }
+    
     

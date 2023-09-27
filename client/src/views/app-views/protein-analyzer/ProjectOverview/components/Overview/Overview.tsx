@@ -1,5 +1,7 @@
-/* Libraries */
+/* Chakra UI */
 import { Box, Flex, HStack, Link, Stack, Text } from '@chakra-ui/react';
+
+/* Libraries */
 import { BsFolderFill } from 'react-icons/bs';
 
 /* Application Modules */
@@ -11,6 +13,7 @@ export interface OverviewProps {
   projectGoal?: string;
   measuredProperty?: string;
   pdbFileUrl?: string;
+  proteinAminoAcidSequence?: string;
 }
 
 const ProteinViewer = (props: OverviewProps) => {
@@ -19,7 +22,8 @@ const ProteinViewer = (props: OverviewProps) => {
     pdbFileUrl,
     projectTitle,
     projectGoal,
-    measuredProperty
+    measuredProperty,
+    proteinAminoAcidSequence
   } = props;
 
   const headingStyle = {
@@ -29,11 +33,11 @@ const ProteinViewer = (props: OverviewProps) => {
   }
 
   const containerStyle = {
-    width: "100%",
-    height: "550px",
-    marginTop: "1%",
-    display: "flex",
+    width: "80%",
+    height: "370px",
     justifyContent: "center",
+    position: "absolute",
+    bottom: 10,
   }
 
   const linkStyle = {
@@ -103,6 +107,7 @@ const ProteinViewer = (props: OverviewProps) => {
       <ProteinSequenceViewer
         proteinPDBID={proteinPDBID}
         containerStyle={containerStyle}
+        proteinAminoAcidSequence={proteinAminoAcidSequence}
       />
     </Stack>
   );
