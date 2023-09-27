@@ -2,9 +2,20 @@
 import { useEffect, useState } from 'react';
 
 /* Libraries */
-import { Tabs, TabList, TabPanels, Tab, TabPanel, HStack, Skeleton, Stack } from '@chakra-ui/react'
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from "react-icons/bs";
+
+/* Chakra UI */
+import {
+  Tabs,
+  TabList,
+  TabPanels,
+  Tab,
+  TabPanel,
+  HStack,
+  Skeleton,
+  Stack
+} from '@chakra-ui/react'
 
 /* Application Modules */
 import { useGetProjectQuery } from '../../../../services/project/projectApi';

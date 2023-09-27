@@ -1,8 +1,11 @@
+/* React */
 import React, { Suspense, memo } from "react";
+
+/* Application Modules */
 import AppLoader from "../Loading/AppLoader";
 import Views from "../../views";
-import { useAppSelector } from "../../store/store";
 import MobileNote from "../MobileNote/MobileNote";
+import { useAppSelector } from "../../store/store";
 
 const AppLayout = React.lazy(() => import("./AppLayout"));
 const AuthLayout = React.lazy(() => import("./AuthLayout"));

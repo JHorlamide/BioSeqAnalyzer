@@ -1,11 +1,12 @@
 /* Chakra UI */
 import { Box, Flex } from "@chakra-ui/react";
 
+/* React */
+import { Suspense } from "react";
+
 /* Application Components */
 import HeaderNav from "../HeaderNavigation/HeaderNavigation";
-import SideNav from "../SideNavigation/SideNavigation";
 import Footer from "../Footer/Footer";
-import { Suspense } from "react";
 import AppLoader from "../Loading/AppLoader";
 import { Navigation } from "../MenuItem/MenuItem";
 

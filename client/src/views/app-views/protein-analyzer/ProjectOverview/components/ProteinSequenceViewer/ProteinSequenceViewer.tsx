@@ -19,14 +19,6 @@ interface Props {
   proteinAminoAcidSequence?: string;
 }
 
-const SeqVizStyle = {
-  height: "16vw",
-  width: "100",
-  overflow: "hidden",
-  overflowX: "hidden",
-  overflowY: "hidden"
-}
-
 const EmptyProteinSeqViewer = () => {
   return (
     <Box
@@ -130,5 +122,13 @@ const ProteinSequenceViewer = (props: Props) => {
     </Fragment>
   )
 }
+
+const SeqVizStyle = {
+  height: "16vw",
+  width: "100",
+  overflow: "hidden",
+  overflowX: "hidden",
+  overflowY: "hidden"
+};
 
 export default ProteinSequenceViewer;

@@ -26,30 +26,6 @@ const ProteinViewer = (props: OverviewProps) => {
     proteinAminoAcidSequence
   } = props;
 
-  const headingStyle = {
-    fontWeight: 600,
-    color: "white",
-    fontStyle: "italic",
-  }
-
-  const containerStyle = {
-    width: "80%",
-    height: "370px",
-    justifyContent: "center",
-    position: "absolute",
-    bottom: 10,
-  }
-
-  const linkStyle = {
-    target: "_blank",
-    bg: "brand_blue.100",
-    fontWeight: "500",
-    borderRadius: "full",
-    color: "white",
-    paddingX: 4,
-    paddingY: 2,
-  }
-
   return (
     <Stack spacing={5}>
       <Stack spacing={3}>
@@ -112,5 +88,29 @@ const ProteinViewer = (props: OverviewProps) => {
     </Stack>
   );
 };
+
+const headingStyle = {
+  fontWeight: 600,
+  color: "white",
+  fontStyle: "italic",
+}
+
+const containerStyle = {
+  width: "80%",
+  height: "370px",
+  justifyContent: "center",
+  position: "absolute",
+  bottom: 10,
+}
+
+const linkStyle = {
+  target: "_blank",
+  bg: "brand_blue.100",
+  fontWeight: "500",
+  borderRadius: "full",
+  color: "white",
+  paddingX: 4,
+  paddingY: 2,
+}
 
 export default ProteinViewer;

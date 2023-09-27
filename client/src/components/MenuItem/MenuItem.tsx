@@ -1,31 +1,19 @@
-import { HStack, VStack, Center, Text } from "@chakra-ui/react";
+/* Libraries */
 import { IoIosLogOut } from "react-icons/io";
+
+/* Chakra UI */ 
+import { HStack, VStack, Center, Text } from "@chakra-ui/react";
+
+/* Application Modules */
 import navigationConfig from "../../config/NavigationConfig";
-import { Link, useLocation } from "react-router-dom";
 import Button from "../CustomBtn/Button";
+import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { logoutUser } from "../../store/slices/authSlice";
 
 export const Navigation = () => {
   const location = useLocation();
   const dispatch = useAppDispatch();
-
-  const activeNavStyle = {
-    bg: "brand_blue.100",
-    borderLeft: "5px solid",
-    paddingY: 1.5,
-    paddingX: 2,
-    borderRadius: 3,
-    borderRightColor: "blue",
-    cursor: "pointer",
-  }
-
-  const linkStyle = {
-    display: "flex",
-    width: "100%",
-    alignSelf: "start",
-    color: "white"
-  }
 
   const selectedNavItemStyle = (path: string) => {
     if (location.pathname === path) {
@@ -77,3 +65,20 @@ export const Navigation = () => {
     </VStack>
   );
 };
+
+const activeNavStyle = {
+  bg: "brand_blue.100",
+  borderLeft: "5px solid",
+  paddingY: 1.5,
+  paddingX: 2,
+  borderRadius: 3,
+  borderRightColor: "blue",
+  cursor: "pointer",
+}
+
+const linkStyle = {
+  display: "flex",
+  width: "100%",
+  alignSelf: "start",
+  color: "white"
+}
