@@ -1,12 +1,18 @@
-from django.urls import path, include
-from rest_framework.routers import SimpleRouter, DefaultRouter
-from . import views
+# REST Framework Imports
+from rest_framework_nested import routers
 
-router = DefaultRouter()
-router.register("dna-sequence", views.DnaSequenceViewSet, basename="dna-sequence")
+# Application Modules Imports
+from .views import DnaSequenceViewSet, AnalysesViewSet
+
+# Router Config
+router = routers.DefaultRouter()
+
+# Domain Routes Config
+router.register("dna-sequence", DnaSequenceViewSet, basename="dna-sequence")
 
 
-# urlpatterns = router.urls
-urlpatterns = [
-  path("", include(router.urls)) 
-]
+# Child/Nested Routes Config
+dna_sequence_router = routers.NestedDefaultRouter(router, "dna-sequence", lookup="dna_sequence")
+dna_sequence_router.register('analyses', AnalysesViewSet, basename="dna-sequence-analyses")
+
+urlpatterns = router.urls + dna_sequence_router.urls

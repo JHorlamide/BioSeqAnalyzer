@@ -1,3 +1,10 @@
+/* Libraries */
+import { Link } from "react-router-dom";
+import { HiOutlineMail } from "react-icons/hi";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+
+/* Chakra UI */
 import {
   Stack,
   Box,
@@ -10,15 +17,13 @@ import {
   FormControl,
   FormLabel,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { HiOutlineMail } from "react-icons/hi";
-import { RiLockPasswordLine } from "react-icons/ri";
-import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+
+/* Application Modules */
+import Button from "../../../components/CustomBtn/Button";
+import FormContainer from "../../../components/FormContainer/FormContainer";
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 import { LoginInput } from "./components/LoginInput";
 import { useLogin } from "../../../hooks/useAuth";
-import Button from "../../../components/CustomBtn/Button";
-import FormContainer from "../../../components/FormContainer/FormContainer";
 
 const Login = () => {
   const {

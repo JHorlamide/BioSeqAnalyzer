@@ -90,10 +90,10 @@ const ProjectOverview = () => {
           <Button
             color="white"
             bg="brand_blue.300"
-            _hover={{ bg: "brand_blue.200" }}
             leftIcon={<BsArrowLeft />}
             onClick={handleGoBack}
             marginRight={60}
+            _hover={{ bg: "brand_blue.200" }}
           >
             Back
           </Button>

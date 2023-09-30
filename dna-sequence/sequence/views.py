@@ -1,19 +1,29 @@
+# Core Modules
 import json
 
+# REST Framework
+from rest_framework.response import Response
+from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.mixins import RetrieveModelMixin, UpdateModelMixin, CreateModelMixin
 
-from .models import DNASequence
-from .serializer import DNASequenceSerializer
+# Application Modules
+from .models import DNASequence, AnalysisResult
+from .serializer import DNASequenceSerializer, AnalysesSerializer
 
 
 class DnaSequenceViewSet(ModelViewSet):
     queryset = DNASequence.objects.all()
     serializer_class = DNASequenceSerializer
 
+
     def get_serializer_context(self):
         decoded_user_json = self.request.META.get("HTTP_X_DECODED_USER")
         auth_user = json.loads(decoded_user_json)
         return { "user_id": auth_user["userId"] }
     
+            
     
+class AnalysesViewSet(ModelViewSet):
+    queryset = AnalysisResult.objects.all()
+    serializer_class = AnalysesSerializer

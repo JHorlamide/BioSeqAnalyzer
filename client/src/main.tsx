@@ -20,7 +20,12 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <PersistGate loading={null} persistor={persistor}>
         <ChakraProvider theme={theme}>
           <ColorModeScript />
-          <Toaster toastOptions={{ duration: 4000, ...toastStyle }} />
+          <Toaster toastOptions={{
+            duration: 4000,
+            position: "top-right",
+            ...toastStyle
+          }}
+          />
           <App />
         </ChakraProvider>
       </PersistGate>

@@ -1,3 +1,5 @@
+/* Libraries */
+import storage from "redux-persist/lib/storage";
 import { configureStore, Store, combineReducers, Reducer, AnyAction } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query"
 import { TypedUseSelectorHook, useSelector, useDispatch } from "react-redux";
@@ -11,10 +13,12 @@ import {
   persistStore,
   persistReducer
 } from "redux-persist";
-import storage from "redux-persist/lib/storage";
+
+/* Application Modules */
 import { unAuthenticatedMiddleware } from "./middleware/unAuthenticatedMiddleware";
 import { authReducer, authSlice } from "./slices/authSlice";
-import { searchReducer, searchSlice} from "./slices/searchSlice";
+import { searchReducer, searchSlice } from "./slices/searchSlice";
+import { seqViewReducer, seqViewSlice } from "./slices/seqViewSlice";
 import { RESET_STATE_ACTION_TYPE } from "./actions/resetStateAction";
 import { AUTH_TOKEN } from "../constants/AuthConstant";
 import { authApi, AUTH_API_REDUCER_KEY } from "../services/auth/authApi";
@@ -24,6 +28,7 @@ import { projectApi, PROJECT_API_REDUCER_KEY } from "../services/project/project
 const reducers = {
   [searchSlice.name]: searchReducer,
   [authSlice.name]: authReducer,
+  [seqViewSlice.name]: seqViewReducer,
   [AUTH_API_REDUCER_KEY]: authApi.reducer,
   [REGISTER_API_REDUCER_KEY]: registerApi.reducer,
   [PROJECT_API_REDUCER_KEY]: projectApi.reducer

@@ -1,17 +1,18 @@
 import { AUTH_PREFIX_PATH, APP_PREFIX_PATH } from "./AppConfig";
 
+/* Public Components */
+import Website from "../views/website/Website";
+import Login from "../views/auth-views/login/Login";
+import Register from "../views/auth-views/register/Register";
+import ForgotPassword from "../views/auth-views/forgot-password/ForgotPassword";
+
 /* Protected Components */
 import Dashboard from "../views/app-views/protein-analyzer/Dashboard/Dashboard";
 import CreateProjectForm from "../views/app-views/protein-analyzer/CreateProject/CreateProjectForm";
 import UpdateProjectForm from "../views/app-views/protein-analyzer/CreateProject/UpdateProjectForm";
 import ProjectOverview from "../views/app-views/protein-analyzer/ProjectOverview/ProjectOverview";
 import ProjectMembers from "../views/app-views/protein-analyzer/ProjectMembers/ProjectMembers";
-
-/* Public Components */
-import Website from "../views/website/Website";
-import Login from "../views/auth-views/login/Login";
-import Register from "../views/auth-views/register/Register";
-import ForgotPassword from "../views/auth-views/forgot-password/ForgotPassword";
+import SequenceMap from "../views/app-views/protein-analyzer/ProjectOverview/components/SequenceMap/SequenceMap";
 
 interface IRoute {
   [x: string]: any;
@@ -75,5 +76,11 @@ export const protectedRoute: IRoute[] = [
     key: "project-overview",
     path: `${APP_PREFIX_PATH}/project-overview/:projectId`,
     component: ProjectOverview
+  },
+
+  {
+    key: "sequence-map",
+    path: `${APP_PREFIX_PATH}/project-overview/:projectId/sequence-map`,
+    component: SequenceMap
   },
 ]

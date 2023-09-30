@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ProjectFormData, projectSchema } from "../schemas/project.schema";
+import { ProjectFormData, projectSchema } from "../schemas/projectSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useCreateProjectMutation,

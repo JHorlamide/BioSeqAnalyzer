@@ -1,3 +1,5 @@
+## BioSeqAnalyzer A Simple Protein & DNA Sequence analyzer project.
+
 ## Requirements
 
 To run this application, you will need:

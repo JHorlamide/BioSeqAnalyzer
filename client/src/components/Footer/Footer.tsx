@@ -1,3 +1,7 @@
+/* React */
+import { ReactNode } from 'react';
+
+/*  Chakra UI*/
 import {
     Box,
     chakra,
@@ -6,12 +10,12 @@ import {
     Text,
     useColorModeValue,
     VisuallyHidden,
-    useMediaQuery,
 } from '@chakra-ui/react';
+
+/* Libraries React Icons */
 import { FaTwitter } from 'react-icons/fa';
 import { BsGithub } from "react-icons/bs";
 import { AiFillLinkedin } from "react-icons/ai";
-import { ReactNode } from 'react';
 
 interface SocialButtonProps {
     children: ReactNode;
@@ -54,41 +58,39 @@ const SocialButton = (props: SocialButtonProps) => {
 };
 
 export default function SmallCentered() {
-    const isLargeScreen = useMediaQuery("(max-width: 1440px)");
-
     return (
         <Box
-            bottom={5}
-            marginLeft={{ base: 0, sm: isLargeScreen ? -60 : -60 }}
-            position={{ base: "unset", md: "absolute" }}
-            width={{ base: "full", md: "container.md" }}
-            display={{ base: "none", md: isLargeScreen ? "block" : "none" }}
+            right={0}
+            bottom={0}
+            color="white"
+            position="absolute"
+            bgColor="brand_blue.300"
+            paddingY={0.5}
+            width="contain"
         >
-            <Box position={{ base: "unset", md: "absolute" }} top="20.5px">
-                <Container
-                    as={Stack}
-                    maxW={'6xl'}
-                    direction={{ base: 'column', md: 'row' }}
-                    spacing={4}
-                    justify={{ base: 'center', md: 'start' }}
-                    align={{ base: 'center', md: 'center' }}>
-                    <Text fontSize="12px">© 2023 Olamide Jubril. All rights reserved.</Text>
+            <Container
+                as={Stack}
+                spacing={4}
+                direction={{ base: 'column', md: 'row' }}
+                justify={{ base: 'center', md: 'start' }}
+                align={{ base: 'center', md: 'center' }}
+            >
+                <Text fontSize="12px">© 2023 Olamide Jubril. All rights reserved.</Text>
 
-                    <Stack direction={'row'} spacing={6}>
-                        <SocialButton label={'Twitter'} href={TwitterProfile}>
-                            <FaTwitter />
-                        </SocialButton>
+                <Stack direction={'row'} spacing={6}>
+                    <SocialButton label={'Twitter'} href={TwitterProfile}>
+                        <FaTwitter />
+                    </SocialButton>
 
-                        <SocialButton label={'GitHub'} href={GitHubProfile}>
-                            <BsGithub />
-                        </SocialButton>
+                    <SocialButton label={'GitHub'} href={GitHubProfile}>
+                        <BsGithub />
+                    </SocialButton>
 
-                        <SocialButton label={'LinkedIn'} href={LinkedInProfile}>
-                            <AiFillLinkedin />
-                        </SocialButton>
-                    </Stack>
-                </Container>
-            </Box>
+                    <SocialButton label={'LinkedIn'} href={LinkedInProfile}>
+                        <AiFillLinkedin />
+                    </SocialButton>
+                </Stack>
+            </Container>
         </Box>
     );
 }

@@ -1,8 +1,8 @@
-/* Chakra UI */
-import { Box, Flex } from "@chakra-ui/react";
-
 /* React */
 import { Suspense } from "react";
+
+/* Chakra UI */
+import { Box, Flex } from "@chakra-ui/react";
 
 /* Application Components */
 import HeaderNav from "../HeaderNavigation/HeaderNavigation";
@@ -14,7 +14,6 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <Flex
       bg="brand_blue.50"
-      borderRadius={{ md: 10, sm: "none" }}
       height={{ base: "100vh", md: "100vh" }}
       width={{ base: "full", md: "full" }}
     >
@@ -39,9 +38,11 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         overflow="auto"
       >
         <HeaderNav />
+
         <Suspense fallback={<AppLoader />}>
           {children}
         </Suspense>
+
         <Footer />
       </Box>
     </Flex>

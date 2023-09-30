@@ -9,7 +9,7 @@ import {
   Stack,
 } from "@chakra-ui/react";
 import { UseFormRegister } from "react-hook-form";
-import { IProject, InputName } from "../../../../../schemas/project.schema";
+import { IProject, InputName } from "../../../../../schemas/projectSchema";
 
 type SelectOptionType = {
   label: string;

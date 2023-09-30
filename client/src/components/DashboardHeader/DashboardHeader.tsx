@@ -1,5 +1,7 @@
-/* Libraries */
+/* Chakra UI */
 import { Flex, Text } from "@chakra-ui/react";
+
+/* Libraries */
 import { GiMolecule } from "react-icons/gi";
 import { TbDna2 } from "react-icons/tb";
 
@@ -21,17 +23,21 @@ const DashboardHeader = ({ projectType, createProjectAction }: IProps) => {
 
   return (
     <Flex justify="space-between">
-      <Text fontWeight="medium" fontSize="24px" color="white">
+      <Text
+        fontWeight="medium"
+        fontSize={{ base: "20px", md: "24px" }}
+        color="white"
+        whiteSpace="nowrap"
+      >
         {projectType} Projects
       </Text>
 
-      {/* Only show when there is more than one project created */}
       <Button
         color="white"
         bg="brand_blue.300"
-        _hover={{ bg: "brand_blue.200" }}
         leftIcon={buttonIcon[projectType]}
         onClick={createProjectAction}
+        _hover={{ bg: "brand_blue.200" }}
       >
         Create new project
       </Button>

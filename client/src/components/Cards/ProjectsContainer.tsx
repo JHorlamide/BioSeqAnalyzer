@@ -38,7 +38,7 @@ const ProjectsContainer = ({ projects, isLoading }: Props) => {
         templateColumns={{
           base: "repeat(1, 1fr)",
           md: "repeat(2, 1fr)",
-          lg: isLargeScreen ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
+          lg: isLargeScreen ? "repeat(4, 1fr)" : "repeat(2, 1fr)",
         }}
       >
         {projects.map((project) => (

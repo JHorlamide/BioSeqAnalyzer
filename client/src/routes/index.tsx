@@ -1,10 +1,13 @@
+/* Libraries */
 import { Routes, Route, Navigate } from "react-router-dom";
+
+/* Application Modules */
 import { publicRoute, protectedRoute } from "../config/RouteConfig";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 import AppRoute from "./AppRoute";
 import { AUTHENTICATED_ENTRY } from "../config/AppConfig";
-import Website from "../views/website/Website";
+
 
 const AppRouter = () => {
   return (

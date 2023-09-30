@@ -1,7 +1,7 @@
 /* Libraries */
 import { IoIosLogOut } from "react-icons/io";
 
-/* Chakra UI */ 
+/* Chakra UI */
 import { HStack, VStack, Center, Text } from "@chakra-ui/react";
 
 /* Application Modules */
@@ -56,9 +56,9 @@ export const Navigation = () => {
         width="full"
         color="white"
         bg="brand_blue.200"
-        _hover={{ bg: "brand_blue.200" }}
         onClick={() => dispatch(logoutUser())}
         alignSelf="flex-end"
+        _hover={{ bg: "brand_blue.200" }}
       >
         Logout
       </Button>

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { RegisterFormData } from "../../schemas/register.schema";
+import { RegisterFormData } from "../../schemas/registerSchema";
 import { IRegisterResponse } from "./type";
 import { USER_API_BASE_URL } from "../../config/AppConfig";
 

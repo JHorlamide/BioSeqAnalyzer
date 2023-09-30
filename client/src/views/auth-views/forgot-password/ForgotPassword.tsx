@@ -5,7 +5,7 @@ import FormInput from "../../../components/CustomInput/Input";
 import {
   ForgotPassFormData,
   forgotPasswordSchema,
-} from "../../../schemas/forgot-password.schema";
+} from "../../../schemas/forgotPasswordSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../../../components/CustomBtn/Button";
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";

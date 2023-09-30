@@ -1,5 +1,5 @@
 import { FieldErrors, UseFormReturn } from "react-hook-form";
-import { ProjectFormData } from "../../../../../schemas/project.schema";
+import { ProjectFormData } from "../../../../../schemas/projectSchema";
 
 export interface ProjectFormProps {
   projectId?: string;

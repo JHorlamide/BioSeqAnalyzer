@@ -1,5 +1,5 @@
 import { IBaseResponse } from "../../schemas";
-import { IProject, ProjectFormData } from "../../schemas/project.schema";
+import { IProject, ProjectFormData } from "../../schemas/projectSchema";
 
 export interface ProjectFields {
   fileName: string;

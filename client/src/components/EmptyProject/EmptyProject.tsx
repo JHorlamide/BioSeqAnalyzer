@@ -1,8 +1,13 @@
+/* Chakra UI */
 import { Box, Center, Flex, Image, Text } from "@chakra-ui/react";
-import Button from "../CustomBtn/Button";
-import { APP_PREFIX_PATH } from "../../config/AppConfig";
-import useNavigation from "../../hooks/useNavigation";
+
+/* Libraries */
 import { GiMolecule } from "react-icons/gi"
+
+/* Application Modules */
+import Button from "../CustomBtn/Button";
+import useNavigation from "../../hooks/useNavigation";
+import { APP_PREFIX_PATH } from "../../config/AppConfig";
 
 const EmptyProject = () => {
   const { handleNavigate } = useNavigation();

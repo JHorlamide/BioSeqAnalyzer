@@ -1,3 +1,4 @@
+/* Chakra UI */
 import {
   Drawer,
   DrawerBody,
@@ -6,6 +7,8 @@ import {
   DrawerContent,
   DrawerCloseButton,
 } from "@chakra-ui/react";
+
+/* Application Modules */
 import { Navigation } from "../MenuItem/MenuItem";
 
 interface Props {

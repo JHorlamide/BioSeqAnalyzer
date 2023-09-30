@@ -4,6 +4,8 @@ import { BiEditAlt } from "react-icons/bi";
 import { RiSurroundSoundLine } from "react-icons/ri";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 import { IconType } from "react-icons";
+
+/* Chakra UI */
 import {
   Menu,
   MenuButton,

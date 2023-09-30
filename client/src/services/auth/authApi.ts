@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import { LoginFormData } from "../../schemas/login.schema";
+import { LoginFormData } from "../../schemas/loginSchema";
 import { ILoginResponse } from "./type";
 import { USER_API_BASE_URL } from '../../config/AppConfig';
 

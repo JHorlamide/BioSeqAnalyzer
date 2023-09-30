@@ -1,3 +1,7 @@
+/* React */
+import { useState } from 'react';
+
+/* Chakra UI */
 import {
   Text,
   Modal,
@@ -6,8 +10,8 @@ import {
   ModalBody,
   ModalCloseButton,
   useBreakpointValue,
+  Show,
 } from '@chakra-ui/react'
-import { Fragment, useState } from 'react';
 
 
 const MobileNote = () => {
@@ -15,7 +19,7 @@ const MobileNote = () => {
   const [isMobile, setIsMobile] = useState(isMobileBreakPoint);
 
   return (
-    <Fragment>
+    <Show breakpoint='(max-width: 400px)'>
       {isMobileBreakPoint && (
         <Modal isOpen={isMobile} onClose={() => setIsMobile(!isMobile)} isCentered>
           <ModalOverlay />
@@ -29,7 +33,7 @@ const MobileNote = () => {
           </ModalContent>
         </Modal>
       )}
-    </Fragment>
+    </Show>
   )
 }
 

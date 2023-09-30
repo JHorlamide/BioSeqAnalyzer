@@ -1,6 +1,8 @@
+/* Libraries */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AuthState } from "../../schemas/login.schema";
-import { User } from "../../schemas/login.schema";
+
+/* Application Modules */
+import { AuthState, User } from "../../schemas/loginSchema";
 
 const initialState: AuthState = {
   user: null,

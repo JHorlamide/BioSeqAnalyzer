@@ -33,9 +33,9 @@ interface ProjectCardProps {
 const ProjectCard = (props: ProjectCardProps) => {
   const { handleNavigate } = useNavigation();
   const { handleOnError } = useErrorToast();
-  const { projectTitle, projectId, projectName, updatedAt } = props;
   const [deleteProject] = useDeleteProjectMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { projectTitle, projectId, projectName, updatedAt } = props;
 
   const navigate = () => {
     handleNavigate(`${APP_PREFIX_PATH}/project-overview/${projectId}`)
@@ -73,7 +73,7 @@ const ProjectCard = (props: ProjectCardProps) => {
       />
 
       <Card
-        width={{ base: "100%", md: "322px" }}
+        width={{ base: "100%", md: "270px" }}
         height="140px"
         color="white"
         bg="brand_blue.300"
@@ -96,7 +96,7 @@ const ProjectCard = (props: ProjectCardProps) => {
 
         <CardBody marginTop={-6}>
           <Stack>
-            <Text fontWeight="semibold" fontSize={20}>
+            <Text fontWeight="semibold" fontSize={18}>
               {projectTitle}
             </Text>
 

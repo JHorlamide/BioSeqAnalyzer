@@ -1,7 +1,7 @@
-/* React */  
-import { Fragment, useState } from "react";
+/* React */
+import { useState } from "react";
 
-/* Libraries */ 
+/* Libraries */
 import { Box } from "@chakra-ui/react";
 
 /* Application Modules */
@@ -9,10 +9,10 @@ import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
 import useNavigation from "../../../../hooks/useNavigation";
 import ProjectsContainer from "../../../../components/Cards/ProjectsContainer";
 import Pagination from "../../../../components/Pagination/Pagination";
+import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useAppSelector } from "../../../../store/store";
 import { useGetProjectsQuery } from "../../../../services/project/projectApi";
-import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
 
 const Dashboard = () => {
   const searchTerm = useAppSelector((state) => state.search);
@@ -41,21 +41,19 @@ const Dashboard = () => {
 
   return (
     <Box width="full">
-      <DashboardHeader projectType="Protein" createProjectAction={createProjectPage}/>
+      <DashboardHeader projectType="Protein" createProjectAction={createProjectPage} />
 
       <Box marginTop={5} width="full" height="full">
-        <Fragment>
-          <ProjectsContainer
-            projects={projects.data.projects}
-            isLoading={isLoading}
-          />
+        <ProjectsContainer
+          projects={projects.data.projects}
+          isLoading={isLoading}
+        />
 
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={handlePageChange}
-          />
-        </Fragment>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+        />
       </Box>
     </Box>
   );

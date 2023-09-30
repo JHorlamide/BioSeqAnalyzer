@@ -1,20 +1,24 @@
 import { useState } from "react";
-import { useLoginUserMutation } from "../services/auth/authApi";
-import { useAppDispatch } from "../store/store";
-import useNavigation from "./useNavigation";
+
+/* Libraries */
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormData, loginSchema } from "../schemas/login.schema";
 import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
+
+/* Application Modules */
+import useNavigation from "./useNavigation";
+import utils from "../utils";
+import useErrorToast from "./useErrorToast";
+import Utils from "../utils";
+import { projectApi } from "../services/project/projectApi";
+import { useLoginUserMutation } from "../services/auth/authApi";
+import { useAppDispatch } from "../store/store";
+import { LoginFormData, loginSchema } from "../schemas/loginSchema";
 import { setRefreshToken, setToken, setUser } from "../store/slices/authSlice";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../constants/AuthConstant";
 import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../config/AppConfig";
-import utils from "../utils";
-import { RegisterFormData, registrationSchema } from "../schemas/register.schema";
 import { useRegisterUserMutation } from "../services/auth/registerApi";
-import useErrorToast from "./useErrorToast";
-import { projectApi } from "../services/project/projectApi";
-import Utils from "../utils";
+import { RegisterFormData, registrationSchema } from "../schemas/registerSchema";
 
 export const useLogin = () => {
   const { handleOnError } = useErrorToast();
