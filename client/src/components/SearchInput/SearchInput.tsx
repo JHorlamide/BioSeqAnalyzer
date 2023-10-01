@@ -1,4 +1,6 @@
 import { ChangeEvent } from "react";
+
+/* Chakra UI */
 import {
   InputGroup,
   InputLeftElement,
@@ -6,7 +8,11 @@ import {
   Input,
   Box,
 } from "@chakra-ui/react";
+
+/* Libraries */
 import { FiSearch } from "react-icons/fi";
+
+/* Application Modules */ 
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { setSearchTerm } from "../../store/slices/searchSlice";
 

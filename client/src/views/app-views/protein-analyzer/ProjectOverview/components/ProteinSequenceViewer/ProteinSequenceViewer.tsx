@@ -1,5 +1,5 @@
 /* React */
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 
 /* Chakra UI */
 import { Link, Stack } from '@chakra-ui/react';
@@ -27,8 +27,8 @@ interface Props {
 const ProteinSequenceViewer = (props: Props) => {
   const { handleNavigate } = useNavigation()
   const { handleOnError } = useErrorToast();
-  const { proteinPDBID, containerStyle, pdbFileUrl } = props
   const { projectId } = useParams();
+  const { proteinPDBID, containerStyle, pdbFileUrl } = props
   const sequenceData = useAppSelector((state) => state.seqView);
 
   if (!proteinPDBID) {
@@ -63,6 +63,7 @@ const ProteinSequenceViewer = (props: Props) => {
 
       const canvas = canvasRef.current;
       const parent = containerRef.current;
+
       if (!plugin.initViewer(canvas, parent)) {
         return;
       }
@@ -71,7 +72,12 @@ const ProteinSequenceViewer = (props: Props) => {
       const trajectory = await plugin.builders.structure.parseTrajectory(data, FILE_FORMAT);
       await plugin.builders.structure.hierarchy.applyPreset(trajectory, 'default');
       const renderer = plugin.canvas3d!.props.renderer;
-      PluginCommands.Canvas3D.SetSettings(plugin, { settings: { renderer: { ...renderer, backgroundColor: ColorNames.skyblue } } });
+      
+      PluginCommands.Canvas3D.SetSettings(plugin, {
+        settings: {
+          renderer: { ...renderer, backgroundColor: ColorNames.skyblue }
+        }
+      });
     } catch (error: any) {
       handleOnError("Unable to render protein molecule");
     }

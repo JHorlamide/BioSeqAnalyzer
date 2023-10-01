@@ -9,9 +9,15 @@ import seqparse, { Seq } from "seqparse";
 
 /* Application Modules */
 import ProteinSequenceViewer from '../ProteinSequenceViewer/ProteinSequenceViewer';
-import { setSeq, setAnnotation, setViewStyle, setName, setType } from '../../../../../../store/slices/seqViewSlice';
 import useErrorToast from '../../../../../../hooks/useErrorToast';
 import { useAppDispatch } from '../../../../../../store/store';
+import {
+  setSeq,
+  setAnnotation,
+  setViewStyle,
+  setName,
+  setType
+} from '../../../../../../store/slices/seqViewSlice';
 
 export interface OverviewProps {
   proteinPDBID?: string;

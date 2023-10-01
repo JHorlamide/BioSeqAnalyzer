@@ -1,4 +1,4 @@
-import { useState, SetStateAction, Dispatch } from 'react';
+import { SetStateAction, Dispatch } from 'react';
 
 /* Chakra UI */
 import {
@@ -10,7 +10,9 @@ import {
   MenuItem,
   MenuList,
   Text,
-  Button as ChakraButton
+  Switch,
+  Button as ChakraButton,
+  Input
 } from '@chakra-ui/react';
 
 /* Libraries */
@@ -25,15 +27,23 @@ import Button from '../../../../../../components/CustomBtn/Button';
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
 interface ViewSettingsProps {
-  onTopologyChange: Dispatch<SetStateAction<ViewerType>>;
+  searchQuery: string;
+  showIndex: boolean;
+  showComplete: boolean;
+  setSearchQuery: Dispatch<SetStateAction<string>>;
   handleZoomIn: () => void;
   handleZoomOut: () => void;
+  toggleShowIndex: () => void;
+  toggleShowComplete: () => void;
+  onTopologyChange: Dispatch<SetStateAction<ViewerType>>;
 }
 
 interface Topology {
   title: string;
   value: ViewerType;
 }
+
+type SettingsProps = Pick<ViewSettingsProps, "toggleShowComplete" | "toggleShowIndex" | "showComplete" | "showIndex">;
 
 export const Topology = (
   { onTopologyChange }: { onTopologyChange: Dispatch<SetStateAction<ViewerType>>; }
@@ -56,13 +66,13 @@ export const Topology = (
         color="white"
         borderRadius={30}
         whiteSpace="nowrap"
-        borderColor="brand_blue.200"
+        borderColor="red"
         as={ChakraButton}
+        leftIcon={<TbTopologyRing size={20} />}
+        onClick={(e) => e.stopPropagation()}
         _hover={{
           cursor: "pointer",
         }}
-        leftIcon={<TbTopologyRing size={20} />}
-        onClick={(e) => e.stopPropagation()}
       >
         Topology
       </MenuButton>
@@ -84,9 +94,32 @@ export const Topology = (
   )
 }
 
-export const Settings = () => {
+export const Settings = (props: SettingsProps) => {
+  const { toggleShowComplete, toggleShowIndex, showComplete, showIndex } = props;
+
+  const configs = [
+    {
+      isChecked: showIndex,
+      title: "Show Index",
+      action: () => toggleShowIndex()
+    },
+
+    {
+      isChecked: showComplete,
+      title: "Show Complete",
+      action: () => toggleShowComplete()
+    }
+  ]
+
+  const enzymes = [
+    { title: "PstI", value: "psti" },
+    { title: "EcoRI", value: "ecori" },
+    { title: "XbaI", value: "xbal" },
+    { title: "SpeI", value: "spel" },
+  ]
+
   return (
-    <Menu>
+    <Menu colorScheme='green'>
       <MenuButton
         display="flex"
         bg="brand_blue.300"
@@ -98,44 +131,71 @@ export const Settings = () => {
         whiteSpace="nowrap"
         borderColor="brand_blue.200"
         as={ChakraButton}
+        leftIcon={<FiSettings size={20} />}
+        onClick={(e) => e.stopPropagation()}
         _hover={{
           cursor: "pointer",
         }}
-        leftIcon={<FiSettings size={20} />}
-        onClick={(e) => e.stopPropagation()}
       >
         Settings
       </MenuButton>
 
       <MenuList bg="brand_blue.300">
-        <MenuItem
-          display="flex"
-          _hover={{ bg: "brand_blue.100" }}
-        >
-          <Text marginLeft={3}>Show Index</Text>
-        </MenuItem>
+        {configs.map(({ action, title, isChecked }) => (
+          <MenuItem
+            key={title}
+            bg="brand_blue.300"
+            color="white"
+            onClick={action}
+          >
+            <Switch
+              id="show-index"
+              size="md"
+              colorScheme="gray"
+              isChecked={isChecked}
+            />
+            <Text marginLeft={2} marginRight={5}>{title}</Text>
+          </MenuItem>
+        ))}
 
-        <MenuItem
-          display="flex"
-          _hover={{ bg: "brand_blue.100" }}
+        <Text
+          color="white"
+          textAlign="center"
+          bg="brand_blue.50"
+          marginTop={3}
+          borderRadius={20}
         >
-          <Text marginLeft={3}>Show Complete</Text>
-        </MenuItem>
+          Enzyme
+        </Text>
 
-        <MenuItem
-          display="flex"
-          _hover={{ bg: "brand_blue.100" }}
-        >
-          <Text marginLeft={3}>Custom Children</Text>
-        </MenuItem>
+        {enzymes.map(({ title, value }) => (
+          <MenuItem
+            key={title}
+            bg="brand_blue.300"
+            color="white"
+            _hover={{ bg: "brand_blue.200" }}
+          >
+            <Text marginLeft={2} marginRight={5}>{title}</Text>
+          </MenuItem>
+        ))}
       </MenuList>
     </Menu>
   )
 }
 
 const ViewSettings = (props: ViewSettingsProps) => {
-  const { onTopologyChange, handleZoomIn, handleZoomOut } = props;
   const navigate = useNavigate();
+  const {
+    searchQuery,
+    showIndex,
+    showComplete,
+    setSearchQuery,
+    onTopologyChange,
+    handleZoomIn,
+    handleZoomOut,
+    toggleShowComplete,
+    toggleShowIndex
+  } = props;
 
   const zoomIconStyle = {
     color: "white",
@@ -149,6 +209,10 @@ const ViewSettings = (props: ViewSettingsProps) => {
     }
   }
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  }
+
   return (
     <Box display="flex" position="absolute" top={5}>
       <HStack>
@@ -157,7 +221,7 @@ const ViewSettings = (props: ViewSettingsProps) => {
           bg="brand_blue.300"
           leftIcon={<BsArrowLeft />}
           onClick={() => navigate(-1)}
-          marginRight={60}
+          marginRight={0}
           _hover={{ bg: "brand_blue.200" }}
         >
           Back
@@ -170,7 +234,7 @@ const ViewSettings = (props: ViewSettingsProps) => {
           paddingX={3}
           spacing={6}
           borderRadius={30}
-          color="brand_blue.200"
+          color="brand_blue.100"
         >
           <Button
             bg="brand_blue.300"
@@ -191,7 +255,24 @@ const ViewSettings = (props: ViewSettingsProps) => {
         <Topology onTopologyChange={onTopologyChange} />
 
         {/* Settings */}
-        <Settings />
+        <Settings
+          showIndex={showIndex}
+          showComplete={showComplete}
+          toggleShowComplete={toggleShowComplete}
+          toggleShowIndex={toggleShowIndex}
+        />
+
+        <Input
+          _placeholder={{ fontSize: "15px", color: "white" }}
+          color="white"
+          border="1px solid white"
+          focusBorderColor="brand_blue.100"
+          borderRadius="full"
+          placeholder="Search bases, annotations, and primers"
+          width={80}
+          value={searchQuery}
+          onChange={handleSearch}
+        />
       </HStack>
     </Box>
   )
