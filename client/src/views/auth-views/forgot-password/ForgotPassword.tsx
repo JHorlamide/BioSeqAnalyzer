@@ -40,6 +40,16 @@ const ForgotPassword = () => {
 
         <HStack mt={8} justifyItems="center">
           <Button
+            _hover={{ bg: "white" }}
+            type="button"
+            width="full"
+            onClick={() => handleNavigate(`${AUTH_PREFIX_PATH}/login`)}
+            leftIcon={<BsArrowLeftShort size={25} color="black" />}
+          >
+            Back
+          </Button>
+
+          <Button
             type="submit"
             width="full"
             alignSelf={"end"}
@@ -48,16 +58,6 @@ const ForgotPassword = () => {
             isDisabled={!isValid}
           >
             Send
-          </Button>
-
-          <Button
-            _hover={{ bg: "white" }}
-            type="button"
-            width="full"
-            onClick={() => handleNavigate(`${AUTH_PREFIX_PATH}/login`)}
-            leftIcon={<BsArrowLeftShort size={25} color="black" />}
-          >
-            Back
           </Button>
         </HStack>
       </form>

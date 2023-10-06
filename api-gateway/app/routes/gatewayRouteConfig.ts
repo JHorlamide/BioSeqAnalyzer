@@ -23,7 +23,7 @@ export class GatewayRoute extends CommonRoutesConfig {
       }
     }))
 
-    this.app.use(`${APP_PREFIX_PATH}/projects`, validJWTNeeded, createProxyMiddleware({
+    this.app.use(`${APP_PREFIX_PATH}/protein-projects`, validJWTNeeded, createProxyMiddleware({
       target: 'http://protein-analyzer:8080',
       changeOrigin: true,
       pathRewrite: {

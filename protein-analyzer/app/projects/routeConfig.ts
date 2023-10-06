@@ -1,9 +1,12 @@
+/* Libraries */
 import { Application } from "express";
-import { CommonRoutesConfig } from "../common/CommonRouteConfig";
+
+/* Application Modules */
+import config from "../config/appConfig";
 import projectController from "./controller/projectController";
 import projectMiddleware from "./middleware/projectMiddleware";
 import cacheMiddleware from "./middleware/redisCacheMiddleware";
-import config from "../config/appConfig";
+import { CommonRoutesConfig } from "../common/CommonRouteConfig";
 
 const APP_PREFIX_PATH = config.prefix;
 
