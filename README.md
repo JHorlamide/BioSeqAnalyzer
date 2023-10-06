@@ -22,7 +22,7 @@ Once the sequence of bases in each fragment is known, the sequence of the entire
 
 ## Software Artchitecure:
 
-![Alt text](./architecture.png)
+![Alt Text](./architecture.png)
 
 ## Requirements
 
