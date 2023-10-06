@@ -1,24 +1,41 @@
 import { useState } from 'react';
 
 /* Chakra UI */
-import { Box } from '@chakra-ui/react';
+import { Box, HStack } from '@chakra-ui/react';
+
+/* Libraries */
+import { useNavigate } from "react-router-dom";
+import { BsArrowLeft } from 'react-icons/bs';
 
 /* Application Modules */
 import SequenceViewer from "../../../../../../components/SequenceViewer/SequenceViewer"
-import ViewSettings from "./ViewSettings";
+import Button from '../../../../../../components/CustomBtn/Button';
 import { useAppSelector } from "../../../../../../store/store";
+import { ZoomButtons, Topology, Settings, SearchInput } from './ViewSettings';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
-const SequenceMap = () => {
-  const sequenceData = useAppSelector((state) => state.seqView);
+interface Topology {
+  title: string;
+  value: ViewerType;
+}
 
+const SequenceMap = () => {
+  const navigate = useNavigate();
+  const sequenceData = useAppSelector((state) => state.seqView);
   const [viewerType, setViewerType] = useState<ViewerType>("both_flip");
   const [zoomLevel, setZoomLevel] = useState(50);
   const [enzymes, setEnzymes] = useState(["PstI", "EcoRI", "XbaI", "SpeI"]);
   const [showIndex, setShowIndex] = useState(true);
   const [showComplete, setShowComplete] = useState(true);
   const [query, setQuery] = useState("");
+
+  const topologies: Topology[] = [
+    { title: "Linear", value: "linear" },
+    { title: "Circular", value: "circular" },
+    { title: "Both", value: "both" },
+    { title: "Both Flip", value: "both_flip" },
+  ];
 
   const handleZoomIn = () => {
     if (zoomLevel < 100) {
@@ -40,19 +57,53 @@ const SequenceMap = () => {
     setShowComplete(!showComplete);
   };
 
+  const toggleEnzyme = (enzyme: string) => {
+    const myEnzymes = enzymes;
+
+    if (myEnzymes.includes(enzyme)) {
+      setEnzymes(myEnzymes.filter(enz => enz !== enzyme));
+    } else {
+      setEnzymes([...myEnzymes, enzyme]);
+    }
+  };
+
   return (
     <Box>
-      <ViewSettings
-        searchQuery={query}
-        setSearchQuery={setQuery}
-        showIndex={showIndex}
-        showComplete={showComplete}
-        handleZoomIn={handleZoomIn}
-        handleZoomOut={handleZoomOut}
-        onTopologyChange={setViewerType}
-        toggleShowIndex={toggleShowIndex}
-        toggleShowComplete={toggleShowComplete}
-      />
+      <Box display="flex" position="absolute" top={5}>
+        <HStack>
+          <Button
+            color="white"
+            bg="brand_blue.300"
+            leftIcon={<BsArrowLeft />}
+            onClick={() => navigate(-1)}
+            marginRight={0}
+            _hover={{ bg: "brand_blue.200" }}
+          >
+            Back
+          </Button>
+
+          <ZoomButtons
+            handleZoomIn={handleZoomIn}
+            handleZoomOut={handleZoomOut}
+          />
+
+          <Topology
+            topologies={topologies}
+            onTopologyChange={setViewerType}
+          />
+
+          <Settings
+            enzymes={enzymes}
+            showIndex={showIndex}
+            showComplete={showComplete}
+            toggleEnzyme={toggleEnzyme}
+            toggleShowComplete={toggleShowComplete}
+            toggleShowIndex={toggleShowIndex}
+          />
+
+          <SearchInput searchQuery={query} setSearchQuery={setQuery} />
+        </HStack>
+      </Box>
 
       <SequenceViewer
         name={sequenceData.name}

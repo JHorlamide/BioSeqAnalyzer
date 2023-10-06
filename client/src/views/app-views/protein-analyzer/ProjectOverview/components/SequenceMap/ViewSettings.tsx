@@ -1,10 +1,9 @@
-import { SetStateAction, Dispatch } from 'react';
+import { SetStateAction, Dispatch, Fragment } from 'react';
 
 /* Chakra UI */
 import {
   Box,
   ButtonGroup,
-  HStack,
   Menu,
   MenuButton,
   MenuItem,
@@ -12,12 +11,13 @@ import {
   Text,
   Switch,
   Button as ChakraButton,
-  Input
+  Input,
+  Grid,
+  GridItem
 } from '@chakra-ui/react';
 
 /* Libraries */
-import { BsZoomIn, BsZoomOut, BsArrowLeft } from "react-icons/bs"
-import { useNavigate } from "react-router-dom";
+import { BsZoomIn, BsZoomOut } from "react-icons/bs"
 import { FiSettings } from "react-icons/fi"
 import { TbTopologyRing } from "react-icons/tb";
 
@@ -26,34 +26,76 @@ import Button from '../../../../../../components/CustomBtn/Button';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
-interface ViewSettingsProps {
-  searchQuery: string;
-  showIndex: boolean;
-  showComplete: boolean;
-  setSearchQuery: Dispatch<SetStateAction<string>>;
+interface ZoomButtonProps {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
-  toggleShowIndex: () => void;
-  toggleShowComplete: () => void;
+}
+
+interface TopologyProps {
+  topologies: { title: string; value: ViewerType }[];
   onTopologyChange: Dispatch<SetStateAction<ViewerType>>;
 }
 
-interface Topology {
-  title: string;
-  value: ViewerType;
+interface SettingsProps {
+  showComplete: boolean;
+  showIndex: boolean;
+  enzymes: string[];
+  toggleEnzyme: (enzyme: string) => void;
+  toggleShowComplete: () => void;
+  toggleShowIndex: () => void;
 }
 
-type SettingsProps = Pick<ViewSettingsProps, "toggleShowComplete" | "toggleShowIndex" | "showComplete" | "showIndex">;
+interface SearchInputProps {
+  searchQuery: string;
+  setSearchQuery: Dispatch<SetStateAction<string>>;
+}
 
-export const Topology = (
-  { onTopologyChange }: { onTopologyChange: Dispatch<SetStateAction<ViewerType>>; }
-) => {
-  const topologies: Topology[] = [
-    { title: "Linear", value: "linear" },
-    { title: "Circular", value: "circular" },
-    { title: "Both", value: "both" },
-    { title: "Both Flip", value: "both_flip" },
-  ];
+export const ZoomButtons = (props: ZoomButtonProps) => {
+  const { handleZoomIn, handleZoomOut } = props;
+
+  const zoomIconStyle = {
+    color: "white",
+    size: 30,
+    style: {
+      padding: "3px 2px",
+      cursor: "pointer",
+      hover: {
+        backgroundColor: "none"
+      }
+    }
+  };
+
+  return (
+    <Fragment>
+      <ButtonGroup
+        isAttached
+        variant='outline'
+        paddingY={2}
+        paddingX={3}
+        spacing={6}
+        borderRadius={30}
+        color="brand_blue.100"
+      >
+        <Button
+          bg="brand_blue.300"
+          rightIcon={<BsZoomOut {...zoomIconStyle} />}
+          _hover={{ bg: "brand_blue.300" }}
+          onClick={() => handleZoomOut()}
+        />
+
+        <Button
+          bg="brand_blue.300"
+          rightIcon={<BsZoomIn {...zoomIconStyle} />}
+          _hover={{ bg: "brand_blue.300" }}
+          onClick={() => handleZoomIn()}
+        />
+      </ButtonGroup>
+    </Fragment >
+  )
+}
+
+export const Topology = (props: TopologyProps) => {
+  const { topologies, onTopologyChange } = props;
 
   return (
     <Menu>
@@ -95,7 +137,14 @@ export const Topology = (
 }
 
 export const Settings = (props: SettingsProps) => {
-  const { toggleShowComplete, toggleShowIndex, showComplete, showIndex } = props;
+  const {
+    showComplete,
+    showIndex,
+    enzymes,
+    toggleEnzyme,
+    toggleShowComplete,
+    toggleShowIndex
+  } = props;
 
   const configs = [
     {
@@ -109,27 +158,19 @@ export const Settings = (props: SettingsProps) => {
       title: "Show Complete",
       action: () => toggleShowComplete()
     }
-  ]
-
-  const enzymes = [
-    { title: "PstI", value: "psti" },
-    { title: "EcoRI", value: "ecori" },
-    { title: "XbaI", value: "xbal" },
-    { title: "SpeI", value: "spel" },
-  ]
+  ];
 
   return (
-    <Menu colorScheme='green'>
+    <Menu>
       <MenuButton
         display="flex"
-        bg="brand_blue.300"
+        color="white"
+        bg="brand_blue.100"
         rounded="full"
         paddingY={1.5}
         paddingX={3}
-        color="white"
         borderRadius={30}
         whiteSpace="nowrap"
-        borderColor="brand_blue.200"
         as={ChakraButton}
         leftIcon={<FiSettings size={20} />}
         onClick={(e) => e.stopPropagation()}
@@ -158,124 +199,105 @@ export const Settings = (props: SettingsProps) => {
           </MenuItem>
         ))}
 
-        <Text
-          color="white"
-          textAlign="center"
-          bg="brand_blue.50"
-          marginTop={3}
-          borderRadius={20}
-        >
-          Enzyme
-        </Text>
-
-        {enzymes.map(({ title, value }) => (
-          <MenuItem
-            key={title}
-            bg="brand_blue.300"
+        <Box marginTop={2} paddingX={2}>
+          <Text
             color="white"
-            _hover={{ bg: "brand_blue.200" }}
+            textAlign="center"
+            bg="brand_blue.50"
+            marginTop={3}
+            borderRadius={20}
           >
-            <Text marginLeft={2} marginRight={5}>{title}</Text>
-          </MenuItem>
-        ))}
+            Enzyme
+          </Text>
+
+          <Grid
+            templateColumns='repeat(2, 1fr)'
+            gap={2}
+            display="flex"
+            marginTop={2}
+          >
+            <GridItem width="100%">
+              <Button
+                isActive={enzymes.includes("PstI")}
+                border={0}
+                paddingY={1}
+                paddingX={4}
+                borderRadius={4}
+                color={enzymes.includes("PstI") ? "brand_blue.300": "white"}
+                colorScheme={enzymes.includes("PstI") ? "gray" : ""}
+                onClick={() => toggleEnzyme("PstI")}
+              >
+                PstI
+              </Button>
+            </GridItem>
+
+            <GridItem width="100%">
+              <Button
+                isActive={enzymes.includes("EcoRI")}
+                border={0}
+                paddingY={1}
+                paddingX={4}
+                borderRadius={4}
+                color={enzymes.includes("EcoRI") ? "brand_blue.300": "white"}
+                colorScheme={enzymes.includes("EcoRI") ? "gray" : ""}
+                onClick={() => toggleEnzyme("EcoRI")}
+              >
+                EcoRI
+              </Button>
+            </GridItem>
+
+            <GridItem width="100%">
+              <Button
+                isActive={enzymes.includes("XbaI")}
+                border={0}
+                paddingY={1}
+                paddingX={4}
+                borderRadius={4}
+                color={enzymes.includes("XbaI") ? "brand_blue.300": "white"}
+                colorScheme={enzymes.includes("XbaI") ? "gray" : ""}
+                onClick={() => toggleEnzyme("XbaI")}
+              >
+                XbaI
+              </Button>
+            </GridItem>
+
+            <GridItem width="100%">
+              <Button
+                isActive={enzymes.includes("SpeI")}
+                border={0}
+                paddingY={1}
+                paddingX={4}
+                borderRadius={4}
+                color={enzymes.includes("SpeI") ? "brand_blue.300": "white"}
+                colorScheme={enzymes.includes("SpeI") ? "gray" : ""}
+                onClick={() => toggleEnzyme("SpeI")}
+              >
+                SpeI
+              </Button>
+            </GridItem>
+          </Grid>
+        </Box>
       </MenuList>
     </Menu>
   )
 }
 
-const ViewSettings = (props: ViewSettingsProps) => {
-  const navigate = useNavigate();
-  const {
-    searchQuery,
-    showIndex,
-    showComplete,
-    setSearchQuery,
-    onTopologyChange,
-    handleZoomIn,
-    handleZoomOut,
-    toggleShowComplete,
-    toggleShowIndex
-  } = props;
-
-  const zoomIconStyle = {
-    color: "white",
-    size: 30,
-    style: {
-      padding: "3px 2px",
-      cursor: "pointer",
-      hover: {
-        backgroundColor: "none"
-      }
-    }
-  }
-
+export const SearchInput = ({ searchQuery, setSearchQuery }: SearchInputProps) => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   }
 
   return (
-    <Box display="flex" position="absolute" top={5}>
-      <HStack>
-        <Button
-          color="white"
-          bg="brand_blue.300"
-          leftIcon={<BsArrowLeft />}
-          onClick={() => navigate(-1)}
-          marginRight={0}
-          _hover={{ bg: "brand_blue.200" }}
-        >
-          Back
-        </Button>
-
-        <ButtonGroup
-          isAttached
-          variant='outline'
-          paddingY={2}
-          paddingX={3}
-          spacing={6}
-          borderRadius={30}
-          color="brand_blue.100"
-        >
-          <Button
-            bg="brand_blue.300"
-            rightIcon={<BsZoomOut {...zoomIconStyle} />}
-            _hover={{ bg: "brand_blue.300" }}
-            onClick={() => handleZoomOut()}
-          />
-
-          <Button
-            bg="brand_blue.300"
-            rightIcon={<BsZoomIn {...zoomIconStyle} />}
-            _hover={{ bg: "brand_blue.300" }}
-            onClick={() => handleZoomIn()}
-          />
-        </ButtonGroup>
-
-        {/* Topology */}
-        <Topology onTopologyChange={onTopologyChange} />
-
-        {/* Settings */}
-        <Settings
-          showIndex={showIndex}
-          showComplete={showComplete}
-          toggleShowComplete={toggleShowComplete}
-          toggleShowIndex={toggleShowIndex}
-        />
-
-        <Input
-          _placeholder={{ fontSize: "15px", color: "white" }}
-          color="white"
-          border="1px solid white"
-          focusBorderColor="brand_blue.100"
-          borderRadius="full"
-          placeholder="Search bases, annotations, and primers"
-          width={80}
-          value={searchQuery}
-          onChange={handleSearch}
-        />
-      </HStack>
-    </Box>
+    <Input
+      width={80}
+      color="white"
+      borderRadius="full"
+      border="1px solid white"
+      focusBorderColor="brand_blue.100"
+      placeholder="Search bases, annotations, and primers"
+      value={searchQuery}
+      onChange={handleSearch}
+      _placeholder={{ fontSize: "15px", color: "white" }}
+    />
   )
 }
-
-export default ViewSettings

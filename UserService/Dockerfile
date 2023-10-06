@@ -1,4 +1,4 @@
-##### Stage 1: Development Stage #####
+### Stage 1: Development Stage ###
 FROM node:16-alpine as development
 
 # Set the working directory to /user-service
@@ -19,7 +19,7 @@ COPY . .
 # Build the TypeScript code
 RUN npm run build
 
-##### Stage 2: Production Stage #####
+### Stage 2: Production Stage ###
 FROM node:16-alpine as production
 
 # Set environment to production

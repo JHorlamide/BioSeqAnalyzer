@@ -14,42 +14,42 @@ export class ProjectRoute extends CommonRoutesConfig {
 
   configureRoutes(): Application {
     /***
-    * @route POST: /api/projects
-    * @desc Create new project
-    * @access Private
+    * @route POST: /api/protein-projects
+    * @desc Create new project.
+    * @access Private.
     * ***/
-    this.app.post(`${APP_PREFIX_PATH}/projects`, [
+    this.app.post(`${APP_PREFIX_PATH}/protein-projects`, [
       projectMiddleware.validateRequestBodyField,
       projectController.createProject
     ])
 
     /***
-    * @route GET: /api/projects
-    * @desc Get All Projects
-    * @access Private
+    * @route GET: /api/protein-projects
+    * @desc Get All Projects.
+    * @access Private.
     * ***/
-    this.app.get(`${APP_PREFIX_PATH}/projects`, [
+    this.app.get(`${APP_PREFIX_PATH}/protein-projects`, [
       projectMiddleware.validatePaginationParams,
       projectController.getAllProjects
     ])
 
     /***
-    * @route GET: /api/projects/:projectId
+    * @route GET: /api/protein-projects/:projectId
     * @desc  Get Project Details
     * @access Private
     * ***/
-    this.app.get(`${APP_PREFIX_PATH}/projects/:projectId`, [
+    this.app.get(`${APP_PREFIX_PATH}/protein-projects/:projectId`, [
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
       projectController.getProjectDetail
     ])
 
     /***
-    * @route PUT: /api/projects/:projectId
+    * @route PUT: /api/protein-projects/:projectId
     * @desc Update Project Details
     * @access Private
     * ***/
-    this.app.put(`${APP_PREFIX_PATH}/projects/:projectId`, [
+    this.app.put(`${APP_PREFIX_PATH}/protein-projects/:projectId`, [
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
       projectMiddleware.validateRequestBodyField,
@@ -57,22 +57,22 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route DELETE: /api/projects/:projectId
-    * @desc Delete Project
-    * @access Private
+    * @route DELETE: /api/protein-projects/:projectId
+    * @desc Delete Project.
+    * @access Private.
     * ***/
-    this.app.delete(`${APP_PREFIX_PATH}/projects/:projectId`, [
+    this.app.delete(`${APP_PREFIX_PATH}/protein-projects/:projectId`, [
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
       projectController.deleteProject
     ])
 
     /***
-    * @route  POST: /api/projects/:projectId/csv-upload
-    * @desc   Upload project experimental data
-    * @access Private
+    * @route  POST: /api/protein-projects/:projectId/csv-upload
+    * @desc   Upload project experimental data.
+    * @access Private.
     * ***/
-    this.app.post(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload`, [
+    this.app.post(`${APP_PREFIX_PATH}/protein-projects/:projectId/csv-upload`, [
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
       projectMiddleware.validateUploadReq,
@@ -80,11 +80,11 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route GET: /api/projects/:projectId/csv-upload/summary-table-of-main-matrices
-    * @desc Get summary of main matrices data from CSV
-    * @access Private
+    * @route GET: /api/protein-projects/:projectId/summary-table-of-main-matrices
+    * @desc Get summary of main matrices data from CSV.
+    * @access Private.
     * ***/
-    this.app.get(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload/summary-table-of-main-matrices`, [
+    this.app.get(`${APP_PREFIX_PATH}/protein-projects/:projectId/summary-table-of-main-matrices`, [
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
       cacheMiddleware.getCachedSummaryData,
@@ -92,23 +92,23 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route GET: /api/projects/:projectId/csv-upload/top-performing-variants
-    * @desc Get top performing variants data from CSV
-    * @access Private
+    * @route GET: /api/protein-projects/:projectId/top-performing-variants
+    * @desc Get top performing variants data from CSV.
+    * @access Private.
     * ***/
-    this.app.get(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload/top-performing-variants`, [
+    this.app.get(`${APP_PREFIX_PATH}/protein-projects/:projectId/top-performing-variants`, [
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
       cacheMiddleware.getCachedTopPermingVariantData,
       projectController.getTopPerformingVariantsData
     ])
-    
+
     /***
-    * @route GET: /api/projects/:projectId/csv-upload/score-distribution
-    * @desc Get top score distribution data from CSV
-    * @access Private
+    * @route GET: /api/protein-projects/:projectId/score-distribution
+    * @desc Get top score distribution data from CSV.
+    * @access Private.
     * ***/
-    this.app.get(`${APP_PREFIX_PATH}/projects/:projectId/csv-upload/score-distribution`, [
+    this.app.get(`${APP_PREFIX_PATH}/protein-projects/:projectId/score-distribution`, [
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
       cacheMiddleware.getCachedScoreDistribution,

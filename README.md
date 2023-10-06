@@ -1,5 +1,29 @@
 ## BioSeqAnalyzer A Simple Protein & DNA Sequence analyzer project.
 
+## Protein:
+
+Proteins, the building blocks of life, are large, complex molecules that play many critical roles in the body. For example hemoglobin is a protein that moves oxygen in your blood to your muscles. Other proteins such as lactase enzymes help us digest milk.
+
+A protein is a linear chain of amino acids. There are 20 [standard amino acids.](https://www.cup.uni-muenchen.de/ch/compchem/tink/as.html)This "alphabet" lets us represent a protein as a sequence of discrete tokens. This is known as a protein's primary structure.
+
+In protein engineering, the goal is to improve the property of a protein sequence by changing its amino acid sequence (primary structure) and measuring the property of different variants. The projects start with a “wild type” protein that has a given reference sequence. Then mutations to this sequence are introduced and their results on a given property of that protein are measured in a laboratory
+
+## DNA Sequencing:
+
+DNA sequencing is the process of determining the order of the nucleotides in a DNA molecule. The nucleotides are the building blocks of DNA, and their sequence encodes the genetic information that cells use to develop and operate. DNA sequencing is a powerful tool that is used in a variety of fields, including basic research, medical diagnostics, and forensic science.
+
+Here is a more detailed explanation of DNA sequencing:
+
+DNA is a double-stranded molecule, and the two strands are held together by complementary base pairs. The four bases in DNA are adenine (A), guanine (G), cytosine (C), and thymine (T). A pairs with T, and C pairs with G.
+
+DNA sequencing methods typically work by breaking down the DNA molecule into smaller fragments and then determining the sequence of bases in each fragment. The fragments can be separated by size, and then the bases in each fragment can be identified using chemical or enzymatic methods.
+
+Once the sequence of bases in each fragment is known, the sequence of the entire DNA molecule can be assembled by overlapping the fragments.
+
+## Software Artchitecure:
+
+![Alt text](./architecture.png)
+
 ## Requirements
 
 To run this application, you will need:
@@ -11,13 +35,14 @@ To run this application, you will need:
 
 To install this application, follow these steps:
 
-* Clone this repository to your machine: `git clone https://github.com/JHorlamide/oakslab-audition-assignment.git`
-* Navigate to the project directory: `cd oakslab-audition-assignment`
+* Clone this repository to your machine: `git clone https://github.com/JHorlamide/BioSeqAnalyzer.git`
+* Navigate to the project directory: `cd BioSeqAnalyzer`
 
 ## Running the Application
 
 To start the application use docker compose:
 
+* Navigate to the project directory: `cd infrastructure`
 * `docker-compose up --build`
 * To test the API endpoints, you can use a tool like [Postman](https://www.postman.com/downloads/) or [curl](https://curl.se/). For example, to create a new resource using `curl`, you can run the following command:
 
@@ -27,57 +52,23 @@ To start the application use docker compose:
 
 ## Usage
 
-The API endpoints of this application are described below:
+#### Protein API Endpoints:
 
-* `POST /api/phases`: Create a new phase of a startup.
-* `GET /api/phases`: Get all created phases.
-* `POST /api/phases/:phaseId/tasks:` Create new task for a phase.
-* `PUT /api/phases/:phaseId/tasks/:taskId:` Mark a task as completed.
-* `PUT /api/phases/:phaseId/tasks/:taskId/reopen:` Reopen a task.
+The API endpoints of the service are described below:
 
-## Solution proposition for reopening a completed task
+* `POST /api/protein-projects`: Create a new protein project.
+* `GET /api/protein-projects`: Get all projects belonging to the authenticated user.
+* `GET /api/protein-projects/:projectId:` Get projects by project ID
+* `PUT /api/protein-projects/:projectId:` Update a projects details with the given project ID
+* `DELETE /api/protein-projects/:projectId:` Delete a project with the given project ID
+* `POST /api/protein-projects/:projectId/csv-upload:` Upload csv file for a project by the given project ID if no file as been uploaded using the.
+* `GET /api/protein-projects/:projectId/summary-table-of-main-matrices:` Get summary of main matrices data from CSV.
+* `GET /api/protein-projects/:projectId/top-performing-variants:` Get top performing variants data from CSV.
+* `GET /api/protein-projects/:projectId/score-distribution:` Get top score distribution data from CSV.
 
-To implement the ability to reopen or undo a completed task, we can add a "completed" field to the task object in the phase's tasks array. When a task is completed, the "completed" field is set to true. To reopen or undo a completed task, we can set the "completed" field to false.
+#### DNA API Endpoints:
 
-To update the "done" field of the phase when a task is reopened, we need to iterate through all the tasks in the phase's tasks array and check the "completed" field of each task. If all tasks are completed, we can set the "done" field of the phase to true. Otherwise, we set it to false. We can then return a success message indicating that the task was reopened successfully.
-
-Here is an example of the API endpoint to reopen a completed task:
-
-```
-PUT /api/phases/c6a753a7/task/d7d0fbf6/reopen
-```
-
-## Database schema design using MongoDB
-
-If we are using MongoDB as the database, we can use a document-based schema to store the data. We can create a collection named "phases" to store the phase data. The document structure for each phase could be something like this:
-
-```
-{
-  _id: ObjectId("..."), // Unique identifier for the phase
-  name: "foundation",
-  description: "Setup the important things",
-  tasks: [
-    {
-      _id: ObjectId("..."), // Unique identifier for the task
-      name: "Task 1",
-      description: "Description of Task 1",
-      completed: false
-    },
-    {
-      _id: ObjectId("..."), // Unique identifier for the task
-      name: "Task 2",
-      description: "Description of Task 2",
-      completed: false
-    },
-    // ... more tasks
-  ],
-  done: false
-}
-```
-
-Here, we have an `_id` field that is a unique identifier for the phase, which is automatically generated by MongoDB. We also have a `name` and `description` field for the phase. The `tasks` field is an array of task objects, each with an `_id`, a `name`, `description`, and `completed` field. The `completed` field is set to `false` by default and can be updated to `true` when the task is completed. Finally, we have a `done` field to indicate if all tasks in the phase are completed.
-
-This schema allows us to easily query and update the data using MongoDB's built-in methods.
+#### User API Endpoints:
 
 ## Running Test
 

@@ -14,7 +14,9 @@ import {
   TabPanel,
   HStack,
   Skeleton,
-  Stack
+  Stack,
+  Grid,
+  GridItem
 } from '@chakra-ui/react'
 
 /* Application Modules */
@@ -72,6 +74,18 @@ const ProjectOverview = () => {
     variant: "soft-rounded",
     colorScheme: "gray",
     marginTop: "-6%"
+  }
+
+  const style = {
+    parentStyle: {
+      display: "flex",
+      justifyContent: "space-between"
+    },
+
+    child: {
+      padding: "16px 20px",
+      backgroundColor: "white"
+    }
   }
 
   return (

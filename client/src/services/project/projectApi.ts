@@ -95,13 +95,13 @@ export const projectApi = createApi({
 
     getSummaryMainMatrices: builder.query<IGetSummaryRes, IGetSummaryReq>({
       query: ({ projectId }) => ({
-        url: `/${projectId}/csv-upload/summary-table-of-main-matrices`,
+        url: `/${projectId}/summary-table-of-main-matrices`,
       })
     }),
 
     getTopVariants: builder.query<IGetTopVariantsRes, IGetTopVariantsReq>({
       query: ({ projectId, limit }) => ({
-        url: `/${projectId}/csv-upload/top-performing-variants?limit=${limit}`,
+        url: `/${projectId}/top-performing-variants?limit=${limit}`,
       })
     }),
 
