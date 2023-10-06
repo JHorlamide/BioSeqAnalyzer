@@ -1,1 +1,90 @@
-<mxfile><diagram id="Bpf-g6-nH1Dm0mcwc3Xw" name="Page-1"><mxGraphModel dx="906" dy="647" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0"><root><mxCell id="0"/><mxCell id="1" parent="0"/><mxCell id="60" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" target="62"><mxGeometry relative="1" as="geometry"><mxPoint x="172.5" y="399.20000000000005" as="sourcePoint"/></mxGeometry></mxCell><mxCell id="61" value="" style="sketch=0;points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;gradientDirection=north;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;direction=south;container=0;" vertex="1" parent="1"><mxGeometry x="320" y="348.4" width="101.6" height="101.6" as="geometry"/></mxCell><mxCell id="62" value="" style="shape=waypoint;sketch=0;size=6;pointerEvents=1;points=[];fillColor=#945de0;resizable=0;rotatable=0;perimeter=centerPerimeter;snapToPoint=1;verticalAlign=top;strokeColor=none;container=0;" vertex="1" parent="1"><mxGeometry x="314.5" y="389.2" width="20" height="20" as="geometry"/></mxCell><mxCell id="63" value="DB" style="shape=datastore;whiteSpace=wrap;html=1;container=0;" vertex="1" parent="1"><mxGeometry x="760" y="222.39999999999998" width="60" height="60" as="geometry"/></mxCell><mxCell id="67" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="63"><mxGeometry relative="1" as="geometry"><mxPoint x="693.5" y="252.39999999999998" as="targetPoint"/></mxGeometry></mxCell><mxCell id="76" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="77"><mxGeometry relative="1" as="geometry"><mxPoint x="694" y="392" as="targetPoint"/></mxGeometry></mxCell><mxCell id="77" value="DB" style="shape=datastore;whiteSpace=wrap;html=1;container=0;" vertex="1" parent="1"><mxGeometry x="770" y="362" width="60" height="60" as="geometry"/></mxCell><mxCell id="78" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="79"><mxGeometry relative="1" as="geometry"><mxPoint x="694" y="532" as="targetPoint"/></mxGeometry></mxCell><mxCell id="79" value="DB" style="shape=datastore;whiteSpace=wrap;html=1;container=0;" vertex="1" parent="1"><mxGeometry x="780" y="503" width="60" height="58" as="geometry"/></mxCell><mxCell id="80" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="434.6" y="391.2" as="sourcePoint"/><mxPoint x="610" y="250" as="targetPoint"/></mxGeometry></mxCell><mxCell id="81" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="435.6" y="422.2" as="sourcePoint"/><mxPoint x="610" y="530" as="targetPoint"/></mxGeometry></mxCell><mxCell id="82" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;" edge="1" parent="1"><mxGeometry width="50" height="50" relative="1" as="geometry"><mxPoint x="437.6" y="407.2" as="sourcePoint"/><mxPoint x="611" y="394.7909604519774" as="targetPoint"/></mxGeometry></mxCell><mxCell id="83" value="API Gateway" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" vertex="1" parent="1"><mxGeometry x="320.8" y="440" width="100" height="50" as="geometry"/></mxCell><mxCell id="66" value="Protein API" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" vertex="1" parent="1"><mxGeometry x="615.5" y="292.2" width="80.5" height="30" as="geometry"/></mxCell><mxCell id="85" value="" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#FFFFFF;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.client;container=0;" vertex="1" parent="1"><mxGeometry x="100" y="361.20000000000005" width="78" height="76" as="geometry"/></mxCell><mxCell id="86" value="Client" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" vertex="1" parent="1"><mxGeometry x="109" y="440" width="60" height="30" as="geometry"/></mxCell><mxCell id="NQLI3Ob5WcZz19sOvDR4-87" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image;image=img/lib/allied_telesis/storage/Datacenter_Server_Half_Rack_ToR.svg;fillColor=#FFFFFF;" vertex="1" parent="1"><mxGeometry x="611.69" y="194.6" width="81.12" height="105.4" as="geometry"/></mxCell><mxCell id="NQLI3Ob5WcZz19sOvDR4-88" value="DNA Sequence API" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" vertex="1" parent="1"><mxGeometry x="618.5" y="441" width="80.5" height="30" as="geometry"/></mxCell><mxCell id="NQLI3Ob5WcZz19sOvDR4-89" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image;image=img/lib/allied_telesis/storage/Datacenter_Server_Half_Rack_ToR.svg;fillColor=#FFFFFF;" vertex="1" parent="1"><mxGeometry x="611.69" y="335.4" width="81.12" height="105.4" as="geometry"/></mxCell><mxCell id="NQLI3Ob5WcZz19sOvDR4-93" value="User API" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" vertex="1" parent="1"><mxGeometry x="617.4" y="583.6" width="80.5" height="30" as="geometry"/></mxCell><mxCell id="NQLI3Ob5WcZz19sOvDR4-94" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image;image=img/lib/allied_telesis/storage/Datacenter_Server_Half_Rack_ToR.svg;fillColor=#FFFFFF;" vertex="1" parent="1"><mxGeometry x="613.59" y="486" width="81.12" height="105.4" as="geometry"/></mxCell></root></mxGraphModel></diagram></mxfile>
+<mxfile host="65bd71144e">
+    <diagram id="Bpf-g6-nH1Dm0mcwc3Xw" name="Page-1">
+        <mxGraphModel dx="906" dy="647" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="60" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" target="62" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="172.5" y="399.20000000000005" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="61" value="" style="points=[[0,0,0],[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0,0],[0,1,0],[0.25,1,0],[0.5,1,0],[0.75,1,0],[1,1,0],[0,0.25,0],[0,0.5,0],[0,0.75,0],[1,0.25,0],[1,0.5,0],[1,0.75,0]];outlineConnect=0;gradientDirection=north;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;shape=mxgraph.aws4.resourceIcon;resIcon=mxgraph.aws4.api_gateway;direction=south;container=0;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" vertex="1">
+                    <mxGeometry x="320" y="348.4" width="101.6" height="101.6" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" value="" style="shape=waypoint;size=6;pointerEvents=1;points=[];fillColor=#d0cee2;resizable=0;rotatable=0;perimeter=centerPerimeter;snapToPoint=1;verticalAlign=top;strokeColor=#56517e;container=0;" parent="1" vertex="1">
+                    <mxGeometry x="314.5" y="389.2" width="20" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" value="DB" style="shape=datastore;whiteSpace=wrap;html=1;container=0;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" vertex="1">
+                    <mxGeometry x="760" y="222.39999999999998" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="67" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" source="63" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="693.5" y="252.39999999999998" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="76" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" source="77" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="694" y="392" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="77" value="DB" style="shape=datastore;whiteSpace=wrap;html=1;container=0;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" vertex="1">
+                    <mxGeometry x="770" y="362" width="60" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="78" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" source="79" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="694" y="532" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="79" value="DB" style="shape=datastore;whiteSpace=wrap;html=1;container=0;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" vertex="1">
+                    <mxGeometry x="780" y="503" width="60" height="58" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="434.6" y="391.2" as="sourcePoint"/>
+                        <mxPoint x="610" y="250" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="81" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="435.6" y="422.2" as="sourcePoint"/>
+                        <mxPoint x="610" y="530" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="82" value="" style="endArrow=classic;startArrow=classic;html=1;rounded=0;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="437.6" y="407.2" as="sourcePoint"/>
+                        <mxPoint x="611" y="394.7909604519774" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="83" value="API Gateway" style="text;html=1;strokeColor=#56517e;fillColor=#d0cee2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="1" vertex="1">
+                    <mxGeometry x="320.8" y="440" width="100" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="Protein API" style="text;html=1;strokeColor=#56517e;fillColor=#d0cee2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="1" vertex="1">
+                    <mxGeometry x="615.5" y="292.2" width="80.5" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="85" value="" style="outlineConnect=0;fillColor=#d0cee2;strokeColor=#56517e;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.client;container=0;" parent="1" vertex="1">
+                    <mxGeometry x="100" y="361.20000000000005" width="78" height="76" as="geometry"/>
+                </mxCell>
+                <mxCell id="86" value="Client" style="text;html=1;strokeColor=#56517e;fillColor=#d0cee2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="1" vertex="1">
+                    <mxGeometry x="109" y="440" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="NQLI3Ob5WcZz19sOvDR4-87" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image;image=img/lib/allied_telesis/storage/Datacenter_Server_Half_Rack_ToR.svg;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" vertex="1">
+                    <mxGeometry x="611.69" y="194.6" width="81.12" height="105.4" as="geometry"/>
+                </mxCell>
+                <mxCell id="NQLI3Ob5WcZz19sOvDR4-88" value="DNA Sequence API" style="text;html=1;strokeColor=#56517e;fillColor=#d0cee2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="1" vertex="1">
+                    <mxGeometry x="618.5" y="441" width="80.5" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="NQLI3Ob5WcZz19sOvDR4-89" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image;image=img/lib/allied_telesis/storage/Datacenter_Server_Half_Rack_ToR.svg;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" vertex="1">
+                    <mxGeometry x="611.69" y="335.4" width="81.12" height="105.4" as="geometry"/>
+                </mxCell>
+                <mxCell id="NQLI3Ob5WcZz19sOvDR4-93" value="User API" style="text;html=1;strokeColor=#56517e;fillColor=#d0cee2;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;container=0;" parent="1" vertex="1">
+                    <mxGeometry x="617.4" y="583.6" width="80.5" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="NQLI3Ob5WcZz19sOvDR4-94" value="" style="points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image;image=img/lib/allied_telesis/storage/Datacenter_Server_Half_Rack_ToR.svg;fillColor=#d0cee2;strokeColor=#56517e;" parent="1" vertex="1">
+                    <mxGeometry x="613.59" y="486" width="81.12" height="105.4" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>
