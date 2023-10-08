@@ -1,6 +1,6 @@
 import { SeqViz, SeqVizProps } from "seqviz";
 
-interface Props extends SeqVizProps { }
+interface Props extends SeqVizProps { };
 
 const SequenceViewer = (props: Props) => {
   const { seq, annotations, style, viewer, ...rest } = props;

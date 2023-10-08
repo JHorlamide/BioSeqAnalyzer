@@ -15,8 +15,6 @@ import {
   HStack,
   Skeleton,
   Stack,
-  Grid,
-  GridItem
 } from '@chakra-ui/react'
 
 /* Application Modules */
@@ -43,7 +41,7 @@ const ProjectOverview = () => {
   const { projectId } = useParams();
   const id = String(projectId);
   const { data: project, isLoading } = useGetProjectQuery({ projectId: id });
-  const [activeTab, setActiveTab] = useState(0);
+  const [tabIndex, setTabIndex] = useState(0);
 
   const {
     proteinPDBID,
@@ -56,18 +54,18 @@ const ProjectOverview = () => {
   } = project?.data || {};
 
   useEffect(() => {
-    const storedActiveTab = localStorage.getItem("activeTab");
-    setActiveTab(Number(storedActiveTab));
+    const storedTabIndex = localStorage.getItem("tabIndex");
+    setTabIndex(Number(storedTabIndex));
   }, []);
 
   const handleTabChange = (index: number) => {
-    setActiveTab(index);
-    localStorage.setItem("activeTab", String(index));
+    setTabIndex(index);
+    localStorage.setItem("tabIndex", String(index));
   };
 
   const handleGoBack = () => {
     navigate(-1);
-    localStorage.setItem("activeTab", "");
+    localStorage.setItem("tabIndex", "");
   };
 
   const tabStyle = {
@@ -76,22 +74,22 @@ const ProjectOverview = () => {
     marginTop: "-6%"
   }
 
-  const style = {
-    parentStyle: {
-      display: "flex",
-      justifyContent: "space-between"
-    },
+  // const style = {
+  //   parentStyle: {
+  //     display: "flex",
+  //     justifyContent: "space-between"
+  //   },
 
-    child: {
-      padding: "16px 20px",
-      backgroundColor: "white"
-    }
-  }
+  //   child: {
+  //     padding: "16px 20px",
+  //     backgroundColor: "white"
+  //   }
+  // }
 
   return (
     <Tabs
       {...tabStyle}
-      index={activeTab}
+      index={tabIndex}
       onChange={handleTabChange}
     >
       <TabList

@@ -30,6 +30,7 @@ const ProteinSequenceViewer = (props: Props) => {
   const { projectId } = useParams();
   const { proteinPDBID, containerStyle, pdbFileUrl } = props
   const sequenceData = useAppSelector((state) => state.seqView);
+  const tabIndex = Number(localStorage.getItem("tabIndex"));
 
   if (!proteinPDBID) {
     handleOnError("No Protein PDB ID Provided. To view protein structure please provide a PDB ID")
@@ -72,7 +73,7 @@ const ProteinSequenceViewer = (props: Props) => {
       const trajectory = await plugin.builders.structure.parseTrajectory(data, FILE_FORMAT);
       await plugin.builders.structure.hierarchy.applyPreset(trajectory, 'default');
       const renderer = plugin.canvas3d!.props.renderer;
-      
+
       PluginCommands.Canvas3D.SetSettings(plugin, {
         settings: {
           renderer: { ...renderer, backgroundColor: ColorNames.skyblue }
@@ -103,25 +104,29 @@ const ProteinSequenceViewer = (props: Props) => {
           </Link>
         )}
 
-        <Button
-          borderRadius={5}
-          color="white"
-          bgColor="brand_blue.100"
-          fontSize={["0.875rem", "1rem"]}
-          _hover={{ bgColor: "brand_blue.100" }}
-          onClick={navigate}
-        >
-          View full sequence map <FaMapMarkedAlt style={iconStyle} />
-        </Button>
+        {tabIndex !== 1 && (
+          <Button
+            borderRadius={5}
+            color="white"
+            bgColor="brand_blue.100"
+            fontSize={["0.875rem", "1rem"]}
+            _hover={{ bgColor: "brand_blue.100" }}
+            onClick={navigate}
+          >
+            View full sequence map <FaMapMarkedAlt style={iconStyle} />
+          </Button>
+        )}
       </Stack>
 
-      <SequenceViewer
-        name={sequenceData.name}
-        seq={sequenceData.seq}
-        annotations={sequenceData.annotations}
-        viewer={sequenceData.viewer}
-        style={sequenceData.style}
-      />
+      {tabIndex !== 1 && (
+        <SequenceViewer
+          name={sequenceData.name}
+          seq={sequenceData.seq}
+          annotations={sequenceData.annotations}
+          viewer={sequenceData.viewer}
+          style={sequenceData.style}
+        />
+      )}
 
       {proteinPDBID && (
         <div ref={containerRef} style={containerStyle}>
