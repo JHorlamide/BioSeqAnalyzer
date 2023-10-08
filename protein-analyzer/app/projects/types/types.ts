@@ -40,7 +40,7 @@ export interface S3UploadRes {
 }
 
 export interface ProjectModel extends IProject {
-  projectFile: S3UploadRes;
+  projectFileName: string;
 }
 
 export interface CSVColumnDataType {

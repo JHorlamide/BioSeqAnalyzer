@@ -15,7 +15,7 @@ export const ERR_MSG = {
   UNIPROT_ID_REQUIRED: "uniprotId is required",
   INVALID_UNIPROT_ID: "Invalid Uniprot id",
   USER_ID_REQUIRED: "userId is required",
-  PROJECT_ID_REQUIRED: "projectId is a required fields",
+  PROJECT_ID_REQUIRED: "projectId is not a valid Object ID",
   PROJECT_NOT_FOUND: "Project not found",
   INVALID_PROJECT_DATA: "projectTitle, projectGoal, and, measuredProperty are required fields",
   INVALID_CSV_STRUCTURE: "CSV file must contain columns: sequence, fitness, muts and must contain at least one row with muts = WT",

@@ -3,10 +3,10 @@ import http from "http";
 
 /* Application Modules */
 import config from "./config/appConfig";
-import { app, routes } from "./config/app";
-import { CommonRoutesConfig } from "./common/CommonRouteConfig";
-import { onError } from "./config/requestLogger";
 import { logger } from "./config/logger";
+import { app, routes } from "./config/app";
+import { onError } from "./config/requestLogger";
+import { CommonRoutesConfig } from "./common/CommonRouteConfig";
 
 function createServer(): http.Server {
   app.set("port", config.port);

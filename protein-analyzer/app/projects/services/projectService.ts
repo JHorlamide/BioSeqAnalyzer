@@ -1,12 +1,10 @@
-/* Libraries */
-import mongoose from "mongoose";
-
 /* Application Modules */
 import config from "../../config/appConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
-import s3Service from "../s3Service/s3Service";
-import fileService from "../fileHandler/fileService";
+import s3Service from "../fileService/fileService";
+import { ERR_MSG } from "../types/constants";
+import { ClientError, NotFoundError, ServerError } from "../../common/exceptions/ApiError";
 import {
   IUpdateProject,
   IProject,
@@ -14,8 +12,7 @@ import {
   CSVColumnDataType,
   IMutationRange
 } from "../types/types";
-import { ERR_MSG } from "../types/constants";
-import { ClientError, NotFoundError, ServerError } from "../../common/exceptions/ApiError";
+import { logger } from "../../config/logger";
 
 class ProjectService {
   /**
@@ -69,10 +66,6 @@ class ProjectService {
 
   // Get a single project by the given projectId
   public async getProjectById(projectId: string) {
-    if (!projectId && this.isMongooseObjectId(projectId)) {
-      throw new ClientError(ERR_MSG.PROJECT_ID_REQUIRED)
-    }
-
     try {
       const project = await projectRepository.getProjectById(projectId);
 
@@ -100,18 +93,19 @@ class ProjectService {
     }
   }
 
-  public getProjectFileKey = async (projectId: string) => {
+  public getProjectFileName = async (projectId: string): Promise<string> => {
     try {
       const project = await this.getProjectById(projectId);
-      const { Key } = project.projectFile;
 
-      if (!Key) {
-        throw new ClientError(ERR_MSG.NO_FILE_UPLOAD);
-      }
+      if (!project) throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
 
-      return project.projectFile.Key;
+      const { projectFileName } = project;
+
+      if (!projectFileName) throw new ClientError(ERR_MSG.NO_FILE_UPLOAD);
+
+      return projectFileName;
     } catch (error: any) {
-      throw new ClientError(error.message);
+      throw new ServerError(error.message);
     }
   }
 
@@ -125,19 +119,18 @@ class ProjectService {
       throw new ClientError(ERR_MSG.PROJECT_ID_REQUIRED)
     }
 
-    // Ensure that the necessary data is provided to update the project
+    /** Ensure that the necessary data is provided to update the project **/
     if (Object.keys(projectData).length === 0) {
       throw new ClientError(ERR_MSG.INVALID_PROJECT_DATA)
     }
 
     try {
-      // If uniprotId is provided, retrieve the protein sequence
+      /** If uniprotId is provided, retrieve the protein sequence **/
       if (projectData.uniprotId) {
         proteinAminoAcidSequence = await this.getProteinSequenceFromUniProt(projectData.uniprotId!!);
       }
 
-      // If proteinPDBID is provided, add the PDB URL
-      // to the project data
+      /** If proteinPDBID is provided, add the PDB URL to the project data **/
       if (projectData.proteinPDBID) {
         proteinPDBID = projectData.proteinPDBID
         pdbFileUrl = `${config.pdbBaseUrl}/${projectData.proteinPDBID}`;
@@ -160,16 +153,12 @@ class ProjectService {
   }
 
   public async deleteProject(projectId: string) {
-    if (!projectId || !this.isMongooseObjectId(projectId)) {
-      throw new ClientError(ERR_MSG.PROJECT_ID_REQUIRED)
-    }
-
     try {
       const project = await projectRepository.deleteProject(projectId);
 
-      if (!project) {
-        throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
-      }
+      if (!project) throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
+
+      return project;
     } catch (error: any) {
       throw new ServerError(error.message);
     }
@@ -183,28 +172,24 @@ class ProjectService {
         throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
       }
 
-      const uploadResponse = await s3Service.uploadFile(file);
+      const uploadResponse = await s3Service.uploadFileToBucket(file);
+
       if (!uploadResponse) {
         throw new ServerError(ERR_MSG.FILE_UPLOAD_ERROR);
       }
 
-      project.projectFile = {
-        fileName: file.originalname,
-        Bucket: uploadResponse.Bucket,
-        Key: uploadResponse.Key
-      };
-
+      project.projectFileName = file.originalname;
       return await project.save();
     } catch (error: any) {
       throw new ServerError(ERR_MSG.FILE_UPLOAD_ERROR);
     }
   }
 
-  // Get Histogram Data
+  /** Get Histogram Data **/
   public async getHistogramData(projectId: string) {
-    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
-    // Calculate the histogram data
+    /** Calculate the histogram data **/
     const histogramData: { label: string, count: number }[] = [];
     const countByLabel: { [key: string]: number } = {};
 
@@ -217,8 +202,10 @@ class ProjectService {
       histogramData.push({ label, count: countByLabel[label] });
     }
 
-    // 1. Distribution of fitness scores as a histogram
-    // The reference sequence should be highlighted in the histogram
+    /**
+     * 1. Distribution of fitness scores as a histogram
+     * The reference sequence should be highlighted in the histogram
+     * **/
     const fitnessScores: number[] = csvData.map((row) => row.fitness);
     const referenceSequence = 'WT'; // Assuming the reference sequence is denoted as 'WT'
     const histogramWithReference = histogramData.map((item) => ({
@@ -231,7 +218,7 @@ class ProjectService {
 
   // Get top 10 mutation
   public async getTopMutants(projectId: string) {
-    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
     const topMutants = csvData
       .sort((a, b) => b.fitness - a.fitness)
@@ -242,7 +229,7 @@ class ProjectService {
 
   // Get mutation distribution
   public getMutationDistribution = async (projectId: string) => {
-    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
     const mutationCounts: number[] = csvData.map((row) => row.muts.split(',').length);
     const mutationDistribution: { mutationCount: number; count: number }[] = [];
     const countByMutationCount: { [key: number]: number } = {};
@@ -264,7 +251,7 @@ class ProjectService {
    * sequences that include this mutation
    * */
   public async getMutationRange(projectId: string, limitNumber: number) {
-    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
     const mutations = csvData.flatMap((row) => row.muts.split(','));
     const mutationRanges: IMutationRange[] = [];
     const scoresByMutation: { [key: string]: number[] } = {};
@@ -299,7 +286,7 @@ class ProjectService {
 
   // Get highest fitness
   public async getHighestFitness(projectId: string) {
-    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
     // Find the sequence with the highest fitness value
     const highestFitnessEntry = csvData.reduce((prev, curr) => {
@@ -319,7 +306,7 @@ class ProjectService {
 
   // Get fold improvement
   public getFoldImprovement = async (projectId: string) => {
-    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
     const wildTypeFitness = this.getWildTypeFitness(csvData);
     const bestFitnessEntry = this.getBestFitnessEntry(csvData);
@@ -331,7 +318,7 @@ class ProjectService {
 
   // Get sequence above reference
   public getSequencesAboveReference = async (projectId: string) => {
-    const csvData: CSVColumnDataType[] = await this.getFile(projectId);
+    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
     // Filter the csvData to get sequences with mutations
     // and scores above the reference sequence (wild type)
@@ -375,14 +362,13 @@ class ProjectService {
   }
 
   // Get file from aws
-  private getFile = async (projectId: string) => {
+  private getFileCSVData = async (projectId: string) => {
     try {
-      const projectFileKey = await this.getProjectFileKey(projectId);
-      const s3ReadStream = s3Service.getFile(projectFileKey);
-      const csvData = await fileService.parseS3ReadStream(s3ReadStream);
-      return csvData;
+      const projectFileName = await this.getProjectFileName(projectId);
+      const CSVData = await s3Service.downloadAndParseFileFromBucket(projectFileName);
+      return CSVData;
     } catch (error: any) {
-      throw new ServerError("Server error. Please try again later");
+      throw new ServerError(error.message);
     }
   }
 
@@ -407,14 +393,6 @@ class ProjectService {
     } catch (error: any) {
       throw new ServerError(error.message);
     }
-  }
-
-  private isMongooseObjectId(id: string): boolean {
-    if (id && typeof id === 'string') {
-      return mongoose.Types.ObjectId.isValid(id);
-    }
-
-    return false;
   }
 
   private async getProteinSequenceFromUniProt(uniprotId: string) {

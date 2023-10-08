@@ -25,9 +25,9 @@ class ResponseHandler<T extends object> {
       .json({ status: "Success", message })
   }
 
-  public badRequest(message: string, res: Response): Response {
+  public badRequest(message: string, res: Response, status?: number): Response {
     return res
-      .status(HttpStatus.BAD_REQUEST)
+      .status(status || HttpStatus.BAD_REQUEST)
       .json({ status: "Failure", message })
   }
 

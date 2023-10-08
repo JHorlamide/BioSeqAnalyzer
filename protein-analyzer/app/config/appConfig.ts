@@ -24,6 +24,7 @@ const config = {
   },
 
   aws: {
+    region: process.env.AWS_REGION,
     secrete: process.env.AWS_SECRET as string,
     accessKey: process.env.AWS_ACCESS_KEY_ID as string,
     bucketName: process.env.AWS_BUCKET_NAME as string,

@@ -1,11 +1,14 @@
+/* Libraries */
 import { Application } from "express";
-import { CommonRoutesConfig } from "../../common/CommonRouteConfig"
+
+/* Application Modules */
+import config from "../../config/appConfig";
 import userMiddleware from "./middleware/userMiddleware";
 import userController from "./controller/userController";
-import config from "../../config/appConfig";
+import jwtMiddleware from "../auth/middleware/jwtMiddleware";
 import authMiddleware from "../auth/middleware/authMiddleware";
 import authController from "../auth/controller/authController";
-import jwtMiddleware from "../auth/middleware/jwtMiddleware";
+import { CommonRoutesConfig } from "../../common/CommonRouteConfig";
 
 const APP_PREFIX_PATH = config.prefix;
 
@@ -49,7 +52,6 @@ export class UserRoute extends CommonRoutesConfig {
       authController.createUserJWT
     ])
 
-    return this.app
+    return this.app;
   }
 }
-

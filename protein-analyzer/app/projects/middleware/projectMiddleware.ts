@@ -1,15 +1,17 @@
-// Core
+/* Core */
 import fs from "fs";
 
-// Application Modules
+/* Libraries */
 import { Request, Response, NextFunction } from "express";
-import requestBodyValidator from "../../common/middleware/requestValidationMiddleware";
-import { createProjectSchema, paginationSchema, projectUploadSchema } from "../validation/projectSchema";
-import responseHandler from "../../common/responseHandler";
+
+/* Application Modules */
+import s3Service from "../fileService/fileService";
 import projectService from "../services/projectService";
-import { multerUpload } from "../../common/middleware/multerMiddleware";
+import responseHandler from "../../common/responseHandler";
+import requestBodyValidator from "../../common/middleware/requestValidationMiddleware";
 import { ERR_MSG } from "../types/constants";
-import fileService from "../fileHandler/fileService";
+import { multerUpload } from "../../common/middleware/multerMiddleware";
+import { createProjectSchema, paginationSchema, projectUploadSchema } from "../validation/projectSchema";
 
 class ProjectMiddleware {
   public validateRequestBodyField = requestBodyValidator(createProjectSchema);
@@ -51,13 +53,14 @@ class ProjectMiddleware {
 
     try {
       const project = await projectService.getProjectById(projectId);
+
       if (!project) {
         return responseHandler.badRequest(ERR_MSG.PROJECT_NOT_FOUND, res);
       }
 
       next();
     } catch (error: any) {
-      return responseHandler.badRequest(error.message, res);
+      return responseHandler.badRequest(error.message, res, 404);
     }
   }
 
@@ -86,10 +89,10 @@ class ProjectMiddleware {
 
     try {
       // Read and parse the CSV file
-      const csvData = await fileService.parseCSVFile(file.buffer);
+      const csvData = await s3Service.parseCSVFile(file.buffer);
 
       // Validate the CSV structure
-      if (!fileService.validateCSVStructure(csvData)) {
+      if (!s3Service.validateCSVStructure(csvData)) {
         return responseHandler.badRequest(ERR_MSG.INVALID_CSV_STRUCTURE, res);
       }
 
