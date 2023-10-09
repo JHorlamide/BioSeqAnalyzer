@@ -41,7 +41,11 @@ const Dashboard = () => {
 
   return (
     <Box width="full">
-      <DashboardHeader projectType="Protein" createProjectAction={createProjectPage} />
+      <DashboardHeader
+        projectType="Protein"
+        refetch={refetch}
+        createProjectAction={createProjectPage}
+      />
 
       <Box marginTop={5} width="full" height="full">
         <ProjectsContainer

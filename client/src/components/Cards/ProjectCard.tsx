@@ -73,14 +73,14 @@ const ProjectCard = (props: ProjectCardProps) => {
       />
 
       <Card
-        width={{ base: "100%", md: "270px" }}
+        width={{ base: "100%", md: "370px", lg: "270px" }}
         height="140px"
         color="white"
         bg="brand_blue.300"
         borderRadius={10}
         paddingTop={-3}
-        _hover={{ cursor: "pointer" }}
         onClick={navigate}
+        _hover={{ cursor: "pointer" }}
       >
         <CardHeader
           display="flex"

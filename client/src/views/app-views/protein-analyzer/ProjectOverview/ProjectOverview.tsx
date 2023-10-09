@@ -49,7 +49,7 @@ const ProjectOverview = () => {
     projectGoal,
     measuredProperty,
     pdbFileUrl,
-    projectFile,
+    projectFileName,
     proteinAminoAcidSequence
   } = project?.data || {};
 
@@ -74,23 +74,12 @@ const ProjectOverview = () => {
     marginTop: "-6%"
   }
 
-  // const style = {
-  //   parentStyle: {
-  //     display: "flex",
-  //     justifyContent: "space-between"
-  //   },
-
-  //   child: {
-  //     padding: "16px 20px",
-  //     backgroundColor: "white"
-  //   }
-  // }
-
   return (
     <Tabs
       {...tabStyle}
       index={tabIndex}
       onChange={handleTabChange}
+      defaultIndex={tabIndex}
     >
       <TabList
         width="full"
@@ -134,7 +123,7 @@ const ProjectOverview = () => {
         <TabPanel>
           <Rounds
             projectId={id}
-            projectFile={projectFile}
+            projectFileName={projectFileName}
             proteinPDBID={proteinPDBID}
           />
         </TabPanel>

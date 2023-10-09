@@ -1,8 +1,13 @@
-import { Fragment } from "react"
+/* React */
+import { Fragment } from "react";
+
+/* Chakra UI */
 import { Box, Text } from "@chakra-ui/react";
+
+/* Application Modules */
 import Histogram from "./components/Histogram";
-import { useGetScoreDistributionQuery } from "../../../../../../../services/project/projectApi";
 import HistogramSkeleton from "./components/HistogramSkeleton";
+import { useGetScoreDistributionQuery } from "../../../../../../../services/project/projectApi";
 
 const ScoreDistribution = ({ projectId }: { projectId: string }) => {
   const { data, isLoading, isError } = useGetScoreDistributionQuery({ projectId });
@@ -11,7 +16,7 @@ const ScoreDistribution = ({ projectId }: { projectId: string }) => {
     return <HistogramSkeleton
       isError={isError}
       barCount={40}
-      DataLoadingName="Score distribution"
+      DataLoadingName="score distribution"
     />
   }
 

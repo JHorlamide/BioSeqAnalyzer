@@ -17,7 +17,7 @@ export const SESSION_EXPIRE_ERROR = "Session Expired. Logging you out";
 export const toastStyle = {
   success: {
     style: {
-      background: "#7AA7D6",
+      background: "#08355a",
       color: "white",
       padding: "4px 5px",
       fontWeight: "semibold"

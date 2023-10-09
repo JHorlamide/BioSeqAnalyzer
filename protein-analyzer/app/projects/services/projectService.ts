@@ -12,7 +12,6 @@ import {
   CSVColumnDataType,
   IMutationRange
 } from "../types/types";
-import { logger } from "../../config/logger";
 
 class ProjectService {
   /**
@@ -172,13 +171,13 @@ class ProjectService {
         throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
       }
 
-      const uploadResponse = await s3Service.uploadFileToBucket(file);
+      const { uploadResponse, bucketKey } = await s3Service.uploadFileToBucket(file);
 
-      if (!uploadResponse) {
+      if (!uploadResponse || uploadResponse.$metadata.httpStatusCode !== 200) {
         throw new ServerError(ERR_MSG.FILE_UPLOAD_ERROR);
       }
 
-      project.projectFileName = file.originalname;
+      project.projectFileName = bucketKey;
       return await project.save();
     } catch (error: any) {
       throw new ServerError(ERR_MSG.FILE_UPLOAD_ERROR);
@@ -218,13 +217,17 @@ class ProjectService {
 
   // Get top 10 mutation
   public async getTopMutants(projectId: string) {
-    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
+    try {
+      const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
-    const topMutants = csvData
-      .sort((a, b) => b.fitness - a.fitness)
-      .slice(0, 10);
+      const topMutants = csvData
+        .sort((a, b) => b.fitness - a.fitness)
+        .slice(0, 10);
 
-    return topMutants;
+      return topMutants;
+    } catch (error: any) {
+      throw new ServerError(error.message)
+    }
   }
 
   // Get mutation distribution
@@ -286,57 +289,69 @@ class ProjectService {
 
   // Get highest fitness
   public async getHighestFitness(projectId: string) {
-    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
+    try {
+      const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
-    // Find the sequence with the highest fitness value
-    const highestFitnessEntry = csvData.reduce((prev, curr) => {
-      return curr.fitness > prev.fitness ? curr : prev;
-    });
+      // Find the sequence with the highest fitness value
+      const highestFitnessEntry = csvData.reduce((prev, curr) => {
+        return curr.fitness > prev.fitness ? curr : prev;
+      });
 
-    const highestFitnessSequence = highestFitnessEntry.sequence;
-    const highestFitnessValue = highestFitnessEntry.fitness;
+      const highestFitnessSequence = highestFitnessEntry.sequence;
+      const highestFitnessValue = highestFitnessEntry.fitness;
 
-    const result = {
-      sequence: highestFitnessSequence,
-      fitness: highestFitnessValue,
-    };
+      const result = {
+        sequence: highestFitnessSequence,
+        fitness: highestFitnessValue,
+      };
 
-    return result
+      return result
+    } catch (error: any) {
+      throw new ServerError(error.message);
+    }
   }
 
   // Get fold improvement
   public getFoldImprovement = async (projectId: string) => {
-    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
+    try {
+      const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
-    const wildTypeFitness = this.getWildTypeFitness(csvData);
-    const bestFitnessEntry = this.getBestFitnessEntry(csvData);
+      const wildTypeFitness = this.getWildTypeFitness(csvData);
+      const bestFitnessEntry = this.getBestFitnessEntry(csvData);
 
-    const bestFitness = bestFitnessEntry.fitness;
-    const foldImprovement = bestFitness / wildTypeFitness;
-    return foldImprovement;
+      const bestFitness = bestFitnessEntry.fitness;
+      const foldImprovement = bestFitness / wildTypeFitness;
+      return foldImprovement;
+    } catch (error: any) {
+      throw new ServerError(error.message);
+    }
   }
 
   // Get sequence above reference
   public getSequencesAboveReference = async (projectId: string) => {
-    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
+    try {
+      const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
-    // Filter the csvData to get sequences with mutations
-    // and scores above the reference sequence (wild type)
-    const sequencesAboveReference = csvData.filter((entry) => {
-      return entry.muts.includes("WT") && entry.fitness > this.getReferenceFitness(csvData);
-    });
+      // Filter the csvData to get sequences with mutations
+      // and scores above the reference sequence (wild type)
+      const sequencesAboveReference = csvData.filter((entry) => {
+        return entry.muts.includes("WT") && entry.fitness > this.getReferenceFitness(csvData);
+      });
 
-    const totalSequences = csvData.length;
-    const sequencesAboveReferenceCount = sequencesAboveReference.length;
-    const hitRate = (sequencesAboveReferenceCount / totalSequences) * 100;
+      const totalSequences = csvData.length;
+      const sequencesAboveReferenceCount = sequencesAboveReference.length;
+      const hitRate = (sequencesAboveReferenceCount / totalSequences) * 100;
 
-    const result = {
-      hitRate,
-      totalSequences,
-      sequencesAboveReferenceCount,
-    };
+      const result = {
+        hitRate,
+        totalSequences,
+        sequencesAboveReferenceCount,
+      };
 
-    return result;
+      return result;
+    } catch (error: any) {
+      throw new ServerError(error.message);
+    }
   }
 
   // Helper function to get the fitness score of the reference sequence (wild type)
@@ -365,8 +380,7 @@ class ProjectService {
   private getFileCSVData = async (projectId: string) => {
     try {
       const projectFileName = await this.getProjectFileName(projectId);
-      const CSVData = await s3Service.downloadAndParseFileFromBucket(projectFileName);
-      return CSVData;
+      return await s3Service.downloadAndParseFileFromBucket(projectFileName);
     } catch (error: any) {
       throw new ServerError(error.message);
     }

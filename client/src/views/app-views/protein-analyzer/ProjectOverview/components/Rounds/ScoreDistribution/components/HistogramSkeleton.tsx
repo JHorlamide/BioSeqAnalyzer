@@ -7,7 +7,8 @@ interface Props {
 }
 
 const HistogramSkeleton = (props: Props) => {
-  const { barCount, isError, DataLoadingName } = props
+  const { barCount, isError, DataLoadingName } = props;
+
   const skeletonBars = Array.from({ length: barCount }, (_, index) => (
     <Box
       key={index}

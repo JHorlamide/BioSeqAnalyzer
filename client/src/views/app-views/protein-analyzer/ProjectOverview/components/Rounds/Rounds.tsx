@@ -1,7 +1,11 @@
+/* React */
 import React from 'react';
+
+/* Chakra UI */
 import { Box, HStack, VStack } from '@chakra-ui/react';
+
+/* Application Modules */
 import DocumentUpload from './DocumentUpload/DocumentUpload';
-import { ProjectFields } from '../../../../../../services/project/type';
 import ProteinSequenceViewer from '../ProteinSequenceViewer/ProteinSequenceViewer';
 
 const SummaryTable = React.lazy(() => import("./SummaryTable/SummaryTable"));
@@ -11,24 +15,23 @@ const ScoreDistribution = React.lazy(() => import("./ScoreDistribution/ScoreDist
 interface Props {
   projectId: string;
   proteinPDBID?: string;
-  projectFile?: ProjectFields;
+  projectFileName?: string;
 }
 
-const Rounds = ({ projectFile, projectId, proteinPDBID }: Props) => {
-  if (!projectFile) {
+const Rounds = ({ projectFileName, projectId, proteinPDBID }: Props) => {
+  if (!projectFileName) {
     return <DocumentUpload projectId={projectId} />
   }
 
   const containerStyle = {
     width: "40%",
     height: "600px",
-    marginTop: "1%",
     display: "flex",
     justifyContent: "center",
   }
 
   return (
-    <Box width="full">
+    <Box width="auto">
       <HStack
         spacing={5}
         width="full"
@@ -38,7 +41,7 @@ const Rounds = ({ projectFile, projectId, proteinPDBID }: Props) => {
         alignItems="self-start"
         marginBottom={5}
       >
-        <VStack spacing={3} maxWidth="xl" width="full" height="full">
+        <VStack spacing={3} maxWidth="2xl" width="full" height="full">
           <SummaryTable projectId={projectId} />
           <TableOfPerformingVariants projectId={projectId} />
         </VStack>

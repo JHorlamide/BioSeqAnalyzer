@@ -4,7 +4,7 @@ import { Readable } from "stream";
 /* Libraries */
 import csvParser from "csv-parser";
 import { v4 as uuidV4 } from "uuid";
-import { GetObjectCommand, PutObjectCommand, S3 } from "@aws-sdk/client-s3";
+import { GetObjectCommand, PutObjectCommand, S3, S3Client } from "@aws-sdk/client-s3";
 
 /* Application Modules */
 import config from "../../config/appConfig";
@@ -13,17 +13,20 @@ import { CSVColumnDataType } from "../types/types";
 import { ServerError } from "../../common/exceptions/ApiError";
 
 class S3Service {
-  s3Client = new S3({});
+  s3Client = new S3Client({});
 
   public async uploadFileToBucket(file: Express.Multer.File) {
+    const bucketKey = `upload/${uuidV4()}-${file.originalname}`;
+
     const command = new PutObjectCommand({
       Bucket: config.aws.bucketName,
-      Key: `upload/${uuidV4()}-${file.originalname}`,
+      Key: bucketKey,
       Body: file.buffer,
     });
 
     try {
-      return await this.s3Client.send(command);
+      const uploadResponse = await this.s3Client.send(command);
+      return { uploadResponse, bucketKey }
     } catch (error: any) {
       throw new ServerError(error.message);
     }
@@ -32,13 +35,14 @@ class S3Service {
   public async downloadAndParseFileFromBucket(fileName: string) {
     const command = new GetObjectCommand({
       Bucket: config.aws.bucketName,
-      Key: `upload/${uuidV4()}-${fileName}`,
+      Key: fileName,
     });
 
     try {
       const response = await this.s3Client.send(command);
       return await this.parseS3ReadStream(response.Body as Readable);
     } catch (error: any) {
+      console.log({ AWS_ERROR: error })
       throw new ServerError(error.message);
     }
   }

@@ -107,7 +107,7 @@ export const projectApi = createApi({
 
     getScoreDistribution: builder.query<IGetScoreDistributionRes, IGetScoreDistributionReq>({
       query: ({ projectId }) => ({
-        url: `/${projectId}/csv-upload/score-distribution`,
+        url: `/${projectId}/score-distribution`,
       })
     }),
 

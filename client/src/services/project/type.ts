@@ -1,16 +1,11 @@
 import { IBaseResponse } from "../../schemas";
 import { IProject, ProjectFormData } from "../../schemas/projectSchema";
 
-export interface ProjectFields {
-  fileName: string;
-  Bucket: string;
-  Key: string
-}
 
 export interface Projects extends IProject {
   _id: string;
   user: string;
-  projectFile: ProjectFields
+  projectFileName: string;
   pdbFileUrl: string;
   createdAt: string;
   updatedAt: string;

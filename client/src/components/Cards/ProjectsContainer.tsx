@@ -1,10 +1,10 @@
-/* React */ 
+/* React */
 import { Fragment } from "react";
 
-/* Libraries/Packages */ 
+/* Libraries/Packages */
 import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 
-/* Application Module */ 
+/* Application Module */
 import { Projects } from "../../services/project/type";
 import ProjectCard from "./ProjectCard";
 import ProjectCardSkeleton from "./ProjectCardSkeleton";
@@ -21,14 +21,15 @@ const ProjectsContainer = ({ projects, isLoading }: Props) => {
   return (
     <Fragment>
       {isLoading &&
-        <Grid gap={4}
+        <Grid
+          gap={4}
           mt={3}
           templateColumns={{
             base: "repeat(1, 1fr)",
             md: "repeat(2, 1fr)",
             lg: isLargeScreen ? "repeat(3, 1fr)" : "repeat(2, 1fr)",
-          }}>
-
+          }}
+        >
           {skeletons.map((skeleton) => <ProjectCardSkeleton key={skeleton} />)}
         </Grid>
       }
