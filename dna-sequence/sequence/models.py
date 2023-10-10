@@ -5,8 +5,11 @@ import uuid
 class DNASequence(models.Model):
     DNA_NUCLEOTIDE = "D"
     RNA_NUCLEOTIDE = "R"
+    
     LINEAR_TOPOLOGY = "L"
     CIRCULAR_TOPOLOGY = "C"
+    BOTH_TOPOLOGY = "B"
+    BOTH_FLIP_TOPOLOGY = "B_F"
 
     NUCLEOTIDE_TYPES = [
         (DNA_NUCLEOTIDE, 'DNA'),
@@ -16,9 +19,11 @@ class DNASequence(models.Model):
     TOPOLOGY_TYPES = [
         (CIRCULAR_TOPOLOGY, "Circular"),
         (LINEAR_TOPOLOGY, "Linear"),
+        (BOTH_TOPOLOGY, "Both"),
+        (BOTH_FLIP_TOPOLOGY, "Both Flip"),
     ]
 
-    base = models.TextField()
+    bases = models.TextField()
     sequence = models.TextField()
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)

@@ -5,7 +5,7 @@ class DNASequenceFilter(FilterSet):
   class Meta:
     model = DNASequence
     fields = {
-      "base": ["exact"],
+      "bases": ["exact"],
       "topology": ["exact"],
       "nucleotide_type": ["exact"]
     }

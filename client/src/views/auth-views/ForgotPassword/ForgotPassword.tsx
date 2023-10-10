@@ -5,14 +5,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 /* Application Modules */
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
-import { FormInput } from "../../../components/FormInput/FormInput";
+import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import Button from "../../../components/CustomBtn/Button";
 import useNavigation from "../../../hooks/useNavigation";
 import FormContainer from "../../../components/FormContainer/FormContainer";
 import {
   ForgotPassFormData,
   forgotPasswordSchema,
-} from "../../../schemas/forgotPasswordSchema";
+} from "../../../schemas/auth/forgotPasswordSchema";
 
 /* Chakra UI */
 import { HStack } from "@chakra-ui/react";

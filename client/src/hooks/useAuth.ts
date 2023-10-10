@@ -13,12 +13,12 @@ import Utils from "../utils";
 import { projectApi } from "../services/project/projectApi";
 import { useLoginUserMutation } from "../services/auth/authApi";
 import { useAppDispatch } from "../store/store";
-import { LoginFormData, loginSchema } from "../schemas/loginSchema";
+import { LoginFormData, loginSchema } from "../schemas/auth/loginSchema";
 import { setRefreshToken, setToken, setUser } from "../store/slices/authSlice";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../constants/AuthConstant";
 import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../config/AppConfig";
 import { useRegisterUserMutation } from "../services/auth/registerApi";
-import { RegisterFormData, registrationSchema } from "../schemas/registerSchema";
+import { RegisterFormData, registrationSchema } from "../schemas/auth/registerSchema";
 
 export const useLogin = () => {
   const { handleOnError } = useErrorToast();

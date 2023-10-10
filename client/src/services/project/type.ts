@@ -1,5 +1,5 @@
 import { IBaseResponse } from "../../schemas";
-import { IProject, ProjectFormData } from "../../schemas/projectSchema";
+import { IProject, ProjectFormData } from "../../schemas/protineAnalyzer/protinProjectSchema";
 
 
 export interface Projects extends IProject {

@@ -1,17 +1,22 @@
+/* React */
 import { useEffect, useState } from "react";
+
+/* Libraries */
 import { useForm } from "react-hook-form";
-import { ProjectFormData, projectSchema } from "../schemas/projectSchema";
+import { ProjectFormData, projectSchema } from "../../schemas/protineAnalyzer/protinProjectSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+/* Application Modules */
+import { toast } from "react-hot-toast";
+import { APP_PREFIX_PATH } from "../../config/AppConfig";
+import useNavigation from "../useNavigation";
+import utils from "../../utils";
+import useErrorToast from "../useErrorToast";
 import {
   useCreateProjectMutation,
   useGetProjectQuery,
   useUpdateProjectMutation
-} from "../services/project/projectApi";
-import { toast } from "react-hot-toast";
-import useNavigation from "./useNavigation";
-import { APP_PREFIX_PATH } from "../config/AppConfig";
-import utils from "../utils";
-import useErrorToast from "./useErrorToast";
+} from "../../services/project/projectApi";
 
 const getFilledForm = (projectField: ProjectFormData) => {
   return Object.fromEntries(
@@ -19,7 +24,7 @@ const getFilledForm = (projectField: ProjectFormData) => {
   ) as ProjectFormData;
 }
 
-export const useProject = () => {
+export const useCreateProteinProject = () => {
   const { handleOnError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [inputVisibility, setInputVisibility] = useState({
@@ -83,7 +88,6 @@ export const useUpdateProject = (projectId: string) => {
   const { data: project } = useGetProjectQuery({ projectId });
 
   const {
-    watch,
     register,
     handleSubmit,
     formState: { errors, isValid },

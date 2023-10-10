@@ -2,12 +2,14 @@
 import { GiMolecule, GiGooeyMolecule } from "react-icons/gi";
 import { SiMoleculer } from "react-icons/si";
 import { MdOutlineTitle } from "react-icons/md";
+import { FieldErrors, UseFormReturn } from "react-hook-form";
+import { ProjectFormData } from "../../../../schemas/protineAnalyzer/protinProjectSchema";
 
 /* Application Modules */
-import Button from "../../../../../components/CustomBtn/Button";
-import { IProject } from "../../../../../schemas/projectSchema";
-import { FormInput, SelectInput } from "../../../../../components/FormInput/FormInput"
-import { ProjectFormProps } from "./types";
+import Button from "../../../../components/CustomBtn/Button";
+import { IProject } from "../../../../schemas/protineAnalyzer/protinProjectSchema";
+import { FormInput } from "../../../../components/CustomInput/FormInput/FormInput"
+import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
 
 /* Chakra UI */
 import {
@@ -23,6 +25,20 @@ import {
   Center,
   HStack,
 } from "@chakra-ui/react";
+
+export interface ProjectFormProps {
+  projectId?: string;
+  projectData?: ProjectFormData;
+  errors: FieldErrors<ProjectFormData>;
+  isValid: boolean;
+  isLoading: boolean;
+  showRawSeqInput: boolean;
+  showUniProtInput: boolean;
+  submitProject: (data: ProjectFormData) => Promise<void>;
+  register: UseFormReturn<ProjectFormData>['register'];
+  handleSubmit: UseFormReturn<ProjectFormData>['handleSubmit'];
+  toggleShowUniProtInput: () => void;
+};
 
 const ProjectForm = (props: ProjectFormProps) => {
   const {

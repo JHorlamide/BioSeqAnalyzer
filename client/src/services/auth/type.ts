@@ -1,5 +1,5 @@
 import { IBaseResponse } from "../../schemas";
-import { User } from "../../schemas/loginSchema";
+import { User } from "../../schemas/auth/loginSchema";
 
 export interface ILoginResponse extends IBaseResponse {
   data: {

@@ -32,7 +32,7 @@ const ProteinAnalyzerDashboard = () => {
   };
 
   const createProjectPage = () => {
-    handleNavigate(`${APP_PREFIX_PATH}/create-project`);
+    handleNavigate(`${APP_PREFIX_PATH}/create-protein-project`);
   }
 
   if (!projects?.data.projects || projects?.data.projects.length === 0) {

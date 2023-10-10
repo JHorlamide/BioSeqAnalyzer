@@ -38,7 +38,7 @@ const EmptyProject = () => {
           bg="brand_blue.300"
           _hover={{ bg: "brand_blue.200" }}
           leftIcon={<GiMolecule size={20} />}
-          onClick={() => handleNavigate(`${APP_PREFIX_PATH}/create-project`)}
+          onClick={() => handleNavigate(`${APP_PREFIX_PATH}/create-protein-project`)}
         >
           Create new project
         </Button>

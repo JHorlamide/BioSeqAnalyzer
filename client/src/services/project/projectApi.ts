@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { PROTEIN_API_BASE_URL } from "../../config/AppConfig";
-import { ProjectFormData } from "../../schemas/projectSchema";
+import { ProjectFormData } from "../../schemas/protineAnalyzer/protinProjectSchema";
 import {
   ICreateProjectRes,
   IGetProteinSequenceRes,

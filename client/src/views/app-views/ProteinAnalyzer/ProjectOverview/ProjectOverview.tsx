@@ -5,6 +5,12 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from "react-icons/bs";
 
+/* Application Modules */
+import { useGetProjectQuery } from '../../../../services/project/projectApi';
+import Button from '../../../../components/CustomBtn/Button';
+import Overview from "./components/Overview/Overview"
+import Rounds from './components/Rounds/Rounds';
+
 /* Chakra UI */
 import {
   Tabs,
@@ -15,13 +21,7 @@ import {
   HStack,
   Skeleton,
   Stack,
-} from '@chakra-ui/react'
-
-/* Application Modules */
-import { useGetProjectQuery } from '../../../../services/project/projectApi';
-import Button from '../../../../components/CustomBtn/Button';
-import Overview from "./components/Overview/Overview"
-import Rounds from './components/Rounds/Rounds';
+} from "@chakra-ui/react";
 
 const LoadingSkeleton = () => {
   return (

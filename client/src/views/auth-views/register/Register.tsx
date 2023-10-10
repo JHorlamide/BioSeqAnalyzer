@@ -8,7 +8,7 @@ import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
 /* Application Modules */
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 import { useRegister } from "../../../hooks/useAuth";
-import { FormInput } from "../../../components/FormInput/FormInput";
+import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
 

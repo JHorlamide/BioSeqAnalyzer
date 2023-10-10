@@ -5,8 +5,8 @@ import { BsArrowLeft } from "react-icons/bs";
 /* Application Modules */
 import Button from "../../../../components/CustomBtn/Button";
 import useNavigation from "../../../../hooks/useNavigation";
-import ProjectForm from "./components/ProjectForm";
-import { useProject } from "../../../../hooks/useProject";
+import ProjectForm from "./ProjectForm";
+import { useCreateProteinProject } from "../../../../hooks/ProtienAnalyzer/useCreateProteinProject";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 
 const CreateProject = () => {
@@ -25,7 +25,7 @@ const CreateProject = () => {
         Back
       </Button>
 
-      <ProjectForm {...useProject()} />
+      <ProjectForm {...useCreateProteinProject()} />
     </Box>
   );
 };
