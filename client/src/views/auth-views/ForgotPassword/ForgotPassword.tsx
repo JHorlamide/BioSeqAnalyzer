@@ -1,17 +1,25 @@
-import { HStack } from "@chakra-ui/react";
+/* Libraries */
 import { FieldValues, useForm } from "react-hook-form";
 import { BsArrowLeftShort } from "react-icons/bs";
-import FormInput from "../../../components/CustomInput/Input";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+/* Application Modules */
+import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
+import { FormInput } from "../../../components/FormInput/FormInput";
+import Button from "../../../components/CustomBtn/Button";
+import useNavigation from "../../../hooks/useNavigation";
+import FormContainer from "../../../components/FormContainer/FormContainer";
 import {
   ForgotPassFormData,
   forgotPasswordSchema,
 } from "../../../schemas/forgotPasswordSchema";
-import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "../../../components/CustomBtn/Button";
-import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
-import { Fragment } from "react";
-import useNavigation from "../../../hooks/useNavigation";
-import FormContainer from "../../../components/FormContainer/FormContainer";
+
+/* Chakra UI */
+import { HStack } from "@chakra-ui/react";
+
+type ForgotPasswordField = {
+  email: string;
+}
 
 const ForgotPassword = () => {
   const { handleNavigate } = useNavigation();
@@ -26,16 +34,20 @@ const ForgotPassword = () => {
   const onSubmit = (data: FieldValues) => { };
 
   return (
-    <FormContainer showHeading={true} formHeading="Reset your password">
+    <FormContainer
+      showHeading={true}
+      formHeading="Reset your password"
+    >
       <form onSubmit={handleSubmit(onSubmit)}>
-        <FormInput
+        <FormInput<ForgotPasswordField>
           label="Email"
           name="email"
           id="email"
           type="email"
+          color="white"
           placeholder="Enter your email address"
           register={register}
-          error={errors.email?.message}
+          errors={errors}
         />
 
         <HStack mt={8} justifyItems="center">

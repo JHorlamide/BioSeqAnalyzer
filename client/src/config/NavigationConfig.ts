@@ -16,14 +16,14 @@ interface NavConfigProps {
 const navigationConfig: NavConfigProps[] = [
   {
     key: 'dashboard',
-    path: `${APP_PREFIX_PATH}/dashboard`,
+    path: `${APP_PREFIX_PATH}/protein-analyzer/dashboard`,
     title: 'Protein Analyzer',
     Icon: FaProjectDiagram,
   },
 
   {
     key: 'dashboards-members',
-    path: `${APP_PREFIX_PATH}/project-members`,
+    path: `${APP_PREFIX_PATH}/dna-sequence/dashboard`,
     title: 'DNA Sequence',
     Icon: GiDna1,
   },

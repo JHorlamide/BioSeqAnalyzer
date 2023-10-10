@@ -1,3 +1,18 @@
+/* Libraries */
+import { Link } from "react-router-dom";
+import { HiOutlineMail } from "react-icons/hi";
+import { MdDriveFileRenameOutline } from "react-icons/md";
+import { RiLockPasswordLine } from "react-icons/ri";
+import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+
+/* Application Modules */
+import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
+import { useRegister } from "../../../hooks/useAuth";
+import { FormInput } from "../../../components/FormInput/FormInput";
+import Button from "../../../components/CustomBtn/Button";
+import FormContainer from "../../../components/FormContainer/FormContainer";
+
+/* Chakra UI */
 import {
   Stack,
   Box,
@@ -9,17 +24,12 @@ import {
   VStack,
   InputRightElement,
 } from "@chakra-ui/react";
-import { Link } from "react-router-dom";
-import { HiOutlineMail } from "react-icons/hi";
-import { MdDriveFileRenameOutline } from "react-icons/md";
-import { RiLockPasswordLine } from "react-icons/ri";
-import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
-import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
-import { Fragment } from "react";
-import { RegisterInput } from "./components/RegisterInput";
-import Button from "../../../components/CustomBtn/Button";
-import { useRegister } from "../../../hooks/useAuth";
-import FormContainer from "../../../components/FormContainer/FormContainer";
+
+type RegisterFormFields = {
+  fullName: string;
+  email: string;
+  password: string;
+}
 
 const Register = () => {
   const {
@@ -45,7 +55,7 @@ const Register = () => {
       </Stack>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <VStack spacing={8}>
+        <VStack spacing={8} color="white">
           <FormControl>
             <FormLabel color="white">Full Name</FormLabel>
             <InputGroup flexDirection="column" width="100%">
@@ -55,12 +65,11 @@ const Register = () => {
                 children={<MdDriveFileRenameOutline color="white" />}
               />
 
-              <RegisterInput
+              <FormInput<RegisterFormFields>
                 name="fullName"
-                type="text"
                 placeholder="Enter your full name"
                 register={register}
-                error={errors.fullName?.message}
+                errors={errors}
               />
             </InputGroup>
           </FormControl>
@@ -74,12 +83,12 @@ const Register = () => {
                 children={<HiOutlineMail color="white" />}
               />
 
-              <RegisterInput
+              <FormInput<RegisterFormFields>
                 name="email"
                 type="email"
                 placeholder="Enter your email address"
                 register={register}
-                error={errors.email?.message}
+                errors={errors}
               />
             </InputGroup>
           </FormControl>
@@ -93,12 +102,12 @@ const Register = () => {
                 children={<RiLockPasswordLine color="white" />}
               />
 
-              <RegisterInput
+              <FormInput<RegisterFormFields>
                 name="password"
                 type={show ? "text" : "password"}
                 placeholder="Enter your password"
                 register={register}
-                error={errors.password?.message}
+                errors={errors}
               />
 
               <InputRightElement _hover={{ cursor: "pointer" }}>

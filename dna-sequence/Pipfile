@@ -9,6 +9,7 @@ mysqlclient = "==2.0.3"
 djangorestframework = "*"
 python-dotenv = "*"
 drf-nested-routers = "*"
+django-filter = "*"
 
 [dev-packages]
 

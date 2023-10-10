@@ -47,7 +47,7 @@ export const useProject = () => {
       const response = await createProject(projectInputData).unwrap();
       if (response.status === "Success") {
         toast.success(response.message);
-        return handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
+        return handleNavigate(`${APP_PREFIX_PATH}/protein-analyzer/dashboard`);
       }
 
       handleOnError(response.message);
@@ -106,7 +106,7 @@ export const useUpdateProject = (projectId: string) => {
       const response = await updateProject({ projectId, data: projectInputData }).unwrap();
       if (response.status === "Success") {
         toast.success(response.message);
-        return handleNavigate(`${APP_PREFIX_PATH}/dashboard`);
+        return handleNavigate(`${APP_PREFIX_PATH}/protein-analyzer/dashboard`);
       }
 
       handleOnError(response.message);

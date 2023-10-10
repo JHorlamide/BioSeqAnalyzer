@@ -1,4 +1,13 @@
+/* React */
 import { forwardRef, Ref, Fragment } from "react";
+
+/* Libraries */
+import { UseFormRegister } from "react-hook-form";
+
+/* Application Modules */
+import { IProject, InputName } from "../../../../../schemas/projectSchema";
+
+/* Chakra UI */
 import {
   Input,
   InputProps,
@@ -8,13 +17,6 @@ import {
   FormLabel,
   Stack,
 } from "@chakra-ui/react";
-import { UseFormRegister } from "react-hook-form";
-import { IProject, InputName } from "../../../../../schemas/projectSchema";
-
-type SelectOptionType = {
-  label: string;
-  value: string;
-};
 
 interface ProjectInputProps {
   inputProps?: InputProps;
@@ -23,45 +25,48 @@ interface ProjectInputProps {
   register: UseFormRegister<IProject>;
 }
 
+interface SelectOptionType {
+  label: string;
+  value: string;
+};
+
 interface SelectInputProps extends ProjectInputProps {
   label: string;
   selectOptions: SelectOptionType[];
   selectProps?: SelectProps;
 }
 
-const ProjectInput = forwardRef(
-  (props: ProjectInputProps, ref: Ref<HTMLInputElement>) => {
-    const { name, inputProps, error, register } = props;
+const ProjectInput = forwardRef((props: ProjectInputProps, ref: Ref<HTMLInputElement>) => {
+  const { name, inputProps, error, register } = props;
 
-    return (
-      <Fragment>
-        <Input
-          _placeholder={{
-            opacity: "0.6",
-            color: "brand_blue.100",
-            fontSize: "15px",
-          }}
-          pl="35px"
-          width="100%"
-          height="45px"
-          border="1px solid white"
-          bg="brand_blue.300"
-          focusBorderColor="white"
-          borderRadius="20px"
-          id={name}
-          {...inputProps}
-          {...register(name)}
-        />
+  return (
+    <Fragment>
+      <Input
+        id={name}
+        pl="35px"
+        width="100%"
+        height="45px"
+        border="1px solid white"
+        bg="brand_blue.300"
+        focusBorderColor="white"
+        borderRadius="20px"
+        _placeholder={{
+          opacity: "0.6",
+          color: "brand_blue.100",
+          fontSize: "15px",
+        }}
+        {...inputProps}
+        {...register(name)}
+      />
 
-        {error && (
-          <FormErrorMessage pt={2} pl={2} color="red.500">
-            {error}
-          </FormErrorMessage>
-        )}
-      </Fragment>
-    );
-  }
-);
+      {error && (
+        <FormErrorMessage pt={2} pl={2} color="red.500">
+          {error}
+        </FormErrorMessage>
+      )}
+    </Fragment>
+  );
+});
 
 export const SelectInput = forwardRef(
   (props: SelectInputProps, ref: Ref<HTMLInputElement>) => {

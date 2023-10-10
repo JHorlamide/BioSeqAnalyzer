@@ -13,7 +13,7 @@ type ProjectType = "DNA" | "Protein";
 
 interface IProps {
   projectType: ProjectType;
-  refetch: () => void;
+  refetch?: () => void;
   createProjectAction: () => void;
 }
 

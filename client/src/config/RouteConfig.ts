@@ -2,17 +2,21 @@ import { AUTH_PREFIX_PATH, APP_PREFIX_PATH } from "./AppConfig";
 
 /* Public Components */
 import Website from "../views/website/Website";
-import Login from "../views/auth-views/login/Login";
-import Register from "../views/auth-views/register/Register";
-import ForgotPassword from "../views/auth-views/forgot-password/ForgotPassword";
+import Login from "../views/auth-views/Login/Login";
+import Register from "../views/auth-views/Register/Register";
+import ForgotPassword from "../views/auth-views/ForgotPassword/ForgotPassword";
 
-/* Protected Components */
-import Dashboard from "../views/app-views/protein-analyzer/Dashboard/Dashboard";
-import CreateProjectForm from "../views/app-views/protein-analyzer/CreateProject/CreateProjectForm";
-import UpdateProjectForm from "../views/app-views/protein-analyzer/CreateProject/UpdateProjectForm";
-import ProjectOverview from "../views/app-views/protein-analyzer/ProjectOverview/ProjectOverview";
-import ProjectMembers from "../views/app-views/protein-analyzer/ProjectMembers/ProjectMembers";
-import SequenceMap from "../views/app-views/protein-analyzer/ProjectOverview/components/SequenceMap/SequenceMap";
+/* Protected Components -> Protein Analyzer */
+import ProteinAnalyzerDashboard from "../views/app-views/ProteinAnalyzer/ProteinAnalyzerDashboard/ProteinAnalyzerDashboard";
+import CreateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProject/CreateProjectForm";
+import UpdateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProject/UpdateProjectForm";
+import ProjectOverview from "../views/app-views/ProteinAnalyzer/ProjectOverview/ProjectOverview";
+import ProjectMembers from "../views/app-views/ProteinAnalyzer/ProjectMembers/ProjectMembers";
+import SequenceMap from "../views/app-views/ProteinAnalyzer/ProjectOverview/components/SequenceMap/SequenceMap";
+
+
+/* Protected Components -> DNA Sequence */
+import DNASequenceDashboard from "../views/app-views/DNASequence/DNASeqDashboard/DNASequenceDashboard";
 
 interface IRoute {
   [x: string]: any;
@@ -48,10 +52,11 @@ export const publicRoute: IRoute[] = [
 ]
 
 export const protectedRoute: IRoute[] = [
+  /* Protein Analyzer */
   {
     key: "dashboard",
-    path: `${APP_PREFIX_PATH}/dashboard`,
-    component: Dashboard
+    path: `${APP_PREFIX_PATH}/protein-analyzer/dashboard`,
+    component: ProteinAnalyzerDashboard
   },
 
   {
@@ -67,12 +72,6 @@ export const protectedRoute: IRoute[] = [
   },
 
   {
-    key: "project-members",
-    path: `${APP_PREFIX_PATH}/project-members`,
-    component: ProjectMembers
-  },
-
-  {
     key: "project-overview",
     path: `${APP_PREFIX_PATH}/project-overview/:projectId`,
     component: ProjectOverview
@@ -82,5 +81,12 @@ export const protectedRoute: IRoute[] = [
     key: "sequence-map",
     path: `${APP_PREFIX_PATH}/project-overview/:projectId/sequence-map`,
     component: SequenceMap
+  },
+
+  /* DNA Sequence */
+  {
+    key: "project-members",
+    path: `${APP_PREFIX_PATH}/dna-sequence/dashboard`,
+    component: DNASequenceDashboard
   },
 ]

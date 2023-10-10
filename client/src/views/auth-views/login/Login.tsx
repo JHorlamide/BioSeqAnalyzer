@@ -22,8 +22,13 @@ import {
 import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
-import { LoginInput } from "./components/LoginInput";
 import { useLogin } from "../../../hooks/useAuth";
+import { FormInput } from "../../../components/FormInput/FormInput";
+
+type LoginFormFields = {
+  email: string;
+  password: string;
+}
 
 const Login = () => {
   const {
@@ -49,7 +54,7 @@ const Login = () => {
       </Stack>
 
       <form onSubmit={handleSubmit(onSubmit)}>
-        <VStack spacing={8}>
+        <VStack spacing={8} color="white">
           <FormControl>
             <FormLabel color="white">Email</FormLabel>
             <InputGroup>
@@ -59,13 +64,12 @@ const Login = () => {
                 children={<HiOutlineMail color="white" />}
               />
 
-              <LoginInput
-                pl="35px"
-                name="email"
+              <FormInput<LoginFormFields>
                 type="email"
-                placeholder="Email"
+                name="email"
                 register={register}
-                error={errors.email?.message}
+                errors={errors}
+                placeholder="Enter your email"
               />
             </InputGroup>
           </FormControl>
@@ -79,12 +83,12 @@ const Login = () => {
                 children={<RiLockPasswordLine color="white" />}
               />
 
-              <LoginInput
-                name="password"
-                placeholder="Password"
+              <FormInput<LoginFormFields>
                 type={show ? "text" : "password"}
+                name="password"
                 register={register}
-                error={errors.password?.message}
+                errors={errors}
+                placeholder="Enter your password"
               />
 
               <InputRightElement _hover={{ cursor: "pointer" }}>

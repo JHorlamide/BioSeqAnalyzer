@@ -1,3 +1,15 @@
+/* Libraries */
+import { GiMolecule, GiGooeyMolecule } from "react-icons/gi";
+import { SiMoleculer } from "react-icons/si";
+import { MdOutlineTitle } from "react-icons/md";
+
+/* Application Modules */
+import Button from "../../../../../components/CustomBtn/Button";
+import { IProject } from "../../../../../schemas/projectSchema";
+import { FormInput, SelectInput } from "../../../../../components/FormInput/FormInput"
+import { ProjectFormProps } from "./types";
+
+/* Chakra UI */
 import {
   Box,
   Text,
@@ -11,23 +23,6 @@ import {
   Center,
   HStack,
 } from "@chakra-ui/react";
-import { GiMolecule, GiGooeyMolecule } from "react-icons/gi";
-import { SiMoleculer } from "react-icons/si";
-import { MdOutlineTitle } from "react-icons/md";
-import ProjectInput, { SelectInput } from "./ProjectInput";
-import Button from "../../../../../components/CustomBtn/Button";
-import { ProjectFormProps } from "./types";
-
-const goalOptions = [
-  { label: "Maximize", value: "Maximize" },
-  { label: "Minimize", value: "Minimize" },
-];
-
-const measuredPropertyOption = [
-  { label: "Activity", value: "Activity" },
-  { label: "Solubility", value: "Solubility" },
-  { label: "Thermostability", value: "Thermostability" },
-];
 
 const ProjectForm = (props: ProjectFormProps) => {
   const {
@@ -37,12 +32,23 @@ const ProjectForm = (props: ProjectFormProps) => {
     projectId,
     projectData,
     showUniProtInput,
+    showRawSeqInput,
     register,
     handleSubmit,
     submitProject,
-    showRawSeqInput,
     toggleShowUniProtInput
   } = props;
+
+  const goalOptions = [
+    { label: "Maximize", value: "Maximize" },
+    { label: "Minimize", value: "Minimize" },
+  ];
+
+  const measuredPropertyOption = [
+    { label: "Activity", value: "Activity" },
+    { label: "Solubility", value: "Solubility" },
+    { label: "Thermostability", value: "Thermostability" },
+  ];
 
   return (
     <Center mt="-45px" justifyContent={{ base: "start", md: "center" }} color="white">
@@ -96,18 +102,15 @@ const ProjectForm = (props: ProjectFormProps) => {
                     <InputRightElement
                       pt="5px"
                       pointerEvents={"none"}
-                    // children={loading && <Spinner size="sm" />}
                     />
 
-                    <ProjectInput
-                      inputProps={{
-                        type: "string",
-                        name: "proteinAminoAcidSequence",
-                        defaultValue: projectData && projectData.proteinAminoAcidSequence,
-                      }}
+                    <FormInput<IProject>
                       name="proteinAminoAcidSequence"
+                      placeholder="Enter raw sequence"
+                      rules={{ required: "You must enter a name" }}
                       register={register}
-                      error={errors.proteinAminoAcidSequence?.message}
+                      errors={errors}
+                      defaultValue={projectData && projectData.proteinAminoAcidSequence}
                     />
                   </InputGroup>
                 </FormControl>
@@ -136,15 +139,13 @@ const ProjectForm = (props: ProjectFormProps) => {
                       children={<GiMolecule color="gray.3000" />}
                     />
 
-                    <ProjectInput
-                      inputProps={{
-                        type: "string",
-                        placeholder: "Enter UniProtId here...",
-                        defaultValue: projectData && projectData.uniprotId,
-                      }}
+                    <FormInput<IProject>
                       name="uniprotId"
+                      placeholder="Enter Uniprot ID"
+                      rules={{ required: "Uniprot ID is required" }}
                       register={register}
-                      error={errors.uniprotId?.message}
+                      errors={errors}
+                      defaultValue={projectData && projectData.uniprotId}
                     />
                   </InputGroup>
                 </FormControl>
@@ -159,15 +160,12 @@ const ProjectForm = (props: ProjectFormProps) => {
                     children={<SiMoleculer color="brand_blue.2000" />}
                   />
 
-                  <ProjectInput
-                    inputProps={{
-                      type: "string",
-                      placeholder: "Enter PDB ID here...",
-                      defaultValue: projectData && projectData.proteinPDBID
-                    }}
+                  <FormInput<IProject>
                     name="proteinPDBID"
+                    placeholder="Enter PDB ID here..."
                     register={register}
-                    error={errors.proteinPDBID?.message}
+                    errors={errors}
+                    defaultValue={projectData && projectData.proteinPDBID}
                   />
                 </InputGroup>
               </FormControl>
@@ -188,7 +186,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     name="projectGoal"
                     register={register}
                     selectOptions={goalOptions}
-                    error={errors.projectGoal?.message}
+                    errors={errors}
                     selectProps={{
                       value: projectData && projectData.projectGoal,
                     }}
@@ -199,7 +197,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                     name="measuredProperty"
                     register={register}
                     selectOptions={measuredPropertyOption}
-                    error={errors.measuredProperty?.message}
+                    errors={errors}
                     selectProps={{
                       value: projectData && projectData.measuredProperty,
                       defaultValue: projectData && projectData.measuredProperty,
@@ -226,15 +224,13 @@ const ProjectForm = (props: ProjectFormProps) => {
                     children={<MdOutlineTitle color="brand_blue.2000" />}
                   />
 
-                  <ProjectInput
-                    inputProps={{
-                      type: "string",
-                      placeholder: "Enter project title",
-                      defaultValue: projectData && projectData.projectTitle
-                    }}
+                  <FormInput<IProject>
                     name="projectTitle"
                     register={register}
-                    error={errors.projectTitle?.message}
+                    errors={errors}
+                    placeholder="Enter project title"
+                    rules={{ required: "Project title cannot be empty" }}
+                    defaultValue={projectData && projectData.projectTitle}
                   />
                 </InputGroup>
               </FormControl>

@@ -20,7 +20,6 @@ class DNASequence(models.Model):
 
     base = models.TextField()
     sequence = models.TextField()
-    schema = models.CharField(max_length=20)
     name = models.CharField(max_length=100)
     description = models.TextField(null=True, blank=True)
     date_of_submission = models.DateTimeField(auto_now_add=True)

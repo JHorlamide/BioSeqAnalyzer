@@ -1,4 +1,20 @@
+/* React */
 import { Fragment, useEffect, useState } from "react";
+
+/* Libraries */
+import { CiUser } from "react-icons/ci";
+
+/* Application Module */
+import SearchInput from "../SearchInput/SearchInput";
+import ProfileMenu from "./components/ProfileMenu";
+import MobileNav from "../MobileNav/MobileNav";
+import { CgMenuGridO } from "react-icons/cg";
+import { useLocation } from "react-router-dom";
+import { logoutUser } from "../../store/slices/authSlice";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { DNA_SEQ_ENTRY, AUTHENTICATED_ENTRY } from "../../config/AppConfig";
+
+/* Chakra UI */
 import {
   Flex,
   HStack,
@@ -6,15 +22,6 @@ import {
   Show,
   useDisclosure,
 } from "@chakra-ui/react";
-import SearchInput from "../SearchInput/SearchInput";
-import { CiUser } from "react-icons/ci";
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { logoutUser } from "../../store/slices/authSlice";
-import MobileNav from "../MobileNav/MobileNav";
-import { CgMenuGridO } from "react-icons/cg";
-import ProfileMenu from "./components/ProfileMenu";
-import { useLocation } from "react-router-dom";
-import { APP_PREFIX_PATH } from "../../config/AppConfig";
 
 interface MenuIconProps {
   onOpen: () => void;
@@ -41,7 +48,9 @@ const HeaderNav = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   useEffect(() => {
-    setIsDashboardPage(location.pathname === `${APP_PREFIX_PATH}/dashboard`);
+    const pathname = location.pathname;
+    const isRequiredPath = (pathname === AUTHENTICATED_ENTRY) || (pathname === DNA_SEQ_ENTRY);
+    setIsDashboardPage(isRequiredPath);
   }, [location.pathname]);
 
   const handleLogout = () => {

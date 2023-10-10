@@ -11,8 +11,8 @@ class DNASequenceSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DNASequence
-        fields = ["id", "name", "base", "sequence", "schema",
-                  "description", "date_of_submission", "nucleotide_type", "topology"]
+        fields = ["id", "name", "base", "sequence", "description",
+                  "date_of_submission", "nucleotide_type", "topology"]
 
 
 class AnalysesSerializer(serializers.ModelSerializer):

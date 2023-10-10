@@ -39,7 +39,7 @@ export const projectSchema = z.object({
 
 export type ProjectFormData = z.infer<typeof projectSchema>;
 
-export interface IProject {
+export type IProject = {
   projectTitle: string;
   measuredProperty: MeasuredProperty;
   projectGoal: ProjectGoal;

@@ -14,7 +14,7 @@ import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useAppSelector } from "../../../../store/store";
 import { useGetProjectsQuery } from "../../../../services/project/projectApi";
 
-const Dashboard = () => {
+const ProteinAnalyzerDashboard = () => {
   const searchTerm = useAppSelector((state) => state.search);
   const { handleNavigate } = useNavigation();
   const [currentPage, setCurrentPage] = useState(1);
@@ -63,4 +63,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default ProteinAnalyzerDashboard;

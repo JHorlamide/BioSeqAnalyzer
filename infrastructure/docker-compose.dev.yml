@@ -130,8 +130,8 @@ services:
     networks:
       - bioseq-networks
     volumes:
-      - ../client/public:/client/public:cached,ro
       - ../client/src:/client/src:cached,ro
+      - ../client/public:/client/public:cached,ro
     env_file: [ ../client/.env ]
     depends_on: [ "protein-analyzer", "dna-sequence", "user-service" ]
 
