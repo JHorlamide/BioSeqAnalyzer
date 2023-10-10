@@ -6,7 +6,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { BsArrowLeft } from "react-icons/bs";
 
 /* Application Modules */
-import { useGetProjectQuery } from '../../../../services/project/projectApi';
+import { useGetProjectQuery } from '../../../../services/proteinProject/proteinProjectAPI';
 import Button from '../../../../components/CustomBtn/Button';
 import Overview from "./components/Overview/Overview"
 import Rounds from './components/Rounds/Rounds';

@@ -22,16 +22,18 @@ import { seqViewReducer, seqViewSlice } from "./slices/seqViewSlice";
 import { RESET_STATE_ACTION_TYPE } from "./actions/resetStateAction";
 import { AUTH_TOKEN } from "../constants/AuthConstant";
 import { authApi, AUTH_API_REDUCER_KEY } from "../services/auth/authApi";
-import { registerApi, REGISTER_API_REDUCER_KEY } from "../services/auth/registerApi";
-import { projectApi, PROJECT_API_REDUCER_KEY } from "../services/project/projectApi";
+import { registerAPI, REGISTER_API_REDUCER_KEY } from "../services/auth/registerApi";
+import { ProteinProjectAPI, PROTEIN_PROJECT_API_REDUCER_KEY } from "../services/proteinProject/proteinProjectAPI";
+import { DNASeqProjectAPI, DNA_PROJECT_API_REDUCER_KEY } from "../services/DNASequence/DNASeqProjectAPI";
 
 const reducers = {
   [searchSlice.name]: searchReducer,
   [authSlice.name]: authReducer,
   [seqViewSlice.name]: seqViewReducer,
   [AUTH_API_REDUCER_KEY]: authApi.reducer,
-  [REGISTER_API_REDUCER_KEY]: registerApi.reducer,
-  [PROJECT_API_REDUCER_KEY]: projectApi.reducer
+  [REGISTER_API_REDUCER_KEY]: registerAPI.reducer,
+  [PROTEIN_PROJECT_API_REDUCER_KEY]: ProteinProjectAPI.reducer,
+  [DNA_PROJECT_API_REDUCER_KEY]: DNASeqProjectAPI.reducer,
 }
 
 const combinedReducer = combineReducers<typeof reducers>(reducers);
@@ -41,16 +43,18 @@ const persistConfig = {
   storage: storage
 };
 
-export const rootReducer: Reducer = persistReducer(persistConfig, (state: RootState, action: AnyAction) => {
-  if (action.type === RESET_STATE_ACTION_TYPE) {
-    localStorage.removeItem(AUTH_TOKEN);
-    state = {} as RootState;
-  }
+export const rootReducer: Reducer = persistReducer(
+  persistConfig,
+  (state: RootState, action: AnyAction) => {
+    if (action.type === RESET_STATE_ACTION_TYPE) {
+      localStorage.removeItem(AUTH_TOKEN);
+      state = {} as RootState;
+    }
 
-  return combinedReducer(state, action);
-});
+    return combinedReducer(state, action);
+  });
 
-// Store Configuration
+/* Store Configuration */
 export const store: Store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({
@@ -60,8 +64,9 @@ export const store: Store = configureStore({
   }).concat([
     unAuthenticatedMiddleware,
     authApi.middleware,
-    registerApi.middleware,
-    projectApi.middleware
+    registerAPI.middleware,
+    ProteinProjectAPI.middleware,
+    DNASeqProjectAPI.middleware
   ])
 });
 

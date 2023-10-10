@@ -5,16 +5,18 @@ import { Fragment } from "react";
 import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 
 /* Application Module */
-import { Projects } from "../../services/project/type";
+import { Projects } from "../../services/proteinProject/type";
 import ProjectCard from "./ProjectCard";
 import ProjectCardSkeleton from "./ProjectCardSkeleton";
+import { DNASeqProjects } from "../../services/DNASequence/types";
 
 interface Props {
-  projects: Projects[];
+  DNASeqProjects?: DNASeqProjects[];
+  proteinProjects?: Projects[];
   isLoading: boolean;
 }
 
-const ProjectsContainer = ({ projects, isLoading }: Props) => {
+const ProjectsContainer = ({ proteinProjects, DNASeqProjects, isLoading }: Props) => {
   const isLargeScreen = useMediaQuery("(min-width: 1440px)");
   const skeletons = Array(12).fill('skeleton');
 
@@ -42,13 +44,24 @@ const ProjectsContainer = ({ projects, isLoading }: Props) => {
           lg: isLargeScreen ? "repeat(4, 1fr)" : "repeat(2, 1fr)",
         }}
       >
-        {projects.map((project) => (
+        {proteinProjects && proteinProjects.map((project) => (
           <GridItem key={project._id}>
             <ProjectCard
               projectTitle={project.projectTitle}
               updatedAt={project.updatedAt}
               projectId={project._id}
-              projectName={project.projectTitle}
+              projectType="proteinProject"
+            />
+          </GridItem>
+        ))}
+
+        {DNASeqProjects && DNASeqProjects.map((project) => (
+          <GridItem key={project.id}>
+            <ProjectCard
+              projectTitle={project.name}
+              updatedAt={project.date_of_submission}
+              projectId={project.id}
+              projectType="DNASeqProject"
             />
           </GridItem>
         ))}

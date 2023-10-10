@@ -26,14 +26,14 @@ interface Props {
 
 const ProteinSequenceViewer = (props: Props) => {
   const { handleNavigate } = useNavigation()
-  const { handleOnError } = useErrorToast();
+  const { handleError } = useErrorToast();
   const { projectId } = useParams();
   const { proteinPDBID, containerStyle, pdbFileUrl } = props
   const sequenceData = useAppSelector((state) => state.seqView);
   const tabIndex = Number(localStorage.getItem("tabIndex"));
 
   if (!proteinPDBID) {
-    handleOnError("No Protein PDB ID Provided. To view protein structure please provide a PDB ID")
+    handleError("No Protein PDB ID Provided. To view protein structure please provide a PDB ID")
   }
 
   const containerRef = useRef<HTMLDivElement | any>(null);
@@ -80,7 +80,7 @@ const ProteinSequenceViewer = (props: Props) => {
         }
       });
     } catch (error: any) {
-      handleOnError("Unable to render protein molecule");
+      handleError("Unable to render protein molecule");
     }
   }
 

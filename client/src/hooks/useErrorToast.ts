@@ -4,7 +4,7 @@ import toast from 'react-hot-toast';
 const useErrorToast = () => {
   const [shownErrors, setShownErrors] = useState<string[]>([]);
 
-  const handleOnError = (error: Error | string) => {
+  const handleError = (error: Error | string) => {
     let errorMessage;
 
     if (error instanceof Error) {
@@ -21,7 +21,7 @@ const useErrorToast = () => {
     }
   };
 
-  return { handleOnError };
+  return { handleError };
 };
 
 export default useErrorToast;

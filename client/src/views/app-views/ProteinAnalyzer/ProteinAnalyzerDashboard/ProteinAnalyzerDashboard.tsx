@@ -12,7 +12,7 @@ import Pagination from "../../../../components/Pagination/Pagination";
 import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useAppSelector } from "../../../../store/store";
-import { useGetProjectsQuery } from "../../../../services/project/projectApi";
+import { useGetProjectsQuery } from "../../../../services/proteinProject/proteinProjectAPI";
 
 const ProteinAnalyzerDashboard = () => {
   const searchTerm = useAppSelector((state) => state.search);
@@ -49,7 +49,7 @@ const ProteinAnalyzerDashboard = () => {
 
       <Box marginTop={5} width="full" height="full">
         <ProjectsContainer
-          projects={projects.data.projects}
+          proteinProjects={projects.data.projects}
           isLoading={isLoading}
         />
 

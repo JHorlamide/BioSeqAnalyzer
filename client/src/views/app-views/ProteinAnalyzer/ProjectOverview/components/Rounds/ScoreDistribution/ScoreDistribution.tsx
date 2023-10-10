@@ -7,7 +7,7 @@ import { Box, Text } from "@chakra-ui/react";
 /* Application Modules */
 import Histogram from "./components/Histogram";
 import HistogramSkeleton from "./components/HistogramSkeleton";
-import { useGetScoreDistributionQuery } from "../../../../../../../services/project/projectApi";
+import { useGetScoreDistributionQuery } from "../../../../../../../services/proteinProject/proteinProjectAPI";
 
 const ScoreDistribution = ({ projectId }: { projectId: string }) => {
   const { data, isLoading, isError } = useGetScoreDistributionQuery({ projectId });

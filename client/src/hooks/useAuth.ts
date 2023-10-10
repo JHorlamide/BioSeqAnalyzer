@@ -10,7 +10,7 @@ import useNavigation from "./useNavigation";
 import utils from "../utils";
 import useErrorToast from "./useErrorToast";
 import Utils from "../utils";
-import { projectApi } from "../services/project/projectApi";
+import { ProteinProjectAPI } from "../services/proteinProject/proteinProjectAPI";
 import { useLoginUserMutation } from "../services/auth/authApi";
 import { useAppDispatch } from "../store/store";
 import { LoginFormData, loginSchema } from "../schemas/auth/loginSchema";
@@ -21,7 +21,7 @@ import { useRegisterUserMutation } from "../services/auth/registerApi";
 import { RegisterFormData, registrationSchema } from "../schemas/auth/registerSchema";
 
 export const useLogin = () => {
-  const { handleOnError } = useErrorToast();
+  const { handleError: handleError } = useErrorToast();
   const dispatch = useAppDispatch();
   const [show, setShow] = useState(false);
   const { handleNavigate } = useNavigation();
@@ -39,14 +39,14 @@ export const useLogin = () => {
       if (response.status === "Success") {
         const { accessToken, refreshToken, user } = response.data;
         handleAuthTokenDispatchAndStorage(user, accessToken, refreshToken);
-        dispatch(projectApi.util.invalidateTags(["GetAllProjects"]));
+        dispatch(ProteinProjectAPI.util.invalidateTags(["GetAllProjects"]));
 
         toast.success(response.message);
         handleNavigate(`${AUTHENTICATED_ENTRY}`);
       }
     } catch (error: any) {
       const errorMessage = utils.getErrorMessage(error);
-      handleOnError(errorMessage);
+      handleError(errorMessage);
     }
   };
 
@@ -79,7 +79,7 @@ export const useLogin = () => {
 }
 
 export const useRegister = () => {
-  const { handleOnError } = useErrorToast();
+  const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [show, setShow] = useState(false);
   const {
@@ -100,7 +100,7 @@ export const useRegister = () => {
       }
     } catch (error: any) {
       const errorMessage = Utils.getErrorMessage(error);
-      handleOnError(errorMessage);
+      handleError(errorMessage);
     }
   };
 

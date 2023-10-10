@@ -5,7 +5,7 @@ import { USER_API_BASE_URL } from "../../config/AppConfig";
 
 export const REGISTER_API_REDUCER_KEY = 'registerApi';
 
-export const registerApi = createApi({
+export const registerAPI = createApi({
   reducerPath: REGISTER_API_REDUCER_KEY,
   baseQuery: fetchBaseQuery({ baseUrl: `${USER_API_BASE_URL}` }),
   endpoints: (builder) => ({
@@ -19,4 +19,4 @@ export const registerApi = createApi({
   }),
 })
 
-export const { useRegisterUserMutation } = registerApi;
+export const { useRegisterUserMutation } = registerAPI;

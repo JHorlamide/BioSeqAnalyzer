@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 /* Libraries */
 import { useForm } from "react-hook-form";
-import { ProjectFormData, projectSchema } from "../../schemas/protineAnalyzer/protinProjectSchema";
+import { ProjectFormData, projectSchema } from "../../schemas/proteinAnalyzer/proteinProjectSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 /* Application Modules */
@@ -16,16 +16,10 @@ import {
   useCreateProjectMutation,
   useGetProjectQuery,
   useUpdateProjectMutation
-} from "../../services/project/projectApi";
-
-const getFilledForm = (projectField: ProjectFormData) => {
-  return Object.fromEntries(
-    Object.entries(projectField).filter(([_, value]) => value !== "")
-  ) as ProjectFormData;
-}
+} from "../../services/proteinProject/proteinProjectAPI";
 
 export const useCreateProteinProject = () => {
-  const { handleOnError } = useErrorToast();
+  const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [inputVisibility, setInputVisibility] = useState({
     showRawSeqInput: false,
@@ -48,17 +42,17 @@ export const useCreateProteinProject = () => {
 
   const submitProject = async (data: ProjectFormData) => {
     try {
-      const projectInputData = getFilledForm(data);
+      const projectInputData = utils.getFilledForm(data);
       const response = await createProject(projectInputData).unwrap();
       if (response.status === "Success") {
         toast.success(response.message);
         return handleNavigate(`${APP_PREFIX_PATH}/protein-analyzer/dashboard`);
       }
 
-      handleOnError(response.message);
+      handleError(response.message);
     } catch (error: any) {
       const errorMessage = utils.getErrorMessage(error);
-      handleOnError(errorMessage);
+      handleError(errorMessage);
     }
   };
 
@@ -76,7 +70,7 @@ export const useCreateProteinProject = () => {
 }
 
 export const useUpdateProject = (projectId: string) => {
-  const { handleOnError } = useErrorToast();
+  const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [projectData, setProjectData] = useState<ProjectFormData>();
   const [inputVisibility, setInputVisibility] = useState({
@@ -106,17 +100,17 @@ export const useUpdateProject = (projectId: string) => {
 
   const submitProject = async (data: ProjectFormData) => {
     try {
-      const projectInputData = getFilledForm(data);
+      const projectInputData = utils.getFilledForm(data);
       const response = await updateProject({ projectId, data: projectInputData }).unwrap();
       if (response.status === "Success") {
         toast.success(response.message);
         return handleNavigate(`${APP_PREFIX_PATH}/protein-analyzer/dashboard`);
       }
 
-      handleOnError(response.message);
+      handleError(response.message);
     } catch (error: any) {
       const errorMessage = utils.getErrorMessage(error);
-      handleOnError(errorMessage);
+      handleError(errorMessage);
     }
   }
 

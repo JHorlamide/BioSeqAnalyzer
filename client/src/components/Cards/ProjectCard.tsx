@@ -19,35 +19,40 @@ import utils from "../../utils";
 import CardMenu from "./CardMenu";
 import useErrorToast from "../../hooks/useErrorToast";
 import ConfirmationModal from "../Modals/ConfirmationModal";
-import { useDeleteProjectMutation } from "../../services/project/projectApi";
+import { useDeleteProjectMutation } from "../../services/proteinProject/proteinProjectAPI";
 import useNavigation from "../../hooks/useNavigation";
 import { APP_PREFIX_PATH } from "../../config/AppConfig";
+import { string } from "zod";
 
 interface ProjectCardProps {
   projectTitle: string;
   updatedAt: string;
-  projectId: string;
-  projectName: string;
+  projectId: string | number;
+  projectType: "proteinProject" | "DNASeqProject";
 }
 
 const ProjectCard = (props: ProjectCardProps) => {
   const { handleNavigate } = useNavigation();
-  const { handleOnError } = useErrorToast();
+  const { handleError } = useErrorToast();
   const [deleteProject] = useDeleteProjectMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { projectTitle, projectId, projectName, updatedAt } = props;
+  const { projectTitle, projectId, projectType, updatedAt } = props;
 
   const navigate = () => {
-    handleNavigate(`${APP_PREFIX_PATH}/project-overview/${projectId}`)
+    if (projectType === "proteinProject") {
+      handleNavigate(`${APP_PREFIX_PATH}/project-overview/${projectId}`)
+    } else {
+      handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/${projectId}`);
+    }
   }
 
   async function handleDelete() {
     try {
-      const response = await deleteProject({ projectId }).unwrap();
-      handleOnError(response.message);
+      const response = await deleteProject({ projectId: String(projectId) }).unwrap();
+      handleError(response.message);
     } catch (error) {
       const errorMessage = utils.getErrorMessage(error);
-      handleOnError(errorMessage);
+      handleError(errorMessage);
     }
   }
 
@@ -66,7 +71,7 @@ const ProjectCard = (props: ProjectCardProps) => {
   return (
     <Fragment>
       <ConfirmationModal
-        projectName={projectName}
+        projectName={projectTitle}
         isOpen={isOpen}
         onClose={onClose}
         handleConfirm={handleConfirm}
@@ -91,7 +96,7 @@ const ProjectCard = (props: ProjectCardProps) => {
             <BsFolderFill size={20} />
           </Box>
 
-          <CardMenu projectId={projectId} onOpen={onOpen} />
+          <CardMenu projectId={String(projectId)} onOpen={onOpen} />
         </CardHeader>
 
         <CardBody marginTop={-6}>

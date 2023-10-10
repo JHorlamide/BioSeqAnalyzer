@@ -30,7 +30,7 @@ export interface OverviewProps {
 
 const ProteinViewer = (props: OverviewProps) => {
   const dispatch = useAppDispatch();
-  const { handleOnError } = useErrorToast();
+  const { handleError } = useErrorToast();
   const {
     proteinPDBID,
     pdbFileUrl,
@@ -67,7 +67,7 @@ const ProteinViewer = (props: OverviewProps) => {
         dispatch(setViewStyle(seqViewStyle));
       }
     } catch (error: any) {
-      handleOnError(error.message.split("url=")[0])
+      handleError(error.message.split("url=")[0])
     }
   }
 

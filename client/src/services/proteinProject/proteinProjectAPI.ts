@@ -1,6 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+/* Libraries */
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+
+/* Application Modules */ 
+import { RootState } from "../../store/store";
 import { PROTEIN_API_BASE_URL } from "../../config/AppConfig";
-import { ProjectFormData } from "../../schemas/protineAnalyzer/protinProjectSchema";
+import { AUTH_TOKEN } from "../../constants/AuthConstant";
+import { ProjectFormData } from "../../schemas/proteinAnalyzer/proteinProjectSchema";
 import {
   ICreateProjectRes,
   IGetProteinSequenceRes,
@@ -22,16 +27,14 @@ import {
   IGetScoreDistributionRes,
   IGetScoreDistributionReq
 } from "./type";
-import { RootState } from "../../store/store";
-import { AUTH_TOKEN } from "../../constants/AuthConstant";
 
-export const PROJECT_API_REDUCER_KEY = "projectsApi";
+export const PROTEIN_PROJECT_API_REDUCER_KEY = "proteinProjectsAPI";
 
-export const projectApi = createApi({
-  reducerPath: PROJECT_API_REDUCER_KEY,
+export const ProteinProjectAPI = createApi({
+  reducerPath: PROTEIN_PROJECT_API_REDUCER_KEY,
   tagTypes: ["GetAllProjects", "GetProjectDetails", "CreateProject", "ProteinSequence"],
   baseQuery: fetchBaseQuery({
-    baseUrl: `${PROTEIN_API_BASE_URL}`,
+    baseUrl: PROTEIN_API_BASE_URL,
     prepareHeaders: async (headers, { getState }) => {
       const isBrowser = typeof window !== undefined;
       const token = (getState() as RootState).auth.token ||
@@ -141,4 +144,4 @@ export const {
   useGetTopVariantsQuery,
   useGetScoreDistributionQuery
   // useGetProteinSequenceQuery,
-} = projectApi;
+} = ProteinProjectAPI;

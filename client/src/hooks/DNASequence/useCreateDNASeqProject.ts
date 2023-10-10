@@ -9,9 +9,10 @@ import { APP_PREFIX_PATH } from "../../config/AppConfig";
 import useNavigation from "../useNavigation";
 import utils from "../../utils";
 import useErrorToast from "../useErrorToast";
+import { useCreateProjectMutation } from "../../services/DNASequence/DNASeqProjectAPI";
 
 export const useCreateDNASeqProject = () => {
-  const { handleOnError } = useErrorToast();
+  const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
 
   const {
@@ -19,15 +20,20 @@ export const useCreateDNASeqProject = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
-  const isLoading = false;
-  // const [createProject, { isLoading }] = useCreateProjectMutation();
+  const [createProject, { isLoading }] = useCreateProjectMutation();
 
   const submitProject = async (data: ProjectFormData) => {
     try {
-      console.log({ data });
+      const projectFormData = utils.getFilledForm(data);
+      const response = await createProject(projectFormData).unwrap();
+      if (response.status === 201) {
+        toast.success("Project created successfully");
+        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
+      }
     } catch (error: any) {
+      console.log({ error })
       const errorMessage = utils.getErrorMessage(error);
-      handleOnError(errorMessage);
+      handleError(errorMessage);
     }
   };
 

@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Text, Stack, StackDivider, Skeleton } from '@chakra-ui/react'
 import { Column } from "react-table";
-import { useGetTopVariantsQuery } from "../../../../../../../services/project/projectApi";
+import { useGetTopVariantsQuery } from "../../../../../../../services/proteinProject/proteinProjectAPI";
 import { MutationRange } from "./sharedTypes"
 import CustomTable from "./Components/CustomTable/CustomTable";
 

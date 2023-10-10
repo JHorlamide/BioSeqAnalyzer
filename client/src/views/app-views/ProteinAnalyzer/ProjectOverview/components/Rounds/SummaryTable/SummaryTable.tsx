@@ -1,8 +1,8 @@
 import React from "react";
 import { Box, Text, Stack, StackDivider, Flex, HStack, Skeleton } from '@chakra-ui/react'
 import { HiStar } from 'react-icons/hi'
-import { useGetSummaryMainMatricesQuery } from '../../../../../../../services/project/projectApi'
-import { Sequence } from '../../../../../../../services/project/type';
+import { useGetSummaryMainMatricesQuery } from '../../../../../../../services/proteinProject/proteinProjectAPI'
+import { Sequence } from '../../../../../../../services/proteinProject/type';
 
 interface SummaryTableProps {
   totalSequence: number;

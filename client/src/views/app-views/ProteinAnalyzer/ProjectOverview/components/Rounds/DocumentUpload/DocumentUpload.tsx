@@ -24,14 +24,14 @@ import Button from "../../../../../../../components/CustomBtn/Button";
 import Utils from "../../../../../../../utils";
 import useErrorToast from "../../../../../../../hooks/useErrorToast";
 import { SAMPLE_CSV_LINK } from "../../../../../../../config/AppConfig";
-import { useUploadProjectFileMutation } from "../../../../../../../services/project/projectApi";
+import { useUploadProjectFileMutation } from "../../../../../../../services/proteinProject/proteinProjectAPI";
 
 interface Props {
   projectId: string;
 }
 
 const DocumentUpload = ({ projectId }: Props) => {
-  const { handleOnError } = useErrorToast();
+  const { handleError } = useErrorToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDragOver, setIsDragOver] = useState(false);
   const [projectFile, setProjectFile] = useState<File | null>();
@@ -51,7 +51,7 @@ const DocumentUpload = ({ projectId }: Props) => {
       }
     } catch (error: any) {
       const errorMessage = Utils.getErrorMessage(error);
-      handleOnError(errorMessage);
+      handleError(errorMessage);
       setProjectFile(null);
     }
   };

@@ -1,6 +1,5 @@
 import { IBaseResponse } from "../../schemas";
-import { IProject, ProjectFormData } from "../../schemas/protineAnalyzer/protinProjectSchema";
-
+import { IProject, ProjectFormData } from "../../schemas/proteinAnalyzer/proteinProjectSchema";
 
 export interface Projects extends IProject {
   _id: string;
@@ -21,13 +20,10 @@ export interface IGetProteinSequenceRes extends IBaseResponse {
 
 export interface IGetProteinSequenceReq {
   uniprotId: string;
-  // uniprotId: string | undefined;
 }
 
 export interface IGetProjectsRes extends IBaseResponse {
-  data: {
-    projects: Projects[]
-  };
+  data: { projects: Projects[] };
   totalPages: number;
   totalCount: number;
 }

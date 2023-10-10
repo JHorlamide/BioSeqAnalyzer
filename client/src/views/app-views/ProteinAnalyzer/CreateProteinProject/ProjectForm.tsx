@@ -3,13 +3,14 @@ import { GiMolecule, GiGooeyMolecule } from "react-icons/gi";
 import { SiMoleculer } from "react-icons/si";
 import { MdOutlineTitle } from "react-icons/md";
 import { FieldErrors, UseFormReturn } from "react-hook-form";
-import { ProjectFormData } from "../../../../schemas/protineAnalyzer/protinProjectSchema";
+import { ProjectFormData } from "../../../../schemas/proteinAnalyzer/proteinProjectSchema";
 
 /* Application Modules */
 import Button from "../../../../components/CustomBtn/Button";
-import { IProject } from "../../../../schemas/protineAnalyzer/protinProjectSchema";
+import { IProject } from "../../../../schemas/proteinAnalyzer/proteinProjectSchema";
 import { FormInput } from "../../../../components/CustomInput/FormInput/FormInput"
 import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
+
 
 /* Chakra UI */
 import {
@@ -195,7 +196,7 @@ const ProjectForm = (props: ProjectFormProps) => {
               paddingX={3}
               width="full"
             >
-              <FormControl>
+              <FormControl isRequired>
                 <HStack spacing={2}>
                   <SelectInput
                     label="Project Goal"
@@ -231,7 +232,7 @@ const ProjectForm = (props: ProjectFormProps) => {
               paddingX={3}
               width="full"
             >
-              <FormControl>
+              <FormControl isRequired>
                 <FormLabel>Project title</FormLabel>
                 <InputGroup>
                   <InputLeftElement
