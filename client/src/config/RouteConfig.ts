@@ -11,7 +11,6 @@ import ProteinAnalyzerDashboard from "../views/app-views/ProteinAnalyzer/Protein
 import CreateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinProject/CreateProjectForm";
 import UpdateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinProject/UpdateProjectForm";
 import ProjectOverview from "../views/app-views/ProteinAnalyzer/ProjectOverview/ProjectOverview";
-import ProjectMembers from "../views/app-views/ProteinAnalyzer/ProjectMembers/ProjectMembers";
 import SequenceMap from "../views/app-views/ProteinAnalyzer/ProjectOverview/components/SequenceMap/SequenceMap";
 
 
