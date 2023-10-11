@@ -11,7 +11,6 @@ import { IProject } from "../../../../schemas/proteinAnalyzer/proteinProjectSche
 import { FormInput } from "../../../../components/CustomInput/FormInput/FormInput"
 import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
 
-
 /* Chakra UI */
 import {
   Box,

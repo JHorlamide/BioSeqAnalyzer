@@ -63,16 +63,15 @@ export const useLogin = () => {
   const handleShowPassword = () => setShow(!show);
 
   return {
-    onSubmit,
-    handleShowPassword,
-    isLoading,
+    show,
     errors,
     isValid,
+    isLoading,
+    onSubmit,
     register,
     handleSubmit,
-    show,
+    handleShowPassword,
   }
-
 }
 
 export const useRegister = () => {
@@ -89,8 +88,10 @@ export const useRegister = () => {
   const onSubmit = async (data: RegisterFormData) => {
     try {
       const response = await registerUser(data).unwrap();
+
       if (response.status === "Success") {
         toast.success(response.message);
+        
         setTimeout(() => {
           handleNavigate(`${AUTH_PREFIX_PATH}/login`);
         }, 2000);

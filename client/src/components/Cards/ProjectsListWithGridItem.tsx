@@ -5,9 +5,9 @@ import { Fragment } from "react";
 import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 
 /* Application Module */
-import { ProteinProjects } from "../../services/proteinProject/type";
 import ProjectCard from "./ProjectCard";
 import ProjectCardSkeleton from "./ProjectCardSkeleton";
+import { ProteinProjects } from "../../services/proteinProject/type";
 import { DNASeqProjects } from "../../services/DNASequence/types";
 
 interface Props {
