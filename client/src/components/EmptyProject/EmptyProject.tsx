@@ -9,8 +9,12 @@ import Button from "../CustomBtn/Button";
 import useNavigation from "../../hooks/useNavigation";
 import { APP_PREFIX_PATH } from "../../config/AppConfig";
 
-const EmptyProject = () => {
-  const { handleNavigate } = useNavigation();
+interface EmptyProjectProps {
+  goToCreateProject: () => void;
+}
+
+const EmptyProject = (props: EmptyProjectProps) => {
+  const { goToCreateProject } = props
 
   return (
     <Center>
@@ -38,7 +42,7 @@ const EmptyProject = () => {
           bg="brand_blue.300"
           _hover={{ bg: "brand_blue.200" }}
           leftIcon={<GiMolecule size={20} />}
-          onClick={() => handleNavigate(`${APP_PREFIX_PATH}/create-protein-project`)}
+          onClick={goToCreateProject}
         >
           Create new project
         </Button>

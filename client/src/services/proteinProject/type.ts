@@ -1,7 +1,7 @@
 import { IBaseResponse } from "../../schemas";
 import { IProject, ProjectFormData } from "../../schemas/proteinAnalyzer/proteinProjectSchema";
 
-export interface Projects extends IProject {
+export interface ProteinProjects extends IProject {
   _id: string;
   user: string;
   projectFileName: string;
@@ -23,7 +23,7 @@ export interface IGetProteinSequenceReq {
 }
 
 export interface IGetProjectsRes extends IBaseResponse {
-  data: { projects: Projects[] };
+  data: { projects: ProteinProjects[] };
   totalPages: number;
   totalCount: number;
 }
@@ -39,7 +39,7 @@ export interface IGetProjectReq {
 }
 
 export interface IGetProjectRes extends IBaseResponse {
-  data: Projects;
+  data: ProteinProjects;
 }
 
 export interface IUpdateProjectReq {
@@ -57,7 +57,7 @@ export interface IUploadProjectFileReq {
 }
 
 export interface IUploadProjectRes extends IBaseResponse {
-  data: Projects
+  data: ProteinProjects
 }
 
 export interface IGetSummaryReq {

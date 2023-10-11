@@ -14,10 +14,10 @@ type ProjectType = "DNA" | "Protein";
 interface IProps {
   projectType: ProjectType;
   refetch?: () => void;
-  createProjectAction: () => void;
+  goToCreateProject: () => void;
 }
 
-const DashboardHeader = ({ projectType, refetch, createProjectAction }: IProps) => {
+const DashboardHeader = ({ projectType, refetch, goToCreateProject }: IProps) => {
   const buttonIcon = {
     "DNA": <TbDna2 size={20} />,
     "Protein": <GiMolecule size={20} />,
@@ -50,7 +50,7 @@ const DashboardHeader = ({ projectType, refetch, createProjectAction }: IProps) 
         color="white"
         bg="brand_blue.300"
         leftIcon={buttonIcon[projectType]}
-        onClick={createProjectAction}
+        onClick={goToCreateProject}
         _hover={{ bg: "brand_blue.200" }}
       >
         Create new project

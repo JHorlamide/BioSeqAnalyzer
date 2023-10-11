@@ -23,6 +23,7 @@ class DNASequence(models.Model):
         (BOTH_FLIP_TOPOLOGY, "Both Flip"),
     ]
 
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4,)
     bases = models.TextField()
     sequence = models.TextField()
     name = models.CharField(max_length=100)

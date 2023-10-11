@@ -7,19 +7,23 @@ import { Box } from "@chakra-ui/react";
 /* Application Modules */
 import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
 import useNavigation from "../../../../hooks/useNavigation";
-import ProjectsContainer from "../../../../components/Cards/ProjectsContainer";
+import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListWithGridItem";
 import Pagination from "../../../../components/Pagination/Pagination";
 import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useAppSelector } from "../../../../store/store";
-import { useGetProjectsQuery } from "../../../../services/proteinProject/proteinProjectAPI";
+import { useGetProjectsQuery, useDeleteProjectMutation } from "../../../../services/proteinProject/proteinProjectAPI";
+import useErrorToast from "../../../../hooks/useErrorToast";
+import Utils from "../../../../utils";
 
 const ProteinAnalyzerDashboard = () => {
   const searchTerm = useAppSelector((state) => state.search);
+  const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = 9;
 
+  const [deleteProject] = useDeleteProjectMutation();
   const { data: projects, isLoading, refetch } = useGetProjectsQuery({
     page: currentPage,
     limit: totalPages,
@@ -31,12 +35,26 @@ const ProteinAnalyzerDashboard = () => {
     refetch();
   };
 
-  const createProjectPage = () => {
+  const goToCreateProject = () => {
     handleNavigate(`${APP_PREFIX_PATH}/create-protein-project`);
   }
 
+  const goToProjectDetailsPage = (projectId: string) => {
+    handleNavigate(`${APP_PREFIX_PATH}/project-overview/${projectId}`)
+  }
+
+  async function handleDeleteProject(projectId: string) {
+    try {
+      const response = await deleteProject({ projectId }).unwrap();
+      handleError(response.message);
+    } catch (error) {
+      const errorMessage = Utils.getErrorMessage(error);
+      handleError(errorMessage);
+    }
+  }
+
   if (!projects?.data.projects || projects?.data.projects.length === 0) {
-    return <EmptyProject />
+    return <EmptyProject goToCreateProject={goToCreateProject}/>
   }
 
   return (
@@ -44,13 +62,15 @@ const ProteinAnalyzerDashboard = () => {
       <DashboardHeader
         projectType="Protein"
         refetch={refetch}
-        createProjectAction={createProjectPage}
+        goToCreateProject={goToCreateProject}
       />
 
       <Box marginTop={5} width="full" height="full">
-        <ProjectsContainer
-          proteinProjects={projects.data.projects}
+        <ProjectsListWithGridItem
           isLoading={isLoading}
+          proteinProjects={projects.data.projects}
+          handleDeleteProject={handleDeleteProject}
+          goToProjectDetailsPage={goToProjectDetailsPage}
         />
 
         <Pagination

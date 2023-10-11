@@ -1,7 +1,7 @@
 import { CreateProjectFormField } from "../../schemas/DNASequence/DNASequenceProjectSchema";
 
 export interface DNASeqProjects extends CreateProjectFormField {
-  id: number;
+  id: string;
   date_of_submission: string;
 }
 

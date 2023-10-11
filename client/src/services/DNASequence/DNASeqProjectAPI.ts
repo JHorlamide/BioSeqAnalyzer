@@ -50,6 +50,15 @@ export const DNASeqProjectAPI = createApi({
       }),
 
       providesTags: ["GetAllDNAProjects"]
+    }),
+
+    deleteProject: builder.mutation<void, { projectId: string }>({
+      query: ({ projectId }) => ({
+        url: `/${projectId}`,
+        method: "DELETE"
+      }),
+
+      invalidatesTags: ["GetAllDNAProjects"]
     })
   }),
 
@@ -59,5 +68,6 @@ export const DNASeqProjectAPI = createApi({
 
 export const {
   useCreateProjectMutation,
-  useGetAllProjectsQuery
+  useGetAllProjectsQuery,
+  useDeleteProjectMutation,
 } = DNASeqProjectAPI;

@@ -1,6 +1,15 @@
 /* React */
 import { Fragment } from "react";
 
+import moment from "moment";
+import { BsFolderFill } from "react-icons/bs";
+
+/* Application Modules / Components */
+import CardMenu from "./CardMenu";
+import useErrorToast from "../../hooks/useErrorToast";
+import ConfirmationModal from "../Modals/ConfirmationModal";
+import useNavigation from "../../hooks/useNavigation";
+
 /* Libraries / Packages */
 import {
   Box,
@@ -11,53 +20,45 @@ import {
   Text,
   useDisclosure
 } from "@chakra-ui/react";
-import moment from 'moment';
-import { BsFolderFill } from "react-icons/bs";
-
-/* Application Modules / Components */
-import utils from "../../utils";
-import CardMenu from "./CardMenu";
-import useErrorToast from "../../hooks/useErrorToast";
-import ConfirmationModal from "../Modals/ConfirmationModal";
-import { useDeleteProjectMutation } from "../../services/proteinProject/proteinProjectAPI";
-import useNavigation from "../../hooks/useNavigation";
-import { APP_PREFIX_PATH } from "../../config/AppConfig";
-import { string } from "zod";
 
 interface ProjectCardProps {
   projectTitle: string;
   updatedAt: string;
-  projectId: string | number;
-  projectType: "proteinProject" | "DNASeqProject";
+  projectId: string;
+  goToProjectDetailsPage: (projectId: string) => void;
+  handleDeleteProject: (project: string) => void;
 }
 
 const ProjectCard = (props: ProjectCardProps) => {
-  const { handleNavigate } = useNavigation();
-  const { handleError } = useErrorToast();
-  const [deleteProject] = useDeleteProjectMutation();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { projectTitle, projectId, projectType, updatedAt } = props;
+  const {
+    updatedAt,
+    projectTitle,
+    projectId,
+    handleDeleteProject,
+    goToProjectDetailsPage
+  } = props;
 
-  const navigate = () => {
-    if (projectType === "proteinProject") {
-      handleNavigate(`${APP_PREFIX_PATH}/project-overview/${projectId}`)
-    } else {
-      handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/${projectId}`);
-    }
-  }
+  // const navigate = () => {
+  //   if (projectType === "proteinProject") {
+  //     handleNavigate(`${APP_PREFIX_PATH}/project-overview/${projectId}`)
+  //   } else {
+  //     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/${projectId}`);
+  //   }
+  // }
 
-  async function handleDelete() {
-    try {
-      const response = await deleteProject({ projectId: String(projectId) }).unwrap();
-      handleError(response.message);
-    } catch (error) {
-      const errorMessage = utils.getErrorMessage(error);
-      handleError(errorMessage);
-    }
-  }
+  // async function handleDelete() {
+  //   try {
+  //     const response = await deleteProject({ projectId: String(projectId) }).unwrap();
+  //     handleError(response.message);
+  //   } catch (error) {
+  //     const errorMessage = utils.getErrorMessage(error);
+  //     handleError(errorMessage);
+  //   }
+  // }
 
   const handleConfirm = () => {
-    handleDelete();
+    handleDeleteProject(projectId);
     onClose();
   };
 
@@ -84,7 +85,7 @@ const ProjectCard = (props: ProjectCardProps) => {
         bg="brand_blue.300"
         borderRadius={10}
         paddingTop={-3}
-        onClick={navigate}
+        onClick={() => goToProjectDetailsPage(projectId)}
         _hover={{ cursor: "pointer" }}
       >
         <CardHeader
