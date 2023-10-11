@@ -6,9 +6,7 @@ import { BsFolderFill } from "react-icons/bs";
 
 /* Application Modules / Components */
 import CardMenu from "./CardMenu";
-import useErrorToast from "../../hooks/useErrorToast";
 import ConfirmationModal from "../Modals/ConfirmationModal";
-import useNavigation from "../../hooks/useNavigation";
 
 /* Libraries / Packages */
 import {
@@ -31,6 +29,7 @@ interface ProjectCardProps {
 
 const ProjectCard = (props: ProjectCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const {
     updatedAt,
     projectTitle,
@@ -38,24 +37,6 @@ const ProjectCard = (props: ProjectCardProps) => {
     handleDeleteProject,
     goToProjectDetailsPage
   } = props;
-
-  // const navigate = () => {
-  //   if (projectType === "proteinProject") {
-  //     handleNavigate(`${APP_PREFIX_PATH}/project-overview/${projectId}`)
-  //   } else {
-  //     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/${projectId}`);
-  //   }
-  // }
-
-  // async function handleDelete() {
-  //   try {
-  //     const response = await deleteProject({ projectId: String(projectId) }).unwrap();
-  //     handleError(response.message);
-  //   } catch (error) {
-  //     const errorMessage = utils.getErrorMessage(error);
-  //     handleError(errorMessage);
-  //   }
-  // }
 
   const handleConfirm = () => {
     handleDeleteProject(projectId);

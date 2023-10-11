@@ -5,10 +5,6 @@ export interface DNASeqProjects extends CreateProjectFormField {
   date_of_submission: string;
 }
 
-export interface CreateDNAProjectRes extends Response {
-  data: CreateProjectFormField;
-}
-
 export interface IGetProjectsRes extends Response {
   count: number,
   next: string,

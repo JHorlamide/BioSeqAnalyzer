@@ -51,8 +51,7 @@ export const useCreateProteinProject = () => {
 
       handleError(response.message);
     } catch (error: any) {
-      const errorMessage = utils.getErrorMessage(error);
-      handleError(errorMessage);
+      handleError(error);
     }
   };
 
@@ -109,8 +108,7 @@ export const useUpdateProject = (projectId: string) => {
 
       handleError(response.message);
     } catch (error: any) {
-      const errorMessage = utils.getErrorMessage(error);
-      handleError(errorMessage);
+      handleError(error);
     }
   }
 

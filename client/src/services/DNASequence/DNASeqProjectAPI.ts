@@ -7,7 +7,7 @@ import { AUTH_TOKEN } from "../../constants/AuthConstant";
 import { DNA_SEQUENCE_API_BASE_URL } from "../../config/AppConfig";
 import { ProjectFormData } from "../../schemas/DNASequence/DNASequenceProjectSchema";
 import {
-  CreateDNAProjectRes,
+  DNASeqProjects,
   IGetProjectsRes,
   ReqQueryParam
 } from "./types"
@@ -33,7 +33,7 @@ export const DNASeqProjectAPI = createApi({
   }),
 
   endpoints: (builder) => ({
-    createProject: builder.mutation<CreateDNAProjectRes, ProjectFormData>({
+    createProject: builder.mutation<DNASeqProjects, ProjectFormData>({
       query: (data) => ({
         url: "/",
         method: "POST",
@@ -52,7 +52,7 @@ export const DNASeqProjectAPI = createApi({
       providesTags: ["GetAllDNAProjects"]
     }),
 
-    deleteProject: builder.mutation<void, { projectId: string }>({
+    deleteProject: builder.mutation<Response, { projectId: string }>({
       query: ({ projectId }) => ({
         url: `/${projectId}`,
         method: "DELETE"

@@ -7,9 +7,7 @@ import { toast } from "react-hot-toast";
 
 /* Application Modules */
 import useNavigation from "./useNavigation";
-import utils from "../utils";
 import useErrorToast from "./useErrorToast";
-import Utils from "../utils";
 import { ProteinProjectAPI } from "../services/proteinProject/proteinProjectAPI";
 import { useLoginUserMutation } from "../services/auth/authApi";
 import { useAppDispatch } from "../store/store";
@@ -45,8 +43,7 @@ export const useLogin = () => {
         handleNavigate(`${AUTHENTICATED_ENTRY}`);
       }
     } catch (error: any) {
-      const errorMessage = utils.getErrorMessage(error);
-      handleError(errorMessage);
+      handleError(error);
     }
   };
 
@@ -99,8 +96,7 @@ export const useRegister = () => {
         }, 2000);
       }
     } catch (error: any) {
-      const errorMessage = Utils.getErrorMessage(error);
-      handleError(errorMessage);
+      handleError(error);
     }
   };
 

@@ -14,7 +14,6 @@ import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useAppSelector } from "../../../../store/store";
 import { useGetProjectsQuery, useDeleteProjectMutation } from "../../../../services/proteinProject/proteinProjectAPI";
 import useErrorToast from "../../../../hooks/useErrorToast";
-import Utils from "../../../../utils";
 
 const ProteinAnalyzerDashboard = () => {
   const searchTerm = useAppSelector((state) => state.search);
@@ -47,9 +46,8 @@ const ProteinAnalyzerDashboard = () => {
     try {
       const response = await deleteProject({ projectId }).unwrap();
       handleError(response.message);
-    } catch (error) {
-      const errorMessage = Utils.getErrorMessage(error);
-      handleError(errorMessage);
+    } catch (error: any) {
+      handleError(error);
     }
   }
 

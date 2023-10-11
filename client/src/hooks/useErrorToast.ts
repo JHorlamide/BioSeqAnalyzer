@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
+import Utils from '../utils';
 
 const useErrorToast = () => {
   const [shownErrors, setShownErrors] = useState<string[]>([]);
 
   const handleError = (error: Error | string) => {
-    let errorMessage;
+    let errorMessage = Utils.getErrorMessage(error);
 
     if (error instanceof Error) {
       errorMessage = error.message;

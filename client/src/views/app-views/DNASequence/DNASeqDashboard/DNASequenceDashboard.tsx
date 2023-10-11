@@ -1,16 +1,15 @@
 /* Application Modules */
+import useErrorToast from "../../../../hooks/useErrorToast";
+import useNavigation from "../../../../hooks/useNavigation";
+import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
+import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListWithGridItem";
 import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
-import { useGetAllProjectsQuery, useDeleteProjectMutation } from "../../../../services/DNASequence/DNASeqProjectAPI";
 import { useAppSelector } from "../../../../store/store";
-import useNavigation from "../../../../hooks/useNavigation";
-import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListWithGridItem";
-import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
-import useErrorToast from "../../../../hooks/useErrorToast";
+import { useGetAllProjectsQuery, useDeleteProjectMutation } from "../../../../services/DNASequence/DNASeqProjectAPI";
 
 /* Chakra UI */
 import { Box } from '@chakra-ui/react';
-import Utils from "../../../../utils";
 
 const DNASequenceDashboard = () => {
   const searchQuery = useAppSelector((state) => state.search)
@@ -29,15 +28,13 @@ const DNASequenceDashboard = () => {
 
   const goToProjectDetailsPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/${projectId}`)
-  }
+  };
 
   async function handleDeleteProject(projectId: string) {
     try {
-      const response = await deleteProject({ projectId }).unwrap();
-      console.log({ response })
-    } catch (error) {
-      const errorMessage = Utils.getErrorMessage(error);
-      handleError(errorMessage);
+      await deleteProject({ projectId }).unwrap();
+    } catch (error: any) {
+      handleError(error);
     }
   }
 

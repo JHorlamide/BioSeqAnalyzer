@@ -21,7 +21,6 @@ import { toast } from "react-hot-toast";
 
 /* Application Modules */
 import Button from "../../../../../../../components/CustomBtn/Button";
-import Utils from "../../../../../../../utils";
 import useErrorToast from "../../../../../../../hooks/useErrorToast";
 import { SAMPLE_CSV_LINK } from "../../../../../../../config/AppConfig";
 import { useUploadProjectFileMutation } from "../../../../../../../services/proteinProject/proteinProjectAPI";
@@ -50,8 +49,7 @@ const DocumentUpload = ({ projectId }: Props) => {
         toast.success(response.message);
       }
     } catch (error: any) {
-      const errorMessage = Utils.getErrorMessage(error);
-      handleError(errorMessage);
+      handleError(error);
       setProjectFile(null);
     }
   };
