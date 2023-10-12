@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { Fragment, useState } from 'react';
 
 /* Chakra UI */
 import { Box, HStack } from '@chakra-ui/react';
@@ -68,8 +68,8 @@ const SequenceMap = () => {
   };
 
   return (
-    <Box>
-      <Box display="flex" position="absolute" top={5}>
+    <Fragment>
+      <Box display="flex" position="absolute" top={3}>
         <HStack>
           <Button
             color="white"
@@ -110,14 +110,19 @@ const SequenceMap = () => {
         seq={sequenceData.seq}
         annotations={sequenceData.annotations}
         viewer={viewerType}
-        style={{ ...sequenceData.style, width: "100%", height: "48vw" }}
         showIndex={showIndex}
         showComplement={showComplete}
         zoom={{ linear: zoomLevel }}
         enzymes={enzymes}
         search={{ query }}
+        style={{
+          ...sequenceData.style,
+          width: "100%",
+          height: "48vw",
+          marginTop: -6
+        }}
       />
-    </Box>
+    </Fragment>
   )
 };
 

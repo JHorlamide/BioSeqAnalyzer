@@ -71,7 +71,7 @@ const ProjectOverview = () => {
   const tabStyle = {
     variant: "soft-rounded",
     colorScheme: "gray",
-    marginTop: "-6%"
+    marginTop: "-6.5%"
   }
 
   return (

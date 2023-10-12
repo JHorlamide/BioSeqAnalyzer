@@ -90,7 +90,7 @@ export default function gridListWith() {
           <Card
             heading={"DNA sequence analysis"}
             icon={<Icon as={FcBiotech} w={10} h={10} />}
-            status="Pending"
+            status="Functional"
             description={"Allows researchers to upload, store, and analyze DNA sequence data."}
           />
         </Flex>

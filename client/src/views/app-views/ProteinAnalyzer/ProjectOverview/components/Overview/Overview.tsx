@@ -76,7 +76,7 @@ const ProteinViewer = (props: OverviewProps) => {
   }, []);
 
   return (
-    <Box marginTop="-2">
+    <Box marginTop="-3">
       <Stack spacing={3} marginBottom={1}>
         <Box display="flex" alignItems="center">
           <Box display="flex">
