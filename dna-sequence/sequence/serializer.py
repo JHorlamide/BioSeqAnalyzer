@@ -8,7 +8,6 @@ class DNASequenceSerializer(serializers.ModelSerializer):
         created_dna = DNASequence.objects.create(user_id=user_id, **validated_data)
         return created_dna
     
-
     class Meta:
         model = DNASequence
         fields = ["id", "name", "bases", "sequence", "description",

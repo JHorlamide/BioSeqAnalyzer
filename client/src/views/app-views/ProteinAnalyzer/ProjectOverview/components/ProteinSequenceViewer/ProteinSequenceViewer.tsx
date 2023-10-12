@@ -7,8 +7,8 @@ import { Link, Stack } from '@chakra-ui/react';
 /* Libraries */
 import { FiExternalLink } from "react-icons/fi";
 import { FaMapMarkedAlt } from "react-icons/fa";
-import { PluginSpec } from 'molstar/lib/mol-plugin/spec';
-import { useParams } from 'react-router-dom';
+import { PluginSpec } from "molstar/lib/mol-plugin/spec";
+import { useParams } from "react-router-dom";
 
 /* Application Modules */
 import { APP_PREFIX_PATH, FILE_FORMAT, PDB_BASE_URL } from '../../../../../../config/AppConfig';

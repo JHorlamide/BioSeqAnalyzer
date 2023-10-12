@@ -13,7 +13,7 @@ import {
   Button as ChakraButton,
   Input,
   Grid,
-  GridItem
+  GridItem,
 } from '@chakra-ui/react';
 
 /* Libraries */
@@ -223,7 +223,7 @@ export const Settings = (props: SettingsProps) => {
                 paddingY={1}
                 paddingX={4}
                 borderRadius={4}
-                color={enzymes.includes("PstI") ? "brand_blue.300": "white"}
+                color={enzymes.includes("PstI") ? "brand_blue.300" : "white"}
                 colorScheme={enzymes.includes("PstI") ? "gray" : ""}
                 onClick={() => toggleEnzyme("PstI")}
               >
@@ -238,7 +238,7 @@ export const Settings = (props: SettingsProps) => {
                 paddingY={1}
                 paddingX={4}
                 borderRadius={4}
-                color={enzymes.includes("EcoRI") ? "brand_blue.300": "white"}
+                color={enzymes.includes("EcoRI") ? "brand_blue.300" : "white"}
                 colorScheme={enzymes.includes("EcoRI") ? "gray" : ""}
                 onClick={() => toggleEnzyme("EcoRI")}
               >
@@ -253,7 +253,7 @@ export const Settings = (props: SettingsProps) => {
                 paddingY={1}
                 paddingX={4}
                 borderRadius={4}
-                color={enzymes.includes("XbaI") ? "brand_blue.300": "white"}
+                color={enzymes.includes("XbaI") ? "brand_blue.300" : "white"}
                 colorScheme={enzymes.includes("XbaI") ? "gray" : ""}
                 onClick={() => toggleEnzyme("XbaI")}
               >
@@ -268,7 +268,7 @@ export const Settings = (props: SettingsProps) => {
                 paddingY={1}
                 paddingX={4}
                 borderRadius={4}
-                color={enzymes.includes("SpeI") ? "brand_blue.300": "white"}
+                color={enzymes.includes("SpeI") ? "brand_blue.300" : "white"}
                 colorScheme={enzymes.includes("SpeI") ? "gray" : ""}
                 onClick={() => toggleEnzyme("SpeI")}
               >

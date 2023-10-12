@@ -8,7 +8,7 @@ import ForgotPassword from "../views/auth-views/ForgotPassword/ForgotPassword";
 
 /* Protected Components -> Protein Analyzer */
 import ProteinAnalyzerDashboard from "../views/app-views/ProteinAnalyzer/ProteinAnalyzerDashboard/ProteinAnalyzerDashboard";
-import CreateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinProject/CreateProjectForm";
+import CreateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinProject/CreateProjectView";
 import UpdateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinProject/UpdateProjectForm";
 import ProjectOverview from "../views/app-views/ProteinAnalyzer/ProjectOverview/ProjectOverview";
 import SequenceMap from "../views/app-views/ProteinAnalyzer/ProjectOverview/components/SequenceMap/SequenceMap";

@@ -1,7 +1,11 @@
-from django.db import models
 import uuid
+from django.db import models
+from django.core.exceptions import ValidationError
 
-
+def validate_string(value):
+    if not isinstance(value, str):
+        raise ValidationError('Please enter a valid input', code=400)
+    
 class DNASequence(models.Model):
     DNA_NUCLEOTIDE = "D"
     RNA_NUCLEOTIDE = "R"
@@ -27,7 +31,12 @@ class DNASequence(models.Model):
     bases = models.TextField()
     sequence = models.TextField()
     name = models.CharField(max_length=100)
-    description = models.TextField(null=True, blank=True)
+    description = models.TextField(
+        null=True,
+        blank=True,
+        error_messages={"required": "Enter a valid description"},
+        validators=[validate_string]
+    )
     date_of_submission = models.DateTimeField(auto_now_add=True)
     user_id = models.UUIDField(default=uuid.uuid4, editable=False)
     nucleotide_type = models.CharField(max_length=4, choices=NUCLEOTIDE_TYPES, default=DNA_NUCLEOTIDE)

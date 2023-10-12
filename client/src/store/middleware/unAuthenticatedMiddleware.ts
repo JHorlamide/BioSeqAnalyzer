@@ -23,9 +23,9 @@ export const unAuthenticatedMiddleware: Middleware = ({ dispatch }) => (next) =>
     return toast.error(SESSION_EXPIRE_ERROR);
   }
 
-  // if (isRejectedWithValue(action) && action.payload.status === API_ERROR.SERVER_ERROR) {
-  //   return toast.error(action.payload.data.message);
-  // }
+  if (isRejectedWithValue(action) && action.payload.status === API_ERROR.SERVER_ERROR) {
+    return toast.error(action.payload.data.message);
+  }
 
   return next(action);
 }

@@ -2,7 +2,6 @@
 import { Fragment } from "react";
 
 /* Libraries */
-import { get } from "lodash";
 import { ErrorMessage } from "@hookform/error-message";
 import {
   Path,
@@ -17,13 +16,19 @@ import {
 import {
   Input,
   InputProps,
-  FormErrorMessage,
   FormLabel,
   Box,
   VStack,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  InputLeftElementProps,
+  InputRightElementProps
 } from "@chakra-ui/react";
 
 type FormInputProps<IFormValues extends FieldValues> = {
+  inputLeftElement?: InputLeftElementProps;
+  inputRightElement?: InputRightElementProps;
   name: Path<IFormValues>;
   label?: string;
   rules?: RegisterOptions;
@@ -34,31 +39,44 @@ type FormInputProps<IFormValues extends FieldValues> = {
 
 export const FormInput =
   <IFormValues extends Record<string, unknown>>(props: FormInputProps<IFormValues>) => {
-    const { name, rules, label, errors, register, ...inputProps } = props;
+    const {
+      name,
+      rules,
+      label,
+      errors,
+      inputLeftElement,
+      inputRightElement,
+      register,
+      ...inputProps
+    } = props;
 
     return (
       <Fragment>
         {label && <FormLabel htmlFor={name} color="white">{label}</FormLabel>}
 
         <VStack width="full">
-          <Input
-            id={name}
-            name={name}
-            pl="35px"
-            width="100%"
-            height="45px"
-            border="1px solid white"
-            bg="brand_blue.300"
-            focusBorderColor="white"
-            borderRadius="20px"
-            _placeholder={{
-              opacity: "0.6",
-              color: "brand_blue.100",
-              fontSize: "15px",
-            }}
-            {...inputProps}
-            {...(register && register(name, rules))}
-          />
+          <InputGroup>
+            {inputLeftElement && <InputLeftElement {...inputLeftElement} />}
+            {inputRightElement && <InputRightElement {...inputRightElement} />}
+            <Input
+              id={name}
+              name={name}
+              pl="35px"
+              width="100%"
+              height="45px"
+              border="1px solid white"
+              bg="brand_blue.300"
+              focusBorderColor="white"
+              borderRadius="20px"
+              _placeholder={{
+                opacity: "0.6",
+                color: "brand_blue.100",
+                fontSize: "15px",
+              }}
+              {...inputProps}
+              {...(register && register(name, rules))}
+            />
+          </InputGroup>
 
           <Box width="full">
             <ErrorMessage

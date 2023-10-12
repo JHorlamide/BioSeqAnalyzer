@@ -35,7 +35,7 @@ const CardMenu = ({ projectId, onOpen }: CardMenuProps) => {
 
   const navigate = (event: React.MouseEvent, path: string) => {
     event.stopPropagation();
-    handleNavigate(path)
+    handleNavigate(path);
   }
 
   const menuItems: MenuItem[] = [

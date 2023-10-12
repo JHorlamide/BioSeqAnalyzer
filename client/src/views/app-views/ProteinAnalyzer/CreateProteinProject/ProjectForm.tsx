@@ -17,9 +17,6 @@ import {
   Text,
   FormControl,
   FormLabel,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
   VStack,
   Flex,
   Center,
@@ -108,27 +105,23 @@ const ProjectForm = (props: ProjectFormProps) => {
                     </Button>
                   </Flex>
 
-                  <InputGroup>
-                    <InputLeftElement
-                      pt="5px"
-                      pointerEvents={"none"}
-                      children={<GiGooeyMolecule color="gray.3000" />}
-                    />
-
-                    <InputRightElement
-                      pt="5px"
-                      pointerEvents={"none"}
-                    />
-
-                    <FormInput<IProject>
-                      name="proteinAminoAcidSequence"
-                      placeholder="Enter raw sequence"
-                      rules={{ required: "You must enter a name" }}
-                      register={register}
-                      errors={errors}
-                      defaultValue={projectData && projectData.proteinAminoAcidSequence}
-                    />
-                  </InputGroup>
+                  <FormInput<IProject>
+                    name="proteinAminoAcidSequence"
+                    placeholder="Enter raw sequence"
+                    rules={{ required: "You must enter a name" }}
+                    register={register}
+                    errors={errors}
+                    inputLeftElement={{
+                      pt: "5px",
+                      pointerEvents: "none",
+                      children: <GiGooeyMolecule color="gray.3000" />
+                    }}
+                    inputRightElement={{
+                      pt: "5px",
+                      pointerEvents: "none"
+                    }}
+                    defaultValue={projectData && projectData.proteinAminoAcidSequence}
+                  />
                 </FormControl>
               )}
 
@@ -148,42 +141,36 @@ const ProjectForm = (props: ProjectFormProps) => {
                     </Button>
                   </Flex>
 
-                  <InputGroup>
-                    <InputLeftElement
-                      pt="5px"
-                      pointerEvents={"none"}
-                      children={<GiMolecule color="gray.3000" />}
-                    />
-
-                    <FormInput<IProject>
-                      name="uniprotId"
-                      placeholder="Enter Uniprot ID"
-                      rules={{ required: "Uniprot ID is required" }}
-                      register={register}
-                      errors={errors}
-                      defaultValue={projectData && projectData.uniprotId}
-                    />
-                  </InputGroup>
+                  <FormInput<IProject>
+                    name="uniprotId"
+                    placeholder="Enter Uniprot ID"
+                    rules={{ required: "Uniprot ID is required" }}
+                    register={register}
+                    errors={errors}
+                    inputLeftElement={{
+                      pt: "5px",
+                      pointerEvents: "none",
+                      children: <GiMolecule color="gray.3000" />,
+                    }}
+                    defaultValue={projectData && projectData.uniprotId}
+                  />
                 </FormControl>
               )}
 
               <FormControl>
                 <FormLabel>Structure (Optional)</FormLabel>
-                <InputGroup>
-                  <InputLeftElement
-                    pt="5px"
-                    pointerEvents={"none"}
-                    children={<SiMoleculer color="brand_blue.2000" />}
-                  />
-
-                  <FormInput<IProject>
-                    name="proteinPDBID"
-                    placeholder="Enter PDB ID here..."
-                    register={register}
-                    errors={errors}
-                    defaultValue={projectData && projectData.proteinPDBID}
-                  />
-                </InputGroup>
+                <FormInput<IProject>
+                  name="proteinPDBID"
+                  placeholder="Enter PDB ID here..."
+                  register={register}
+                  errors={errors}
+                  inputLeftElement={{
+                    pt: "5px",
+                    pointerEvents: "none",
+                    children: < SiMoleculer color="brand_blue.2000" />
+                  }}
+                  defaultValue={projectData && projectData.proteinPDBID}
+                />
               </FormControl>
             </VStack>
 
@@ -233,22 +220,19 @@ const ProjectForm = (props: ProjectFormProps) => {
             >
               <FormControl isRequired>
                 <FormLabel>Project title</FormLabel>
-                <InputGroup>
-                  <InputLeftElement
-                    pt="5px"
-                    pointerEvents={"none"}
-                    children={<MdOutlineTitle color="brand_blue.2000" />}
-                  />
-
-                  <FormInput<IProject>
-                    name="projectTitle"
-                    register={register}
-                    errors={errors}
-                    placeholder="Enter project title"
-                    rules={{ required: "Project title cannot be empty" }}
-                    defaultValue={projectData && projectData.projectTitle}
-                  />
-                </InputGroup>
+                <FormInput<IProject>
+                  name="projectTitle"
+                  register={register}
+                  errors={errors}
+                  placeholder="Enter project title"
+                  rules={{ required: "Project title cannot be empty" }}
+                  inputLeftElement={{
+                    pt: "5px",
+                    pointerEvents: "none",
+                    children: <MdOutlineTitle color="brand_blue.2000" />
+                  }}
+                  defaultValue={projectData && projectData.projectTitle}
+                />
               </FormControl>
             </VStack>
 

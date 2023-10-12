@@ -33,7 +33,6 @@ export interface ProjectFormProps {
   handleSubmit: UseFormReturn<ProjectFormData>['handleSubmit'];
 };
 
-
 const ProjectForm = (props: ProjectFormProps) => {
   const {
     errors,

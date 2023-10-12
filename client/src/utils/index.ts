@@ -1,8 +1,13 @@
 class Utils {
-  static navigate(path: string) { }
-
   static getErrorMessage(error: any) {
-    return error.data.message || error.response?.data?.message || error.message;
+    if (error.data || error.response) {
+      return error.data.message ||
+        error.response.data.message ||
+        error.message ||
+        error.error;
+    }
+
+    return error;
   }
 
   static getFilledForm(projectField: any) {
