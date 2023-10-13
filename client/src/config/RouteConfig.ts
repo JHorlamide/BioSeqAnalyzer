@@ -54,43 +54,43 @@ export const publicRoute: IRoute[] = [
 export const protectedRoute: IRoute[] = [
   /* Protein Analyzer */
   {
-    key: "dashboard",
+    key: "proteinAnalyzerDashboard",
     path: `${APP_PREFIX_PATH}/protein-analyzer/dashboard`,
     component: ProteinAnalyzerDashboard
   },
 
   {
-    key: "create-projects",
+    key: "proteinAnalyzerCreateProjects",
     path: `${APP_PREFIX_PATH}/create-protein-project`,
     component: CreateProjectForm
   },
 
   {
-    key: "update-projects",
+    key: "proteinAnalyzerUpdateProjects",
     path: `${APP_PREFIX_PATH}/project/update/:projectId`,
     component: UpdateProjectForm
   },
 
   {
-    key: "project-overview",
+    key: "proteinAnalyzerProjectOverview",
     path: `${APP_PREFIX_PATH}/project-overview/:projectId`,
     component: ProjectOverview
   },
 
   {
-    key: "sequence-map",
+    key: "sequenceMap",
     path: `${APP_PREFIX_PATH}/project-overview/:projectId/sequence-map`,
     component: SequenceMap
   },
 
   /* DNA Sequence */
   {
-    key: "DNASequence-dashboard",
+    key: "DNASequenceDashboard",
     path: `${APP_PREFIX_PATH}/dna-sequence/dashboard`,
     component: DNASequenceDashboard
   },
   {
-    key: "create-project",
+    key: "DNASequenceCreateProject",
     path: `${APP_PREFIX_PATH}/create-dna-project`,
     component: CreateProject
   },

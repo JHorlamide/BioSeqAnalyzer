@@ -27,7 +27,7 @@ const AppRouter = () => {
               <AppRoute
                 routeKey={route.key}
                 component={route.component}
-              // {...route.meta}
+                {...route.meta}
               />
             }
           />
@@ -38,8 +38,6 @@ const AppRouter = () => {
 
       {/* Public Routes */}
       <Route path="/" element={<PublicRoute />}>
-        {/* <Route path="/" element={<Website />} /> */}
-
         {publicRoute.map((route) => (
           <Route
             key={route.path}
