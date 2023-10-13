@@ -27,7 +27,6 @@ const AppRouter = () => {
               <AppRoute
                 routeKey={route.key}
                 component={route.component}
-                {...route.meta}
               />
             }
           />
@@ -46,7 +45,6 @@ const AppRouter = () => {
               <AppRoute
                 routeKey={route.key}
                 component={route.component}
-              // {...route.meta}
               />
             }
           />

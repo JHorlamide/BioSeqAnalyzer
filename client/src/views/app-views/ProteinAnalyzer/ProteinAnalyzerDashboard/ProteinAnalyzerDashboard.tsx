@@ -1,19 +1,19 @@
 /* React */
 import { useState } from "react";
 
-/* Libraries */
+/* Chakra UI */
 import { Box } from "@chakra-ui/react";
 
 /* Application Modules */
-import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
 import useNavigation from "../../../../hooks/useNavigation";
-import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListWithGridItem";
+import useErrorToast from "../../../../hooks/useErrorToast";
 import Pagination from "../../../../components/Pagination/Pagination";
+import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
 import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
+import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListWithGridItem";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useAppSelector } from "../../../../store/store";
 import { useGetProjectsQuery, useDeleteProjectMutation } from "../../../../services/proteinProject/proteinProjectAPI";
-import useErrorToast from "../../../../hooks/useErrorToast";
 
 const ProteinAnalyzerDashboard = () => {
   const searchTerm = useAppSelector((state) => state.search);

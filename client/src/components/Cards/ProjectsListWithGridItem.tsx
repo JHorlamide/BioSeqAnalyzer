@@ -30,13 +30,12 @@ const getGridTemplateColumns = () => {
 
 const ProjectsListWithGridItem = (props: Props) => {
   const {
-    isLoading,
+    isLoading = true,
     proteinProjects,
     dnaSeqProjects,
     handleDeleteProject,
     goToProjectDetailsPage
   } = props;
-
   const projects = [...(proteinProjects ?? []), ...(dnaSeqProjects ?? [])];
 
   const getProjectProperties = (project: DNASeqProjects | ProteinProjects) => {
@@ -57,6 +56,7 @@ const ProjectsListWithGridItem = (props: Props) => {
   const isDNASeqProject = (project: DNASeqProjects | ProteinProjects): boolean => {
     return (project as DNASeqProjects).id !== undefined;
   };
+
 
   return (
     <Fragment>
