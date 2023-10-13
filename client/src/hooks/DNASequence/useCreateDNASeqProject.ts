@@ -30,7 +30,8 @@ export const useCreateDNASeqProject = () => {
         return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
       }
     } catch (error: any) {
-      const errorMessage = error.error;
+      const errorField = Object.keys(error.data)[0];
+      const errorMessage = error.error || `${errorField}: ${error.data[errorField][0]}`;
       handleError(errorMessage);
     }
   };

@@ -11,6 +11,7 @@ import config from "../../config/appConfig";
 import { ERR_MSG } from "../types/constants";
 import { CSVColumnDataType } from "../types/types";
 import { ServerError } from "../../common/exceptions/ApiError";
+import { logger } from "../../config/logger";
 
 class S3Service {
   s3Client = new S3Client({});
@@ -42,7 +43,7 @@ class S3Service {
       const response = await this.s3Client.send(command);
       return await this.parseS3ReadStream(response.Body as Readable);
     } catch (error: any) {
-      console.log({ AWS_ERROR: error })
+      logger.info(error.message)
       throw new ServerError(error.message);
     }
   }

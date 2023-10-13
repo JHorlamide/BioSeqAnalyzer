@@ -6,6 +6,11 @@ const useErrorToast = () => {
   const [shownErrors, setShownErrors] = useState<string[]>([]);
 
   const handleError = (error: Error | string) => {
+    if(typeof error === "string") {
+      return toast.error(error);
+    }
+
+    
     const errorMessage = Utils.getErrorMessage(error);
     toast.error(errorMessage);
 
