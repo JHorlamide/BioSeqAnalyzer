@@ -26,12 +26,17 @@ export interface IUpdateProject {
   projectData: IProject;
 }
 
-export interface IGetProjects {
+export interface PaginationParams {
   page: number;
   limit: number;
-  search: string;
-  userId: string;
 }
+
+export interface SearchParams {
+  userId: string;
+  projectTitle: string;
+  projectGoal: string;
+  measuredProperty: string;
+};
 
 export interface S3UploadRes {
   fileName: string;
@@ -49,7 +54,9 @@ export interface CSVColumnDataType {
   muts: string;
 }
 
-export interface IMutationRange { 
-  mutation: string; 
-  scoreRange: { min: number; max: number } 
+export interface IMutationRange {
+  mutation: string;
+  scoreRange: { min: number; max: number }
 }
+
+export type QueryType = { user: string; $or?: Array<Record<string, { $regex: string; $options: string }>> };

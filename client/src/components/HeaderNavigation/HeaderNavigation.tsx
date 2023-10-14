@@ -1,11 +1,10 @@
 /* React */
-import { Fragment, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 /* Libraries */
 import { CiUser } from "react-icons/ci";
 
 /* Application Module */
-import SearchInput from "../SearchInput/SearchInput";
 import ProfileMenu from "./components/ProfileMenu";
 import MobileNav from "../MobileNav/MobileNav";
 import { CgMenuGridO } from "react-icons/cg";
@@ -21,24 +20,9 @@ import {
   Text,
   Show,
   useDisclosure,
+  Box,
+  Spacer,
 } from "@chakra-ui/react";
-
-interface MenuIconProps {
-  onOpen: () => void;
-}
-
-const MenuIcon = ({ onOpen }: MenuIconProps) => {
-  return (
-    <Show breakpoint="(max-width: 1350px)">
-      <CgMenuGridO
-        onClick={onOpen}
-        color="white"
-        size={40}
-        style={{ cursor: "pointer" }}
-      />
-    </Show>
-  );
-};
 
 const HeaderNav = () => {
   const dispatch = useAppDispatch();
@@ -58,33 +42,45 @@ const HeaderNav = () => {
   };
 
   return (
-    <Fragment>
+    <Box>
       <MobileNav isOpen={isOpen} onClose={onClose} />
 
-      <Flex
-        justifyContent={isDashboardPage ? "space-between" : "flex-end"}
-        alignItems="center"
-        width="full"
+      <HStack
         mb={6}
+        width="full"
+        alignItems="center"
+        justifyContent={isDashboardPage ? "space-between" : "flex-end"}
       >
-        {/* Menu Icon */}
-        <MenuIcon onOpen={onOpen} />
+        <Show breakpoint="(max-width: 1350px)">
+          <CgMenuGridO
+            onClick={onOpen}
+            color="white"
+            size={40}
+            style={{ cursor: "pointer" }}
+          />
+        </Show>
 
-        {/* Search Input */}
-        {isDashboardPage && <SearchInput />}
+        <Spacer />
 
-        <HStack spacing={3} alignItems="center" marginLeft={{ base: 1, sm: 1 }}>
+        <Flex
+          border={1}
+          borderColor="red"
+          gap="2"
+          alignItems="center"
+          justifyContent="end"
+          marginLeft={{ base: 1, sm: 1 }}
+        >
           <Show breakpoint="(min-width: 844px)">
-            <HStack spacing={1} alignItems="center">
+            <HStack spacing={1} alignItems="center" marginRight={1}>
               <CiUser color="white" fontWeight="bold" />
               <Text color="white">{email}</Text>
             </HStack>
           </Show>
 
           <ProfileMenu fullName={fullName} logout={handleLogout} />
-        </HStack>
-      </Flex>
-    </Fragment>
+        </Flex>
+      </HStack>
+    </Box>
   );
 };
 

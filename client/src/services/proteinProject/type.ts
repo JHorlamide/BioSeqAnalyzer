@@ -29,9 +29,11 @@ export interface IGetProjectsRes extends IBaseResponse {
 }
 
 export interface IGetProjectQueryParam {
-  page?: number;
-  limit?: number;
-  search?: string;
+  page: number;
+  limit: number;
+  projectTitle: string;
+  projectGoal: string;
+  measuredProperty: string;
 }
 
 export interface IGetProjectReq {

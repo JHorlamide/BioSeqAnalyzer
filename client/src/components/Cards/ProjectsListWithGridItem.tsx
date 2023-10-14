@@ -30,7 +30,7 @@ const getGridTemplateColumns = () => {
 
 const ProjectsListWithGridItem = (props: Props) => {
   const {
-    isLoading = true,
+    isLoading,
     proteinProjects,
     dnaSeqProjects,
     handleDeleteProject,

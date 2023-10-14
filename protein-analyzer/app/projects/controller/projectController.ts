@@ -22,20 +22,31 @@ class ProjectController {
   public getAllProjects = asyncHandler(async (req: any, res: Response) => {
     const decodedUser = JSON.parse(req.headers["x-decoded-user"]);
     const { userId } = decodedUser;
-    const { page, limit, search } = req.query;
+    const {
+      page,
+      limit,
+      projectTitle = "",
+      projectGoal = "",
+      measuredProperty = ""
+    } = req.query;
 
     const pageNumber = page ? Number(page) : 1;
     const limitNumber = limit ? Number(limit) : 10;
-    const searchString = search ? String(search) : "";
+    const searchQuery = projectTitle ? String(projectTitle) : "";
 
-    const getProjectPrams = {
-      userId,
+    const paginationParams = {
       page: pageNumber,
-      limit: limitNumber,
-      search: searchString
-    }
+      limit: limitNumber
+    };
 
-    const projects = await projectService.getAllProjects(getProjectPrams);
+    const searchParams = {
+      userId,
+      projectGoal,
+      measuredProperty,
+      projectTitle: searchQuery,
+    };
+
+    const projects = await projectService.getAllProjects(paginationParams, searchParams);
     responseHandler.successResponse(RES_MSG.PROJECTS_FETCHED, projects, res);
   });
 

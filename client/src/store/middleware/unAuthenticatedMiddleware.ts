@@ -24,6 +24,7 @@ export const unAuthenticatedMiddleware: Middleware = ({ dispatch }) => (next) =>
   }
 
   if (isRejectedWithValue(action) && action.payload.status === API_ERROR.SERVER_ERROR) {
+    // console.log(action.payload.data)
     return toast.error(action.payload.data.message);
   }
 

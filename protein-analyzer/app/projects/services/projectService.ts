@@ -8,9 +8,11 @@ import { ClientError, NotFoundError, ServerError } from "../../common/exceptions
 import {
   IUpdateProject,
   IProject,
-  IGetProjects,
   CSVColumnDataType,
-  IMutationRange
+  IMutationRange,
+  PaginationParams,
+  SearchParams,
+  QueryType
 } from "../types/types";
 
 class ProjectService {
@@ -34,24 +36,25 @@ class ProjectService {
   }
 
   // Fetch all the create project by a given user from the DB
-  public async getAllProjects(params: IGetProjects) {
-    const { page, limit, search, userId } = params;
+  public async getAllProjects(
+    paginationParams: PaginationParams,
+    searchParams: SearchParams
+  ) {
+    const { page, limit } = paginationParams;
+    const { userId, ...filteredSearchParams } = searchParams;
+    const searchFilters = Object.entries(filteredSearchParams)
+      .filter(([key, value]) => value !== "")
+      .reduce((acc, [key, value]) => ({ ...acc, [key]: { $regex: value, $options: "i" } }), {});
 
     try {
-      const query: any = { user: userId };
+      const query: QueryType = { user: userId };
 
-      // Apply search filter if provided
-      if (search) {
-        query.$or = [
-          { projectTitle: { $regex: search, $options: "i" } },
-          { measuredProperty: { $regex: search, $options: "i" } },
-          { projectGoal: { $regex: search, $options: "i" } },
-        ];
+      if (Object.keys(searchFilters).length > 0) {
+        query.$or = [searchFilters];
       }
 
       const totalCount = await projectRepository.countProjects(query);
       const totalPages = Math.ceil(totalCount / limit);
-
       const projects = await projectRepository.getAllProjects(query, page, limit);
       return {
         projects,

@@ -1,4 +1,5 @@
-import { ChangeEvent } from "react";
+/* React */
+import { useEffect } from "react";
 
 /* Chakra UI */
 import {
@@ -7,26 +8,30 @@ import {
   FormControl,
   Input,
   Box,
+  BoxProps
 } from "@chakra-ui/react";
 
 /* Libraries */
 import { FiSearch } from "react-icons/fi";
+import { DebouncedFunc } from "lodash";
 
-/* Application Modules */
-import { useAppDispatch, useAppSelector } from "../../store/store";
-import { setSearchTerm } from "../../store/slices/searchSlice";
+interface SearchInputProps {
+  styleProps: BoxProps;
+  handleSearchQuery: DebouncedFunc<({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => void>
+}
 
-const SearchInput = () => {
-  const searchTerm = useAppSelector((state) => state.search);
-  const dispatch = useAppDispatch();
+const SearchInput = (props: SearchInputProps) => {
+  const { styleProps, handleSearchQuery } = props;
 
-  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
-    const { value } = event.target;
-    dispatch(setSearchTerm(value));
-  };
+  useEffect(() => {
+    return () => {
+      handleSearchQuery.cancel();
+    };
+  }, [handleSearchQuery]);
+
 
   return (
-    <Box width={{ base: "100%", sm: "100%", md: "50%" }}>
+    <Box width={{ base: "100%", sm: "100%", md: "50%" }} {...styleProps}>
       <FormControl width="100%">
         <InputGroup>
           <InputLeftElement
@@ -42,8 +47,7 @@ const SearchInput = () => {
             focusBorderColor="white"
             borderRadius="full"
             placeholder="Search projects"
-            value={searchTerm}
-            onChange={handleSearch}
+            onChange={handleSearchQuery}
           />
         </InputGroup>
       </FormControl>

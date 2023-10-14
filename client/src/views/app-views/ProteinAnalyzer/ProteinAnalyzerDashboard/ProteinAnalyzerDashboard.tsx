@@ -1,5 +1,8 @@
 /* React */
-import { useState } from "react";
+import { useMemo, useState } from "react";
+
+/* Libraries */
+import { debounce } from "lodash";
 
 /* Chakra UI */
 import { Box } from "@chakra-ui/react";
@@ -8,31 +11,51 @@ import { Box } from "@chakra-ui/react";
 import useNavigation from "../../../../hooks/useNavigation";
 import useErrorToast from "../../../../hooks/useErrorToast";
 import Pagination from "../../../../components/Pagination/Pagination";
+import SearchInput from "../../../../components/SearchInput/SearchInput";
 import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
 import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
 import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListWithGridItem";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
-import { useAppSelector } from "../../../../store/store";
 import { useGetProjectsQuery, useDeleteProjectMutation } from "../../../../services/proteinProject/proteinProjectAPI";
+import { useAppDispatch, useAppSelector } from "../../../../store/store";
+import { clearFilterState, setSearQuery } from "../../../../store/slices/proteinAnalyzerFilter";
+
+const DEBOUNCE_TIME_MS = 1000;
+const TOTAL_PAGES = 10;
 
 const ProteinAnalyzerDashboard = () => {
-  const searchTerm = useAppSelector((state) => state.search);
+  const dispatch = useAppDispatch();
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = 9;
-
   const [deleteProject] = useDeleteProjectMutation();
+
+  const {
+    searchQuery,
+    projectGoal,
+    measuredProperty,
+  } = useAppSelector((state) => state.proteinAnalyzerFilter);
+
   const { data: projects, isLoading, refetch } = useGetProjectsQuery({
     page: currentPage,
-    limit: totalPages,
-    search: searchTerm
+    limit: TOTAL_PAGES,
+    projectTitle: searchQuery,
+    projectGoal,
+    measuredProperty,
   });
+
+  const isProjectListEmpty = !projects?.data.projects ||
+    projects?.data.projects.length === 0;
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
     refetch();
   };
+
+  const handleDataRefetch = () => {
+    dispatch(clearFilterState());
+    refetch();
+  }
 
   const goToCreateProject = () => {
     handleNavigate(`${APP_PREFIX_PATH}/create-protein-project`);
@@ -44,36 +67,51 @@ const ProteinAnalyzerDashboard = () => {
 
   async function handleDeleteProject(projectId: string) {
     try {
-      const response = await deleteProject({ projectId }).unwrap();
-      handleError(response.message);
+      await deleteProject({ projectId }).unwrap();
     } catch (error: any) {
       handleError(error);
     }
   }
 
-  if (!projects?.data.projects || projects?.data.projects.length === 0) {
-    return <EmptyProject goToCreateProject={goToCreateProject}/>
-  }
+  const handleSearchQuery = useMemo(() =>
+    debounce(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
+      dispatch(setSearQuery(value));
+    }, DEBOUNCE_TIME_MS),
+    []);
+
+  const searchInputStyles = {
+    marginTop: -16,
+    marginBottom: 5,
+  };
 
   return (
     <Box width="full">
+      <SearchInput
+        handleSearchQuery={handleSearchQuery}
+        styleProps={searchInputStyles}
+      />
+
       <DashboardHeader
         projectType="Protein"
-        refetch={refetch}
+        refetch={handleDataRefetch}
         goToCreateProject={goToCreateProject}
       />
 
       <Box marginTop={5} width="full" height="full">
-        <ProjectsListWithGridItem
-          isLoading={isLoading}
-          proteinProjects={projects.data.projects}
-          handleDeleteProject={handleDeleteProject}
-          goToProjectDetailsPage={goToProjectDetailsPage}
-        />
+        {isProjectListEmpty ? (
+          <EmptyProject projectType="Protein" goToCreateProject={goToCreateProject} />
+        ) : (
+          <ProjectsListWithGridItem
+            isLoading={isLoading}
+            proteinProjects={projects.data.projects}
+            handleDeleteProject={handleDeleteProject}
+            goToProjectDetailsPage={goToProjectDetailsPage}
+          />
+        )}
 
         <Pagination
           currentPage={currentPage}
-          totalPages={totalPages}
+          totalPages={TOTAL_PAGES}
           onPageChange={handlePageChange}
         />
       </Box>

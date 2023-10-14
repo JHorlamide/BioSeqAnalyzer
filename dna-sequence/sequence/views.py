@@ -21,15 +21,13 @@ class DnaSequenceViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_class = DNASequenceFilter
     pagination_class = DefaultPagination
-    search_fields = ["name", "description"]
+    search_fields = ["name"]
     order_fields = ["date_of_submission"]
 
     def get_serializer_context(self):
         decoded_user_json = self.request.META.get("HTTP_X_DECODED_USER")
         auth_user = json.loads(decoded_user_json)
         return { "user_id": auth_user["userId"] }
-    
-            
     
 class AnalysesViewSet(ModelViewSet):
     queryset = AnalysisResult.objects.all()

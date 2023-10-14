@@ -8,16 +8,19 @@ import { IoMdRefresh } from "react-icons/io";
 
 /* Application Modules */
 import Button from "../CustomBtn/Button";
+import ProteinAnalyzerFilter from "../Filters/ProteinAnalyzerFilter";
+import DNASeqFilter from "../Filters/DNASeqFilter";
 
-type ProjectType = "DNA" | "Protein";
 
 interface IProps {
-  projectType: ProjectType;
+  projectType: "DNA" | "Protein";
   refetch?: () => void;
   goToCreateProject: () => void;
 }
 
-const DashboardHeader = ({ projectType, refetch, goToCreateProject }: IProps) => {
+const DashboardHeader = (props: IProps) => {
+  const { projectType, goToCreateProject, refetch } = props;
+
   const buttonIcon = {
     "DNA": <TbDna2 size={20} />,
     "Protein": <GiMolecule size={20} />,
@@ -44,6 +47,8 @@ const DashboardHeader = ({ projectType, refetch, goToCreateProject }: IProps) =>
         >
           Refresh
         </Button>
+
+        {projectType === "Protein" ? <ProteinAnalyzerFilter /> : <DNASeqFilter />}
       </HStack>
 
       <Button

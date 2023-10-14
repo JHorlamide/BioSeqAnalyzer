@@ -1,7 +1,7 @@
 /* Libraries */
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
-/* Application Modules */ 
+/* Application Modules */
 import { RootState } from "../../store/store";
 import { PROTEIN_API_BASE_URL } from "../../config/AppConfig";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
@@ -60,9 +60,9 @@ export const ProteinProjectAPI = createApi({
     }),
 
     getProjects: builder.query<IGetProjectsRes, IGetProjectQueryParam>({
-      query: ({ page, limit, search }) => ({
+      query: ({ page, limit, projectGoal, projectTitle, measuredProperty }) => ({
         url: `/`,
-        params: { page, limit, search }
+        params: { page, limit, projectGoal, projectTitle, measuredProperty }
       }),
 
       providesTags: ["GetAllProjects"]

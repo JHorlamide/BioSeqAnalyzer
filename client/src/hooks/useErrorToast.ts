@@ -1,25 +1,24 @@
-import { useState } from 'react';
+import { useState } from "react";
 import toast from 'react-hot-toast';
+
 import Utils from '../utils';
 
 const useErrorToast = () => {
-  const [shownErrors, setShownErrors] = useState<string[]>([]);
-
+  const [shownErrors, setShownErrors] = useState<string[]>([""])
   const handleError = (error: Error | string) => {
-    if(typeof error === "string") {
+    if (typeof error === "string") {
       return toast.error(error);
     }
 
-    
     const errorMessage = Utils.getErrorMessage(error);
-    toast.error(errorMessage);
+    // toast.error(errorMessage);
 
-    // if (!shownErrors.includes(errorMessage)) {
-    //   const tostId = toast.loading(errorMessage);
-    //   toast.error(errorMessage);
-    //   toast.dismiss(tostId);
-    //   setShownErrors([...shownErrors, errorMessage]);
-    // }
+    if (!shownErrors.includes(errorMessage)) {
+      const tostId = toast.loading(errorMessage);
+      toast.error(errorMessage);
+      toast.dismiss(tostId);
+      setShownErrors([...shownErrors, errorMessage]);
+    }
   };
 
   return { handleError };

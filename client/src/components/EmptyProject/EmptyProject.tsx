@@ -3,18 +3,23 @@ import { Box, Center, Flex, Image, Text } from "@chakra-ui/react";
 
 /* Libraries */
 import { GiMolecule } from "react-icons/gi"
+import { TbDna2 } from "react-icons/tb";
 
 /* Application Modules */
 import Button from "../CustomBtn/Button";
-import useNavigation from "../../hooks/useNavigation";
-import { APP_PREFIX_PATH } from "../../config/AppConfig";
 
 interface EmptyProjectProps {
+  projectType: "DNA" | "Protein";
   goToCreateProject: () => void;
 }
 
 const EmptyProject = (props: EmptyProjectProps) => {
-  const { goToCreateProject } = props
+  const buttonIcon = {
+    "DNA": <TbDna2 size={20} />,
+    "Protein": <GiMolecule size={20} />,
+  }
+
+  const { projectType, goToCreateProject } = props
 
   return (
     <Center>
@@ -22,7 +27,7 @@ const EmptyProject = (props: EmptyProjectProps) => {
         direction="column"
         justify="center"
         maxWidth="250px"
-        marginTop="100px"
+        marginTop="50px"
       >
         <Image src="/knot.webp" boxSize="100px" />
 
@@ -41,7 +46,7 @@ const EmptyProject = (props: EmptyProjectProps) => {
           color="white"
           bg="brand_blue.300"
           _hover={{ bg: "brand_blue.200" }}
-          leftIcon={<GiMolecule size={20} />}
+          leftIcon={buttonIcon[projectType]}
           onClick={goToCreateProject}
         >
           Create new project

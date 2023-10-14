@@ -106,17 +106,15 @@ const ProjectOverview = () => {
 
       <TabPanels>
         <TabPanel>
-          {isLoading ? (<LoadingSkeleton />) : (
-            project && (
-              <Overview
-                proteinPDBID={proteinPDBID}
-                projectTitle={projectTitle}
-                projectGoal={projectGoal}
-                measuredProperty={measuredProperty}
-                pdbFileUrl={pdbFileUrl}
-                proteinAminoAcidSequence={proteinAminoAcidSequence}
-              />
-            )
+          {isLoading ? <LoadingSkeleton /> : (
+            <Overview
+              proteinPDBID={proteinPDBID}
+              projectTitle={projectTitle}
+              projectGoal={projectGoal}
+              measuredProperty={measuredProperty}
+              pdbFileUrl={pdbFileUrl}
+              proteinAminoAcidSequence={proteinAminoAcidSequence}
+            />
           )}
         </TabPanel>
 

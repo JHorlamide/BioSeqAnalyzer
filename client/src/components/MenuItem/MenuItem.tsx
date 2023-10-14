@@ -16,7 +16,7 @@ export const Navigation = () => {
   const dispatch = useAppDispatch();
 
   const selectedNavItemStyle = (path: string) => {
-    if (location.pathname === path) {
+    if (location.pathname.match(path)) {
       return activeNavStyle;
     }
 

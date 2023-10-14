@@ -1,5 +1,11 @@
 class Utils {
   static getErrorMessage(error: any) {
+    // console.log({ error });
+
+    // if (error.message) {
+    //   return error.message;
+    // }
+
     if (error.data || error.response) {
       return error.data.message ||
         error.response.data.message ||

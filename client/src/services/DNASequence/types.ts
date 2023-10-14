@@ -13,10 +13,7 @@ export interface IGetProjectsRes extends Response {
 }
 
 export interface ReqQueryParam {
-  name?: string;
-  bases?: number;
-  topology?: number;
-  description?: string;
-  nucleotide_type?: string;
-  date_of_submission?: string;
+  name: string;
+  topology: number;
+  nucleotideType: string;
 }

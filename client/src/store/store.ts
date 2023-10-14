@@ -16,21 +16,30 @@ import {
 
 /* Application Modules */
 import { unAuthenticatedMiddleware } from "./middleware/unAuthenticatedMiddleware";
-import { authReducer, authSlice } from "./slices/authSlice";
-import { searchReducer, searchSlice } from "./slices/searchSlice";
-import { seqViewReducer, seqViewSlice } from "./slices/seqViewSlice";
 import { RESET_STATE_ACTION_TYPE } from "./actions/resetStateAction";
 import { AUTH_TOKEN } from "../constants/AuthConstant";
+
+/* Slices */
+import { authReducer, authSlice } from "./slices/authSlice";
+import { seqViewReducer, seqViewSlice } from "./slices/seqViewSlice";
+import { proteinAnalyzerFilterReducer, proteinAnalyzerFilterSlice } from "./slices/proteinAnalyzerFilter";
+import { DNASeqFilterReducer, DNASeqFilterSlice } from "./slices/DNASeqFilter"
+
+/* API Services */
 import { authApi, AUTH_API_REDUCER_KEY } from "../services/auth/authApi";
 import { registerAPI, REGISTER_API_REDUCER_KEY } from "../services/auth/registerApi";
 import { ProteinProjectAPI, PROTEIN_PROJECT_API_REDUCER_KEY } from "../services/proteinProject/proteinProjectAPI";
 import { DNASeqProjectAPI, DNA_PROJECT_API_REDUCER_KEY } from "../services/DNASequence/DNASeqProjectAPI";
 
 const reducers = {
-  [searchSlice.name]: searchReducer,
+  /* Slice */
   [authSlice.name]: authReducer,
   [seqViewSlice.name]: seqViewReducer,
   [AUTH_API_REDUCER_KEY]: authApi.reducer,
+  [DNASeqFilterSlice.name]: DNASeqFilterReducer,
+  [proteinAnalyzerFilterSlice.name]: proteinAnalyzerFilterReducer,
+
+  /* Service */
   [REGISTER_API_REDUCER_KEY]: registerAPI.reducer,
   [PROTEIN_PROJECT_API_REDUCER_KEY]: ProteinProjectAPI.reducer,
   [DNA_PROJECT_API_REDUCER_KEY]: DNASeqProjectAPI.reducer,

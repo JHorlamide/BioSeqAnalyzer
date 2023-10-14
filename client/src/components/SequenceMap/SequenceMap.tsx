@@ -8,10 +8,10 @@ import { useNavigate } from "react-router-dom";
 import { BsArrowLeft } from 'react-icons/bs';
 
 /* Application Modules */
-import SequenceViewer from "../../../../../../components/SequenceViewer/SequenceViewer"
-import Button from '../../../../../../components/CustomBtn/Button';
-import { useAppSelector } from "../../../../../../store/store";
-import { ZoomButtons, Topology, Settings, SearchInput } from './ViewSettings';
+import SequenceViewer from "../SequenceViewer/SequenceViewer"
+import Button from '../CustomBtn/Button';
+import { useAppSelector } from "../../store/store";
+import { ZoomButtons, Topology, Settings, SearchInput } from './SequenceMapSettings';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
@@ -20,22 +20,22 @@ interface Topology {
   value: ViewerType;
 }
 
+const topologies: Topology[] = [
+  { title: "Linear", value: "linear" },
+  { title: "Circular", value: "circular" },
+  { title: "Both", value: "both" },
+  { title: "Both Flip", value: "both_flip" },
+];
+
 const SequenceMap = () => {
   const navigate = useNavigate();
   const sequenceData = useAppSelector((state) => state.seqView);
-  const [viewerType, setViewerType] = useState<ViewerType>("both_flip");
+  const [topology, setTopology] = useState<ViewerType>("both_flip");
   const [zoomLevel, setZoomLevel] = useState(50);
   const [enzymes, setEnzymes] = useState(["PstI", "EcoRI", "XbaI", "SpeI"]);
   const [showIndex, setShowIndex] = useState(true);
   const [showComplete, setShowComplete] = useState(true);
   const [query, setQuery] = useState("");
-
-  const topologies: Topology[] = [
-    { title: "Linear", value: "linear" },
-    { title: "Circular", value: "circular" },
-    { title: "Both", value: "both" },
-    { title: "Both Flip", value: "both_flip" },
-  ];
 
   const handleZoomIn = () => {
     if (zoomLevel < 100) {
@@ -67,6 +67,13 @@ const SequenceMap = () => {
     }
   };
 
+  const sequenceViewerStyle = {
+    ...sequenceData.style,
+    width: "100%",
+    height: "48vw",
+    marginTop: -6
+  };
+
   return (
     <Fragment>
       <Box display="flex" position="absolute" top={3}>
@@ -89,7 +96,7 @@ const SequenceMap = () => {
 
           <Topology
             topologies={topologies}
-            onTopologyChange={setViewerType}
+            onTopologyChange={setTopology}
           />
 
           <Settings
@@ -109,18 +116,13 @@ const SequenceMap = () => {
         name={sequenceData.name}
         seq={sequenceData.seq}
         annotations={sequenceData.annotations}
-        viewer={viewerType}
+        viewer={topology}
         showIndex={showIndex}
         showComplement={showComplete}
         zoom={{ linear: zoomLevel }}
         enzymes={enzymes}
         search={{ query }}
-        style={{
-          ...sequenceData.style,
-          width: "100%",
-          height: "48vw",
-          marginTop: -6
-        }}
+        style={sequenceViewerStyle}
       />
     </Fragment>
   )

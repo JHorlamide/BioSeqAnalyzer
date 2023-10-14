@@ -1,6 +1,5 @@
 /* Libraries */
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Seq } from "seqparse";
 import { SeqVizProps } from "seqviz";
 
 type Topology = "linear" | "circular" | "both" | "both_flip" | undefined;

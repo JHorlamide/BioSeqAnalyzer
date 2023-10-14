@@ -22,7 +22,7 @@ import { FiSettings } from "react-icons/fi"
 import { TbTopologyRing } from "react-icons/tb";
 
 /* Application Modules */
-import Button from '../../../../../../components/CustomBtn/Button';
+import Button from '../CustomBtn/Button';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
