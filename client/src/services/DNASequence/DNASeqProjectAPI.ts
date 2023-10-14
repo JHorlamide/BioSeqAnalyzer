@@ -46,7 +46,7 @@ export const DNASeqProjectAPI = createApi({
     getAllProjects: builder.query<IGetProjectsRes, ReqQueryParam>({
       query: ({ page, name, topology, nucleotideType }) => ({
         url: `/`,
-        params: { page, name, topology, nucleotideType }
+        params: { page, name, topology, nucleotide_type: nucleotideType }
       }),
 
       providesTags: ["GetAllDNAProjects"]

@@ -17,6 +17,7 @@ export const useCreateDNASeqProject = () => {
   const [createProject, { isLoading }] = useCreateProjectMutation();
   const {
     register,
+    getValues,
     handleSubmit,
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
@@ -24,6 +25,12 @@ export const useCreateDNASeqProject = () => {
   const submitProject = async (data: ProjectFormData) => {
     try {
       const projectFormData = utils.getFilledForm(data);
+      const { nucleotide_type, topology } = projectFormData;
+
+      if (nucleotide_type === "R" && topology === "C") {
+        return handleError("Currently circular RNA sequences is not supported.")
+      }
+
       const response = await createProject(projectFormData).unwrap();
       if (response.name !== undefined) {
         toast.success("Project created successfully");
@@ -40,6 +47,7 @@ export const useCreateDNASeqProject = () => {
     errors,
     isLoading,
     register,
+    getValues,
     submitProject,
     handleSubmit,
   };

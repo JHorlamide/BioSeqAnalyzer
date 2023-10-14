@@ -1,3 +1,5 @@
+import { ProjectFormData } from "../schemas/DNASequence/DNASequenceProjectSchema";
+
 class Utils {
   static getErrorMessage(error: any) {
     // console.log({ error });
@@ -16,7 +18,7 @@ class Utils {
     return error;
   }
 
-  static getFilledForm(projectField: any) {
+  static getFilledForm(projectField: any): ProjectFormData {
     return Object.fromEntries(Object.entries(projectField)
       .filter(([_, value]) => value !== "")) as typeof projectField;
   }

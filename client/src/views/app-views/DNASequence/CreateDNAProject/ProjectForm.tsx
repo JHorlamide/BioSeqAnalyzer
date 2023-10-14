@@ -20,6 +20,7 @@ import {
   VStack,
   Center,
   HStack,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { TextAreaInput } from "../../../../components/CustomInput/TextAreaInput/TextAreaInput";
 
@@ -33,6 +34,18 @@ export interface ProjectFormProps {
   handleSubmit: UseFormReturn<ProjectFormData>['handleSubmit'];
 };
 
+const nucleotideTypeOptions = [
+  { label: "DNA", value: "D" },
+  { label: "RNA", value: "R" },
+];
+
+const topologyOptions = [
+  { label: "Circular", value: "C" },
+  { label: "Linear", value: "L" },
+  { label: "Both", value: "B" },
+  { label: "Both Flip", value: "B_F" },
+];
+
 const ProjectForm = (props: ProjectFormProps) => {
   const {
     errors,
@@ -43,18 +56,6 @@ const ProjectForm = (props: ProjectFormProps) => {
     handleSubmit,
     submitProject,
   } = props;
-
-  const nucleotideTypeOptions = [
-    { label: "DNA", value: "D" },
-    { label: "RNA", value: "R" },
-  ];
-
-  const topologyOptions = [
-    { label: "Circular", value: "C" },
-    { label: "Linear", value: "L" },
-    { label: "Both", value: "B" },
-    { label: "Both Flip", value: "B_F" },
-  ];
 
   return (
     <Center justifyContent={{ base: "start", md: "center" }} color="white">

@@ -11,7 +11,7 @@ import ProteinAnalyzerDashboard from "../views/app-views/ProteinAnalyzer/Protein
 import CreateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinProject/CreateProjectView";
 import UpdateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinProject/UpdateProjectForm";
 import ProjectOverview from "../views/app-views/ProteinAnalyzer/ProjectOverview/ProjectOverview";
-import SequenceMap from "../components/SequenceMap/SequenceMap";
+import SequenceMap from "../components/SequenceMap/SequenceMap";``
 
 /* Protected Components -> DNA Sequence */
 import DNASequenceDashboard from "../views/app-views/DNASequence/DNASeqDashboard/DNASequenceDashboard";
