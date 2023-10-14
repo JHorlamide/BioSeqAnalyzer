@@ -1,5 +1,5 @@
 /* React */
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 
 /* Libraries */
 import { debounce } from "lodash";
@@ -18,7 +18,7 @@ import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListW
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useGetProjectsQuery, useDeleteProjectMutation } from "../../../../services/proteinProject/proteinProjectAPI";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
-import { clearFilterState, setSearQuery } from "../../../../store/slices/proteinAnalyzerFilter";
+import { clearFilterState, setSearQuery, setCurrentPage } from "../../../../store/slices/proteinAnalyzerFilter";
 
 const DEBOUNCE_TIME_MS = 1000;
 const TOTAL_PAGES = 10;
@@ -27,10 +27,10 @@ const ProteinAnalyzerDashboard = () => {
   const dispatch = useAppDispatch();
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
-  const [currentPage, setCurrentPage] = useState(1);
   const [deleteProject] = useDeleteProjectMutation();
 
   const {
+    currentPage,
     searchQuery,
     projectGoal,
     measuredProperty,
@@ -48,7 +48,7 @@ const ProteinAnalyzerDashboard = () => {
     projects?.data.projects.length === 0;
 
   const handlePageChange = (page: number) => {
-    setCurrentPage(page);
+    dispatch(setCurrentPage(page));
     refetch();
   };
 

@@ -13,7 +13,6 @@ import UpdateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinP
 import ProjectOverview from "../views/app-views/ProteinAnalyzer/ProjectOverview/ProjectOverview";
 import SequenceMap from "../components/SequenceMap/SequenceMap";
 
-
 /* Protected Components -> DNA Sequence */
 import DNASequenceDashboard from "../views/app-views/DNASequence/DNASeqDashboard/DNASequenceDashboard";
 import CreateProject from "../views/app-views/DNASequence/CreateDNAProject/CreateProjectView";

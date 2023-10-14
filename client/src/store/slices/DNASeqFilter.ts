@@ -5,6 +5,7 @@ const initialState = {
   name: "",
   nucleotideType: "",
   topology: "",
+  currentPage: 1
 };
 
 export const DNASeqFilterSlice = createSlice({
@@ -23,13 +24,24 @@ export const DNASeqFilterSlice = createSlice({
       state.topology = action.payload;
     },
 
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
+
     clearFilterState: (state) => {
       state.name = "";
       state.topology = "";
       state.nucleotideType = "";
+      state.currentPage = 1;
     }
   }
 })
 
-export const { setName, setNucleotideType, clearFilterState, setTopology } = DNASeqFilterSlice.actions;
+export const {
+  setName,
+  setNucleotideType,
+  clearFilterState,
+  setTopology,
+  setCurrentPage
+} = DNASeqFilterSlice.actions;
 export const DNASeqFilterReducer = DNASeqFilterSlice.reducer;

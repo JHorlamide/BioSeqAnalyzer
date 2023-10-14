@@ -13,7 +13,8 @@ interface PaginationProps {
   onPageChange: (page: number) => void;
 }
 
-const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
+const Pagination = (props: PaginationProps) => {
+  const { currentPage, totalPages, onPageChange } = props;
   const isMobileBreakPoint = useBreakpointValue({ base: false, md: true }) as boolean;
   const [pages, setPages] = useState<number[]>([]);
 
@@ -73,7 +74,6 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
             ))}
           </Box>
         )}
-
         <Button
           ml={{ base: 0, md: 2 }}
           bg="brand_blue.300"
@@ -89,4 +89,4 @@ const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) 
   );
 }
 
-export default Pagination
+export default Pagination;

@@ -14,13 +14,15 @@ import DashboardHeader from "../../../../components/DashboardHeader/DashboardHea
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useGetAllProjectsQuery, useDeleteProjectMutation } from "../../../../services/DNASequence/DNASeqProjectAPI";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
-import { clearFilterState, setName } from "../../../../store/slices/DNASeqFilter";
+import { clearFilterState, setCurrentPage, setName } from "../../../../store/slices/DNASeqFilter";
 
 /* Chakra UI */
 import { Box } from '@chakra-ui/react';
+import Pagination from "../../../../components/Pagination/Pagination";
 
 
 const DEBOUNCE_TIME_MS = 1000;
+const TOTAL_PAGES = 10;
 
 const DNASequenceDashboard = () => {
   const dispatch = useAppDispatch();
@@ -30,12 +32,14 @@ const DNASequenceDashboard = () => {
 
   const {
     name,
+    topology,
     nucleotideType,
-    topology
+    currentPage,
   } = useAppSelector((state) => state.DNASeqFilter);
 
   const { data: projects, isLoading, refetch } = useGetAllProjectsQuery({
     name,
+    page: currentPage,
     topology,
     nucleotideType,
   });
@@ -48,6 +52,11 @@ const DNASequenceDashboard = () => {
 
   const goToProjectDetailsPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/${projectId}`)
+  };
+
+  const handlePageChange = (page: number) => {
+    dispatch(setCurrentPage(page));
+    refetch();
   };
 
   async function handleDeleteProject(projectId: string) {
@@ -97,6 +106,12 @@ const DNASequenceDashboard = () => {
           />
         </Box>
       )}
+
+      <Pagination
+        currentPage={currentPage}
+        totalPages={TOTAL_PAGES}
+        onPageChange={handlePageChange}
+      />
     </Box>
   )
 }

@@ -5,6 +5,7 @@ const initialState = {
   searchQuery: "",
   projectGoal: "",
   measuredProperty: "",
+  currentPage: 1
 };
 
 export const proteinAnalyzerFilterSlice = createSlice({
@@ -23,10 +24,15 @@ export const proteinAnalyzerFilterSlice = createSlice({
       state.measuredProperty = action.payload;
     },
 
+    setCurrentPage: (state, action: PayloadAction<number>) => {
+      state.currentPage = action.payload;
+    },
+
     clearFilterState: (state) => {
       state.searchQuery = "";
       state.projectGoal = "";
       state.measuredProperty = "";
+      state.currentPage = 1;
     }
   }
 })
@@ -35,6 +41,8 @@ export const {
   setSearQuery,
   setProjectGoal,
   clearFilterState,
-  setMeasuredProperty
-} = proteinAnalyzerFilterSlice.actions
+  setMeasuredProperty,
+  setCurrentPage,
+} = proteinAnalyzerFilterSlice.actions;
+
 export const proteinAnalyzerFilterReducer = proteinAnalyzerFilterSlice.reducer;
