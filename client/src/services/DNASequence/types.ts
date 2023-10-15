@@ -5,6 +5,13 @@ export interface DNASeqProjects extends CreateProjectFormField {
   date_of_submission: string;
 }
 
+export interface ReqQueryParam {
+  page: number;
+  name: string;
+  topology: number;
+  nucleotideType: string;
+}
+
 export interface IGetProjectsRes extends Response {
   count: number,
   next: string,
@@ -12,9 +19,12 @@ export interface IGetProjectsRes extends Response {
   results: DNASeqProjects[]
 }
 
-export interface ReqQueryParam {
-  page: number;
-  name: string;
-  topology: number;
-  nucleotideType: string;
+export interface IGetProjectRes extends CreateProjectFormField { };
+
+export interface IGetProjectParam {
+  projectId: string;
+}
+
+export interface IUpdateProjectReq extends CreateProjectFormField{
+  projectId: string;
 }

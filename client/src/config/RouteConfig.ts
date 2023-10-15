@@ -16,6 +16,7 @@ import SequenceMap from "../components/SequenceMap/SequenceMap";``
 /* Protected Components -> DNA Sequence */
 import DNASequenceDashboard from "../views/app-views/DNASequence/DNASeqDashboard/DNASequenceDashboard";
 import CreateProject from "../views/app-views/DNASequence/CreateDNAProject/CreateProjectView";
+import UpdateDNASeqProjectForm from "../views/app-views/DNASequence/CreateDNAProject/UpdateDNASeqProjectForm";
 
 interface IRoute {
   [x: string]: any;
@@ -66,19 +67,19 @@ export const protectedRoute: IRoute[] = [
 
   {
     key: "proteinAnalyzerUpdateProjects",
-    path: `${APP_PREFIX_PATH}/project/update/:projectId`,
+    path: `${APP_PREFIX_PATH}/protein-project/update/:projectId`,
     component: UpdateProjectForm
   },
 
   {
     key: "proteinAnalyzerProjectOverview",
-    path: `${APP_PREFIX_PATH}/project-overview/:projectId`,
+    path: `${APP_PREFIX_PATH}/protein-project/overview/:projectId`,
     component: ProjectOverview
   },
 
   {
     key: "sequenceMap",
-    path: `${APP_PREFIX_PATH}/project-overview/:projectId/sequence-map`,
+    path: `${APP_PREFIX_PATH}/protein-project/overview/:projectId/sequence-map`,
     component: SequenceMap
   },
 
@@ -88,9 +89,15 @@ export const protectedRoute: IRoute[] = [
     path: `${APP_PREFIX_PATH}/dna-sequence/dashboard`,
     component: DNASequenceDashboard
   },
+
   {
     key: "DNASequenceCreateProject",
     path: `${APP_PREFIX_PATH}/create-dna-project`,
     component: CreateProject
+  },
+  {
+    key: "DNASequenceProjectDetails",
+    path: `${APP_PREFIX_PATH}/dna-sequence/update/:projectId`,
+    component: UpdateDNASeqProjectForm
   },
 ]

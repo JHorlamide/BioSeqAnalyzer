@@ -1,8 +1,5 @@
 /* Libraries / Packages */
 import { SlOptions } from "react-icons/sl";
-import { BiEditAlt } from "react-icons/bi";
-import { RiSurroundSoundLine } from "react-icons/ri";
-import { MdOutlineDeleteOutline } from "react-icons/md";
 import { IconType } from "react-icons";
 
 /* Chakra UI */
@@ -14,57 +11,16 @@ import {
   Text,
 } from "@chakra-ui/react";
 
-/* Application Modules / Components */
-import useNavigation from "../../hooks/useNavigation";
-import { APP_PREFIX_PATH } from "../../config/AppConfig";
-
 interface CardMenuProps {
-  projectId: string;
-  onOpen: () => void;
+  menuItems: {
+    key: string;
+    menuTitle: string;
+    MenuIcon: IconType;
+    action: (event: React.MouseEvent) => void;
+  }[]
 }
 
-interface MenuItem {
-  key: string;
-  menuTitle: string;
-  MenuIcon: IconType;
-  action: (event: React.MouseEvent) => void;
-}
-
-const CardMenu = ({ projectId, onOpen }: CardMenuProps) => {
-  const { handleNavigate } = useNavigation();
-
-  const navigate = (event: React.MouseEvent, path: string) => {
-    event.stopPropagation();
-    handleNavigate(path);
-  }
-
-  const menuItems: MenuItem[] = [
-    {
-      key: "invite-member",
-      menuTitle: "Invite Member",
-      MenuIcon: RiSurroundSoundLine, // Change the Icon to a user Icon
-      action: (event) => navigate(event, `${APP_PREFIX_PATH}/invite-member/${projectId}`)
-    },
-
-    {
-      key: "edit-project",
-      menuTitle: "Edit Project details",
-      MenuIcon: BiEditAlt,
-      action: (event) => navigate(event, `${APP_PREFIX_PATH}/project/update/${projectId}`)
-    },
-
-    {
-      key: "delete-project",
-      menuTitle: "Delete Project",
-      MenuIcon: MdOutlineDeleteOutline,
-      action: (event) => {
-        event.stopPropagation();
-        onOpen();
-      }
-    },
-  ];
-
-
+const CardMenu = ({ menuItems }: CardMenuProps) => {
   return (
     <Menu>
       <MenuButton
@@ -84,8 +40,8 @@ const CardMenu = ({ projectId, onOpen }: CardMenuProps) => {
           <MenuItem
             key={key}
             display="flex"
-            onClick={action}
             bg="brand_blue.300"
+            onClick={(event) => action(event)}
             _hover={{ bg: "brand_blue.100" }}
           >
             <MenuIcon size={20} />

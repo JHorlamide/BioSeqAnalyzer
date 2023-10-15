@@ -134,14 +134,17 @@ export const ProteinProjectAPI = createApi({
 })
 
 export const {
+  /* Mutations */
   useCreateProjectMutation,
+  useDeleteProjectMutation,
+  useUpdateProjectMutation,
+  useUploadProjectFileMutation,
+
+  /* Queries */ 
   useGetProjectsQuery,
   useGetProjectQuery,
-  useUpdateProjectMutation,
-  useDeleteProjectMutation,
-  useUploadProjectFileMutation,
-  useGetSummaryMainMatricesQuery,
   useGetTopVariantsQuery,
-  useGetScoreDistributionQuery
+  useGetScoreDistributionQuery,
+  useGetSummaryMainMatricesQuery,
   // useGetProteinSequenceQuery,
 } = ProteinProjectAPI;

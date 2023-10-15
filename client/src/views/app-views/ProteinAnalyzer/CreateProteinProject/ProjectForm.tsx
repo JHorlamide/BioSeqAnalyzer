@@ -245,7 +245,7 @@ const ProjectForm = (props: ProjectFormProps) => {
               type="submit"
               _hover={{ bg: "brand_blue.200" }}
             >
-              Create Project
+              {projectId ? "Updated Project" : "Create Project"}
             </Button>
           </VStack>
         </form>

@@ -41,7 +41,7 @@ const ProteinSequenceViewer = (props: Props) => {
   const pdbDownloadUrl = `${PDB_BASE_URL}/${proteinPDBID}.${FILE_FORMAT}`;
 
   const navigate = () => {
-    handleNavigate(`${APP_PREFIX_PATH}/project-overview/${projectId}/sequence-map`)
+    handleNavigate(`${APP_PREFIX_PATH}/protein-project/overview/${projectId}/sequence-map`)
   }
 
   const initView = async () => {

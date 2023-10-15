@@ -8,7 +8,10 @@ import { DNA_SEQUENCE_API_BASE_URL } from "../../config/AppConfig";
 import { ProjectFormData } from "../../schemas/DNASequence/DNASequenceProjectSchema";
 import {
   DNASeqProjects,
+  IGetProjectParam,
+  IGetProjectRes,
   IGetProjectsRes,
+  IUpdateProjectReq,
   ReqQueryParam
 } from "./types"
 
@@ -52,6 +55,24 @@ export const DNASeqProjectAPI = createApi({
       providesTags: ["GetAllDNAProjects"]
     }),
 
+    getProject: builder.query<IGetProjectRes, IGetProjectParam>({
+      query: ({ projectId }) => ({
+        url: `/${projectId}`,
+      }),
+
+      providesTags: ["GetDNAProjectDetails"]
+    }),
+
+    updateProject: builder.mutation<IGetProjectRes, IUpdateProjectReq>({
+      query: ({ projectId, name, topology, nucleotide_type, bases, sequence, description }) => ({
+        url: `/${projectId}/`,
+        method: "PUT",
+        body: { name, topology, nucleotide_type, bases, sequence, description },
+      }),
+
+      invalidatesTags: ["GetAllDNAProjects"]
+    }),
+
     deleteProject: builder.mutation<Response, { projectId: string }>({
       query: ({ projectId }) => ({
         url: `/${projectId}`,
@@ -67,7 +88,12 @@ export const DNASeqProjectAPI = createApi({
 });
 
 export const {
+  /* Mutations */
   useCreateProjectMutation,
-  useGetAllProjectsQuery,
   useDeleteProjectMutation,
+  useUpdateProjectMutation,
+
+  /* Queries */
+  useGetAllProjectsQuery,
+  useGetProjectQuery
 } = DNASeqProjectAPI;

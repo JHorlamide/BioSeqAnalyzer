@@ -14,8 +14,9 @@ interface Props {
   isLoading: boolean;
   dnaSeqProjects?: DNASeqProjects[];
   proteinProjects?: ProteinProjects[];
-  goToProjectDetailsPage: (projectId: string) => void;
+  goToUpdateProjectPage: (projectId: string) => void;
   handleDeleteProject: (project: string) => void;
+  goToProjectDetailsPage: (projectId: string) => void;
 }
 
 const getGridTemplateColumns = () => {
@@ -34,6 +35,7 @@ const ProjectsListWithGridItem = (props: Props) => {
     proteinProjects,
     dnaSeqProjects,
     handleDeleteProject,
+    goToUpdateProjectPage,
     goToProjectDetailsPage
   } = props;
   const projects = [...(proteinProjects ?? []), ...(dnaSeqProjects ?? [])];
@@ -57,7 +59,6 @@ const ProjectsListWithGridItem = (props: Props) => {
     return (project as DNASeqProjects).id !== undefined;
   };
 
-
   return (
     <Fragment>
       <Grid gap={4} templateColumns={getGridTemplateColumns()}>
@@ -69,6 +70,7 @@ const ProjectsListWithGridItem = (props: Props) => {
               <ProjectCard
                 {...getProjectProperties(project)}
                 handleDeleteProject={handleDeleteProject}
+                goToUpdateProjectPage={goToUpdateProjectPage}
                 goToProjectDetailsPage={goToProjectDetailsPage}
               />
             )}

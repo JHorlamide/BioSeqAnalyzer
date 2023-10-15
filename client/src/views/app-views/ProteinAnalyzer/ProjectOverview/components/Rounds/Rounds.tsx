@@ -5,7 +5,7 @@ import React from 'react';
 import { Box, HStack, VStack } from '@chakra-ui/react';
 
 /* Application Modules */
-import DocumentUpload from './DocumentUpload/DocumentUpload';
+import DocumentUpload from '../../../../../../components/DocumentUpload/DocumentUpload';
 import ProteinSequenceViewer from '../ProteinSequenceViewer/ProteinSequenceViewer';
 
 const SummaryTable = React.lazy(() => import("./SummaryTable/SummaryTable"));
@@ -20,7 +20,11 @@ interface Props {
 
 const Rounds = ({ projectFileName, projectId, proteinPDBID }: Props) => {
   if (!projectFileName) {
-    return <DocumentUpload projectId={projectId} />
+    return <DocumentUpload
+      uploadDescription='Upload CSV file containing experimental results of any protein engineering project.'
+      projectId={projectId}
+      projectType="Protein"
+    />
   }
 
   const containerStyle = {

@@ -20,22 +20,25 @@ import { AiOutlineCloudUpload, AiOutlineCloudDownload } from "react-icons/ai"
 import { toast } from "react-hot-toast";
 
 /* Application Modules */
-import Button from "../../../../../../../components/CustomBtn/Button";
-import useErrorToast from "../../../../../../../hooks/useErrorToast";
-import { SAMPLE_CSV_LINK } from "../../../../../../../config/AppConfig";
-import { useUploadProjectFileMutation } from "../../../../../../../services/proteinProject/proteinProjectAPI";
+import Button from "../CustomBtn/Button";
+import useErrorToast from "../../hooks/useErrorToast";
+import { SAMPLE_CSV_LINK } from "../../config/AppConfig";
+import { useUploadProjectFileMutation } from "../../services/proteinProject/proteinProjectAPI";
 
 interface Props {
   projectId: string;
+  projectType: "Protein" | "DNA";
+  uploadDescription?: string;
 }
 
-const DocumentUpload = ({ projectId }: Props) => {
+const DocumentUpload = (props: Props) => {
+  const { projectId, projectType, uploadDescription } = props;
   const { handleError } = useErrorToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDragOver, setIsDragOver] = useState(false);
   const [projectFile, setProjectFile] = useState<File | null>();
   const [uploadProjectFile, { isLoading }] = useUploadProjectFileMutation();
-  const SELECT_FILE_MSG = "Select a CSV file to upload or drag and drop it here";
+  const SELECT_FILE_MSG = "Select file or drag and drop file to upload";
 
   const handleFileUpload = async (file: File) => {
     try {
@@ -95,17 +98,22 @@ const DocumentUpload = ({ projectId }: Props) => {
         <ModalContent bg="brand_blue.300" width="full">
           <Flex justifyContent="space-between" alignItems="center">
             <ModalHeader fontSize="18px" color="white">Result</ModalHeader>
-            <Button
-              color="white"
-              bg="brand_blue.200"
-              leftIcon={isLoading ? <AiOutlineCloudUpload /> : <AiOutlineCloudDownload />}
-              fontWeight="semibold"
-              onClick={previewSampleCSVFile}
-              _hover={{ bg: "brand_blue.200" }}
-              isDisabled={isLoading}
-            >
-              {isLoading ? "Uploading..." : "Download template"}
-            </Button>
+
+            {projectType === "Protein" && (
+              <Button
+                color="white"
+                bg="brand_blue.200"
+                leftIcon={isLoading ? <AiOutlineCloudUpload /> : <AiOutlineCloudDownload />}
+                fontWeight="semibold"
+                onClick={previewSampleCSVFile}
+                isDisabled={isLoading}
+                _hover={{ bg: "brand_blue.200" }}
+              >
+                {isLoading ? "Uploading..." : "Download template"}
+              </Button>
+            )}
+
+            {projectType === "DNA" || isLoading && <Text color="white">Uploading...</Text>}
           </Flex>
 
           <ModalBody
@@ -156,13 +164,10 @@ const DocumentUpload = ({ projectId }: Props) => {
 
           <Box paddingY={4} display="flex" flexDirection="column">
             <Text as="h1" fontWeight="bold" fontSize="19px" color="white">
-              Upload your result
+              Upload File
             </Text>
 
-            <Text as="p" pt={2} color="white" fontStyle="italic">
-              Here’s a quick and clear explanation of how results work
-              here so you know what you are about to do next.
-            </Text>
+            <Text as="p" pt={2} color="white" fontStyle="italic">{uploadDescription}</Text>
           </Box>
 
           <Button

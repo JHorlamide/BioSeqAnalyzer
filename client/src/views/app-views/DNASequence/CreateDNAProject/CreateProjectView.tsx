@@ -15,7 +15,9 @@ import {
   Tab,
   TabPanel,
   HStack,
+  Text,
 } from "@chakra-ui/react";
+import DocumentUpload from "../../../../components/DocumentUpload/DocumentUpload";
 
 const CreateProject = () => {
   const navigate = useNavigate();
@@ -62,11 +64,25 @@ const CreateProject = () => {
         </TabPanel>
 
         <TabPanel>
-          File Upload
+          <DocumentUpload
+            uploadDescription="Upload any DNA file (Genbank, FASTA, ApE, Geneious, SnapGene, SeqBuilder v15 or below, etc.)"
+            projectId=""
+            projectType="DNA"
+          />
         </TabPanel>
 
         <TabPanel>
-          Import from database
+          <Text
+            color="white"
+            textAlign="center"
+            fontSize={26}
+            fontWeight="bold"
+            fontStyle="italic"
+            marginTop={20}
+          >
+            Importing data from database is not currently supported <br />
+            Coming soon!
+          </Text>
         </TabPanel>
       </TabPanels>
     </Tabs>

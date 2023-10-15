@@ -1,5 +1,6 @@
 /* Libraries */
 import { IoIosLogOut } from "react-icons/io";
+import { NavLink, useLocation } from "react-router-dom";
 
 /* Chakra UI */
 import { HStack, VStack, Center, Text } from "@chakra-ui/react";
@@ -7,7 +8,6 @@ import { HStack, VStack, Center, Text } from "@chakra-ui/react";
 /* Application Modules */
 import navigationConfig from "../../config/NavigationConfig";
 import Button from "../CustomBtn/Button";
-import { Link, useLocation } from "react-router-dom";
 import { useAppDispatch } from "../../store/store";
 import { logoutUser } from "../../store/slices/authSlice";
 
@@ -43,11 +43,11 @@ export const Navigation = () => {
         </Center>
 
         {navigationConfig.map(({ key, path, title, Icon }) => (
-          <Link key={key} to={path} style={linkStyle}>
-            <HStack {...selectedNavItemStyle(path)} width="full">
+          <NavLink key={key} to={path} style={linkStyle}>
+            <HStack width="full" {...selectedNavItemStyle(path)}>
               <Icon /> <Text>{title}</Text>
             </HStack>
-          </Link>
+          </NavLink>
         ))}
       </VStack>
 
@@ -67,13 +67,13 @@ export const Navigation = () => {
 };
 
 const activeNavStyle = {
+  paddingX: 2,
+  paddingY: 1.5,
+  borderRadius: 3,
+  cursor: "pointer",
   bg: "brand_blue.100",
   borderLeft: "5px solid",
-  paddingY: 1.5,
-  paddingX: 2,
-  borderRadius: 3,
   borderRightColor: "blue",
-  cursor: "pointer",
 }
 
 const linkStyle = {

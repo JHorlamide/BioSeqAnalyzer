@@ -77,14 +77,14 @@ export const useUpdateProject = (projectId: string) => {
     showUniProtInput: true,
   });
 
-  const [updateProject, { isLoading }] = useUpdateProjectMutation();
-  const { data: project } = useGetProjectQuery({ projectId });
-
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
+
+  const [updateProject, { isLoading }] = useUpdateProjectMutation();
+  const { data: project } = useGetProjectQuery({ projectId });
 
   useEffect(() => {
     if (project) setProjectData(project?.data);

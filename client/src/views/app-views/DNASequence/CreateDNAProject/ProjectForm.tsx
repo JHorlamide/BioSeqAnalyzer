@@ -20,7 +20,6 @@ import {
   VStack,
   Center,
   HStack,
-  FormErrorMessage,
 } from "@chakra-ui/react";
 import { TextAreaInput } from "../../../../components/CustomInput/TextAreaInput/TextAreaInput";
 
@@ -29,7 +28,7 @@ export interface ProjectFormProps {
   projectData?: ProjectFormData;
   errors: FieldErrors<ProjectFormData>;
   isLoading: boolean;
-  submitProject: (data: ProjectFormData) => Promise<void>;
+  submitProject: (data: ProjectFormData) => Promise<string | void>;
   register: UseFormReturn<ProjectFormData>['register'];
   handleSubmit: UseFormReturn<ProjectFormData>['handleSubmit'];
 };
@@ -198,7 +197,7 @@ const ProjectForm = (props: ProjectFormProps) => {
               type="submit"
               _hover={{ bg: "brand_blue.200" }}
             >
-              Create Project
+              {projectId ? "Updated Project" : "Create Project"}
             </Button>
           </VStack>
         </form>

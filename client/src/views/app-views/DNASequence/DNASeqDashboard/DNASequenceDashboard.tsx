@@ -7,6 +7,7 @@ import { debounce } from "lodash";
 /* Application Modules */
 import useErrorToast from "../../../../hooks/useErrorToast";
 import useNavigation from "../../../../hooks/useNavigation";
+import Pagination from "../../../../components/Pagination/Pagination";
 import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
 import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListWithGridItem";
 import SearchInput from "../../../../components/SearchInput/SearchInput";
@@ -18,8 +19,6 @@ import { clearFilterState, setCurrentPage, setName } from "../../../../store/sli
 
 /* Chakra UI */
 import { Box } from '@chakra-ui/react';
-import Pagination from "../../../../components/Pagination/Pagination";
-
 
 const DEBOUNCE_TIME_MS = 1000;
 const TOTAL_PAGES = 10;
@@ -50,8 +49,12 @@ const DNASequenceDashboard = () => {
     handleNavigate(`${APP_PREFIX_PATH}/create-dna-project`)
   };
 
+  const goToUpdateProjectPage = (projectId: string) => {
+    handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/update/${projectId}`)
+  };
+ 
   const goToProjectDetailsPage = (projectId: string) => {
-    handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/${projectId}`)
+    handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/overview/${projectId}`)
   };
 
   const handlePageChange = (page: number) => {
@@ -103,6 +106,7 @@ const DNASequenceDashboard = () => {
             dnaSeqProjects={projects.results}
             handleDeleteProject={handleDeleteProject}
             goToProjectDetailsPage={goToProjectDetailsPage}
+            goToUpdateProjectPage={goToUpdateProjectPage}
           />
         </Box>
       )}

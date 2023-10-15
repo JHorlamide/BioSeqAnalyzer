@@ -61,8 +61,12 @@ const ProteinAnalyzerDashboard = () => {
     handleNavigate(`${APP_PREFIX_PATH}/create-protein-project`);
   }
 
+  const goToUpdateProjectPage = (projectId: string) => {
+    handleNavigate(`${APP_PREFIX_PATH}/protein-project/update/${projectId}`)
+  }
+  
   const goToProjectDetailsPage = (projectId: string) => {
-    handleNavigate(`${APP_PREFIX_PATH}/project-overview/${projectId}`)
+    handleNavigate(`${APP_PREFIX_PATH}/protein-project/overview/${projectId}`)
   }
 
   async function handleDeleteProject(projectId: string) {
@@ -105,6 +109,7 @@ const ProteinAnalyzerDashboard = () => {
             isLoading={isLoading}
             proteinProjects={projects.data.projects}
             handleDeleteProject={handleDeleteProject}
+            goToUpdateProjectPage={goToUpdateProjectPage}
             goToProjectDetailsPage={goToProjectDetailsPage}
           />
         )}
