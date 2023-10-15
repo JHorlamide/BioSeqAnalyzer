@@ -9,8 +9,8 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 # Application Modules
-from .models import DNASequence, AnalysisResult
-from .serializer import DNASequenceSerializer, AnalysesSerializer
+from .models import DNASequence
+from .serializer import DNASequenceSerializer
 from .filter import DNASequenceFilter
 from .pagination import DefaultPagination
 
@@ -28,7 +28,3 @@ class DnaSequenceViewSet(ModelViewSet):
         decoded_user_json = self.request.META.get("HTTP_X_DECODED_USER")
         auth_user = json.loads(decoded_user_json)
         return { "user_id": auth_user["userId"] }
-    
-class AnalysesViewSet(ModelViewSet):
-    queryset = AnalysisResult.objects.all()
-    serializer_class = AnalysesSerializer

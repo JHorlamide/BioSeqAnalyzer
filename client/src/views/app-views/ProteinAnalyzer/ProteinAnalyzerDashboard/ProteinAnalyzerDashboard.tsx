@@ -28,20 +28,14 @@ const ProteinAnalyzerDashboard = () => {
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [deleteProject] = useDeleteProjectMutation();
-
-  const {
-    currentPage,
-    searchQuery,
-    projectGoal,
-    measuredProperty,
-  } = useAppSelector((state) => state.proteinAnalyzerFilter);
+  const filters = useAppSelector((state) => state.proteinAnalyzerFilter);
 
   const { data: projects, isLoading, refetch } = useGetProjectsQuery({
-    page: currentPage,
+    page: filters.currentPage,
     limit: TOTAL_PAGES,
-    projectTitle: searchQuery,
-    projectGoal,
-    measuredProperty,
+    projectTitle: filters.searchQuery,
+    projectGoal: filters.projectGoal,
+    measuredProperty: filters.measuredProperty,
   });
 
   const isProjectListEmpty = !projects?.data.projects ||
@@ -115,7 +109,7 @@ const ProteinAnalyzerDashboard = () => {
         )}
 
         <Pagination
-          currentPage={currentPage}
+          currentPage={filters.currentPage}
           totalPages={TOTAL_PAGES}
           onPageChange={handlePageChange}
         />

@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import DNASequence, AnalysisResult
+from .models import DNASequence
 
 
 class DNASequenceSerializer(serializers.ModelSerializer):
@@ -10,11 +10,5 @@ class DNASequenceSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = DNASequence
-        fields = ["id", "name", "bases", "sequence", "description",
+        fields = ["id", "name", "bases", "description",
                   "date_of_submission", "nucleotide_type", "topology"]
-
-
-class AnalysesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = AnalysisResult
-        fields = ["id", "analysis_type", "result_data", "date_of_analysis", "sequence"]

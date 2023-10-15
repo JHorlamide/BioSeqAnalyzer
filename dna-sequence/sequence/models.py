@@ -54,7 +54,6 @@ class DNASequence(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,)
     bases = models.TextField(validators=[validate_string, validate_no_emoji])
-    sequence = models.TextField(validators=[validate_string, validate_no_emoji])
     name = models.CharField(
         max_length=100,
         validators=[validate_string, validate_no_emoji]
@@ -72,14 +71,3 @@ class DNASequence(models.Model):
 
     def __str__(self) -> str:
         return self.name
-
-
-class AnalysisResult(models.Model):
-    sequence = models.ForeignKey(DNASequence, on_delete=models.CASCADE)
-    analysis_type = models.CharField(max_length=100)
-    result_data = models.JSONField()
-    date_of_analysis = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self) -> str:
-        return f"{self.sequence.name} {self.analysis_type}"
-

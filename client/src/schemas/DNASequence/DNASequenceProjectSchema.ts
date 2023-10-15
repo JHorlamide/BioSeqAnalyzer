@@ -15,7 +15,6 @@ export enum TopologyType {
 export type InputName =
   | "name"
   | "bases"
-  | "sequence"
   | "description"
   | "nucleotide_type"
   | "topology"
@@ -24,7 +23,6 @@ export const projectSchema = z.object({
   name: z.string().min(5, { message: "Project name is required" }),
   bases: z.string().min(10, { message: "Bases must be grater than 10" }),
   description: z.string(),
-  sequence: z.string(),
   nucleotide_type: z.nativeEnum(NucleotideType)
     .refine((val) => val !== undefined && val !== null, {
       message: "Nucleotide is required",
@@ -42,7 +40,6 @@ export type CreateProjectFormField = {
   name: string;
   bases: string;
   description: string;
-  sequence: string;
   nucleotide_type: NucleotideType;
   topology: TopologyType;
 }

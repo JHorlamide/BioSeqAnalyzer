@@ -28,19 +28,13 @@ const DNASequenceDashboard = () => {
   const { handleNavigate } = useNavigation();
   const { handleError } = useErrorToast();
   const [deleteProject] = useDeleteProjectMutation();
-
-  const {
-    name,
-    topology,
-    nucleotideType,
-    currentPage,
-  } = useAppSelector((state) => state.DNASeqFilter);
+  const filters = useAppSelector((state) => state.DNASeqFilter);
 
   const { data: projects, isLoading, refetch } = useGetAllProjectsQuery({
-    name,
-    page: currentPage,
-    topology,
-    nucleotideType,
+    name: filters.name,
+    page: filters.currentPage,
+    topology: filters.topology,
+    nucleotideType: filters.nucleotideType,
   });
 
   const isProjectListEmpty = !projects?.results || projects?.results.length === 0;
@@ -112,7 +106,7 @@ const DNASequenceDashboard = () => {
       )}
 
       <Pagination
-        currentPage={currentPage}
+        currentPage={filters.currentPage}
         totalPages={TOTAL_PAGES}
         onPageChange={handlePageChange}
       />

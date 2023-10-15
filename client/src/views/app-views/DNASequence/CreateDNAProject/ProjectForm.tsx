@@ -176,17 +176,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                   />
                 </InputGroup>
               </FormControl>
-
-              <FormControl>
-                <TextAreaInput
-                  label="Sequence"
-                  name="sequence"
-                  register={register}
-                  errors={errors}
-                  placeholder="Enter sequence"
-                  defaultValue={projectData && projectData.sequence}
-                />
-              </FormControl>
             </VStack>
 
             <Button
