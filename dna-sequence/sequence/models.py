@@ -54,6 +54,7 @@ class DNASequence(models.Model):
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4,)
     bases = models.TextField(validators=[validate_string, validate_no_emoji])
+    file = models.FileField(blank=True, null=True)
     name = models.CharField(
         max_length=100,
         validators=[validate_string, validate_no_emoji]
