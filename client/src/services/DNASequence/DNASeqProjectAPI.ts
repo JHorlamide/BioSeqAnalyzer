@@ -5,9 +5,9 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
 import { DNA_SEQUENCE_API_BASE_URL } from "../../config/AppConfig";
-import { ProjectFormData } from "../../schemas/DNASequence/DNASequenceProjectSchema";
 import {
   DNASeqProjects,
+  ICreateProject,
   IGetProjectParam,
   IGetProjectRes,
   IGetProjectsRes,
@@ -19,7 +19,9 @@ export const DNA_PROJECT_API_REDUCER_KEY = "DNASeqProjectsAPI";
 
 export const DNASeqProjectAPI = createApi({
   reducerPath: DNA_PROJECT_API_REDUCER_KEY,
+
   tagTypes: ["GetAllDNAProjects", "GetDNAProjectDetails", "CreateDNAProject"],
+  
   baseQuery: fetchBaseQuery({
     baseUrl: DNA_SEQUENCE_API_BASE_URL,
     prepareHeaders: async (headers, { getState }) => {
@@ -36,7 +38,7 @@ export const DNASeqProjectAPI = createApi({
   }),
 
   endpoints: (builder) => ({
-    createProject: builder.mutation<DNASeqProjects, ProjectFormData>({
+    createProject: builder.mutation<DNASeqProjects, ICreateProject>({
       query: (data) => ({
         url: "/",
         method: "POST",

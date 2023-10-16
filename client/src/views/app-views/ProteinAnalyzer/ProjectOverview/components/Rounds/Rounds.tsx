@@ -20,11 +20,7 @@ interface Props {
 
 const Rounds = ({ projectFileName, projectId, proteinPDBID }: Props) => {
   if (!projectFileName) {
-    return <DocumentUpload
-      uploadDescription='Upload CSV file containing experimental results of any protein engineering project.'
-      projectId={projectId}
-      projectType="Protein"
-    />
+    return <DocumentUpload projectId={projectId} />
   }
 
   const containerStyle = {
@@ -50,6 +46,7 @@ const Rounds = ({ projectFileName, projectId, proteinPDBID }: Props) => {
           <TableOfPerformingVariants projectId={projectId} />
         </VStack>
 
+        {/* I will this error later */}
         <ProteinSequenceViewer
           proteinPDBID={proteinPDBID}
           containerStyle={containerStyle}

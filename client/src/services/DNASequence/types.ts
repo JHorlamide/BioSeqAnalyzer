@@ -12,6 +12,8 @@ export interface ReqQueryParam {
   nucleotideType: string;
 }
 
+export interface ICreateProject extends CreateProjectFormField { }
+
 export interface IGetProjectsRes extends Response {
   count: number,
   next: string,
@@ -25,6 +27,6 @@ export interface IGetProjectParam {
   projectId: string;
 }
 
-export interface IUpdateProjectReq extends CreateProjectFormField{
+export interface IUpdateProjectReq extends CreateProjectFormField {
   projectId: string;
 }

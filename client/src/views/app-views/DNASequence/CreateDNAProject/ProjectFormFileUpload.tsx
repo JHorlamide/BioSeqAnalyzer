@@ -1,47 +1,54 @@
 /* Libraries */
-import { MdDriveFileRenameOutline } from "react-icons/md";
-import { MdOutlineTitle } from "react-icons/md";
 import { FieldErrors, UseFormReturn } from "react-hook-form";
 
 /* Application Modules */
-import { FormInput } from "../../../../components/CustomInput/FormInput/FormInput";
-import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
 import Button from "../../../../components/CustomBtn/Button";
+import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
 import { ProjectFormData, CreateProjectFormField } from "../../../../schemas/DNASequence/DNASequenceProjectSchema";
+
 
 /* Chakra UI */
 import {
   Box,
   Text,
   FormControl,
-  FormLabel,
-  InputGroup,
-  InputLeftElement,
   VStack,
   Center,
   HStack,
+  FormLabel,
 } from "@chakra-ui/react";
+import { AiOutlineCloudUpload } from "react-icons/ai";
 import { nucleotideTypeOptions, topologyOptions } from "./CONSTANTS";
+import { FormInput } from "../../../../components/CustomInput/FormInput/FormInput";
 
 export interface ProjectFormProps {
-  projectId?: string;
   projectData?: ProjectFormData;
   errors: FieldErrors<ProjectFormData>;
   isLoading: boolean;
+  projectFile: File | null | undefined;
   submitProject: (data: ProjectFormData) => Promise<string | void>;
   register: UseFormReturn<ProjectFormData>['register'];
   handleSubmit: UseFormReturn<ProjectFormData>['handleSubmit'];
+  handleDrop: (event: React.DragEvent<HTMLDivElement>) => void;
+  handleDragOver: (event: React.DragEvent<HTMLDivElement>) => void;
+  handleDragLeave: (event: React.DragEvent<HTMLDivElement>) => void,
+  handleFileInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
-const ProjectForm = (props: ProjectFormProps) => {
+const ProjectFormFileUpload = (props: ProjectFormProps) => {
+  const SELECT_FILE_MSG = "Select file or drag and drop file to upload";
   const {
     errors,
     isLoading,
-    projectId,
     projectData,
+    projectFile,
     register,
     handleSubmit,
     submitProject,
+    handleFileInputChange,
+    handleDragLeave,
+    handleDragOver,
+    handleDrop
   } = props;
 
   return (
@@ -55,52 +62,12 @@ const ProjectForm = (props: ProjectFormProps) => {
             fontSize="24px"
             textAlign={{ base: "end", md: "start" }}
           >
-            {projectId ? "Updated Project" : "Create new project"}
+            Create new project
           </Text>
         </Box>
 
         <form onSubmit={handleSubmit(submitProject)}>
           <VStack spacing={5} paddingY={2}>
-            <VStack
-              spacing={3}
-              bg="brand_blue.300"
-              borderRadius={10}
-              paddingY={3}
-              paddingX={3}
-              width="full"
-            >
-              <FormControl isRequired>
-                <FormLabel>Name</FormLabel>
-                <InputGroup>
-                  <InputLeftElement
-                    pt="5px"
-                    pointerEvents={"none"}
-                    children={<MdDriveFileRenameOutline color="brand_blue.2000" />}
-                  />
-
-                  <FormInput<CreateProjectFormField>
-                    name="name"
-                    placeholder="Enter project name"
-                    register={register}
-                    errors={errors}
-                    defaultValue={projectData && projectData.name}
-                  />
-                </InputGroup>
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Description</FormLabel>
-                <FormInput<CreateProjectFormField>
-                  name="description"
-                  type="text"
-                  placeholder="Enter description"
-                  register={register}
-                  errors={errors}
-                  defaultValue={projectData && projectData.description}
-                />
-              </FormControl>
-            </VStack>
-
             <VStack
               spacing={3}
               bg="brand_blue.300"
@@ -145,25 +112,59 @@ const ProjectForm = (props: ProjectFormProps) => {
               paddingX={3}
               width="full"
             >
-              <FormControl>
-                <FormLabel>Bases</FormLabel>
-                <InputGroup>
-                  <InputLeftElement
-                    pt="5px"
-                    pointerEvents={"none"}
-                    children={<MdOutlineTitle color="brand_blue.2000" />}
-                  />
+              {/* <FormControl>
+                <FormLabel>Select File</FormLabel>
 
-                  <FormInput<CreateProjectFormField>
-                    name="bases"
-                    register={register}
-                    errors={errors}
-                    placeholder="Enter project bases"
-                    rules={{ required: "Bases is required", }}
-                    defaultValue={projectData && projectData.bases}
+                <FormInput<CreateProjectFormField>
+                  name="file"
+                  type="file"
+                  accept=".txt, .gbk, .gb, .genbank, .fa, .fasta, .dna, .seq"
+                  register={register}
+                  errors={errors}
+                />
+              </FormControl> */}
+
+              <Box
+                width="full"
+                padding={4}
+                border="2px dotted white"
+                borderRadius="md"
+                textAlign="center"
+                onDragOver={handleDragOver}
+                onDragLeave={handleDragLeave}
+                onDrop={handleDrop}
+              >
+                <HStack spacing={4}>
+                  <Text
+                    whiteSpace="nowrap"
+                    textAlign="center"
+                    width="full"
+                  >
+                    {projectFile ? projectFile.name : SELECT_FILE_MSG}
+                  </Text>
+
+                  <Button
+                    width={60}
+                    as="label"
+                    bg="brand_blue.200"
+                    color="white"
+                    htmlFor="fileInput"
+                    paddingX={2}
+                    leftIcon={<AiOutlineCloudUpload size={20} />}
+                    _hover={{ bg: "brand_blue.200", cursor: "pointer" }}
+                  >
+                    Choose file
+                  </Button>
+
+                  <input
+                    id="fileInput"
+                    type="file"
+                    accept=".txt, .gbk, .gb, .genbank, .fa, .fasta, .dna, .seq"
+                    onChange={handleFileInputChange}
+                    style={{ display: 'none' }}
                   />
-                </InputGroup>
-              </FormControl>
+                </HStack>
+              </Box>
             </VStack>
 
             <Button
@@ -174,7 +175,7 @@ const ProjectForm = (props: ProjectFormProps) => {
               type="submit"
               _hover={{ bg: "brand_blue.200" }}
             >
-              {projectId ? "Updated Project" : "Create Project"}
+              Create Project
             </Button>
           </VStack>
         </form>
@@ -183,4 +184,4 @@ const ProjectForm = (props: ProjectFormProps) => {
   )
 }
 
-export default ProjectForm
+export default ProjectFormFileUpload

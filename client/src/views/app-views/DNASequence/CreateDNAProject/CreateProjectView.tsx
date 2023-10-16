@@ -4,8 +4,12 @@ import { BsArrowLeft } from "react-icons/bs";
 /* Application Modules */
 import Button from "../../../../components/CustomBtn/Button";
 import ProjectForm from './ProjectForm';
+import ProjectFormFileUpload from "./ProjectFormFileUpload";
 import { useNavigate } from "react-router-dom";
-import { useCreateDNASeqProject } from '../../../../hooks/DNASequence/useCreateDNASeqProject';
+import {
+  useCreateDNASeqProject,
+  useCreateDNASeqProjectWithFileUpload
+} from '../../../../hooks/DNASequence/useCreateDNASeqProject';
 
 /* Chakra UI */
 import {
@@ -17,7 +21,6 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
-import DocumentUpload from "../../../../components/DocumentUpload/DocumentUpload";
 
 const CreateProject = () => {
   const navigate = useNavigate();
@@ -64,11 +67,7 @@ const CreateProject = () => {
         </TabPanel>
 
         <TabPanel>
-          <DocumentUpload
-            uploadDescription="Upload any DNA file (Genbank, FASTA, ApE, Geneious, SnapGene, SeqBuilder v15 or below, etc.)"
-            projectId=""
-            projectType="DNA"
-          />
+          <ProjectFormFileUpload {...useCreateDNASeqProjectWithFileUpload()} />
         </TabPanel>
 
         <TabPanel>

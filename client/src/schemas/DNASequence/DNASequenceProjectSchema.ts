@@ -20,9 +20,10 @@ export type InputName =
   | "topology"
 
 export const projectSchema = z.object({
-  name: z.string().min(5, { message: "Project name is required" }),
-  bases: z.string().min(10, { message: "Bases must be grater than 10" }),
-  description: z.string(),
+  // file: z.any().optional(),
+  name: z.string().min(5, { message: "Project name is required" }).optional(),
+  bases: z.string().min(10, { message: "Bases must be grater than 10" }).optional(),
+  description: z.string().optional(),
   nucleotide_type: z.nativeEnum(NucleotideType)
     .refine((val) => val !== undefined && val !== null, {
       message: "Nucleotide is required",
@@ -37,9 +38,10 @@ export const projectSchema = z.object({
 export type ProjectFormData = z.infer<typeof projectSchema>;
 
 export type CreateProjectFormField = {
-  name: string;
-  bases: string;
-  description: string;
+  // file?: any;
+  name?: string;
+  bases?: string;
+  description?: string;
   nucleotide_type: NucleotideType;
   topology: TopologyType;
 }

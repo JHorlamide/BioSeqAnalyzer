@@ -27,12 +27,10 @@ import { useUploadProjectFileMutation } from "../../services/proteinProject/prot
 
 interface Props {
   projectId: string;
-  projectType: "Protein" | "DNA";
-  uploadDescription?: string;
 }
 
 const DocumentUpload = (props: Props) => {
-  const { projectId, projectType, uploadDescription } = props;
+  const { projectId } = props;
   const { handleError } = useErrorToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [isDragOver, setIsDragOver] = useState(false);
@@ -83,7 +81,7 @@ const DocumentUpload = (props: Props) => {
     if (file) {
       handleFileUpload(file);
     } else {
-      toast.error("No file selected");
+      handleError("No file selected")
     }
   };
 
@@ -99,21 +97,17 @@ const DocumentUpload = (props: Props) => {
           <Flex justifyContent="space-between" alignItems="center">
             <ModalHeader fontSize="18px" color="white">Result</ModalHeader>
 
-            {projectType === "Protein" && (
-              <Button
-                color="white"
-                bg="brand_blue.200"
-                leftIcon={isLoading ? <AiOutlineCloudUpload /> : <AiOutlineCloudDownload />}
-                fontWeight="semibold"
-                onClick={previewSampleCSVFile}
-                isDisabled={isLoading}
-                _hover={{ bg: "brand_blue.200" }}
-              >
-                {isLoading ? "Uploading..." : "Download template"}
-              </Button>
-            )}
-
-            {projectType === "DNA" || isLoading && <Text color="white">Uploading...</Text>}
+            <Button
+              color="white"
+              bg="brand_blue.200"
+              leftIcon={isLoading ? <AiOutlineCloudUpload /> : <AiOutlineCloudDownload />}
+              fontWeight="semibold"
+              onClick={previewSampleCSVFile}
+              isDisabled={isLoading}
+              _hover={{ bg: "brand_blue.200" }}
+            >
+              {isLoading ? "Uploading..." : "Download template"}
+            </Button>
           </Flex>
 
           <ModalBody
@@ -167,7 +161,9 @@ const DocumentUpload = (props: Props) => {
               Upload File
             </Text>
 
-            <Text as="p" pt={2} color="white" fontStyle="italic">{uploadDescription}</Text>
+            <Text as="p" pt={2} color="white" fontStyle="italic">
+              Upload CSV file containing experimental results of any protein engineering project.
+            </Text>
           </Box>
 
           <Button
