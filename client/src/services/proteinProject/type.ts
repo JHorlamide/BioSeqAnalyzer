@@ -37,7 +37,7 @@ export interface IGetProjectQueryParam {
 }
 
 export interface IGetProjectReq {
-  projectId: string | undefined;
+  projectId: string;
 }
 
 export interface IGetProjectRes extends IBaseResponse {

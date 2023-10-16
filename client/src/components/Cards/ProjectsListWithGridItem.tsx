@@ -1,17 +1,15 @@
 /* React */
 import { Fragment } from "react";
 
-/* Libraries/Packages */
+/* Chakra UI */
 import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 
 /* Application Module */
 import ProjectCard from "./ProjectCard";
-import ProjectCardSkeleton from "./ProjectCardSkeleton";
 import { ProteinProjects } from "../../services/proteinProject/type";
 import { DNASeqProjects } from "../../services/DNASequence/types";
 
 interface Props {
-  isLoading: boolean;
   dnaSeqProjects?: DNASeqProjects[];
   proteinProjects?: ProteinProjects[];
   goToUpdateProjectPage: (projectId: string) => void;
@@ -31,7 +29,6 @@ const getGridTemplateColumns = () => {
 
 const ProjectsListWithGridItem = (props: Props) => {
   const {
-    isLoading,
     proteinProjects,
     dnaSeqProjects,
     handleDeleteProject,
@@ -64,16 +61,12 @@ const ProjectsListWithGridItem = (props: Props) => {
       <Grid gap={4} templateColumns={getGridTemplateColumns()}>
         {projects.map((project) => (
           <GridItem key={getProjectProperties(project).projectId}>
-            {isLoading ? (
-              <ProjectCardSkeleton />
-            ) : (
-              <ProjectCard
-                {...getProjectProperties(project)}
-                handleDeleteProject={handleDeleteProject}
-                goToUpdateProjectPage={goToUpdateProjectPage}
-                goToProjectDetailsPage={goToProjectDetailsPage}
-              />
-            )}
+            <ProjectCard
+              {...getProjectProperties(project)}
+              handleDeleteProject={handleDeleteProject}
+              goToUpdateProjectPage={goToUpdateProjectPage}
+              goToProjectDetailsPage={goToProjectDetailsPage}
+            />
           </GridItem>
         ))}
       </Grid>

@@ -19,6 +19,7 @@ import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useGetProjectsQuery, useDeleteProjectMutation } from "../../../../services/proteinProject/proteinProjectAPI";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { clearFilterState, setSearQuery, setCurrentPage } from "../../../../store/slices/proteinAnalyzerFilter";
+import ProjectCardSkeleton from "../../../../components/Cards/ProjectCardSkeleton";
 
 const DEBOUNCE_TIME_MS = 1000;
 const TOTAL_PAGES = 10;
@@ -58,7 +59,7 @@ const ProteinAnalyzerDashboard = () => {
   const goToUpdateProjectPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/protein-project/update/${projectId}`)
   }
-  
+
   const goToProjectDetailsPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/protein-project/overview/${projectId}`)
   }
@@ -96,11 +97,12 @@ const ProteinAnalyzerDashboard = () => {
       />
 
       <Box marginTop={5} width="full" height="full">
+        {isLoading && <ProjectCardSkeleton />}
+        
         {isProjectListEmpty ? (
           <EmptyProject projectType="Protein" goToCreateProject={goToCreateProject} />
         ) : (
           <ProjectsListWithGridItem
-            isLoading={isLoading}
             proteinProjects={projects.data.projects}
             handleDeleteProject={handleDeleteProject}
             goToUpdateProjectPage={goToUpdateProjectPage}

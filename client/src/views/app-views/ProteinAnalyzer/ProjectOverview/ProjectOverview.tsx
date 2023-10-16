@@ -39,9 +39,10 @@ const LoadingSkeleton = () => {
 const ProjectOverview = () => {
   const navigate = useNavigate();
   const { projectId } = useParams();
-  const id = String(projectId);
-  const { data: project, isLoading } = useGetProjectQuery({ projectId: id });
   const [tabIndex, setTabIndex] = useState(0);
+  const { data: project, isLoading } = useGetProjectQuery({
+    projectId: String(projectId)
+  });
 
   const {
     proteinPDBID,
@@ -106,7 +107,9 @@ const ProjectOverview = () => {
 
       <TabPanels>
         <TabPanel>
-          {isLoading ? <LoadingSkeleton /> : (
+          {isLoading ? (
+            <LoadingSkeleton />
+          ) : (
             <Overview
               proteinPDBID={proteinPDBID}
               projectTitle={projectTitle}
@@ -120,7 +123,7 @@ const ProjectOverview = () => {
 
         <TabPanel>
           <Rounds
-            projectId={id}
+            projectId={String(projectId)}
             projectFileName={projectFileName}
             proteinPDBID={proteinPDBID}
           />

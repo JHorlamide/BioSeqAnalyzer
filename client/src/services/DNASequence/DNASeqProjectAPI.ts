@@ -64,13 +64,13 @@ export const DNASeqProjectAPI = createApi({
     }),
 
     updateProject: builder.mutation<IGetProjectRes, IUpdateProjectReq>({
-      query: ({ projectId, name, topology, nucleotide_type, bases, sequence, description }) => ({
+      query: ({ projectId, name, topology, nucleotide_type, bases, description }) => ({
         url: `/${projectId}/`,
         method: "PUT",
-        body: { name, topology, nucleotide_type, bases, sequence, description },
+        body: { name, topology, nucleotide_type, bases, description },
       }),
 
-      invalidatesTags: ["GetAllDNAProjects"]
+      invalidatesTags: ["GetAllDNAProjects", "GetDNAProjectDetails"]
     }),
 
     deleteProject: builder.mutation<Response, { projectId: string }>({

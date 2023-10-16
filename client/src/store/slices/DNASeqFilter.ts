@@ -3,8 +3,8 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   name: "",
-  nucleotideType: "",
   topology: "",
+  nucleotideType: "",
   currentPage: 1
 };
 

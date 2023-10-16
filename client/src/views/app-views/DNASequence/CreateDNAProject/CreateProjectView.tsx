@@ -9,13 +9,13 @@ import { useCreateDNASeqProject } from '../../../../hooks/DNASequence/useCreateD
 
 /* Chakra UI */
 import {
+  Tab,
   Tabs,
+  Text,
+  HStack,
   TabList,
   TabPanels,
-  Tab,
   TabPanel,
-  HStack,
-  Text,
 } from "@chakra-ui/react";
 import DocumentUpload from "../../../../components/DocumentUpload/DocumentUpload";
 

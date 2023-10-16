@@ -1,3 +1,4 @@
+/* React */
 import { SetStateAction, Dispatch, Fragment } from 'react';
 
 /* Chakra UI */
@@ -11,7 +12,6 @@ import {
   Text,
   Switch,
   Button as ChakraButton,
-  Input,
   Grid,
   GridItem,
 } from '@chakra-ui/react';
@@ -26,13 +26,24 @@ import Button from '../CustomBtn/Button';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
+interface Topology {
+  title: string;
+  value: ViewerType;
+}
+
+const topologies: Topology[] = [
+  { title: "Linear", value: "linear" },
+  { title: "Circular", value: "circular" },
+  { title: "Both", value: "both" },
+  { title: "Both Flip", value: "both_flip" },
+];
+
 interface ZoomButtonProps {
   handleZoomIn: () => void;
   handleZoomOut: () => void;
 }
 
 interface TopologyProps {
-  topologies: { title: string; value: ViewerType }[];
   onTopologyChange: Dispatch<SetStateAction<ViewerType>>;
 }
 
@@ -43,11 +54,6 @@ interface SettingsProps {
   toggleEnzyme: (enzyme: string) => void;
   toggleShowComplete: () => void;
   toggleShowIndex: () => void;
-}
-
-interface SearchInputProps {
-  searchQuery: string;
-  setSearchQuery: Dispatch<SetStateAction<string>>;
 }
 
 export const ZoomButtons = (props: ZoomButtonProps) => {
@@ -95,7 +101,7 @@ export const ZoomButtons = (props: ZoomButtonProps) => {
 }
 
 export const Topology = (props: TopologyProps) => {
-  const { topologies, onTopologyChange } = props;
+  const { onTopologyChange } = props;
 
   return (
     <Menu>
@@ -165,7 +171,7 @@ export const Settings = (props: SettingsProps) => {
       <MenuButton
         display="flex"
         color="white"
-        bg="brand_blue.100"
+        bg="brand_blue.300"
         rounded="full"
         paddingY={1.5}
         paddingX={3}
@@ -279,25 +285,5 @@ export const Settings = (props: SettingsProps) => {
         </Box>
       </MenuList>
     </Menu>
-  )
-}
-
-export const SearchInput = ({ searchQuery, setSearchQuery }: SearchInputProps) => {
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-  }
-
-  return (
-    <Input
-      width={80}
-      color="white"
-      borderRadius="full"
-      border="1px solid white"
-      focusBorderColor="brand_blue.100"
-      placeholder="Search bases, annotations, and primers"
-      value={searchQuery}
-      onChange={handleSearch}
-      _placeholder={{ fontSize: "15px", color: "white" }}
-    />
   )
 }

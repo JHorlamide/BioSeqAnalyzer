@@ -1,23 +1,8 @@
-import { useEffect } from 'react';
-
 /* Chakra UI */
 import { Box, Flex, HStack, Stack, Text } from '@chakra-ui/react';
 
-/* Libraries */
-import { BsFolderFill } from "react-icons/bs";
-import seqparse, { Seq } from "seqparse";
-
 /* Application Modules */
 import ProteinSequenceViewer from '../ProteinSequenceViewer/ProteinSequenceViewer';
-import useErrorToast from '../../../../../../hooks/useErrorToast';
-import { useAppDispatch } from '../../../../../../store/store';
-import {
-  setSeq,
-  setAnnotation,
-  setViewStyle,
-  setName,
-  setType
-} from '../../../../../../store/slices/seqViewSlice';
 
 export interface OverviewProps {
   proteinPDBID?: string;
@@ -29,8 +14,6 @@ export interface OverviewProps {
 }
 
 const ProteinViewer = (props: OverviewProps) => {
-  const dispatch = useAppDispatch();
-  const { handleError } = useErrorToast();
   const {
     proteinPDBID,
     pdbFileUrl,
@@ -40,54 +23,16 @@ const ProteinViewer = (props: OverviewProps) => {
     proteinAminoAcidSequence
   } = props;
 
-  const seqViewStyle = seqVizStyle(proteinPDBID);
-
-  const parseSequenceAndUpdateSeqViewState = async () => {
-    try {
-      if (proteinAminoAcidSequence) {
-        const parsedSeq: Seq = await seqparse(proteinAminoAcidSequence);
-        let seqVizAnnotation;
-
-        if (parsedSeq && parsedSeq.annotations.length > 0) {
-          seqVizAnnotation = parsedSeq?.annotations;
-        } else {
-          seqVizAnnotation = [{
-            name: String(parsedSeq.name),
-            start: 0,
-            end: Number(parsedSeq.seq.length),
-            direction: 1,
-            color: "#08355a"
-          }]
-        }
-
-        dispatch(setSeq(parsedSeq.seq));
-        dispatch(setName(parsedSeq.name));
-        dispatch(setType(parsedSeq.type));
-        dispatch(setAnnotation(seqVizAnnotation))
-        dispatch(setViewStyle(seqViewStyle));
-      }
-    } catch (error: any) {
-      handleError(error.message.split("url=")[0])
-    }
-  }
-
-  useEffect(() => {
-    parseSequenceAndUpdateSeqViewState();
-  }, []);
-
   return (
     <Box marginTop="-3">
-      <Stack spacing={3} marginBottom={1}>
+      <Stack spacing={4} marginBottom={1}>
         <Box display="flex" alignItems="center">
-          <Box display="flex">
+          <Box display="flex" gap={2} alignItems="center">
             <Text fontSize={20} fontWeight="bold" color="white">
               Project Title:
             </Text>
 
-            <HStack ml={2} justify="space-between">
-              <BsFolderFill size={20} color="white" />
-              <span style={headingStyle}>{projectTitle}</span>
-            </HStack>
+            <Text style={headingStyle}>{projectTitle}</Text>
           </Box>
 
           <Box
@@ -126,9 +71,10 @@ const ProteinViewer = (props: OverviewProps) => {
       </Stack>
 
       <ProteinSequenceViewer
+        containerStyle={containerStyle}
         pdbFileUrl={pdbFileUrl}
         proteinPDBID={proteinPDBID}
-        containerStyle={containerStyle}
+        proteinAminoAcidSequence={proteinAminoAcidSequence}
       />
     </Box>
   );
@@ -147,15 +93,5 @@ const containerStyle = {
   position: "absolute",
   bottom: 25,
 };
-
-const seqVizStyle = (proteinPDBID: string | undefined) => {
-  return {
-    height: proteinPDBID ? "18vw" : "43vw",
-    width: "101.5%",
-    padding: "10px 0",
-    backgroundColor: "white",
-    borderRadius: 10,
-  };
-}
 
 export default ProteinViewer;

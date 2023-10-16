@@ -21,7 +21,6 @@ import { AUTH_TOKEN } from "../constants/AuthConstant";
 
 /* Slices */
 import { authReducer, authSlice } from "./slices/authSlice";
-import { seqViewReducer, seqViewSlice } from "./slices/seqViewSlice";
 import { proteinAnalyzerFilterReducer, proteinAnalyzerFilterSlice } from "./slices/proteinAnalyzerFilter";
 import { DNASeqFilterReducer, DNASeqFilterSlice } from "./slices/DNASeqFilter"
 
@@ -34,7 +33,6 @@ import { DNASeqProjectAPI, DNA_PROJECT_API_REDUCER_KEY } from "../services/DNASe
 const reducers = {
   /* Slice */
   [authSlice.name]: authReducer,
-  [seqViewSlice.name]: seqViewReducer,
   [AUTH_API_REDUCER_KEY]: authApi.reducer,
   [DNASeqFilterSlice.name]: DNASeqFilterReducer,
   [proteinAnalyzerFilterSlice.name]: proteinAnalyzerFilterReducer,

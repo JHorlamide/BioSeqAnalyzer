@@ -17,20 +17,22 @@ import Button from '../../../../../../components/CustomBtn/Button';
 import SequenceViewer from '../../../../../../components/SequenceViewer/SequenceViewer';
 import useNavigation from '../../../../../../hooks/useNavigation';
 import { useAppSelector } from '../../../../../../store/store';
+import useParseSeq from '../../../../../../hooks/useParseSeq';
 
 interface Props {
   containerStyle: object;
   pdbFileUrl?: string;
   proteinPDBID?: string;
+  proteinAminoAcidSequence: string | undefined;
 }
 
 const ProteinSequenceViewer = (props: Props) => {
+  const { proteinPDBID, containerStyle, pdbFileUrl, proteinAminoAcidSequence } = props
   const { handleNavigate } = useNavigation()
   const { handleError } = useErrorToast();
   const { projectId } = useParams();
-  const { proteinPDBID, containerStyle, pdbFileUrl } = props
-  const sequenceData = useAppSelector((state) => state.seqView);
   const tabIndex = Number(localStorage.getItem("tabIndex"));
+  const { seqVizData, loading } = useParseSeq(proteinAminoAcidSequence)
 
   if (!proteinPDBID) {
     handleError("No Protein PDB ID Provided. To view protein structure please provide a PDB ID")
@@ -120,11 +122,9 @@ const ProteinSequenceViewer = (props: Props) => {
 
       {tabIndex !== 1 && (
         <SequenceViewer
-          name={sequenceData.name}
-          seq={sequenceData.seq}
-          annotations={sequenceData.annotations}
-          viewer={sequenceData.viewer}
-          style={sequenceData.style}
+          {...seqVizData}
+          style={seqVizStyle}
+          viewer={"linear"}
         />
       )}
 
@@ -135,6 +135,14 @@ const ProteinSequenceViewer = (props: Props) => {
       )}
     </Fragment>
   )
+}
+
+const seqVizStyle = {
+  height: "18vw",
+  width: "101.5%",
+  padding: "10px 0",
+  backgroundColor: "white",
+  borderRadius: 10,
 }
 
 const linkStyle = {

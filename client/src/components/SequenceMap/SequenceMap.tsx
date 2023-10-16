@@ -1,41 +1,33 @@
 import { Fragment, useState } from 'react';
 
 /* Chakra UI */
-import { Box, HStack } from '@chakra-ui/react';
+import { Box, HStack, Input } from '@chakra-ui/react';
 
 /* Libraries */
+import { SeqVizProps } from 'seqviz';
 import { useNavigate } from "react-router-dom";
 import { BsArrowLeft } from 'react-icons/bs';
 
 /* Application Modules */
 import SequenceViewer from "../SequenceViewer/SequenceViewer"
 import Button from '../CustomBtn/Button';
-import { useAppSelector } from "../../store/store";
-import { ZoomButtons, Topology, Settings, SearchInput } from './SequenceMapSettings';
+import { ZoomButtons, Topology, Settings } from './SequenceMapSettings';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
-interface Topology {
-  title: string;
-  value: ViewerType;
+interface SequenceMapProps {
+  sequenceData: SeqVizProps;
 }
 
-const topologies: Topology[] = [
-  { title: "Linear", value: "linear" },
-  { title: "Circular", value: "circular" },
-  { title: "Both", value: "both" },
-  { title: "Both Flip", value: "both_flip" },
-];
-
-const SequenceMap = () => {
+const SequenceMap = (props: SequenceMapProps) => {
   const navigate = useNavigate();
-  const sequenceData = useAppSelector((state) => state.seqView);
-  const [topology, setTopology] = useState<ViewerType>("both_flip");
+  const [query, setQuery] = useState("");
   const [zoomLevel, setZoomLevel] = useState(50);
+  const [topology, setTopology] = useState<ViewerType>("both_flip");
   const [enzymes, setEnzymes] = useState(["PstI", "EcoRI", "XbaI", "SpeI"]);
   const [showIndex, setShowIndex] = useState(true);
   const [showComplete, setShowComplete] = useState(true);
-  const [query, setQuery] = useState("");
+  const { sequenceData } = props;
 
   const handleZoomIn = () => {
     if (zoomLevel < 100) {
@@ -67,6 +59,10 @@ const SequenceMap = () => {
     }
   };
 
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(e.target.value);
+  }
+
   const sequenceViewerStyle = {
     ...sequenceData.style,
     width: "100%",
@@ -94,10 +90,7 @@ const SequenceMap = () => {
             handleZoomOut={handleZoomOut}
           />
 
-          <Topology
-            topologies={topologies}
-            onTopologyChange={setTopology}
-          />
+          <Topology onTopologyChange={setTopology} />
 
           <Settings
             enzymes={enzymes}
@@ -108,7 +101,17 @@ const SequenceMap = () => {
             toggleShowIndex={toggleShowIndex}
           />
 
-          <SearchInput searchQuery={query} setSearchQuery={setQuery} />
+          <Input
+            width={80}
+            color="white"
+            borderRadius="full"
+            border="1px solid white"
+            focusBorderColor="brand_blue.100"
+            placeholder="Search bases, annotations, and primers"
+            value={query}
+            onChange={handleSearch}
+            _placeholder={{ fontSize: "15px", color: "white" }}
+          />
         </HStack>
       </Box>
 

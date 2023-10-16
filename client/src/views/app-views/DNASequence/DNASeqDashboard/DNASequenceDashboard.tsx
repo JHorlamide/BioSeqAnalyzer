@@ -19,6 +19,7 @@ import { clearFilterState, setCurrentPage, setName } from "../../../../store/sli
 
 /* Chakra UI */
 import { Box } from '@chakra-ui/react';
+import ProjectCardSkeleton from "../../../../components/Cards/ProjectCardSkeleton";
 
 const DEBOUNCE_TIME_MS = 1000;
 const TOTAL_PAGES = 10;
@@ -46,7 +47,7 @@ const DNASequenceDashboard = () => {
   const goToUpdateProjectPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/update/${projectId}`)
   };
- 
+
   const goToProjectDetailsPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/overview/${projectId}`)
   };
@@ -91,19 +92,20 @@ const DNASequenceDashboard = () => {
         goToCreateProject={goToCreateProject}
       />
 
-      {isProjectListEmpty ? (
-        <EmptyProject projectType="DNA" goToCreateProject={goToCreateProject} />
-      ) : (
-        <Box marginTop={5} width="full" height="full">
+      <Box marginTop={5} width="full" height="full">
+        {isLoading && <ProjectCardSkeleton />}
+
+        {isProjectListEmpty ? (
+          <EmptyProject projectType="DNA" goToCreateProject={goToCreateProject} />
+        ) : (
           <ProjectsListWithGridItem
-            isLoading={isLoading}
             dnaSeqProjects={projects.results}
             handleDeleteProject={handleDeleteProject}
             goToProjectDetailsPage={goToProjectDetailsPage}
             goToUpdateProjectPage={goToUpdateProjectPage}
           />
-        </Box>
-      )}
+        )}
+      </Box>
 
       <Pagination
         currentPage={filters.currentPage}
