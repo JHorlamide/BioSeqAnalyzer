@@ -4,7 +4,7 @@ import seqparse, { Seq } from "seqparse";
 
 import useErrorToast from "./useErrorToast";
 
-const useParseSeq = (sequenceId?: string) => {
+const useParseSeq = (sequenceId: string | undefined | null) => {
   const { handleError } = useErrorToast();
   const [loading, setLoading] = useState(false);
   const [seqVizData, setSeqvizData] = useState<Seq>({
@@ -15,7 +15,7 @@ const useParseSeq = (sequenceId?: string) => {
   });
 
   const parseSequence = async () => {
-    if (sequenceId) {
+    if (sequenceId !== null && sequenceId !== undefined) {
       return await seqparse(sequenceId);
     }
 
@@ -26,9 +26,15 @@ const useParseSeq = (sequenceId?: string) => {
 
   const parseSequenceAndUpdateSeqViewState = async () => {
     setLoading(true);
-    const seqData = await parsedSeq;
 
     try {
+      const seqData = await parsedSeq;
+
+      if (seqData === null || seqData === undefined) {
+        setLoading(false);
+        return seqVizData;
+      }
+
       if (seqData && seqData.annotations.length > 0) {
         const updateSeqVizData = {
           ...seqVizData,
@@ -38,7 +44,6 @@ const useParseSeq = (sequenceId?: string) => {
 
         setSeqvizData(updateSeqVizData);
         setLoading(false);
-        return;
       }
 
       const annotations = [{
@@ -70,33 +75,22 @@ const useParseSeq = (sequenceId?: string) => {
   return { seqVizData, loading };
 }
 
-// const parseSequenceAndUpdateSeqViewState = async () => {
-//   try {
-//     if (proteinAminoAcidSequence) {
-//       const parsedSeq: Seq = await seqparse(proteinAminoAcidSequence);
-//       let seqVizAnnotation;
+export default useParseSeq;
 
-//       if (parsedSeq && parsedSeq.annotations.length > 0) {
-//         seqVizAnnotation = parsedSeq?.annotations;
-//       } else {
-//         seqVizAnnotation = [{
-//           name: String(parsedSeq.name),
-//           start: 0,
-//           end: Number(parsedSeq.seq.length),
-//           direction: 1,
-//           color: "#08355a"
-//         }]
-//       }
 
-//       dispatch(setSeq(parsedSeq.seq));
-//       dispatch(setName(parsedSeq.name));
-//       dispatch(setType(parsedSeq.type));
-//       dispatch(setAnnotation(seqVizAnnotation))
-//       dispatch(setViewStyle(seqViewStyle));
-//     }
-//   } catch (error: any) {
-//     handleError(error.message.split("url=")[0])
-//   }
+// const annotations = [{
+//   name: String(seqData?.name),
+//   start: 0,
+//   end: Number(seqData?.seq.length),
+//   direction: 1,
+//   color: "#08355a"
+// }]
+
+// const updatedSeqVizData = {
+//   ...seqVizData,
+//   ...seqData,
+//   annotations
 // }
 
-export default useParseSeq;
+// setSeqvizData(updatedSeqVizData);
+// setLoading(false);

@@ -11,12 +11,14 @@ import { BsArrowLeft } from 'react-icons/bs';
 /* Application Modules */
 import SequenceViewer from "../SequenceViewer/SequenceViewer"
 import Button from '../CustomBtn/Button';
+import AppLoader from '../Loading/AppLoader';
 import { ZoomButtons, Topology, Settings } from './SequenceMapSettings';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
 interface SequenceMapProps {
   sequenceData: SeqVizProps;
+  isLoading: boolean;
 }
 
 const SequenceMap = (props: SequenceMapProps) => {
@@ -27,7 +29,7 @@ const SequenceMap = (props: SequenceMapProps) => {
   const [enzymes, setEnzymes] = useState(["PstI", "EcoRI", "XbaI", "SpeI"]);
   const [showIndex, setShowIndex] = useState(true);
   const [showComplete, setShowComplete] = useState(true);
-  const { sequenceData } = props;
+  const { sequenceData, isLoading } = props;
 
   const handleZoomIn = () => {
     if (zoomLevel < 100) {
@@ -72,7 +74,7 @@ const SequenceMap = (props: SequenceMapProps) => {
 
   return (
     <Fragment>
-      <Box display="flex" position="absolute" top={3}>
+      <Box top={3} gap={2} display="flex" position="absolute">
         <HStack>
           <Button
             color="white"
@@ -115,18 +117,23 @@ const SequenceMap = (props: SequenceMapProps) => {
         </HStack>
       </Box>
 
-      <SequenceViewer
-        name={sequenceData.name}
-        seq={sequenceData.seq}
-        annotations={sequenceData.annotations}
-        viewer={topology}
-        showIndex={showIndex}
-        showComplement={showComplete}
-        zoom={{ linear: zoomLevel }}
-        enzymes={enzymes}
-        search={{ query }}
-        style={sequenceViewerStyle}
-      />
+      {isLoading ? (
+        <AppLoader />
+      ) : (
+        <SequenceViewer
+          name={sequenceData.name}
+          seq={sequenceData.seq}
+          annotations={sequenceData.annotations}
+          viewer={topology}
+          showIndex={showIndex}
+          showComplement={showComplete}
+          zoom={{ linear: zoomLevel }}
+          enzymes={enzymes}
+          search={{ query }}
+          style={sequenceViewerStyle}
+        />
+      )}
+
     </Fragment>
   )
 };

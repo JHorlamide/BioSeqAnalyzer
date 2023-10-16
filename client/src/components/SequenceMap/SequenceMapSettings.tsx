@@ -72,31 +72,29 @@ export const ZoomButtons = (props: ZoomButtonProps) => {
   };
 
   return (
-    <Fragment>
-      <ButtonGroup
-        isAttached
-        variant='outline'
-        paddingY={2}
-        paddingX={3}
-        spacing={6}
-        borderRadius={30}
-        color="brand_blue.100"
-      >
-        <Button
-          bg="brand_blue.300"
-          rightIcon={<BsZoomOut {...zoomIconStyle} />}
-          _hover={{ bg: "brand_blue.300" }}
-          onClick={() => handleZoomOut()}
-        />
+    <ButtonGroup
+      isAttached
+      variant='outline'
+      paddingY={2}
+      paddingX={2}
+      spacing={6}
+      borderRadius={30}
+      color="brand_blue.100"
+    >
+      <Button
+        bg="brand_blue.300"
+        rightIcon={<BsZoomOut {...zoomIconStyle} />}
+        onClick={() => handleZoomOut()}
+        _hover={{ bg: "brand_blue.200" }}
+      />
 
-        <Button
-          bg="brand_blue.300"
-          rightIcon={<BsZoomIn {...zoomIconStyle} />}
-          _hover={{ bg: "brand_blue.300" }}
-          onClick={() => handleZoomIn()}
-        />
-      </ButtonGroup>
-    </Fragment >
+      <Button
+        bg="brand_blue.300"
+        rightIcon={<BsZoomIn {...zoomIconStyle} />}
+        _hover={{ bg: "brand_blue.200" }}
+        onClick={() => handleZoomIn()}
+      />
+    </ButtonGroup>
   )
 }
 
@@ -120,6 +118,7 @@ export const Topology = (props: TopologyProps) => {
         onClick={(e) => e.stopPropagation()}
         _hover={{
           cursor: "pointer",
+          bg: "brand_blue.200"
         }}
       >
         Topology
@@ -182,6 +181,7 @@ export const Settings = (props: SettingsProps) => {
         onClick={(e) => e.stopPropagation()}
         _hover={{
           cursor: "pointer",
+          bg: "brand_blue.200"
         }}
       >
         Settings
