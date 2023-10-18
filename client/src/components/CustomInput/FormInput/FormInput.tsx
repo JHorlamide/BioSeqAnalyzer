@@ -57,7 +57,9 @@ export const FormInput =
         <VStack width="full">
           <InputGroup>
             {inputLeftElement && <InputLeftElement {...inputLeftElement} />}
+
             {inputRightElement && <InputRightElement {...inputRightElement} />}
+
             <Input
               id={name}
               name={name}
@@ -82,7 +84,9 @@ export const FormInput =
             <ErrorMessage
               errors={errors}
               name={name as any}
-              render={({ message }) => <p style={{ color: "red", paddingLeft: 10 }}>{message}</p>}
+              render={({ message }) => (
+                <p style={{ color: "red", paddingLeft: 10 }}>{message}</p>
+              )}
             />
           </Box>
         </VStack>

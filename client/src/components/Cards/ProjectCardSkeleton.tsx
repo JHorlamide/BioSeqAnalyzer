@@ -15,7 +15,7 @@ import {
 const ProjectCardSkeleton = () => {
   return (
     <Fragment>
-      <Flex gap={2}>
+      <Flex gap={6}>
         {[1, 2, 3, 4].map((item) => (
           <Card
             key={item}

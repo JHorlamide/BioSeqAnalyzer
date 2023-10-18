@@ -21,7 +21,7 @@ export const DNASeqProjectAPI = createApi({
   reducerPath: DNA_PROJECT_API_REDUCER_KEY,
 
   tagTypes: ["GetAllDNAProjects", "GetDNAProjectDetails", "CreateDNAProject"],
-  
+
   baseQuery: fetchBaseQuery({
     baseUrl: DNA_SEQUENCE_API_BASE_URL,
     prepareHeaders: async (headers, { getState }) => {
@@ -38,7 +38,7 @@ export const DNASeqProjectAPI = createApi({
   }),
 
   endpoints: (builder) => ({
-    createProject: builder.mutation<DNASeqProjects, ICreateProject>({
+    createProject: builder.mutation<DNASeqProjects, ICreateProject | FormData>({
       query: (data) => ({
         url: "/",
         method: "POST",
@@ -54,7 +54,7 @@ export const DNASeqProjectAPI = createApi({
         params: { page, name, topology, nucleotide_type: nucleotideType }
       }),
 
-      providesTags: ["GetAllDNAProjects"]
+      providesTags: ["GetAllDNAProjects"],
     }),
 
     getProject: builder.query<IGetProjectRes, IGetProjectParam>({

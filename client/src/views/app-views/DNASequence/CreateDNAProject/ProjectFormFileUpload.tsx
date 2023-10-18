@@ -1,11 +1,6 @@
 /* Libraries */
 import { FieldErrors, UseFormReturn } from "react-hook-form";
-
-/* Application Modules */
-import Button from "../../../../components/CustomBtn/Button";
-import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
-import { ProjectFormData, CreateProjectFormField } from "../../../../schemas/DNASequence/DNASequenceProjectSchema";
-
+import { AiOutlineCloudUpload } from "react-icons/ai";
 
 /* Chakra UI */
 import {
@@ -15,11 +10,13 @@ import {
   VStack,
   Center,
   HStack,
-  FormLabel,
 } from "@chakra-ui/react";
-import { AiOutlineCloudUpload } from "react-icons/ai";
+
+/* Application Modules */
+import Button from "../../../../components/CustomBtn/Button";
 import { nucleotideTypeOptions, topologyOptions } from "./CONSTANTS";
-import { FormInput } from "../../../../components/CustomInput/FormInput/FormInput";
+import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
+import { ProjectFormData, CreateProjectFormField } from "../../../../schemas/DNASequence/DNASequenceProjectSchema";
 
 export interface ProjectFormProps {
   projectData?: ProjectFormData;
@@ -30,8 +27,6 @@ export interface ProjectFormProps {
   register: UseFormReturn<ProjectFormData>['register'];
   handleSubmit: UseFormReturn<ProjectFormData>['handleSubmit'];
   handleDrop: (event: React.DragEvent<HTMLDivElement>) => void;
-  handleDragOver: (event: React.DragEvent<HTMLDivElement>) => void;
-  handleDragLeave: (event: React.DragEvent<HTMLDivElement>) => void,
   handleFileInputChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
@@ -45,10 +40,8 @@ const ProjectFormFileUpload = (props: ProjectFormProps) => {
     register,
     handleSubmit,
     submitProject,
+    handleDrop,
     handleFileInputChange,
-    handleDragLeave,
-    handleDragOver,
-    handleDrop
   } = props;
 
   return (
@@ -112,26 +105,12 @@ const ProjectFormFileUpload = (props: ProjectFormProps) => {
               paddingX={3}
               width="full"
             >
-              {/* <FormControl>
-                <FormLabel>Select File</FormLabel>
-
-                <FormInput<CreateProjectFormField>
-                  name="file"
-                  type="file"
-                  accept=".txt, .gbk, .gb, .genbank, .fa, .fasta, .dna, .seq"
-                  register={register}
-                  errors={errors}
-                />
-              </FormControl> */}
-
               <Box
                 width="full"
                 padding={4}
-                border="2px dotted white"
                 borderRadius="md"
+                border="2px dotted white"
                 textAlign="center"
-                onDragOver={handleDragOver}
-                onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
               >
                 <HStack spacing={4}>

@@ -12,7 +12,9 @@ export interface ReqQueryParam {
   nucleotideType: string;
 }
 
-export interface ICreateProject extends CreateProjectFormField { }
+export interface ICreateProject extends CreateProjectFormField {
+  file?: File;
+}
 
 export interface IGetProjectsRes extends Response {
   count: number,
@@ -21,7 +23,9 @@ export interface IGetProjectsRes extends Response {
   results: DNASeqProjects[]
 }
 
-export interface IGetProjectRes extends CreateProjectFormField { };
+export interface IGetProjectRes extends CreateProjectFormField {
+  file: File;
+};
 
 export interface IGetProjectParam {
   projectId: string;

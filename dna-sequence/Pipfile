@@ -10,7 +10,7 @@ djangorestframework = "*"
 python-dotenv = "*"
 drf-nested-routers = "*"
 django-filter = "*"
-boto3 = "*"
+boto3 = "==1.4.4"
 django-storages = "*"
 
 [dev-packages]

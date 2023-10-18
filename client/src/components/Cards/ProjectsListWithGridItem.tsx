@@ -43,7 +43,7 @@ const ProjectsListWithGridItem = (props: Props) => {
 
       return {
         projectId: id,
-        projectTitle: name,
+        projectTitle: String(name),
         updatedAt: date_of_submission
       };
     }

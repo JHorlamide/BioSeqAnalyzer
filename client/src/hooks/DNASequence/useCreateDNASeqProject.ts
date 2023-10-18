@@ -1,4 +1,4 @@
-/* React */ 
+/* React */
 import { useState } from "react";
 
 /* Libraries */
@@ -10,8 +10,8 @@ import { toast } from "react-hot-toast";
 import utils from "../../utils";
 import useNavigation from "../useNavigation";
 import useErrorToast from "../useErrorToast";
-import { ProjectFormData, projectSchema } from "../../schemas/DNASequence/DNASequenceProjectSchema";
 import { APP_PREFIX_PATH } from "../../config/AppConfig";
+import { ProjectFormData, projectSchema } from "../../schemas/DNASequence/DNASequenceProjectSchema";
 import { useCreateProjectMutation, useGetProjectQuery, useUpdateProjectMutation } from "../../services/DNASequence/DNASeqProjectAPI";
 
 const UNSUPPORTED_TOPOLOGY_ERROR = "Currently circular RNA sequences is not supported.";
@@ -28,7 +28,7 @@ export const useCreateDNASeqProject = () => {
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
 
   const submitProject = async (data: ProjectFormData) => {
-    const formData = utils.getFilledForm(data);
+    const formData = utils.getFilledFormData(data);
     const { nucleotide_type, topology } = formData;
 
     if (nucleotide_type === "R" && topology === "C") {
@@ -43,7 +43,8 @@ export const useCreateDNASeqProject = () => {
       }
     } catch (error: any) {
       const errorField = Object.keys(error.data)[0];
-      const errorMessage = error.error || `${errorField}: ${error.data[errorField][0]}`;
+      const message = error.data[errorField] || error.data[errorField][0];
+      const errorMessage = error.error || `${errorField}: ${message}`;
       handleError(errorMessage);
     }
   };
@@ -71,16 +72,6 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
 
-  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragOver(true);
-  };
-
-  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    setIsDragOver(false);
-  };
-
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragOver(false);
@@ -96,35 +87,32 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
     };
   };
 
-  const getReqBody = (projectFormData: ProjectFormData) => {
-    const { nucleotide_type, topology } = projectFormData;
-    
-    const formData = new FormData();
-    formData.append("name", projectFile ? projectFile.name : "");
-    formData.append("file", projectFile as File);
-    formData.append("topology", topology);
-    formData.append("nucleotide_type", nucleotide_type);
-
-    return formData;
-  }
-
   const submitProject = async (data: ProjectFormData) => {
-    const formData = utils.getFilledForm(data);
-    const { nucleotide_type, topology } = formData;
+    const filledFormData = utils.getFilledFormData(data);
+    const { nucleotide_type, topology } = filledFormData;
 
     if (nucleotide_type === "R" && topology === "C") {
       return handleError(UNSUPPORTED_TOPOLOGY_ERROR)
     }
 
+    const formData = new FormData();
+
+    const projectName = String(projectFile && projectFile.name.split(".")[0]);
+    formData.append("name", projectName);
+    formData.append("nucleotide_type", nucleotide_type);
+    formData.append("topology", topology);
+    formData.append("file", projectFile as File);
+
     try {
-      const response = await createProject({...getReqBody(formData) as any}).unwrap();
+      const response = await createProject(formData).unwrap();
       if (response.name !== undefined) {
         toast.success("Project created successfully");
         return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
       }
     } catch (error: any) {
       const errorField = Object.keys(error.data)[0];
-      const errorMessage = error.error || `${errorField}: ${error.data[errorField][0]}`;
+      const message = error.data[errorField] || error.data[errorField][0];
+      const errorMessage = error.error || `${errorField}: ${message}`;
       handleError(errorMessage);
     }
   };
@@ -137,8 +125,6 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
     getValues,
     submitProject,
     handleSubmit,
-    handleDragOver,
-    handleDragLeave,
     handleDrop,
     handleFileInputChange,
   };
@@ -157,7 +143,7 @@ export const useUpdateDNASeqProject = (projectId: string) => {
   const { data } = useGetProjectQuery({ projectId });
 
   const submitProject = async (data: ProjectFormData) => {
-    const formData = utils.getFilledForm(data);
+    const formData = utils.getFilledFormData(data);
     const { nucleotide_type, topology } = formData;
 
     if (nucleotide_type === "R" && topology === "C") {

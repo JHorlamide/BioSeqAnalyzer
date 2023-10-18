@@ -9,7 +9,7 @@ import useParseSeq from "../../../../hooks/useParseSeq";
 const SequenceOverview = () => {
   const { projectId } = useParams();
   const { data } = useGetProjectQuery({ projectId: String(projectId) });
-  const { bases }  = data || {};
+  const { bases } = data || {};
   const { seqVizData, loading } = useParseSeq(null);
 
   const seqVizStyle = {

@@ -42,7 +42,7 @@ export const useCreateProteinProject = () => {
 
   const submitProject = async (data: ProjectFormData) => {
     try {
-      const projectInputData = utils.getFilledForm(data);
+      const projectInputData = utils.getFilledFormData(data);
       const response = await createProject(projectInputData).unwrap();
       if (response.status === "Success") {
         toast.success(response.message);
@@ -99,7 +99,7 @@ export const useUpdateProject = (projectId: string) => {
 
   const submitProject = async (data: ProjectFormData) => {
     try {
-      const projectInputData = utils.getFilledForm(data);
+      const projectInputData = utils.getFilledFormData(data);
       const response = await updateProject({ projectId, data: projectInputData }).unwrap();
       if (response.status === "Success") {
         toast.success(response.message);

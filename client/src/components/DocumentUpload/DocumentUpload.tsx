@@ -42,6 +42,8 @@ const DocumentUpload = (props: Props) => {
     try {
       const form = new FormData();
       form.append("file", file);
+      console.log(form);
+
       const response = await uploadProjectFile({ data: form, projectId }).unwrap();
 
       if (response.status === "Success") {

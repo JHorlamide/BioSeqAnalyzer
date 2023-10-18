@@ -12,7 +12,7 @@ class Utils {
     return error;
   }
 
-  static getFilledForm(projectField: any): any {
+  static getFilledFormData(projectField: any): any {
     return Object.fromEntries(Object.entries(projectField)
       .filter(([_, value]) => value !== "")) as typeof projectField;
   }

@@ -40,21 +40,26 @@ const DNASequenceDashboard = () => {
 
   const isProjectListEmpty = !projects?.results || projects?.results.length === 0;
 
+  const handlePageChange = (page: number) => {
+    dispatch(setCurrentPage(page));
+    refetch();
+  };
+
+  const handleDataRefetch = () => {
+    dispatch(clearFilterState());
+    refetch();
+  };
+
   const goToCreateProject = () => {
-    handleNavigate(`${APP_PREFIX_PATH}/create-dna-project`)
+    handleNavigate(`${APP_PREFIX_PATH}/create-dna-project`);
   };
 
   const goToUpdateProjectPage = (projectId: string) => {
-    handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/update/${projectId}`)
+    handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/update/${projectId}`);
   };
 
   const goToProjectDetailsPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/overview/${projectId}`)
-  };
-
-  const handlePageChange = (page: number) => {
-    dispatch(setCurrentPage(page));
-    refetch();
   };
 
   async function handleDeleteProject(projectId: string) {
@@ -63,11 +68,6 @@ const DNASequenceDashboard = () => {
     } catch (error: any) {
       handleError(error);
     }
-  }
-
-  const handleDataRefetch = () => {
-    dispatch(clearFilterState());
-    refetch();
   }
 
   const handleSearchQuery = useMemo(() =>
@@ -93,10 +93,11 @@ const DNASequenceDashboard = () => {
       />
 
       <Box marginTop={5} width="full" height="full">
-        {isLoading && <ProjectCardSkeleton />}
-
-        {isProjectListEmpty ? (
-          <EmptyProject projectType="DNA" goToCreateProject={goToCreateProject} />
+        {isLoading ? <ProjectCardSkeleton /> : isProjectListEmpty ? (
+          <EmptyProject
+            projectType="DNA"
+            goToCreateProject={goToCreateProject}
+          />
         ) : (
           <ProjectsListWithGridItem
             dnaSeqProjects={projects.results}

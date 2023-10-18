@@ -14,13 +14,13 @@ export enum TopologyType {
 
 export type InputName =
   | "name"
+  | "file"
   | "bases"
   | "description"
   | "nucleotide_type"
   | "topology"
 
 export const projectSchema = z.object({
-  // file: z.any().optional(),
   name: z.string().min(5, { message: "Project name is required" }).optional(),
   bases: z.string().min(10, { message: "Bases must be grater than 10" }).optional(),
   description: z.string().optional(),
@@ -38,7 +38,6 @@ export const projectSchema = z.object({
 export type ProjectFormData = z.infer<typeof projectSchema>;
 
 export type CreateProjectFormField = {
-  // file?: any;
   name?: string;
   bases?: string;
   description?: string;

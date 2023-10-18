@@ -3,10 +3,6 @@ import re
 from django.db import models
 from django.core.exceptions import ValidationError
 
-def validate_string(value):
-    if not isinstance(value, str):
-        raise ValidationError('Please enter a valid input', code=400)
-    
 def validate_no_emoji(value):
     if not isinstance(value, str):
         raise ValidationError('Please enter a valid input', code=400)
@@ -34,7 +30,7 @@ def validate_no_emoji(value):
 class DNASequence(models.Model):
     DNA_NUCLEOTIDE = "D"
     RNA_NUCLEOTIDE = "R"
-    
+
     LINEAR_TOPOLOGY = "L"
     CIRCULAR_TOPOLOGY = "C"
     BOTH_TOPOLOGY = "B"
@@ -52,24 +48,32 @@ class DNASequence(models.Model):
         (BOTH_FLIP_TOPOLOGY, "Both Flip"),
     ]
 
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4,)
-    bases = models.TextField(validators=[validate_string, validate_no_emoji])
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    role = models.CharField(max_length=5, null=True, blank=True)
     file = models.FileField(blank=True, null=True)
+    date_of_submission = models.DateTimeField(auto_now_add=True)
+    user_id = models.UUIDField(default=uuid.uuid4, editable=False)
+    nucleotide_type = models.CharField(max_length=4, choices=NUCLEOTIDE_TYPES, default=DNA_NUCLEOTIDE)
+    topology = models.CharField(max_length=10, choices=TOPOLOGY_TYPES, default=CIRCULAR_TOPOLOGY)
+    bases = models.TextField(
+        null=True,
+        blank=True,
+        validators=[validate_no_emoji]
+    )
     name = models.CharField(
         max_length=100,
-        validators=[validate_string, validate_no_emoji]
+        validators=[validate_no_emoji]
     )
     description = models.TextField(
         null=True,
         blank=True,
         error_messages={"required": "Enter a valid description"},
-        validators=[validate_string, validate_no_emoji]
+        validators=[validate_no_emoji]
     )
-    date_of_submission = models.DateTimeField(auto_now_add=True)
-    user_id = models.UUIDField(default=uuid.uuid4, editable=False)
-    nucleotide_type = models.CharField(max_length=4, choices=NUCLEOTIDE_TYPES, default=DNA_NUCLEOTIDE)
-    topology = models.CharField(max_length=10, choices=TOPOLOGY_TYPES, default=CIRCULAR_TOPOLOGY)
 
+    class Meta:
+        ordering = ["date_of_submission"]
+        
     def __str__(self) -> str:
         return self.name
 

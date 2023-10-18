@@ -27,8 +27,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "1234"
 
-  mysql-server:
-    container_name: mysql-server
+  mysql:
+    container_name: mysql
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -63,7 +63,7 @@ services:
       - ../UserService/app:/user-service/app:cached,ro
       - /user-service/node_modules
     env_file: [ ../UserService/.env ]
-    depends_on: [ "mysql-server" ]
+    depends_on: [ "mysql" ]
 
   protein-analyzer:
     container_name: protein-analyzer

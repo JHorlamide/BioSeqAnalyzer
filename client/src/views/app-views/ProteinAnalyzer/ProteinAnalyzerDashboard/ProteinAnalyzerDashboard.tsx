@@ -50,19 +50,19 @@ const ProteinAnalyzerDashboard = () => {
   const handleDataRefetch = () => {
     dispatch(clearFilterState());
     refetch();
-  }
+  };
 
   const goToCreateProject = () => {
     handleNavigate(`${APP_PREFIX_PATH}/create-protein-project`);
-  }
+  };
 
   const goToUpdateProjectPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/protein-project/update/${projectId}`)
-  }
+  };
 
   const goToProjectDetailsPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/protein-project/overview/${projectId}`)
-  }
+  };
 
   async function handleDeleteProject(projectId: string) {
     try {
@@ -97,10 +97,11 @@ const ProteinAnalyzerDashboard = () => {
       />
 
       <Box marginTop={5} width="full" height="full">
-        {isLoading && <ProjectCardSkeleton />}
-        
-        {isProjectListEmpty ? (
-          <EmptyProject projectType="Protein" goToCreateProject={goToCreateProject} />
+        {isLoading ? <ProjectCardSkeleton /> : isProjectListEmpty ? (
+          <EmptyProject
+            projectType="Protein"
+            goToCreateProject={goToCreateProject}
+          />
         ) : (
           <ProjectsListWithGridItem
             proteinProjects={projects.data.projects}
@@ -109,7 +110,6 @@ const ProteinAnalyzerDashboard = () => {
             goToProjectDetailsPage={goToProjectDetailsPage}
           />
         )}
-
         <Pagination
           currentPage={filters.currentPage}
           totalPages={TOTAL_PAGES}
