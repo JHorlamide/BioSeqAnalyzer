@@ -4,7 +4,12 @@ import { Readable } from "stream";
 /* Libraries */
 import csvParser from "csv-parser";
 import { v4 as uuidV4 } from "uuid";
-import { GetObjectCommand, PutObjectCommand, S3, S3Client } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  GetObjectCommand,
+  PutObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 
 /* Application Modules */
 import config from "../../config/appConfig";
@@ -13,7 +18,7 @@ import { CSVColumnDataType } from "../types/types";
 import { ServerError } from "../../common/exceptions/ApiError";
 import { logger } from "../../config/logger";
 
-class S3Service {
+class FileService {
   s3Client = new S3Client({});
 
   public async uploadFileToBucket(file: Express.Multer.File) {
@@ -26,8 +31,8 @@ class S3Service {
     });
 
     try {
-      const uploadResponse = await this.s3Client.send(command);
-      return { uploadResponse, bucketKey }
+      const response = await this.s3Client.send(command);
+      return { response, bucketKey };
     } catch (error: any) {
       throw new ServerError(error.message);
     }
@@ -43,7 +48,22 @@ class S3Service {
       const response = await this.s3Client.send(command);
       return await this.parseS3ReadStream(response.Body as Readable);
     } catch (error: any) {
-      logger.info(error.message)
+      logger.error(error.message);
+      throw new ServerError(error.message);
+    }
+  }
+
+  public async deleteFile(fileName: string) {
+    const command = new DeleteObjectCommand({
+      Bucket: config.aws.bucketName,
+      Key: fileName
+    });
+
+    try {
+      const response = await this.s3Client.send(command);
+      return response;
+    } catch (error: any) {
+      logger.error(error.message);
       throw new ServerError(error.message);
     }
   }
@@ -85,12 +105,14 @@ class S3Service {
             resolve(results);
           })
           .on("error", (error: Error) => {
+            logger.error(error.message);
             reject(error);
           });
       });
 
       return csvData;
     } catch (error: any) {
+      logger.error(error.message);
       throw new ServerError(`${ERR_MSG.PARSE_CSV_FAILED}: ${error.message}`);
     }
   }
@@ -100,10 +122,10 @@ class S3Service {
     const hasExpectedColumns = csvData.length > 0 && expectedColumns.every((column) => {
       return csvData[0].hasOwnProperty(column);
     });
+    
     const hasExpectedWildTypeSequence = csvData.some((row) => row.muts === 'WT');
-
     return hasExpectedColumns && hasExpectedWildTypeSequence;
   }
 }
 
-export default new S3Service;
+export default new FileService;

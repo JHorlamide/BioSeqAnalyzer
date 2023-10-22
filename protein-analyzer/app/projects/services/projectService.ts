@@ -2,7 +2,7 @@
 import config from "../../config/appConfig";
 import projectRepository from "../repository/repository";
 import uniprotService from "./uniprot.service";
-import s3Service from "../fileService/fileService";
+import fileService from "../fileService/fileService";
 import { ERR_MSG } from "../types/constants";
 import { ClientError, NotFoundError, ServerError } from "../../common/exceptions/ApiError";
 import {
@@ -160,6 +160,7 @@ class ProjectService {
 
       if (!project) throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
 
+      await fileService.deleteFile(project.projectFileName);
       return project;
     } catch (error: any) {
       throw new ServerError(error.message);
@@ -169,14 +170,12 @@ class ProjectService {
   public async uploadProjectFile(projectId: string, file: Express.Multer.File) {
     try {
       const project = await projectRepository.getProjectById(projectId);
-
       if (!project) {
         throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
       }
 
-      const { uploadResponse, bucketKey } = await s3Service.uploadFileToBucket(file);
-
-      if (!uploadResponse || uploadResponse.$metadata.httpStatusCode !== 200) {
+      const { response, bucketKey } = await fileService.uploadFileToBucket(file);
+      if (!response || response.$metadata.httpStatusCode !== 200) {
         throw new ServerError(ERR_MSG.FILE_UPLOAD_ERROR);
       }
 
@@ -383,7 +382,7 @@ class ProjectService {
   private getFileCSVData = async (projectId: string) => {
     try {
       const projectFileName = await this.getProjectFileName(projectId);
-      return await s3Service.downloadAndParseFileFromBucket(projectFileName);
+      return await fileService.downloadAndParseFileFromBucket(projectFileName);
     } catch (error: any) {
       throw new ServerError(error.message);
     }

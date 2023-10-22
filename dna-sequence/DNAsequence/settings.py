@@ -145,26 +145,39 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'core.User'
 
-AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
+AWS_ACCESS_KEY_ID = str(os.getenv('AWS_ACCESS_KEY_ID'))
+AWS_SECRET_ACCESS_KEY = str(os.getenv('AWS_SECRET_ACCESS_KEY'))
+AWS_STORAGE_BUCKET_NAME = str(os.getenv('AWS_BUCKET_NAME'))
+AWS_S3_SIGNATURE_VERSION = 's3v4'
+AWS_S3_REGION_NAME = str(os.getenv('AWS_REGION'))
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None
+AWS_S3_VERIFY = True
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' 
 
-if AWS_ACCESS_KEY_ID:
-    AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_BUCKET_NAME')
-    AWS_S3_REGION_NAME= os.getenv('AWS_REGION')
-    AWS_S3_FILE_OVERWRITE = False
-    AWS_DEFAULT_ACL = None
-    AWS_S3_VERIFY = True
-    AWS_LOCATION = 'static'
-    AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-    AWS_S3_OBJECT_PARAMETERS = { 'CacheControl': 'max-age=86400'}
-    MEDIA_URL = 'https://s3.amazonaws.com:443/%s/media/' % AWS_STORAGE_BUCKET_NAME
-    STATIC_URL = 'https://s3.amazonaws.com:443/%s/static/' % AWS_STORAGE_BUCKET_NAME
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-else:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'
+# if str(os.getenv('AWS_ACCESS_KEY_ID')) is not None:
+#     AWS_ACCESS_KEY_ID = str(os.getenv('AWS_ACCESS_KEY_ID'))
+#     AWS_SECRET_ACCESS_KEY = str(os.getenv('AWS_SECRET_ACCESS_KEY'))
+#     AWS_STORAGE_BUCKET_NAME = str(os.getenv('AWS_BUCKET_NAME'))
+#     AWS_S3_REGION_NAME= str(os.getenv('AWS_REGION'))
+#     AWS_S3_FILE_OVERWRITE = False
+#     AWS_DEFAULT_ACL = None
+#     AWS_S3_VERIFY = True
+#     AWS_LOCATION = 'static'
+#     # AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+#     AWS_S3_OBJECT_PARAMETERS = { 'CacheControl': 'max-age=86400'}
+#     MEDIA_URL = 'https://s3.amazonaws.com:443/%s/media/' % AWS_STORAGE_BUCKET_NAME
+#     STATIC_URL = 'https://s3.amazonaws.com:443/%s/static/' % AWS_STORAGE_BUCKET_NAME
+#     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    
+#     AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+#     AWS_S3_OBJECT_PARAMETERS = { 'CacheControl': 'max-age=86400'}
+#     AWS_LOCATION = 'static'
+#     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# else:
+#     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+#     MEDIA_URL = '/media/'
+#     MEDIA_ROOT = BASE_DIR / 'media'
 
 
  
