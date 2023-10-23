@@ -51,7 +51,7 @@ services:
   user-service:
     container_name: user-service
     build:
-      context: ../UserService
+      context: ../user-service
       target: development
     command: npm run dev
     tty: true
@@ -60,9 +60,9 @@ services:
     networks:
       - bioseq-networks
     volumes:
-      - ../UserService/app:/user-service/app:cached,ro
+      - ../user-service/app:/user-service/app:cached,ro
       - /user-service/node_modules
-    env_file: [ ../UserService/.env ]
+    env_file: [ ../user-service/.env ]
     depends_on: [ "mysql" ]
 
   protein-analyzer:

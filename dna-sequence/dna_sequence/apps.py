@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class SequenceConfig(AppConfig):
+class DnaSequenceConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'sequence'
+    name = 'dna_sequence'

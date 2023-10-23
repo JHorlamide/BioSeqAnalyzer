@@ -143,7 +143,7 @@ const ProjectForm = (props: ProjectFormProps) => {
 
                   <FormInput<IProject>
                     name="uniprotId"
-                    placeholder="Enter Uniprot ID"
+                    placeholder="Enter Uniprot ID. e.g: Q6SJ61"
                     rules={{ required: "Uniprot ID is required" }}
                     register={register}
                     errors={errors}
@@ -161,7 +161,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                 <FormLabel>Structure (Optional)</FormLabel>
                 <FormInput<IProject>
                   name="proteinPDBID"
-                  placeholder="Enter PDB ID here..."
+                  placeholder="Enter PDB ID here. e.g: 1BTL"
                   register={register}
                   errors={errors}
                   inputLeftElement={{

@@ -22,7 +22,7 @@ class FileService {
   s3Client = new S3Client({});
 
   public async uploadFileToBucket(file: Express.Multer.File) {
-    const bucketKey = `upload/${uuidV4()}-${file.originalname}`;
+    const bucketKey = `protein-analyzer/${uuidV4()}-${file.originalname}`;
 
     const command = new PutObjectCommand({
       Bucket: config.aws.bucketName,
