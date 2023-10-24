@@ -1,6 +1,15 @@
 import { CreateProjectFormField } from "../../schemas/DNASequence/DNASequenceProjectSchema";
 
-export interface DNASeqProjects extends CreateProjectFormField {
+// export interface ICreateDNASeqProjectsRes {
+//   status: string;
+//   message: string;
+//   data: CreateProjectFormField & {
+//     id: string;
+//     date_of_submission: string;
+//   }
+// }
+
+export interface ICreateDNASeqProjectsRes extends CreateProjectFormField {
   id: string;
   date_of_submission: string;
 }
@@ -20,7 +29,7 @@ export interface IGetProjectsRes extends Response {
   count: number,
   next: string,
   previous: string,
-  results: DNASeqProjects[]
+  results: ICreateDNASeqProjectsRes[]
 }
 
 export interface IGetProjectRes extends CreateProjectFormField {

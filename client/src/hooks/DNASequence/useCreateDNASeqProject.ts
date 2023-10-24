@@ -12,7 +12,11 @@ import useNavigation from "../useNavigation";
 import useErrorToast from "../useErrorToast";
 import { APP_PREFIX_PATH } from "../../config/AppConfig";
 import { ProjectFormData, projectSchema } from "../../schemas/DNASequence/DNASequenceProjectSchema";
-import { useCreateProjectMutation, useGetProjectQuery, useUpdateProjectMutation } from "../../services/DNASequence/DNASeqProjectAPI";
+import {
+  useCreateProjectMutation,
+  useGetProjectQuery,
+  useUpdateProjectMutation
+} from "../../services/DNASequence/DNASeqProjectAPI";
 
 const UNSUPPORTED_TOPOLOGY_ERROR = "Currently circular RNA sequences is not supported.";
 
@@ -37,6 +41,7 @@ export const useCreateDNASeqProject = () => {
 
     try {
       const response = await createProject(formData).unwrap();
+
       if (response.name !== undefined) {
         toast.success("Project created successfully");
         return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
@@ -105,6 +110,7 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
 
     try {
       const response = await createProject(formData).unwrap();
+
       if (response.name !== undefined) {
         toast.success("Project created successfully");
         return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)

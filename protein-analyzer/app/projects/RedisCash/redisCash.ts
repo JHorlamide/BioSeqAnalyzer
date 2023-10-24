@@ -38,14 +38,14 @@ class RedisCache {
     }
   }
 
-  private async initializeRedis() {
-    try {
-      await this.client.connect();
-    } catch (error: any) {
-      logger.error(error.message);
-      throw new ServerError(error.message);
-    }
-  }
+  // private async initializeRedis() {
+  //   try {
+  //     await this.client.connect();
+  //   } catch (error: any) {
+  //     logger.error(error.message);
+  //     throw new ServerError(error.message);
+  //   }
+  // }
 }
 
 export default new RedisCache();

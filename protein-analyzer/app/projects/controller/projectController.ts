@@ -14,7 +14,6 @@ class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
     const authUser = getAuthUser(req.headers["x-decoded-user"])
     const { userId } = authUser;
-
     const project = await projectService.createProject({ user: userId, ...req.body });
     responseHandler.successfullyCreated(RES_MSG.PROJECT_CREATED, project, res);
   });
@@ -52,25 +51,21 @@ class ProjectController {
 
   public getProjectDetail = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
-
     const project = await projectService.getProjectById(projectId);
     responseHandler.successResponse(RES_MSG.PROJECT_FETCHED, project, res);
   })
 
   public updateProjectDetails = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
-
     const updatedProject = await projectService.updateProject({
       projectId,
       projectData: req.body
     });
-
     responseHandler.successResponse(RES_MSG.PROJECT_UPDATED, updatedProject, res);
   })
 
   public deleteProject = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
-
     await projectService.deleteProject(projectId);
     responseHandler.noContent(RES_MSG.PROJECT_DELETED, res);
   })

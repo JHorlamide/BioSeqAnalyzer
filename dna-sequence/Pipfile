@@ -10,9 +10,10 @@ djangorestframework = "*"
 python-dotenv = "*"
 drf-nested-routers = "*"
 django-filter = "*"
-django-storages = "*"
 boto3 = "*"
 urllib3 = "*"
+install = "*"
+django-storages = "*"
 
 [dev-packages]
 

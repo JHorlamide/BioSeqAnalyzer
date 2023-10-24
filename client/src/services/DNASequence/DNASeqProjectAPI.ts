@@ -6,7 +6,7 @@ import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
 import { DNA_SEQUENCE_API_BASE_URL } from "../../config/AppConfig";
 import {
-  DNASeqProjects,
+  ICreateDNASeqProjectsRes,
   ICreateProject,
   IGetProjectParam,
   IGetProjectRes,
@@ -38,7 +38,7 @@ export const DNASeqProjectAPI = createApi({
   }),
 
   endpoints: (builder) => ({
-    createProject: builder.mutation<DNASeqProjects, ICreateProject | FormData>({
+    createProject: builder.mutation<ICreateDNASeqProjectsRes, ICreateProject | FormData>({
       query: (data) => ({
         url: "/",
         method: "POST",

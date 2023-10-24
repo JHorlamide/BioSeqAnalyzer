@@ -76,6 +76,3 @@ class DNASequence(models.Model):
         
     def __str__(self) -> str:
         return self.name
-
-class UploadFileForm(models.Model):
-    file = models.FileField()
