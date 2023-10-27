@@ -6,14 +6,16 @@ interface Props {
 
 const AppLoader = ({ spinnerProps, ...rest }: Props) => {
   return (
-    <Center justifyContent="center" alignItems="center" {...spinnerProps} {...rest}>
+    <Center justifyContent="center" alignItems="center">
       <Spinner
         mt={100}
-        thickness="4px"
-        speed="0.65s"
-        emptyColor="white"
-        color="blue"
         size="xl"
+        speed="0.65s"
+        color="blue"
+        thickness="4px"
+        emptyColor="white"
+        {...spinnerProps}
+        {...rest}
       />
     </Center>
   );

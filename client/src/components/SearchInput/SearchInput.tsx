@@ -40,13 +40,13 @@ const SearchInput = (props: SearchInputProps) => {
           />
 
           <Input
-            _placeholder={{ fontSize: "15px", color: "white" }}
             pl="35px"
             color="white"
             border="1px solid white"
             focusBorderColor="white"
             borderRadius="full"
             placeholder="Search projects"
+            _placeholder={{ fontSize: "15px", color: "white" }}
             onChange={handleSearchQuery}
           />
         </InputGroup>

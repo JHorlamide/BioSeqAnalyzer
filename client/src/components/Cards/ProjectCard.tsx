@@ -12,7 +12,7 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import CardMenu from "./CardMenu";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 
-/* Libraries / Packages */
+/* Chakra UI */
 import {
   Box,
   Card,
@@ -20,6 +20,8 @@ import {
   CardHeader,
   Stack,
   Text,
+  Spinner,
+  Flex,
   useDisclosure
 } from "@chakra-ui/react";
 import useNavigation from "../../hooks/useNavigation";
@@ -40,8 +42,8 @@ const ProjectCard = (props: ProjectCardProps) => {
 
   const {
     updatedAt,
-    projectTitle,
     projectId,
+    projectTitle,
     handleDeleteProject,
     goToUpdateProjectPage,
     goToProjectDetailsPage
@@ -128,7 +130,19 @@ const ProjectCard = (props: ProjectCardProps) => {
               {projectTitle}
             </Text>
 
-            <Text color="gray.300">{formattedDate}</Text>
+            <Flex justifyContent="space-between">
+              <Text color="gray.300">{formattedDate}</Text>
+
+              {/* {isLoadingDelete && (
+                <Spinner
+                  size="sm"
+                  speed="0.65s"
+                  thickness="4px"
+                  emptyColor="brand_blue.200"
+                />
+              )} */}
+            </Flex>
+
           </Stack>
         </CardBody>
       </Card>

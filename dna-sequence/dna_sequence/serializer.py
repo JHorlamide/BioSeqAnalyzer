@@ -12,12 +12,6 @@ class DNASequenceSerializer(serializers.ModelSerializer):
         return created_dna
     
     
-    # def save(self, **kwargs):
-    #     user_id = self.context["user_id"]
-    #     created_dna = DNASequence.objects.create(user_id=user_id, **self.validated_data)
-    #     return created_dna
-    
-    
     class Meta:
         model = DNASequence
         fields = ["id", "user_id", "name", "bases", "description", "file",

@@ -13,16 +13,20 @@ import useErrorToast from "../../../../hooks/useErrorToast";
 import Pagination from "../../../../components/Pagination/Pagination";
 import SearchInput from "../../../../components/SearchInput/SearchInput";
 import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
+import ProjectCardSkeleton from "../../../../components/Cards/ProjectCardSkeleton";
 import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
 import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListWithGridItem";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useGetProjectsQuery, useDeleteProjectMutation } from "../../../../services/proteinProject/proteinProjectAPI";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { clearFilterState, setSearQuery, setCurrentPage } from "../../../../store/slices/proteinAnalyzerFilter";
-import ProjectCardSkeleton from "../../../../components/Cards/ProjectCardSkeleton";
 
 const DEBOUNCE_TIME_MS = 1000;
 const TOTAL_PAGES = 10;
+const searchInputStyles = {
+  marginTop: -16,
+  marginBottom: 5,
+};
 
 const ProteinAnalyzerDashboard = () => {
   const dispatch = useAppDispatch();
@@ -78,11 +82,6 @@ const ProteinAnalyzerDashboard = () => {
     }, DEBOUNCE_TIME_MS),
     []);
 
-  const searchInputStyles = {
-    marginTop: -16,
-    marginBottom: 5,
-  };
-
   return (
     <Box width="full">
       <SearchInput
@@ -110,6 +109,7 @@ const ProteinAnalyzerDashboard = () => {
             goToProjectDetailsPage={goToProjectDetailsPage}
           />
         )}
+
         <Pagination
           currentPage={filters.currentPage}
           totalPages={TOTAL_PAGES}

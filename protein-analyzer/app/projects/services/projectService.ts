@@ -99,11 +99,15 @@ class ProjectService {
     try {
       const project = await this.getProjectById(projectId);
 
-      if (!project) throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
+      if (!project) {
+        throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
+      }
 
       const { projectFileName } = project;
 
-      if (!projectFileName) throw new ClientError(ERR_MSG.NO_FILE_UPLOAD);
+      if (!projectFileName) {
+        throw new ClientError(ERR_MSG.NO_FILE_UPLOAD);
+      }
 
       return projectFileName;
     } catch (error: any) {
@@ -160,7 +164,10 @@ class ProjectService {
 
       if (!project) throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
 
-      await fileService.deleteFile(project.projectFileName);
+      if (project.projectFileName) {
+        await fileService.deleteFile(project.projectFileName);
+      }
+
       return project;
     } catch (error: any) {
       throw new ServerError(error.message);

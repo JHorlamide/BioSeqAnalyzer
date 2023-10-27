@@ -17,7 +17,7 @@ import SequenceMap from "../components/SequenceMap/SequenceMap";``
 import DNASequenceDashboard from "../views/app-views/DNASequence/DNASeqDashboard/DNASequenceDashboard";
 import CreateProject from "../views/app-views/DNASequence/CreateDNAProject/CreateProjectView";
 import UpdateDNASeqProjectForm from "../views/app-views/DNASequence/CreateDNAProject/UpdateDNASeqProjectForm";
-import SequenceOverview from "../views/app-views/DNASequence/SequenceOverview/SequenceOverview";
+import SequenceOverview from "../views/app-views/DNASequence/SequenceOverview/DNASequenceMap";
 import ProteinSequenceMap from "../views/app-views/ProteinAnalyzer/ProteinSequenceMap/ProteinSequenceMap";
 
 interface IRoute {

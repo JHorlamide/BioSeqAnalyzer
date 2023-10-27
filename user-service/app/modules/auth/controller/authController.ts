@@ -27,7 +27,7 @@ class AuthController {
     delete req.body.refreshKey;
 
     const userAuth = { accessToken, refreshToken: hash, user: req.body };
-    responseHandler.successResponse("User Authenticated", userAuth, res);
+    responseHandler.successResponse("Login successful", userAuth, res);
   })
 }
 

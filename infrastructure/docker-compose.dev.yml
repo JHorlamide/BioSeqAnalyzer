@@ -36,7 +36,7 @@ services:
       - bioseq-networks
     environment:
       MYSQL_ROOT_PASSWORD: "password"
- 
+
   mysql2:
     container_name: mysql2
     image: mysql
@@ -94,7 +94,7 @@ services:
       dockerfile: ../dna-sequence/Dockerfile
     volumes:
       - ../dna-sequence:/app:cached,ro
-      - ../dna-sequence/sequence/migrations:/app/sequence/migrations:cached,ro
+      - ../dna-sequence/dna_sequence/migrations:/app/dna_sequence/migrations:cached
     networks:
       - bioseq-networks
     restart: unless-stopped

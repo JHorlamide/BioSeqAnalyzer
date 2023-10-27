@@ -72,7 +72,13 @@ class DNASequence(models.Model):
     )
 
     class Meta:
-        ordering = ["date_of_submission"]
+        ordering = ["-date_of_submission"]
         
+    
     def __str__(self) -> str:
         return self.name
+    
+    
+    def delete(self):
+        self.file.delete(save=False)
+        super().delete()

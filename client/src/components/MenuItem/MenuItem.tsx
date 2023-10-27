@@ -45,7 +45,7 @@ export const Navigation = () => {
         {navigationConfig.map(({ key, path, title, Icon }) => (
           <NavLink key={key} to={path} style={linkStyle}>
             <HStack width="full" {...selectedNavItemStyle(path)}>
-              <Icon /> <Text>{title}</Text>
+              <Icon /> <Text whiteSpace="nowrap">{title}</Text>
             </HStack>
           </NavLink>
         ))}

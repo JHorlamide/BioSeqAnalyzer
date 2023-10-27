@@ -22,7 +22,7 @@ export interface ReqQueryParam {
 }
 
 export interface ICreateProject extends CreateProjectFormField {
-  file?: File;
+  file: string;
 }
 
 export interface IGetProjectsRes extends Response {
@@ -33,7 +33,8 @@ export interface IGetProjectsRes extends Response {
 }
 
 export interface IGetProjectRes extends CreateProjectFormField {
-  file: File;
+  file: string;
+  file_content: string;
 };
 
 export interface IGetProjectParam {

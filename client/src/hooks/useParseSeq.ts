@@ -1,10 +1,12 @@
 import { useState, useEffect, useMemo } from "react";
 
+/* Libraries */
 import seqparse, { Seq } from "seqparse";
 
+/* Application Modules */
 import useErrorToast from "./useErrorToast";
 
-const useParseSeq = (sequenceId: string | undefined | null) => {
+const useParseSeq = (sequence: string | undefined | null) => {
   const { handleError } = useErrorToast();
   const [loading, setLoading] = useState(false);
   const [seqVizData, setSeqvizData] = useState<Seq>({
@@ -15,14 +17,14 @@ const useParseSeq = (sequenceId: string | undefined | null) => {
   });
 
   const parseSequence = async () => {
-    if (sequenceId !== null && sequenceId !== undefined) {
-      return await seqparse(sequenceId);
+    if (sequence !== null && sequence !== undefined) {
+      return await seqparse(sequence);
     }
 
     return null;
   };
 
-  const parsedSeq = useMemo(parseSequence, [sequenceId]);
+  const parsedSeq = useMemo(parseSequence, [sequence]);
 
   const parseSequenceAndUpdateSeqViewState = async () => {
     setLoading(true);
@@ -32,7 +34,7 @@ const useParseSeq = (sequenceId: string | undefined | null) => {
 
       if (seqData === null || seqData === undefined) {
         setLoading(false);
-        return seqVizData;
+        return seqVizData
       }
 
       if (seqData && seqData.annotations.length > 0) {
@@ -70,7 +72,7 @@ const useParseSeq = (sequenceId: string | undefined | null) => {
 
   useEffect(() => {
     parseSequenceAndUpdateSeqViewState();
-  }, []);
+  }, [sequence]);
 
   return { seqVizData, loading };
 }

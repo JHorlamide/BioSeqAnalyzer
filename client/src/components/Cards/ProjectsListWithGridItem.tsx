@@ -29,8 +29,8 @@ const getGridTemplateColumns = () => {
 
 const ProjectsListWithGridItem = (props: Props) => {
   const {
-    proteinProjects,
     dnaSeqProjects,
+    proteinProjects,
     handleDeleteProject,
     goToUpdateProjectPage,
     goToProjectDetailsPage
@@ -44,7 +44,7 @@ const ProjectsListWithGridItem = (props: Props) => {
       return {
         projectId: id,
         projectTitle: String(name),
-        updatedAt: date_of_submission
+        updatedAt: date_of_submission,
       };
     }
 
@@ -52,7 +52,9 @@ const ProjectsListWithGridItem = (props: Props) => {
     return { projectTitle, updatedAt, projectId: _id };
   };
 
-  const isDNASeqProject = (project: ICreateDNASeqProjectsRes | ProteinProjects): boolean => {
+  const isDNASeqProject = (
+    project: ICreateDNASeqProjectsRes | ProteinProjects
+  ): boolean => {
     return (project as ICreateDNASeqProjectsRes).id !== undefined;
   };
 

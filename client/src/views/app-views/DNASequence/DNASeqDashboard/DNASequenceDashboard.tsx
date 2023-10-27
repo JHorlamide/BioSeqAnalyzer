@@ -5,7 +5,6 @@ import { useMemo } from "react";
 import { debounce } from "lodash";
 
 /* Application Modules */
-import useErrorToast from "../../../../hooks/useErrorToast";
 import useNavigation from "../../../../hooks/useNavigation";
 import Pagination from "../../../../components/Pagination/Pagination";
 import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
@@ -13,24 +12,28 @@ import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListW
 import SearchInput from "../../../../components/SearchInput/SearchInput";
 import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
-import { useGetAllProjectsQuery, useDeleteProjectMutation } from "../../../../services/DNASequence/DNASeqProjectAPI";
+import { useDeleteProjectMutation, useGetAllProjectsQuery } from "../../../../services/DNASequence/DNASeqProjectAPI";
 import { useAppDispatch, useAppSelector } from "../../../../store/store";
 import { clearFilterState, setCurrentPage, setName } from "../../../../store/slices/DNASeqFilter";
 
 /* Chakra UI */
 import { Box } from '@chakra-ui/react';
 import ProjectCardSkeleton from "../../../../components/Cards/ProjectCardSkeleton";
+import useErrorToast from "../../../../hooks/useErrorToast";
 
 const DEBOUNCE_TIME_MS = 1000;
 const TOTAL_PAGES = 10;
+const searchInputStyle = {
+  marginTop: -16,
+  marginBottom: 5,
+}
 
 const DNASequenceDashboard = () => {
   const dispatch = useAppDispatch();
-  const { handleNavigate } = useNavigation();
   const { handleError } = useErrorToast();
-  const [deleteProject] = useDeleteProjectMutation();
+  const { handleNavigate } = useNavigation();
   const filters = useAppSelector((state) => state.DNASeqFilter);
-
+  const [deleteProject] = useDeleteProjectMutation()
   const { data: projects, isLoading, refetch } = useGetAllProjectsQuery({
     name: filters.name,
     page: filters.currentPage,
@@ -80,10 +83,7 @@ const DNASequenceDashboard = () => {
     <Box width="full">
       <SearchInput
         handleSearchQuery={handleSearchQuery}
-        styleProps={{
-          marginTop: -16,
-          marginBottom: 5,
-        }}
+        styleProps={searchInputStyle}
       />
 
       <DashboardHeader
@@ -100,8 +100,8 @@ const DNASequenceDashboard = () => {
           />
         ) : (
           <ProjectsListWithGridItem
-            dnaSeqProjects={projects.results}
             handleDeleteProject={handleDeleteProject}
+            dnaSeqProjects={projects.results}
             goToProjectDetailsPage={goToProjectDetailsPage}
             goToUpdateProjectPage={goToUpdateProjectPage}
           />

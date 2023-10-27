@@ -1,12 +1,13 @@
 import { Fragment, useState } from 'react';
 
 /* Chakra UI */
-import { Box, HStack, Input } from '@chakra-ui/react';
+import { Box, Flex, HStack, Input } from '@chakra-ui/react';
 
 /* Libraries */
 import { SeqVizProps } from 'seqviz';
 import { useNavigate } from "react-router-dom";
 import { BsArrowLeft } from 'react-icons/bs';
+import { IoMdRefresh } from "react-icons/io";
 
 /* Application Modules */
 import SequenceViewer from "../SequenceViewer/SequenceViewer"
@@ -19,6 +20,7 @@ type ViewerType = "linear" | "circular" | "both" | "both_flip";
 interface SequenceMapProps {
   sequenceData: SeqVizProps;
   isLoading: boolean;
+  refetch: () => void;
 }
 
 const SequenceMap = (props: SequenceMapProps) => {
@@ -29,7 +31,7 @@ const SequenceMap = (props: SequenceMapProps) => {
   const [enzymes, setEnzymes] = useState(["PstI", "EcoRI", "XbaI", "SpeI"]);
   const [showIndex, setShowIndex] = useState(true);
   const [showComplete, setShowComplete] = useState(true);
-  const { sequenceData, isLoading } = props;
+  const { sequenceData, isLoading, refetch } = props;
 
   const handleZoomIn = () => {
     if (zoomLevel < 100) {
@@ -74,52 +76,64 @@ const SequenceMap = (props: SequenceMapProps) => {
 
   return (
     <Fragment>
-      <Box top={3} gap={2} display="flex" position="absolute">
-        <HStack>
-          <Button
-            color="white"
-            bg="brand_blue.300"
-            leftIcon={<BsArrowLeft />}
-            onClick={() => navigate(-1)}
-            marginRight={0}
-            _hover={{ bg: "brand_blue.200" }}
-          >
-            Back
-          </Button>
+      <Box top={3} display="flex" position="absolute">
+        <Flex width="full" alignItems="center" gap={2}>
+          <HStack width="full">
+            <Button
+              color="white"
+              bg="brand_blue.300"
+              leftIcon={<BsArrowLeft />}
+              onClick={() => navigate(-1)}
+              marginRight={0}
+              _hover={{ bg: "brand_blue.200" }}
+            >
+              Back
+            </Button>
 
-          <ZoomButtons
-            handleZoomIn={handleZoomIn}
-            handleZoomOut={handleZoomOut}
-          />
+            <Button
+              color="white"
+              alignItems="center"
+              bg="brand_blue.300"
+              onClick={refetch}
+              _hover={{ bg: "brand_blue.200" }}
+            >
+              <IoMdRefresh size={20} />
+            </Button>
 
-          <Topology onTopologyChange={setTopology} />
+            <ZoomButtons
+              handleZoomIn={handleZoomIn}
+              handleZoomOut={handleZoomOut}
+            />
 
-          <Settings
-            enzymes={enzymes}
-            showIndex={showIndex}
-            showComplete={showComplete}
-            toggleEnzyme={toggleEnzyme}
-            toggleShowComplete={toggleShowComplete}
-            toggleShowIndex={toggleShowIndex}
-          />
+            <Topology onTopologyChange={setTopology} />
 
-          <Input
-            width={80}
-            color="white"
-            borderRadius="full"
-            border="1px solid white"
-            focusBorderColor="brand_blue.100"
-            placeholder="Search bases, annotations, and primers"
-            value={query}
-            onChange={handleSearch}
-            _placeholder={{ fontSize: "15px", color: "white" }}
-          />
-        </HStack>
+            <Settings
+              enzymes={enzymes}
+              showIndex={showIndex}
+              showComplete={showComplete}
+              toggleEnzyme={toggleEnzyme}
+              toggleShowComplete={toggleShowComplete}
+              toggleShowIndex={toggleShowIndex}
+            />
+          </HStack>
+
+          <Box width="140%">
+            <Input
+              width="lg"
+              color="white"
+              borderRadius="full"
+              border="1px solid white"
+              focusBorderColor="brand_blue.100"
+              placeholder="Search bases, annotations, and primers"
+              value={query}
+              onChange={handleSearch}
+              _placeholder={{ fontSize: "15px", color: "white" }}
+            />
+          </Box>
+        </Flex>
       </Box>
 
-      {isLoading ? (
-        <AppLoader />
-      ) : (
+      {isLoading ? (<AppLoader />) : (
         <SequenceViewer
           name={sequenceData.name}
           seq={sequenceData.seq}

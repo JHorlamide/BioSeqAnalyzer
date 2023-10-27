@@ -101,8 +101,8 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
     }
 
     const formData = new FormData();
-
-    const projectName = String(projectFile && projectFile.name.split(".")[0]);
+    const fileName = String(projectFile && projectFile.name.split(".")[0]);
+    const projectName = fileName.charAt(0).toUpperCase() + fileName.slice(1)
     formData.append("name", projectName);
     formData.append("nucleotide_type", nucleotide_type);
     formData.append("topology", topology);

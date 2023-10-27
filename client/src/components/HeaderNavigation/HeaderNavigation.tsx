@@ -71,10 +71,12 @@ const HeaderNav = () => {
           marginLeft={{ base: 1, sm: 1 }}
         >
           <Show breakpoint="(min-width: 844px)">
-            <HStack spacing={1} alignItems="center" marginRight={1}>
-              <CiUser color="white" fontWeight="bold" />
-              <Text color="white">{email}</Text>
-            </HStack>
+            {isDashboardPage && (
+              <HStack spacing={1} alignItems="center" marginRight={1}>
+                <CiUser color="white" fontWeight="bold" />
+                <Text color="white">{email}</Text>
+              </HStack>
+            )}
           </Show>
 
           <ProfileMenu fullName={fullName} logout={handleLogout} />
