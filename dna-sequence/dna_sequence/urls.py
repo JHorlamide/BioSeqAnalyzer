@@ -1,10 +1,17 @@
-# REST Framework Imports
 from rest_framework.routers import SimpleRouter
+from django.urls import path
+from .views import DnaSequenceViewSet, SequenceDataImportView
 
-# Application Modules Imports
-from .views import DnaSequenceViewSet
-
-# Router Config
+# Parent Domain Routes Config
 router = SimpleRouter()
 router.register("dna-sequence", DnaSequenceViewSet, basename="dna-sequence")
-urlpatterns = router.urls
+
+
+# Product Child Router
+sequence_data_import_url = [
+  path("sequence-data-import/",
+       SequenceDataImportView.as_view(), 
+       name="sequence-data-import")
+]
+
+urlpatterns = router.urls + sequence_data_import_url

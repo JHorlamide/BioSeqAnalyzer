@@ -8,12 +8,12 @@ django = "*"
 mysqlclient = "==2.0.3"
 djangorestframework = "*"
 python-dotenv = "*"
-drf-nested-routers = "*"
 django-filter = "*"
 boto3 = "*"
 urllib3 = "*"
 install = "*"
 django-storages = "*"
+biopython = "*"
 
 [dev-packages]
 

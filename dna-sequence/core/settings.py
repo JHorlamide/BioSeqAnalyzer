@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-aml9!(%^u!f8mu@v@jpoysqe#k)m0@vc5v5&^2r4na)sa(dt$&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['0.0.0.0', 'dna-sequence']
+ALLOWED_HOSTS = ['0.0.0.0', 'dna-sequence', 'sequence-data-import']
 
 # Application definition
 INSTALLED_APPS = [

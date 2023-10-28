@@ -8,6 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.viewsets import ModelViewSet
+from rest_framework.generics import GenericAPIView
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 # Application Modules
@@ -16,6 +17,7 @@ from .serializer import DNASequenceSerializer
 from .filter import DNASequenceFilter
 from .pagination import DefaultPagination
 from .s3_utils import read_s3_file_content
+from .entrez_utils import get_sequence_record
 
 
 class DnaSequenceViewSet(ModelViewSet):
@@ -49,3 +51,24 @@ class DnaSequenceViewSet(ModelViewSet):
             return Response(response,status=status.HTTP_200_OK)
         
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class SequenceDataImportView(GenericAPIView):
+    def get(self, request, *args, **kwargs):
+        sequence_id = request.data.get("sequence_id")
+        
+        if not sequence_id:
+            return Response(
+                {
+                    "status": "Failure",
+                    "message": "Sequence id is required",
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        try:
+            sequence = get_sequence_record(sequence_id)
+            return Response(sequence, status=status.HTTP_200_OK)
+        except Exception as error:
+            return Response(error, status=status.HTTP_400_BAD_REQUEST)
+    
