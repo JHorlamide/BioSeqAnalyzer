@@ -11,9 +11,9 @@ class UniProtService {
 
     try {
       const response = await httpClient.get(`/${uniprotId}.fasta`);
+
       if (response.status === 200) {
-        const sequenceArray = response.data;
-        return sequenceArray;
+        return response.data;
       }
 
       return null;
@@ -23,7 +23,7 @@ class UniProtService {
         throw new ClientError(errorMessage);
       }
 
-      throw new ServerError("Server error. Please try again later");
+      throw new ServerError("Unable to fetch data from external service - please try again later");
     }
   }
 

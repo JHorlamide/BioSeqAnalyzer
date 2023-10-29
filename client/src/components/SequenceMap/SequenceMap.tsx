@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react';
+import { Fragment, useRef, useState } from 'react';
 
 /* Chakra UI */
 import { Box, Flex, HStack, Input } from '@chakra-ui/react';
@@ -25,7 +25,7 @@ interface SequenceMapProps {
 
 const SequenceMap = (props: SequenceMapProps) => {
   const navigate = useNavigate();
-  const [query, setQuery] = useState("");
+  const searchInputRef = useRef<HTMLInputElement>(null);
   const [zoomLevel, setZoomLevel] = useState(50);
   const [topology, setTopology] = useState<ViewerType>("both_flip");
   const [enzymes, setEnzymes] = useState(["PstI", "EcoRI", "XbaI", "SpeI"]);
@@ -62,10 +62,6 @@ const SequenceMap = (props: SequenceMapProps) => {
       setEnzymes([...myEnzymes, enzyme]);
     }
   };
-
-  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setQuery(e.target.value);
-  }
 
   const sequenceViewerStyle = {
     ...sequenceData.style,
@@ -125,8 +121,7 @@ const SequenceMap = (props: SequenceMapProps) => {
               border="1px solid white"
               focusBorderColor="brand_blue.100"
               placeholder="Search bases, annotations, and primers"
-              value={query}
-              onChange={handleSearch}
+              ref={searchInputRef}
               _placeholder={{ fontSize: "15px", color: "white" }}
             />
           </Box>
@@ -143,7 +138,7 @@ const SequenceMap = (props: SequenceMapProps) => {
           showComplement={showComplete}
           zoom={{ linear: zoomLevel }}
           enzymes={enzymes}
-          search={{ query }}
+          search={{ query: String(searchInputRef.current?.value) }}
           style={sequenceViewerStyle}
         />
       )}

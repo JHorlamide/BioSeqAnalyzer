@@ -45,17 +45,6 @@ export class GatewayRoute extends CommonRoutesConfig {
       }
     }))
 
-    this.app.use(`${APP_PREFIX_PATH}/sequence-data-import`, validJWTNeeded, createProxyMiddleware({
-      target: 'http://dna-sequence:8000',
-      changeOrigin: true,
-      pathRewrite: {
-        [`^/sequence-data-import`]: "",
-      },
-      onError: (err, req, res) => {
-        res.status(500).send({ status: "Proxy Error", message: err });
-      }
-    }))
-
     return this.app;
   }
 }

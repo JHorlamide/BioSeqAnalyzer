@@ -34,7 +34,8 @@ class FileService {
       const response = await this.s3Client.send(command);
       return { response, bucketKey };
     } catch (error: any) {
-      throw new ServerError(error.message);
+      logger.error(error.message)
+      throw new ServerError("Unable to uploaded data to external service - please try again later");
     }
   }
 
@@ -49,7 +50,7 @@ class FileService {
       return await this.parseS3ReadStream(response.Body as Readable);
     } catch (error: any) {
       logger.error(error.message);
-      throw new ServerError(error.message);
+      throw new ServerError("Unable to fetch data from external service - please try again later");
     }
   }
 
@@ -64,7 +65,7 @@ class FileService {
       return response;
     } catch (error: any) {
       logger.error(error.message);
-      throw new ServerError(error.message);
+      throw new ServerError("Unable to communicate with external service - please try again later");
     }
   }
 

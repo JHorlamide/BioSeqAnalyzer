@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     # Third-party app
     'django_filters',
     'rest_framework',
-    'rest_framework_nested',
     'storages',
 
     # App

@@ -1,12 +1,15 @@
 from Bio import Entrez
+from pprint import pprint
 
 Entrez.email = "olamide_jubril@outlook.com"
-
+  
+  
 def get_sequence_record(sequence_id: str):
   handle = Entrez.efetch(db="nucleotide", id=sequence_id, rettype="gb", retmode="text")
   sequence = handle.read()
   handle.close()
   return sequence
+
 
 def search_sequence(db: str, query_term: str):
   handle = Entrez.esearch(db=db, term=query_term, retmax="40")

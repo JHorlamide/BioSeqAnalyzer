@@ -35,10 +35,15 @@ export interface IGetProjectsRes extends Response {
 export interface IGetProjectRes extends CreateProjectFormField {
   file: string;
   file_content: string;
+  sequence: string;
 };
 
 export interface IGetProjectParam {
   projectId: string;
+}
+
+export interface IGetSequenceDataReq {
+  sequence_id: string;
 }
 
 export interface IUpdateProjectReq extends CreateProjectFormField {

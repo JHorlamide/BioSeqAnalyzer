@@ -8,6 +8,7 @@ import ProjectFormFileUpload from "./ProjectFormFileUpload";
 import { useNavigate } from "react-router-dom";
 import {
   useCreateDNASeqProject,
+  useCreateDNASeqProjectByImport,
   useCreateDNASeqProjectWithFileUpload
 } from '../../../../hooks/DNASequence/useCreateDNASeqProject';
 
@@ -21,6 +22,7 @@ import {
   TabPanels,
   TabPanel,
 } from "@chakra-ui/react";
+import ProjectFormDataImport from "./ProjectFormDataImport";
 
 const CreateProject = () => {
   const navigate = useNavigate();
@@ -71,17 +73,7 @@ const CreateProject = () => {
         </TabPanel>
 
         <TabPanel>
-          <Text
-            color="white"
-            textAlign="center"
-            fontSize={26}
-            fontWeight="bold"
-            fontStyle="italic"
-            marginTop={20}
-          >
-            Importing data from database is not currently supported <br />
-            Coming soon!
-          </Text>
+          <ProjectFormDataImport {...useCreateDNASeqProjectByImport()} />
         </TabPanel>
       </TabPanels>
     </Tabs>

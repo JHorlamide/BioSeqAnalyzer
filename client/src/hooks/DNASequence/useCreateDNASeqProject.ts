@@ -136,6 +136,50 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
   };
 }
 
+export const useCreateDNASeqProjectByImport = () => {
+  const { handleError } = useErrorToast();
+  const { handleNavigate } = useNavigation();
+  const [createProject, { isLoading }] = useCreateProjectMutation();
+  const {
+    register,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
+
+  const submitProject = async (data: ProjectFormData) => {
+    const formData = utils.getFilledFormData(data);
+    const { nucleotide_type, topology } = formData;
+
+    if (nucleotide_type === "R" && topology === "C") {
+      return handleError(UNSUPPORTED_TOPOLOGY_ERROR)
+    }
+
+    try {
+      const response = await createProject({ ...formData, name: formData.sequence_id }).unwrap();
+
+      if (response.name !== undefined) {
+        toast.success("Project created successfully");
+        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
+      }
+    } catch (error: any) {
+      const errorField = Object.keys(error.data)[0];
+      const message = error.data[errorField] || error.data[errorField][0];
+      const errorMessage = error.error || `${errorField}: ${message}`;
+      handleError(errorMessage);
+    }
+  };
+
+  return {
+    errors,
+    isLoading,
+    register,
+    getValues,
+    submitProject,
+    handleSubmit,
+  };
+}
+
 export const useUpdateDNASeqProject = (projectId: string) => {
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();

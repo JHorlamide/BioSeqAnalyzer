@@ -51,13 +51,15 @@ class DNASequence(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     role = models.CharField(max_length=5, null=True, blank=True)
     file = models.FileField(blank=True, null=True)
+    sequence_id = models.CharField(max_length=20, blank=True, null=True)
+    sequence = models.TextField(blank=True, null=True)
     date_of_submission = models.DateTimeField(auto_now_add=True)
     user_id = models.UUIDField(default=uuid.uuid4, editable=False)
     nucleotide_type = models.CharField(max_length=4, choices=NUCLEOTIDE_TYPES, default=DNA_NUCLEOTIDE)
     topology = models.CharField(max_length=10, choices=TOPOLOGY_TYPES, default=CIRCULAR_TOPOLOGY)
     bases = models.TextField(
-        null=True,
         blank=True,
+        null=True,
         validators=[validate_no_emoji]
     )
     name = models.CharField(

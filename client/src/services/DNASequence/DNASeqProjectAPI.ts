@@ -11,6 +11,7 @@ import {
   IGetProjectParam,
   IGetProjectRes,
   IGetProjectsRes,
+  IGetSequenceDataReq,
   IUpdateProjectReq,
   ReqQueryParam
 } from "./types"
@@ -52,9 +53,7 @@ export const DNASeqProjectAPI = createApi({
     }),
 
     getProject: builder.query<IGetProjectRes, IGetProjectParam>({
-      query: ({ projectId }) => ({
-        url: `/${projectId}`,
-      }),
+      query: ({ projectId }) => ({ url: `/${projectId}` }),
       providesTags: ["GetDNAProjectDetails"]
     }),
 
@@ -90,5 +89,5 @@ export const {
 
   /* Queries */
   useGetAllProjectsQuery,
-  useGetProjectQuery
+  useGetProjectQuery,
 } = DNASeqProjectAPI;
