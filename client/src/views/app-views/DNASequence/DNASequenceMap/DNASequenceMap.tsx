@@ -17,7 +17,7 @@ const seqVizStyle = {
 const DNASequenceMap = () => {
   const { projectId } = useParams();
   const { data, isLoading, refetch } = useGetProjectQuery({ projectId: String(projectId) });
-  const { bases, file_content, sequence } = data || {};
+  const { bases, file_content, sequence } = data?.data || {};
   const { seqVizData, loading: seqVizLoading } = useParseSeq(file_content || sequence || null);
   const sequenceData = bases !== null ?
     { ...seqVizData, seq: bases, style: seqVizStyle } :

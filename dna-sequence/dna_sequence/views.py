@@ -52,7 +52,14 @@ class DnaSequenceViewSet(ModelViewSet):
             dna_sequence.sequence = get_sequence_record(sequence_id)
             dna_sequence.save()
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(
+            {
+                "status": "Success",
+                "message": "Project created successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_201_CREATED
+        )
     
     
     def retrieve(self, request, *args, **kwargs):
@@ -64,7 +71,21 @@ class DnaSequenceViewSet(ModelViewSet):
             response = serializer.data
             response["file_content"] = read_s3_file_content(file_name)
         
-            return Response(response,status=status.HTTP_200_OK)
+            return Response(
+                {
+                    "status": "Success",
+                    "message": "Project fetched successfully",
+                    "data": response
+                },
+                status=status.HTTP_200_OK
+            )
         
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(
+            {
+                "status": "Success",
+                "message": "Project fetched successfully",
+                "data": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
     

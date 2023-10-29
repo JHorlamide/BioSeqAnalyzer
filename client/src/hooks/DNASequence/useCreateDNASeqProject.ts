@@ -42,10 +42,12 @@ export const useCreateDNASeqProject = () => {
     try {
       const response = await createProject(formData).unwrap();
 
-      if (response.name !== undefined) {
+      if (response.status === "Success") {
         toast.success("Project created successfully");
-        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
+        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`);
       }
+
+      handleError(response.message);
     } catch (error: any) {
       const errorField = Object.keys(error.data)[0];
       const message = error.data[errorField] || error.data[errorField][0];
@@ -111,10 +113,12 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
     try {
       const response = await createProject(formData).unwrap();
 
-      if (response.name !== undefined) {
+      if (response.status === "Success") {
         toast.success("Project created successfully");
-        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
+        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`);
       }
+
+      handleError(response.message);
     } catch (error: any) {
       const errorField = Object.keys(error.data)[0];
       const message = error.data[errorField] || error.data[errorField][0];
@@ -158,10 +162,12 @@ export const useCreateDNASeqProjectByImport = () => {
     try {
       const response = await createProject({ ...formData, name: formData.sequence_id }).unwrap();
 
-      if (response.name !== undefined) {
+      if (response.status === "Success") {
         toast.success("Project created successfully");
-        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
+        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`);
       }
+
+      handleError(response.message);
     } catch (error: any) {
       const errorField = Object.keys(error.data)[0];
       const message = error.data[errorField] || error.data[errorField][0];

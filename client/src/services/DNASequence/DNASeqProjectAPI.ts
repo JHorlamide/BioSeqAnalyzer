@@ -11,7 +11,7 @@ import {
   IGetProjectParam,
   IGetProjectRes,
   IGetProjectsRes,
-  IGetSequenceDataReq,
+  // IGetSequenceDataReq,
   IUpdateProjectReq,
   ReqQueryParam
 } from "./types"

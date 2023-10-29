@@ -134,6 +134,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 REST_FRAMEWORK = {
     'COERCE_DECIMAL_TO_STRING': False,
+    'EXCEPTION_HANDLER': 'dna_sequence.exception_handler.custom_exception_handler'
 }
 
 # Default primary key field type

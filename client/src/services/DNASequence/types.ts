@@ -9,9 +9,13 @@ import { CreateProjectFormField } from "../../schemas/DNASequence/DNASequencePro
 //   }
 // }
 
-export interface ICreateDNASeqProjectsRes extends CreateProjectFormField {
-  id: string;
-  date_of_submission: string;
+export interface ICreateDNASeqProjectsRes {
+  status: string;
+  message: string;
+  data: CreateProjectFormField & {
+    id: string;
+    date_of_submission: string;
+  }
 }
 
 export interface ReqQueryParam {
@@ -32,10 +36,14 @@ export interface IGetProjectsRes extends Response {
   results: ICreateDNASeqProjectsRes[]
 }
 
-export interface IGetProjectRes extends CreateProjectFormField {
-  file: string;
-  file_content: string;
-  sequence: string;
+export interface IGetProjectRes {
+  status: string;
+  message: string;
+  data: CreateProjectFormField & {
+    file: string;
+    file_content: string;
+    sequence: string;
+  }
 };
 
 export interface IGetProjectParam {
