@@ -1,6 +1,17 @@
 /* React */
 import { SetStateAction, Dispatch, Fragment } from 'react';
 
+import { HiOutlineInformationCircle } from "react-icons/hi"
+
+/* Libraries */
+import { BsZoomIn, BsZoomOut } from "react-icons/bs"
+import { FiSettings } from "react-icons/fi"
+import { TbTopologyRing } from "react-icons/tb";
+
+/* Application Modules */
+import Button from '../CustomBtn/Button';
+import utils from '../../utils';
+
 /* Chakra UI */
 import {
   Box,
@@ -14,15 +25,15 @@ import {
   Button as ChakraButton,
   Grid,
   GridItem,
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverArrow,
+  PopoverHeader,
+  PopoverCloseButton,
+  PopoverBody,
+  Flex,
 } from '@chakra-ui/react';
-
-/* Libraries */
-import { BsZoomIn, BsZoomOut } from "react-icons/bs"
-import { FiSettings } from "react-icons/fi"
-import { TbTopologyRing } from "react-icons/tb";
-
-/* Application Modules */
-import Button from '../CustomBtn/Button';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
@@ -37,6 +48,13 @@ const topologies: Topology[] = [
   { title: "Both", value: "both" },
   { title: "Both Flip", value: "both_flip" },
 ];
+
+interface InfoProps {
+  name?: string;
+  topology?: string;
+  created?: string;
+  nucleotide_type?: string;
+}
 
 interface ZoomButtonProps {
   handleZoomIn: () => void;
@@ -95,6 +113,41 @@ export const ZoomButtons = (props: ZoomButtonProps) => {
         onClick={() => handleZoomIn()}
       />
     </ButtonGroup>
+  )
+}
+
+export const Information = (props: InfoProps) => {
+  return (
+    <Popover>
+      <PopoverTrigger>
+        <Button
+          color="white"
+          bg="brand_blue.300"
+          _hover={{ bg: "brand_blue.200" }}
+        >
+          <HiOutlineInformationCircle size={20} />
+        </Button>
+      </PopoverTrigger>
+
+      <PopoverContent
+        top={14}
+        color="white"
+        bg="brand_blue.300"
+        position="relative"
+      >
+        <PopoverArrow />
+        <PopoverHeader>SEQUENCE INFO</PopoverHeader>
+        <PopoverCloseButton />
+        <PopoverBody>
+          {Object.keys(props).map((key) => (
+            <Flex justifyContent="space-between">
+              <Text>{utils.capitalizeText(key)}</Text>
+              <Text>{props[key as keyof InfoProps]}</Text>
+            </Flex>
+          ))}
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   )
 }
 

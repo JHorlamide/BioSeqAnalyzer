@@ -17,6 +17,7 @@ import {
   useGetProjectQuery,
   useUpdateProjectMutation
 } from "../../services/DNASequence/DNASeqProjectAPI";
+import Utils from "../../utils";
 
 const UNSUPPORTED_TOPOLOGY_ERROR = "Currently circular RNA sequences is not supported.";
 
@@ -104,7 +105,7 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
 
     const formData = new FormData();
     const fileName = String(projectFile && projectFile.name.split(".")[0]);
-    const projectName = fileName.charAt(0).toUpperCase() + fileName.slice(1)
+    const projectName = Utils.capitalizeText(fileName)
     formData.append("name", projectName);
     formData.append("nucleotide_type", nucleotide_type);
     formData.append("topology", topology);
@@ -209,10 +210,12 @@ export const useUpdateDNASeqProject = (projectId: string) => {
     try {
       const response = await updateProject({ projectId, ...formData }).unwrap();
 
-      if (response.name !== undefined) {
+      if (response.status === "Success") {
         toast.success("Project updated successfully");
         return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
       }
+
+      handleError(response.message);
     } catch (error: any) {
       const errorField = Object.keys(error.data)[0];
       const errorMessage = error.error || `${errorField}: ${error.data[errorField][0]}`;

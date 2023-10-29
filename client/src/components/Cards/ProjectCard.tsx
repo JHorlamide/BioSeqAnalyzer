@@ -2,7 +2,6 @@
 import { Fragment } from "react";
 
 /* Libraries */
-import moment from "moment";
 import { BsFolderFill } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
 import { RiSurroundSoundLine } from "react-icons/ri";
@@ -11,6 +10,9 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 /* Application Modules / Components */
 import CardMenu from "./CardMenu";
 import ConfirmationModal from "../Modals/ConfirmationModal";
+import useNavigation from "../../hooks/useNavigation";
+import { APP_PREFIX_PATH } from "../../config/AppConfig";
+import utils from "../../utils";
 
 /* Chakra UI */
 import {
@@ -24,8 +26,7 @@ import {
   Flex,
   useDisclosure
 } from "@chakra-ui/react";
-import useNavigation from "../../hooks/useNavigation";
-import { APP_PREFIX_PATH } from "../../config/AppConfig";
+
 
 interface ProjectCardProps {
   projectTitle: string;
@@ -53,13 +54,6 @@ const ProjectCard = (props: ProjectCardProps) => {
     handleDeleteProject(projectId);
     onClose();
   };
-
-  const formattedDate = moment(updatedAt).calendar(null, {
-    sameDay: '[Last updated today]',
-    lastDay: '[Last updated yesterday]',
-    lastWeek: '[Last updated] MMM D, YYYY',
-    sameElse: '[Last updated] MMM D, YYYY',
-  });
 
   const menuItems = [
     {
@@ -131,7 +125,7 @@ const ProjectCard = (props: ProjectCardProps) => {
             </Text>
 
             <Flex justifyContent="space-between">
-              <Text color="gray.300">{formattedDate}</Text>
+              <Text color="gray.300">{utils.formattedDate(updatedAt)}</Text>
 
               {/* {isLoadingDelete && (
                 <Spinner

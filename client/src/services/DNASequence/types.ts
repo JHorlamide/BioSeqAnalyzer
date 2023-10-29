@@ -43,6 +43,7 @@ export interface IGetProjectRes {
     file: string;
     file_content: string;
     sequence: string;
+    date_of_submission: string;
   }
 };
 

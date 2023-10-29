@@ -1,3 +1,4 @@
+/* React.js */
 import { Fragment, useRef, useState } from 'react';
 
 /* Chakra UI */
@@ -7,20 +8,26 @@ import { Box, Flex, HStack, Input } from '@chakra-ui/react';
 import { SeqVizProps } from 'seqviz';
 import { useNavigate } from "react-router-dom";
 import { BsArrowLeft } from 'react-icons/bs';
-import { IoMdRefresh } from "react-icons/io";
+import {IoMdRefresh} from "react-icons/io";
 
 /* Application Modules */
 import SequenceViewer from "../SequenceViewer/SequenceViewer"
 import Button from '../CustomBtn/Button';
 import AppLoader from '../Loading/AppLoader';
-import { ZoomButtons, Topology, Settings } from './SequenceMapSettings';
+import { ZoomButtons, Topology, Settings, Information } from './SequenceMapSettings';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
 interface SequenceMapProps {
   sequenceData: SeqVizProps;
   isLoading: boolean;
-  refetch: () => void;
+  refetch?: () => void;
+  info?: {
+    name?: string;
+    topology?: string;
+    created?: string;
+    nucleotide_type?: string;
+  }
 }
 
 const SequenceMap = (props: SequenceMapProps) => {
@@ -31,7 +38,7 @@ const SequenceMap = (props: SequenceMapProps) => {
   const [enzymes, setEnzymes] = useState(["PstI", "EcoRI", "XbaI", "SpeI"]);
   const [showIndex, setShowIndex] = useState(true);
   const [showComplete, setShowComplete] = useState(true);
-  const { sequenceData, isLoading, refetch } = props;
+  const { sequenceData, isLoading, info, refetch } = props;
 
   const handleZoomIn = () => {
     if (zoomLevel < 100) {
@@ -86,15 +93,16 @@ const SequenceMap = (props: SequenceMapProps) => {
               Back
             </Button>
 
-            <Button
-              color="white"
-              alignItems="center"
-              bg="brand_blue.300"
-              onClick={refetch}
-              _hover={{ bg: "brand_blue.200" }}
-            >
-              <IoMdRefresh size={20} />
-            </Button>
+            {info ? (<Information {...info} />) : (
+              <Button
+                color="white"
+                bg="brand_blue.300"
+                onClick={refetch}
+                _hover={{ bg: "brand_blue.200" }}
+              >
+                <IoMdRefresh />
+              </Button>
+            )}
 
             <ZoomButtons
               handleZoomIn={handleZoomIn}
@@ -142,7 +150,6 @@ const SequenceMap = (props: SequenceMapProps) => {
           style={sequenceViewerStyle}
         />
       )}
-
     </Fragment>
   )
 };
