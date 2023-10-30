@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import DNASequence;
+from .models import DNASequence
 
 admin.site.register(DNASequence)
-
