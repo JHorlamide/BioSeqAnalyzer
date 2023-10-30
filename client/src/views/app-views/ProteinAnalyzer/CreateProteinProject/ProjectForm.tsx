@@ -3,11 +3,11 @@ import { GiMolecule, GiGooeyMolecule } from "react-icons/gi";
 import { SiMoleculer } from "react-icons/si";
 import { MdOutlineTitle } from "react-icons/md";
 import { FieldErrors, UseFormReturn } from "react-hook-form";
-import { ProjectFormData } from "../../../../schemas/proteinAnalyzer/proteinProjectSchema";
+import { ProjectFormData } from "../../../../schemas/proteinProjectSchema";
 
 /* Application Modules */
 import Button from "../../../../components/CustomBtn/Button";
-import { IProject } from "../../../../schemas/proteinAnalyzer/proteinProjectSchema";
+import { IProject } from "../../../../schemas/proteinProjectSchema";
 import { FormInput } from "../../../../components/CustomInput/FormInput/FormInput"
 import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
 

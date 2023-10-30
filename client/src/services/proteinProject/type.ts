@@ -1,5 +1,5 @@
 import { IBaseResponse } from "../../schemas";
-import { IProject, ProjectFormData } from "../../schemas/proteinAnalyzer/proteinProjectSchema";
+import { IProject, ProjectFormData } from "../../schemas/proteinProjectSchema";
 
 export interface ProteinProjects extends IProject {
   _id: string;

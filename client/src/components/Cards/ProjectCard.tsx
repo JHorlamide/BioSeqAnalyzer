@@ -4,15 +4,15 @@ import { Fragment } from "react";
 /* Libraries */
 import { BsFolderFill } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
-import { RiSurroundSoundLine } from "react-icons/ri";
+import { AiOutlineUserAdd } from "react-icons/ai";
 import { MdOutlineDeleteOutline } from "react-icons/md";
 
 /* Application Modules / Components */
+import utils from "../../utils";
 import CardMenu from "./CardMenu";
 import ConfirmationModal from "../Modals/ConfirmationModal";
 import useNavigation from "../../hooks/useNavigation";
-import { APP_PREFIX_PATH } from "../../config/AppConfig";
-import utils from "../../utils";
+import InviteMember from "../InviteMember/InviteMember";
 
 /* Chakra UI */
 import {
@@ -38,8 +38,13 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = (props: ProjectCardProps) => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const { handleNavigate } = useNavigation();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenInvite,
+    onOpen: onOpenInvite,
+    onClose: onCloseInvite
+  } = useDisclosure();
 
   const {
     updatedAt,
@@ -59,10 +64,10 @@ const ProjectCard = (props: ProjectCardProps) => {
     {
       key: "inviteMember",
       menuTitle: "Invite Member",
-      MenuIcon: RiSurroundSoundLine, // Change the Icon to a user Icon
+      MenuIcon: AiOutlineUserAdd, // Change the Icon to a user Icon
       action: (event: React.MouseEvent) => {
         event.stopPropagation();
-        handleNavigate(`${APP_PREFIX_PATH}/invite-member/${projectId}`)
+        onOpenInvite();
       }
     },
 
@@ -89,6 +94,8 @@ const ProjectCard = (props: ProjectCardProps) => {
 
   return (
     <Fragment>
+      <InviteMember isOpen={isOpenInvite} onClose={onCloseInvite} />
+
       <ConfirmationModal
         projectName={projectTitle}
         isOpen={isOpen}

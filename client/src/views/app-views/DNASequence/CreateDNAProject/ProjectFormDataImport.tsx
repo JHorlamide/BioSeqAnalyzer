@@ -6,7 +6,7 @@ import { FieldErrors, UseFormReturn } from "react-hook-form";
 
 /* Application Modules */
 import Button from "../../../../components/CustomBtn/Button";
-import { ProjectFormData, CreateProjectFormField } from "../../../../schemas/DNASequence/DNASequenceProjectSchema";
+import { ProjectFormData, CreateProjectFormField } from "../../../../schemas/DNASequenceProjectSchema";
 import { FormInput } from "../../../../components/CustomInput/FormInput/FormInput";
 
 /* Chakra UI */

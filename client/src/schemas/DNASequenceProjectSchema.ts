@@ -21,7 +21,7 @@ export type InputName =
   | "nucleotide_type"
   | "topology"
 
-  export const projectSchema = z.object({
+export const projectSchema = z.object({
   name: z.string().min(5, { message: "Project name is required" }).optional(),
   bases: z.string().optional(),
   sequence_id: z.string().optional(),

@@ -16,7 +16,7 @@ import {
 import Button from "../../../../components/CustomBtn/Button";
 import { nucleotideTypeOptions, topologyOptions } from "./CONSTANTS";
 import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
-import { ProjectFormData, CreateProjectFormField } from "../../../../schemas/DNASequence/DNASequenceProjectSchema";
+import { ProjectFormData, CreateProjectFormField } from "../../../../schemas/DNASequenceProjectSchema";
 
 export interface ProjectFormProps {
   projectData?: ProjectFormData;

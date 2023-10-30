@@ -1,4 +1,4 @@
-import { CreateProjectFormField } from "../../schemas/DNASequence/DNASequenceProjectSchema";
+import { CreateProjectFormField } from "../../schemas/DNASequenceProjectSchema";
 
 // export interface ICreateDNASeqProjectsRes {
 //   status: string;

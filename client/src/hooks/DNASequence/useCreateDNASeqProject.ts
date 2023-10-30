@@ -11,7 +11,7 @@ import utils from "../../utils";
 import useNavigation from "../useNavigation";
 import useErrorToast from "../useErrorToast";
 import { APP_PREFIX_PATH } from "../../config/AppConfig";
-import { ProjectFormData, projectSchema } from "../../schemas/DNASequence/DNASequenceProjectSchema";
+import { ProjectFormData, projectSchema } from "../../schemas/DNASequenceProjectSchema";
 import {
   useCreateProjectMutation,
   useGetProjectQuery,

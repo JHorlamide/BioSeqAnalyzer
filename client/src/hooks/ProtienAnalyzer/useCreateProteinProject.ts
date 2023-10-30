@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 /* Libraries */
 import { useForm } from "react-hook-form";
-import { ProjectFormData, projectSchema } from "../../schemas/proteinAnalyzer/proteinProjectSchema";
+import { ProjectFormData, projectSchema } from "../../schemas/proteinProjectSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 /* Application Modules */
