@@ -56,7 +56,7 @@ services:
     command: npm run dev
     tty: true
     restart: unless-stopped
-    ports: [ "7070:7070" ]
+    ports: [ "7070:7070", "3000:3000"]
     networks:
       - bioseq-networks
     volumes:

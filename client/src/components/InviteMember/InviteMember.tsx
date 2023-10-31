@@ -26,6 +26,7 @@ import {
 interface InviteMemberProps {
   isOpen: boolean;
   onClose: () => void;
+  projectId: string;
 }
 
 type InviteMemberFormFields = {
@@ -34,7 +35,7 @@ type InviteMemberFormFields = {
 }
 
 const InviteMember = (props: InviteMemberProps) => {
-  const { isOpen, onClose } = props;
+  const { isOpen, onClose, projectId } = props;
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
 
@@ -45,7 +46,7 @@ const InviteMember = (props: InviteMemberProps) => {
   } = useForm<InviteMemberFormData>({ resolver: zodResolver(inviteMemberSchema) });
 
   const submit = (data: InviteMemberFormData) => {
-    console.log({ ...data });
+    console.log({ ...data, projectId });
   }
 
   return (

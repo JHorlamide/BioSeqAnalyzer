@@ -51,7 +51,6 @@ class DNASequence(models.Model):
     ]
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
-    role = models.CharField(max_length=5, null=True, blank=True)
     file = models.FileField(blank=True, null=True)
     sequence_id = models.CharField(max_length=20, blank=True, null=True)
     sequence = models.TextField(blank=True, null=True)

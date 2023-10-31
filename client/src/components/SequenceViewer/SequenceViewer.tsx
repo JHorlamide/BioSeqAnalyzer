@@ -16,7 +16,6 @@ const SequenceViewer = (props: Props) => {
       annotations={annotations}
       style={style}
       viewer={viewer}
-      highlights={[{ start: 0, end: 10 }]}
       translations={translations}
       {...rest}
     />

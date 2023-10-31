@@ -11,7 +11,6 @@ import { MdOutlineDeleteOutline } from "react-icons/md";
 import utils from "../../utils";
 import CardMenu from "./CardMenu";
 import ConfirmationModal from "../Modals/ConfirmationModal";
-import useNavigation from "../../hooks/useNavigation";
 import InviteMember from "../InviteMember/InviteMember";
 
 /* Chakra UI */
@@ -38,7 +37,6 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = (props: ProjectCardProps) => {
-  const { handleNavigate } = useNavigation();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenInvite,
@@ -94,7 +92,11 @@ const ProjectCard = (props: ProjectCardProps) => {
 
   return (
     <Fragment>
-      <InviteMember isOpen={isOpenInvite} onClose={onCloseInvite} />
+      <InviteMember
+        isOpen={isOpenInvite}
+        onClose={onCloseInvite}
+        projectId={projectId}
+      />
 
       <ConfirmationModal
         projectName={projectTitle}
