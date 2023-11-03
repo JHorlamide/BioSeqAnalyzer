@@ -8,5 +8,6 @@ export const ERR_MSG = {
   USER_EXIT: "User already exits",
   INVALID_USER_DATA: "name, email, and, password are required fields",
   EMAIL_IS_REQUIRED: "Email is required",
-  SERVER_ERROR: "Service unavailable, Please try again later"
+  SERVER_ERROR: "Service unavailable, Please try again later",
+  INVITATION_FAILED: "Unable to invite user to this project. Please try again later"
 }

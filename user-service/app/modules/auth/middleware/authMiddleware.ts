@@ -35,6 +35,7 @@ class AuthMiddleware {
 
       return responseHandler.badRequest("Invalid email and/or password", res);
     } catch (error: any) {
+      console.log({ error })
       return responseHandler.badRequest(error.message, res);
     }
   }

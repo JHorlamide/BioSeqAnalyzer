@@ -1,9 +1,9 @@
 /* Application Modules */
 import userRepository from "../repository/userRepository";
+import mailService from "../mail-service/mailService";
 import { ERR_MSG } from "../types/constants";
 import { IUser, SendProjectInvitation } from "../types/types";
 import { ClientError, NotFoundError, ServerError } from "../../../common/exceptions/ApiError";
-import mailService from "../mail-service/mailService";
 
 class UserService {
   public async createUser(userBodyField: IUser) {
@@ -44,28 +44,38 @@ class UserService {
   }
 
   public async sendProjectInvitation(reqBodyField: SendProjectInvitation) {
-    const { userId, projectId, projectName, fullName, role, password, email } = reqBodyField;
+    const {
+      userId,
+      projectId,
+      projectName,
+      fullName,
+      role,
+      password,
+      email,
+      loginPassword,
+    } = reqBodyField;
 
     try {
       const user = await userRepository.getUserById(userId);
 
-      if (user) {
-        const newUser = await this.createUser({ fullName, role, password, email });
-
-        if (!newUser.userId) {
-          throw new NotFoundError(ERR_MSG.USER_NOT_FOUND);
-        }
-
-        const invitationRes = mailService.sendEmail({
-          senderName: String(user.fullName),
-          projectName,
-          receiverMail: email,
-          receiverName: fullName,
-          link: `mailto:olamidejubril68@gmail.com -> ${projectId}`
-        });
-
-        return invitationRes;
+      if (!user) {
+        throw new NotFoundError(ERR_MSG.USER_NOT_FOUND);
       }
+
+      const newUser = await this.createUser({ fullName, role, password, email });
+
+      if (!newUser.userId) {
+        throw new ServerError(ERR_MSG.INVITATION_FAILED);
+      }
+
+      mailService.sendEmail({
+        senderName: String(user.fullName),
+        projectName,
+        receiverMail: email,
+        receiverName: fullName,
+        tempPassword: loginPassword,
+        link: `mailto:olamidejubril68@gmail.com -> ${projectId}`
+      });
     } catch (error: any) {
       throw new ServerError(error.message);
     }

@@ -18,11 +18,10 @@ class AuthController {
       .digest("base64");
 
     req.body.refreshKey = salt.export();
-    const accessToken = jwt.sign(
-      req.body,
-      config.jwt.secret,
-      { expiresIn: config.jwt.tokenExpiration }
-    );
+
+    const accessToken = jwt.sign(req.body, config.jwt.secret, {
+      expiresIn: config.jwt.tokenExpiration
+    });
 
     delete req.body.refreshKey;
 

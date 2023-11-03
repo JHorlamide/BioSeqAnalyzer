@@ -10,8 +10,9 @@ export interface IUser {
   role: Role;
 }
 
-export interface SendProjectInvitation extends IUser{
+export interface SendProjectInvitation extends IUser {
   userId: string;
   projectId: string;
   projectName: string;
+  loginPassword: string;
 }

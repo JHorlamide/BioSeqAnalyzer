@@ -10,12 +10,12 @@ import { ServerError } from "../../../common/exceptions/ApiError";
 import { logger } from "../../../config/logger";
 import config from "../../../config/appConfig";
 
-
 interface SendEmail {
   receiverMail: string;
   receiverName: string;
   senderName: string;
   projectName: string;
+  tempPassword: string;
   link: string;
 }
 
@@ -36,6 +36,7 @@ class MailService {
         partialsDir: path.resolve("./views"),
         defaultLayout: false,
       },
+
       viewPath: path.resolve("./views"),
     };
 
@@ -43,18 +44,26 @@ class MailService {
   }
 
   public async sendEmail(mailParams: SendEmail) {
-    const { receiverMail, receiverName, senderName, projectName, link } = mailParams;
+    const {
+      receiverMail,
+      receiverName,
+      senderName,
+      projectName,
+      link,
+      tempPassword
+    } = mailParams;
 
-    const mailOption = {
+    const mailOpts = {
       from: "BioSeqAnalyzer",
       template: "email",
       to: receiverMail,
       subject: `${projectName} project invitation`,
-      context: { receiverName, senderName, projectName, link },
+      context: { receiverName, senderName, projectName, link, tempPassword },
     };
 
     try {
-      await this.transporter.sendMail(mailOption);
+      await this.transporter.sendMail(mailOpts);
+      logger.info(`Email sent successfully to the following recipients: ${receiverMail.toString()}`)
     } catch (error: any) {
       logger.error(`Sending email error: ${error.message}`);
       throw new ServerError(`Unable to send email: ${error.message}`);

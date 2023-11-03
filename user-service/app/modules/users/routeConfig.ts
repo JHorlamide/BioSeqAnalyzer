@@ -7,7 +7,6 @@ import userMiddleware from "./middleware/userMiddleware";
 import userController from "./controller/userController";
 import jwtMiddleware from "../auth/middleware/jwtMiddleware";
 import { CommonRoutesConfig } from "../../common/CommonRouteConfig";
-import authMiddleware from "../auth/middleware/authMiddleware";
 
 const APP_PREFIX_PATH = config.prefix;
 
