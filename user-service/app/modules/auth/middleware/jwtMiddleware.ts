@@ -49,7 +49,8 @@ class JwtMiddleware {
       .digest("base64");
 
     if (!user) {
-      throw new NotFoundError(ERR_MSG.USER_NOT_FOUND);
+      return responseHandler.badRequest(ERR_MSG.USER_NOT_FOUND, res);
+      // throw new NotFoundError(ERR_MSG.USER_NOT_FOUND);
     }
 
     if (hash === refreshToken) {

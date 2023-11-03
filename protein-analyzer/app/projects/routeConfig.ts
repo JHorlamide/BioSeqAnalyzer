@@ -118,6 +118,15 @@ export class ProjectRoute extends CommonRoutesConfig {
       projectController.getScoreDistribution
     ]);
 
+    /**
+    * @route POST /api/users/project-invitation
+    * @desc  Send project invitation
+    * @access Public
+    */
+    this.app.post(`${APP_PREFIX_PATH}/users/register`, [
+      
+    ])
+
     return this.app;
   }
 }

@@ -15,6 +15,7 @@ import {
   QueryType
 } from "../types/types";
 
+
 class ProjectService {
   /**
   * Creates a project using the given project data. If uniprotId is provided, retrieves the protein sequence
@@ -296,7 +297,7 @@ class ProjectService {
     return mutationRanges.slice(0, limitNumber);
   }
 
-  // Get highest fitness
+  /* Get highest fitness */
   public async getHighestFitness(projectId: string) {
     try {
       const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
@@ -320,7 +321,7 @@ class ProjectService {
     }
   }
 
-  // Get fold improvement
+  /* Get fold improvement */
   public getFoldImprovement = async (projectId: string) => {
     try {
       const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
@@ -336,7 +337,7 @@ class ProjectService {
     }
   }
 
-  // Get sequence above reference
+  /* Get sequence above reference */
   public getSequencesAboveReference = async (projectId: string) => {
     try {
       const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
@@ -362,6 +363,7 @@ class ProjectService {
       throw new ServerError(error.message);
     }
   }
+
 
   // Helper function to get the fitness score of the reference sequence (wild type)
   private getReferenceFitness(csvData: CSVColumnDataType[]) {

@@ -1,6 +1,6 @@
 
 import { PrismaClient, User } from "@prisma/client"
-import { IUser } from '../types/types';
+import { IUser } from "../types/types";
 
 class UserRepository {
   private prisma: PrismaClient;
@@ -15,6 +15,10 @@ class UserRepository {
 
   public async getUserByEmail(email: string): Promise<User | null> {
     return await this.prisma.user.findUnique({ where: { email } });
+  }
+
+  public async getUserById(userId: string): Promise<User | null> {
+    return await this.prisma.user.findUnique({ where: { id: userId } });
   }
 }
 

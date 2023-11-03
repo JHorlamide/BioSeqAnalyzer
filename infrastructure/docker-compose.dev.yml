@@ -60,7 +60,8 @@ services:
     networks:
       - bioseq-networks
     volumes:
-      - ../user-service/app:/user-service/app:cached,ro
+      - ../user-service/app:/user-service/app:cached
+      - ../user-service/views:/user-service/views:cached
       - /user-service/node_modules
     env_file: [ ../user-service/.env ]
     depends_on: [ "mysql" ]
@@ -77,7 +78,7 @@ services:
     networks:
       - bioseq-networks
     volumes:
-      - ../protein-analyzer/app:/protein-analyzer/app:cached,ro
+      - ../protein-analyzer/app:/protein-analyzer/app:cached
       - /protein-analyzer/node_modules
     env_file: [ ../protein-analyzer/.env ]
     depends_on: [ "mongodb-server", "redis-cache" ]
@@ -93,7 +94,7 @@ services:
       context: ../dna-sequence
       dockerfile: ../dna-sequence/Dockerfile
     volumes:
-      - ../dna-sequence:/app:cached,ro
+      - ../dna-sequence:/app:cached
       - ../dna-sequence/dna_sequence/migrations:/app/dna_sequence/migrations:cached
     networks:
       - bioseq-networks

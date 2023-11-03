@@ -5,10 +5,11 @@ import helmet from "helmet";
 import { requestLogger } from "./requestLogger";
 import { CommonRoutesConfig } from "../common/CommonRouteConfig";
 import config from "./appConfig";
-import { errorHandler } from "../common/middleware/errorHandler";
+import { errorHandler, routeNotFoundErrorHandler } from "../common/middleware/errorHandler";
 
 // Routes imports
 import { UserRoute } from "../modules/users/routeConfig";
+import { AuthRoute } from "../modules/auth/routeConfig";
 
 const app = express();
 const routes: CommonRoutesConfig[] = [];
@@ -35,8 +36,6 @@ app.use(express.json({ limit: "5mb" }));
 // allowing rich objects and arrays to be encoded into the URL - encoded format
 app.use(express.urlencoded({ extended: false }));
 
-// Error handing middleware
-app.use(errorHandler);
 
 if (config.node_env !== "test") {
   app.use(requestLogger);
@@ -44,5 +43,11 @@ if (config.node_env !== "test") {
 
 // routes definition
 routes.push(new UserRoute(app));
+routes.push(new AuthRoute(app));
+
+// Error handing middleware
+app.use(errorHandler);
+
+app.use(routeNotFoundErrorHandler)
 
 export { app, routes };

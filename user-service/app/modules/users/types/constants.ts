@@ -1,5 +1,6 @@
 export const RES_MSG = {
-  USER_CREATE: "User register successfully"
+  USER_CREATE: "User register successfully",
+  INVITE_SEND: "Invite sent successfully"
 }
 
 export const ERR_MSG = {

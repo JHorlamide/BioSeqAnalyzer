@@ -1,8 +1,17 @@
+/* Libraries */
 import { Request, Response, NextFunction } from "express";
+
+/* Application Modules */
 import { ApiError } from "../exceptions/ApiError";
 import responseHandler from "../responseHandler";
+import { logger } from "../../config/logger";
 
-export function errorHandler(error: ApiError, req: Request, res: Response, next: NextFunction) {
+export function errorHandler(
+  error: ApiError,
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
   const statusCode = error.status;
 
   const resBody = {
@@ -10,5 +19,15 @@ export function errorHandler(error: ApiError, req: Request, res: Response, next:
     message: error.message,
   }
 
-  responseHandler.customResponse(statusCode, resBody, res);
+  logger.error(error.stack);
+  return responseHandler.customResponse(statusCode, resBody, res);
+}
+
+export const routeNotFoundErrorHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  responseHandler.customResponse(404, { message: "Route not found" }, res);
+  return next();
 }

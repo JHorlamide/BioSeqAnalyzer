@@ -14,6 +14,9 @@ const config = {
   prefix: "/api",
   node_env: process.env.NODE_ENV,
   databaseUrl: process.env.MONGO_DATABASE_URL as string,
+  tempPassword: process.env.TEMP_PASSWORD as string,
+  userEmail: process.env.NODEMAILER_USER as string,
+  password: process.env.PASSWORD as string
 }
 
 export default config;

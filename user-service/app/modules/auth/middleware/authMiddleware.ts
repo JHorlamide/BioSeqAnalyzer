@@ -8,6 +8,7 @@ import userService from "../../users/services/userService"
 import responseHandler from "../../../common/responseHandler";
 import { ERR_MSG } from "../../users/types/constants";
 import { userLogin } from "../validation/authSchema";
+import { NotFoundError } from "../../../common/exceptions/ApiError";
 
 class AuthMiddleware {
   public validateReqAuthFields = requestBodyValidator(userLogin);
@@ -17,12 +18,12 @@ class AuthMiddleware {
 
     try {
       const user = await userService.getUserByEmail(email);
+
       if (!user) {
         return responseHandler.badRequest(ERR_MSG.USER_NOT_FOUND, res);
       }
 
-      const passwordHash = user.password;
-      if (await argon2.verify(passwordHash, password)) {
+      if (await argon2.verify(user.password, password)) {
         req.body = {
           userId: user.id,
           email: user.email,
