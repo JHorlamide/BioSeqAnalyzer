@@ -10,14 +10,17 @@ import { ServerError } from "../../../common/exceptions/ApiError";
 import { logger } from "../../../config/logger";
 import config from "../../../config/appConfig";
 
-interface SendEmail {
+interface InvitationEmail {
   receiverMail: string;
   receiverName: string;
   senderName: string;
   projectName: string;
   tempPassword: string;
   link: string;
+  template: string;
 }
+
+type ForgotPasswordEmail = Pick<InvitationEmail, "link" | "receiverMail" | "template" | "receiverName">;
 
 class MailService {
   private transporter: Transporter;
@@ -33,32 +36,53 @@ class MailService {
 
     const handlebarOptions: NodemailerExpressHandlebarsOptions = {
       viewEngine: {
-        partialsDir: path.resolve("./views"),
+        partialsDir: path.resolve("./views/"),
         defaultLayout: false,
       },
 
-      viewPath: path.resolve("./views"),
+      viewPath: path.resolve("./views/"),
     };
 
     this.transporter.use("compile", hbs(handlebarOptions));
   }
 
-  public async sendEmail(mailParams: SendEmail) {
+  public async sendInvitationEmail(mailParams: InvitationEmail) {
     const {
       receiverMail,
       receiverName,
       senderName,
       projectName,
       link,
+      template,
       tempPassword
     } = mailParams;
 
     const mailOpts = {
       from: "BioSeqAnalyzer",
-      template: "email",
+      template: template,
       to: receiverMail,
       subject: `${projectName} project invitation`,
       context: { receiverName, senderName, projectName, link, tempPassword },
+    };
+
+    try {
+      await this.transporter.sendMail(mailOpts);
+      logger.info(`Email sent successfully to the following recipients: ${receiverMail.toString()}`)
+    } catch (error: any) {
+      logger.error(`Sending email error: ${error.message}`);
+      throw new ServerError(`Unable to send email: ${error.message}`);
+    }
+  }
+
+  public async sendForgotPasswordMail(mailParam: ForgotPasswordEmail) {
+    const { receiverMail, receiverName, template, link } = mailParam;
+
+    const mailOpts = {
+      from: "BioSeqAnalyzer",
+      template: template,
+      to: receiverMail,
+      subject: `Password Reset Request`,
+      context: { receiverMail, link, receiverName },
     };
 
     try {

@@ -40,12 +40,23 @@ export class AuthRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route  POST /api/user/refresh-token.
-    * @desc   Get authentication refresh token.
-    * @access Private.
+    * @route  POST /api/user/forgot-password
+    * @desc   Forgot password
+    * @access Public.
     * ***/
     this.app.post(`${APP_PREFIX_PATH}/users/forgot-password`, [
-      
+      authMiddleware.validateForgotPasswordField,
+      authController.forgotPassword
+    ])
+
+    /***
+    * @route  POST /api/user/reset-password
+    * @desc   Reset password
+    * @access Public.
+    * ***/
+    this.app.post(`${APP_PREFIX_PATH}/users/reset-password`, [
+      authMiddleware.validatePasswordReset,
+      authController.resetPassword
     ])
 
     return this.app;

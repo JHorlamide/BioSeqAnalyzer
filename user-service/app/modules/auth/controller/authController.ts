@@ -7,6 +7,7 @@ import jwt from "jsonwebtoken";
 import responseHandler from "../../../common/responseHandler";
 import asyncHandler from "../../../common/middleware/asyncHandler";
 import config from "../../../config/appConfig";
+import authService from "../service/authService";
 
 class AuthController {
   public createUserJWT = asyncHandler(async (req: Request, res: Response) => {
@@ -27,7 +28,19 @@ class AuthController {
 
     const userAuth = { accessToken, refreshToken: hash, user: req.body };
     responseHandler.successResponse("Login successful", userAuth, res);
-  })
+  });
+
+  public forgotPassword = asyncHandler(async (req: Request, res: Response) => {
+    const { email } = req.body;
+    await authService.forgotPassword({ email });
+    responseHandler.successResponse("Reset link sent to your email", {}, res);
+  });
+
+  public resetPassword = asyncHandler(async (req: Request, res: Response) => {
+    const { password, confirmPassword, passwordToken } = req.body;
+    const userId = await authService.resetPassword({ password, confirmPassword, passwordToken });
+    responseHandler.successResponse("Password updated successfully", { userId }, res);
+  });
 }
 
 export default new AuthController();

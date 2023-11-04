@@ -62,6 +62,7 @@ services:
     volumes:
       - ../user-service/app:/user-service/app:cached
       - ../user-service/views:/user-service/views:cached
+      - ../user-service/prisma:/user-service/prisma:cached
       - /user-service/node_modules
     env_file: [ ../user-service/.env ]
     depends_on: [ "mysql" ]

@@ -68,9 +68,10 @@ class UserService {
         throw new ServerError(ERR_MSG.INVITATION_FAILED);
       }
 
-      mailService.sendEmail({
-        senderName: String(user.fullName),
+      await mailService.sendInvitationEmail({
+        senderName: user.fullName,
         projectName,
+        template: "email",
         receiverMail: email,
         receiverName: fullName,
         tempPassword: loginPassword,

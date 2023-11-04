@@ -7,11 +7,14 @@ import requestBodyValidator from "../../../common/middleware/requestValidation";
 import userService from "../../users/services/userService"
 import responseHandler from "../../../common/responseHandler";
 import { ERR_MSG } from "../../users/types/constants";
-import { userLogin } from "../validation/authSchema";
-import { NotFoundError } from "../../../common/exceptions/ApiError";
+import { userLogin, forgotPassword, passwordReset } from "../validation/authSchema";
 
 class AuthMiddleware {
   public validateReqAuthFields = requestBodyValidator(userLogin);
+
+  public validateForgotPasswordField = requestBodyValidator(forgotPassword);
+  
+  public validatePasswordReset = requestBodyValidator(passwordReset);
 
   public async verifyPassword(req: Request, res: Response, next: NextFunction) {
     const { email, password } = req.body;

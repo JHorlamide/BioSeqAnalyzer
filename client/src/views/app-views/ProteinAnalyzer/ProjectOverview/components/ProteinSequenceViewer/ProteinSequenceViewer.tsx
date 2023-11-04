@@ -16,7 +16,6 @@ import useErrorToast from '../../../../../../hooks/useErrorToast';
 import Button from '../../../../../../components/CustomBtn/Button';
 import SequenceViewer from '../../../../../../components/SequenceViewer/SequenceViewer';
 import useNavigation from '../../../../../../hooks/useNavigation';
-import { useAppSelector } from '../../../../../../store/store';
 import useParseSeq from '../../../../../../hooks/useParseSeq';
 
 interface Props {
@@ -25,6 +24,28 @@ interface Props {
   proteinPDBID?: string;
   proteinAminoAcidSequence: string | undefined;
 }
+
+const seqVizStyle = {
+  height: "18vw",
+  width: "101.5%",
+  padding: "10px 0",
+  backgroundColor: "white",
+  borderRadius: 10,
+}
+
+const linkStyle = {
+  display: "flex",
+  bg: "brand_blue.100",
+  borderRadius: 5,
+  color: "white",
+  paddingX: 3,
+  paddingY: 1.5,
+};
+
+const iconStyle = {
+  marginLeft: 5,
+  marginTop: 2.5,
+};
 
 const ProteinSequenceViewer = (props: Props) => {
   const { proteinPDBID, containerStyle, pdbFileUrl, proteinAminoAcidSequence } = props
@@ -136,27 +157,5 @@ const ProteinSequenceViewer = (props: Props) => {
     </Fragment>
   )
 }
-
-const seqVizStyle = {
-  height: "18vw",
-  width: "101.5%",
-  padding: "10px 0",
-  backgroundColor: "white",
-  borderRadius: 10,
-}
-
-const linkStyle = {
-  display: "flex",
-  bg: "brand_blue.100",
-  borderRadius: 5,
-  color: "white",
-  paddingX: 3,
-  paddingY: 1.5,
-};
-
-const iconStyle = {
-  marginLeft: 5,
-  marginTop: 2.5,
-};
 
 export default ProteinSequenceViewer;

@@ -1,6 +1,6 @@
 
 import { PrismaClient, User } from "@prisma/client"
-import { IUser } from "../types/types";
+import { IUser, UpdateUser } from "../types/types";
 
 class UserRepository {
   private prisma: PrismaClient;
@@ -19,6 +19,17 @@ class UserRepository {
 
   public async getUserById(userId: string): Promise<User | null> {
     return await this.prisma.user.findUnique({ where: { id: userId } });
+  }
+
+  public async updateUserDetails(data: UpdateUser): Promise<User> {
+    return await this.prisma.user.update({
+      where: { email: data.email },
+      data: { ...data }
+    })
+  }
+
+  public async getUserByResetToken(resetToken: string) {
+    return await this.prisma.user.findUnique({ where: { resetToken } });
   }
 }
 

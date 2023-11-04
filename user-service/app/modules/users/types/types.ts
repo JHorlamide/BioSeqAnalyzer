@@ -1,3 +1,4 @@
+import { User } from "@prisma/client"
 
 enum Role {
   AUTHOR = "AUTHOR",
@@ -16,3 +17,12 @@ export interface SendProjectInvitation extends IUser {
   projectName: string;
   loginPassword: string;
 }
+
+export type UpdateUser = Partial<User>;
+
+// export interface UpdateUser {
+//   email: string;
+//   id: string;
+//   resetToken: string;
+//   resetTokenExpiration: number;
+// } 

@@ -62,7 +62,7 @@ const ProjectCard = (props: ProjectCardProps) => {
     {
       key: "inviteMember",
       menuTitle: "Invite Member",
-      MenuIcon: AiOutlineUserAdd, // Change the Icon to a user Icon
+      MenuIcon: AiOutlineUserAdd,
       action: (event: React.MouseEvent) => {
         event.stopPropagation();
         onOpenInvite();
