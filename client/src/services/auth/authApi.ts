@@ -1,7 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { LoginFormData } from "../../schemas/auth/loginSchema";
-import { ForgotPasswordReq, ForgotPasswordRes, ILoginResponse, ResetPasswordReq, ResetPasswordRes } from "./type";
 import { USER_API_BASE_URL } from '../../config/AppConfig';
+import {
+  ForgotPasswordReq,
+  ForgotPasswordRes,
+  ILoginResponse,
+  ResetPasswordReq,
+  ResetPasswordRes
+} from "./type";
 
 export const AUTH_API_REDUCER_KEY = 'authApi';
 
@@ -29,14 +35,14 @@ export const authApi = createApi({
       query: (data) => ({
         url: "/reset-password",
         method: "POST",
-        body: { ...data }
+        body: data
       })
-    })
+    }),
   })
 })
 
 export const {
   useLoginUserMutation,
   useForgotPasswordMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
 } = authApi;

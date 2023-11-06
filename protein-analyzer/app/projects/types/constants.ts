@@ -14,7 +14,7 @@ export const RES_MSG = {
 export const ERR_MSG = {
   UNIPROT_ID_REQUIRED: "uniprotId is required",
   INVALID_UNIPROT_ID: "Invalid Uniprot id",
-  USER_ID_REQUIRED: "userId is required",
+  USER_ID_REQUIRED: "authorId is required",
   PROJECT_ID_REQUIRED: "projectId is not a valid Object ID",
   PROJECT_NOT_FOUND: "Project not found",
   INVALID_PROJECT_DATA: "projectTitle, projectGoal, and, measuredProperty are required fields",

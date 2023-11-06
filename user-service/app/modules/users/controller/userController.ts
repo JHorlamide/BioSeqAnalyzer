@@ -7,7 +7,6 @@ import asyncHandler from "../../../common/middleware/asyncHandler";
 import responseHandler from "../../../common/responseHandler";
 import userService from "../services/userService";
 import { RES_MSG } from "../types/constants";
-import { Utils } from "../../../utils";
 
 class UserController {
   public createUser = asyncHandler(async (req: Request, res: Response) => {
@@ -18,17 +17,15 @@ class UserController {
   });
 
   public inviteUserToProject = asyncHandler(async (req: Request, res: Response) => {
-    const { userId } = req.params;
-    const { loginPassword, temporaryPassword } = await Utils.generateTempPassword();
-    await userService.sendProjectInvitation({
-      ...req.body,
-      userId,
-      loginPassword,
-      password: temporaryPassword
-    });
-
+    const { userId } = res.locals.jwt;
+    await userService.sendProjectInvitation({ ...req.body, userId, });
     responseHandler.successResponse(RES_MSG.INVITE_SEND, {}, res);
   });
+
+  public acceptProjectInvitation = asyncHandler(async (req: Request, res: Response) => {
+    const user = await userService.acceptProjectInvitation(req.body);
+    responseHandler.successResponse(RES_MSG.USER_CREATE, user, res);
+  })
 }
 
 export default new UserController();

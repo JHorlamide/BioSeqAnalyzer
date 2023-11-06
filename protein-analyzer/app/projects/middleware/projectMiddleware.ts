@@ -69,9 +69,10 @@ class ProjectMiddleware {
     const { userId } = decodedUser;
 
     try {
-      const project = await projectService.getProjectByUserId(userId);
+      const project = await projectService.getProjectByAuthorId(userId);
+
       if (!project) {
-        return responseHandler.forbiddenResponse("Not authorized", res);
+        return responseHandler.forbiddenResponse("Project not found", res);
       }
 
       next();

@@ -5,3 +5,17 @@ export const registerUser = Joi.object({
   email: Joi.string().required(),
   password: Joi.string().required()
 });
+
+export const invitation = Joi.object({
+  userEmail: Joi.string().email().required(),
+  projectId: Joi.string().required(),
+  projectName: Joi.string().required(),
+  projectType: Joi.string().required()
+});
+
+export const acceptInvitation = Joi.object({
+  invitationToken: Joi.string().required(),
+  userEmail: Joi.string().email().required(),
+  fullName: Joi.string().required(),
+  password: Joi.string().required()
+})

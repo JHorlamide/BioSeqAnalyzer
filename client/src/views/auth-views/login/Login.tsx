@@ -1,8 +1,14 @@
+/* React */
+import { useState } from "react";
+
 /* Libraries */
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 /* Chakra UI */
 import {
@@ -21,9 +27,16 @@ import {
 /* Application Modules */
 import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
-import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
-import { useLogin } from "../../../hooks/useAuth";
+import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
+import { useAppDispatch } from "../../../store/store";
+import { useLoginUserMutation } from "../../../services/auth/authApi";
+import { LoginFormData, loginSchema } from "../../../schemas/auth/loginSchema";
+import { ProteinProjectAPI } from "../../../services/proteinProject/proteinProjectAPI";
+import { setRefreshToken, setToken, setUser } from "../../../store/slices/authSlice";
+import useErrorToast from "../../../hooks/useErrorToast";
+import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
+import useNavigation from "../../../hooks/useNavigation";
 
 type LoginFormFields = {
   email: string;
@@ -31,16 +44,50 @@ type LoginFormFields = {
 }
 
 const Login = () => {
+  const dispatch = useAppDispatch();
+  const { handleError } = useErrorToast();
+  const { handleNavigate } = useNavigation();
+  const [showPassword, setShowPassword] = useState(false);
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+
+  const [pathQuery] = useSearchParams();
+  const userEmail = pathQuery.get("user_email");
+  const projectType = pathQuery.get("project_type")
+  const invitationToken = pathQuery.get("invitation_token")
+
   const {
-    errors,
-    show,
-    isValid,
-    isLoading,
-    handleShowPassword,
-    handleSubmit,
-    onSubmit,
     register,
-  } = useLogin();
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
+
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const response = await loginUser(data).unwrap();
+      if (response.status === "Success") {
+        const { accessToken, refreshToken, user } = response.data;
+        handleAuthTokenDispatchAndStorage(user, accessToken, refreshToken);
+        dispatch(ProteinProjectAPI.util.invalidateTags(["GetAllProjects"]));
+
+        toast.success(response.message);
+        handleNavigate(`${AUTHENTICATED_ENTRY}`);
+      }
+    } catch (error: any) {
+      handleError(error);
+    }
+  };
+
+  const handleAuthTokenDispatchAndStorage = (
+    user: any,
+    accessToken: string,
+    refreshToken: string
+  ) => {
+    dispatch(setUser(user));
+    dispatch(setToken(accessToken));
+    dispatch(setRefreshToken(refreshToken));
+    localStorage.setItem(AUTH_TOKEN, accessToken);
+    localStorage.setItem(REFRESH_TOKEN, refreshToken);
+  };
 
   return (
     <FormContainer showHeading={true}>
@@ -70,6 +117,7 @@ const Login = () => {
                 register={register}
                 errors={errors}
                 placeholder="Enter your email"
+                defaultValue={userEmail ? userEmail : ""}
               />
             </InputGroup>
           </FormControl>
@@ -84,7 +132,7 @@ const Login = () => {
               />
 
               <FormInput<LoginFormFields>
-                type={show ? "text" : "password"}
+                type={showPassword ? "text" : "password"}
                 name="password"
                 register={register}
                 errors={errors}
@@ -92,14 +140,14 @@ const Login = () => {
               />
 
               <InputRightElement _hover={{ cursor: "pointer" }}>
-                {show ? (
+                {showPassword ? (
                   <AiOutlineEye
-                    onClick={handleShowPassword}
+                    onClick={() => setShowPassword(!showPassword)}
                     color="white"
                   />
                 ) : (
                   <AiOutlineEyeInvisible
-                    onClick={handleShowPassword}
+                    onClick={() => setShowPassword(!showPassword)}
                     color="white"
                   />
                 )}

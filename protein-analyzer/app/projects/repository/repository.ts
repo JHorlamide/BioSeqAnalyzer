@@ -15,8 +15,8 @@ class ProjectRepository {
     return await Project.findById(projectId).exec();
   }
 
-  public async getProjectByUserId(userId: string) {
-    return await Project.findOne({ user: userId }).exec();
+  public async getProjectByAuthorId(authorId: string) {
+    return await Project.findOne({ authorId }).exec();
   }
 
   public async countProjects(query: any) {

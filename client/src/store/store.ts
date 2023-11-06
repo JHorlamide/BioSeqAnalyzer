@@ -29,6 +29,7 @@ import { authApi, AUTH_API_REDUCER_KEY } from "../services/auth/authApi";
 import { registerAPI, REGISTER_API_REDUCER_KEY } from "../services/auth/registerApi";
 import { ProteinProjectAPI, PROTEIN_PROJECT_API_REDUCER_KEY } from "../services/proteinProject/proteinProjectAPI";
 import { DNASeqProjectAPI, DNA_PROJECT_API_REDUCER_KEY } from "../services/DNASequence/DNASeqProjectAPI";
+import { userAPI, USER_API } from "../services/user/userServiceAPI";
 
 const reducers = {
   /* Slice */
@@ -41,6 +42,7 @@ const reducers = {
   [REGISTER_API_REDUCER_KEY]: registerAPI.reducer,
   [PROTEIN_PROJECT_API_REDUCER_KEY]: ProteinProjectAPI.reducer,
   [DNA_PROJECT_API_REDUCER_KEY]: DNASeqProjectAPI.reducer,
+  [USER_API]: userAPI.reducer,
 }
 
 const combinedReducer = combineReducers<typeof reducers>(reducers);
@@ -70,10 +72,11 @@ export const store: Store = configureStore({
     },
   }).concat([
     unAuthenticatedMiddleware,
+    userAPI.middleware,
     authApi.middleware,
     registerAPI.middleware,
     ProteinProjectAPI.middleware,
-    DNASeqProjectAPI.middleware
+    DNASeqProjectAPI.middleware,
   ])
 });
 

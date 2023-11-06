@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import DNASequence
+from .models import DNASequence, InvitedUsers
 
 
 class DNASequenceSerializer(serializers.ModelSerializer):
@@ -24,8 +24,10 @@ class DNASequenceSerializer(serializers.ModelSerializer):
         ]
 
     def save(self, **kwargs):
-        user_id = self.context["user_id"]
-        created_dna = DNASequence.objects.create(user_id=user_id, **self.validated_data)
+        author_id = self.context["author_id"]
+        created_dna = DNASequence.objects.create(
+            author_id=author_id, **self.validated_data
+        )
         return created_dna
 
     def to_representation(self, instance):
@@ -35,3 +37,13 @@ class DNASequenceSerializer(serializers.ModelSerializer):
             self.fields.pop("file")
 
         return super().to_representation(instance)
+
+
+class InvitedUsersSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = InvitedUsers
+        fields = ["user_id"]
+        
+    # def save(self, **kwargs):
+    #     dna_sequence_id = self.context["dna_sequence_id"]
+    #     new_invited_user = InvitedUsers.objects.create()

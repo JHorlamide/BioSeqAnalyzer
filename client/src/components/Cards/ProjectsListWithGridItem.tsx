@@ -7,10 +7,16 @@ import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 /* Application Module */
 import ProjectCard from "./ProjectCard";
 import { ProteinProjects } from "../../services/proteinProject/type";
-import { ICreateDNASeqProjectsRes } from "../../services/DNASequence/types";
+import { ICreateDNASeqProjectsRes, IGetProjectsRes } from "../../services/DNASequence/types";
+
+interface DNASeqProjects {
+  id: string;
+  name: string;
+  date_of_submission: string;
+}
 
 interface Props {
-  dnaSeqProjects?: ICreateDNASeqProjectsRes[];
+  dnaSeqProjects?: DNASeqProjects[];
   proteinProjects?: ProteinProjects[];
   goToUpdateProjectPage: (projectId: string) => void;
   handleDeleteProject: (project: string) => void;
@@ -37,9 +43,9 @@ const ProjectsListWithGridItem = (props: Props) => {
   } = props;
   const projects = [...(proteinProjects ?? []), ...(dnaSeqProjects ?? [])];
 
-  const getProjectProperties = (project: ICreateDNASeqProjectsRes | ProteinProjects) => {
+  const getProjectProperties = (project: DNASeqProjects | ProteinProjects) => {
     if (isDNASeqProject(project)) {
-      const { id, name, date_of_submission } = project as ICreateDNASeqProjectsRes;
+      const { id, name, date_of_submission } = project as DNASeqProjects;
 
       return {
         projectId: id,
@@ -52,10 +58,8 @@ const ProjectsListWithGridItem = (props: Props) => {
     return { projectTitle, updatedAt, projectId: _id };
   };
 
-  const isDNASeqProject = (
-    project: ICreateDNASeqProjectsRes | ProteinProjects
-  ): boolean => {
-    return (project as ICreateDNASeqProjectsRes).id !== undefined;
+  const isDNASeqProject = (project: DNASeqProjects | ProteinProjects): boolean => {
+    return (project as DNASeqProjects).id !== undefined;
   };
 
   return (
@@ -68,6 +72,7 @@ const ProjectsListWithGridItem = (props: Props) => {
               handleDeleteProject={handleDeleteProject}
               goToUpdateProjectPage={goToUpdateProjectPage}
               goToProjectDetailsPage={goToProjectDetailsPage}
+              projectType={dnaSeqProjects !== null ? "dna" : "protein"}
             />
           </GridItem>
         ))}

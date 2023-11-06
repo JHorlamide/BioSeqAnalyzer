@@ -2,13 +2,16 @@
 import React, { Fragment } from "react"
 
 /* Libraries */
+import toast from "react-hot-toast";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 /* Application Modules */
 import Button from "../CustomBtn/Button";
+import useErrorToast from "../../hooks/useErrorToast";
 import { FormInput } from "../CustomInput/FormInput/FormInput";
 import { InviteMemberFormData, inviteMemberSchema } from "../../schemas/inviteMember";
+import { useSendProjectInviteMutation } from "../../services/user/userServiceAPI";
 
 /* Chakra UI */
 import {
@@ -25,19 +28,22 @@ import {
 
 interface InviteMemberProps {
   isOpen: boolean;
-  onClose: () => void;
   projectId: string;
+  projectName: string;
+  projectType: "dna" | "protein";
+  onClose: () => void;
 }
 
 type InviteMemberFormFields = {
-  name: string;
-  email: string;
+  userEmail: string;
 }
 
 const InviteMember = (props: InviteMemberProps) => {
-  const { isOpen, onClose, projectId } = props;
+  const { handleError } = useErrorToast();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
+  const [sendProjectInvitation, { isLoading }] = useSendProjectInviteMutation();
+  const { isOpen, onClose, projectId, projectType, projectName } = props;
 
   const {
     register,
@@ -45,8 +51,26 @@ const InviteMember = (props: InviteMemberProps) => {
     formState: { errors },
   } = useForm<InviteMemberFormData>({ resolver: zodResolver(inviteMemberSchema) });
 
-  const submit = (data: InviteMemberFormData) => {
-    console.log({ ...data, projectId });
+  const submit = async (data: InviteMemberFormData) => {
+    try {
+      const response = await sendProjectInvitation({
+        ...data,
+        projectId,
+        projectType,
+        projectName
+      }).unwrap();
+
+      if (response.status === "Success") {
+        toast.success(response.message);
+        onClose();
+        return;
+      }
+
+      handleError(response.message);
+    } catch (error: any) {
+      console.log({ error });
+      handleError(error.message);
+    }
   }
 
   return (
@@ -65,20 +89,10 @@ const InviteMember = (props: InviteMemberProps) => {
           <ModalCloseButton />
           <form onSubmit={handleSubmit(submit)}>
             <ModalBody pb={6}>
-              <FormControl isRequired>
-                <FormLabel>Name</FormLabel>
-                <FormInput<InviteMemberFormFields>
-                  name="name"
-                  type="text"
-                  register={register}
-                  errors={errors}
-                />
-              </FormControl>
-
               <FormControl mt={4} isRequired>
                 <FormLabel>Email</FormLabel>
                 <FormInput<InviteMemberFormFields>
-                  name="email"
+                  name="userEmail"
                   type="email"
                   register={register}
                   errors={errors}
@@ -92,6 +106,7 @@ const InviteMember = (props: InviteMemberProps) => {
                 type="submit"
                 bg='brand_blue.200'
                 _hover={{ bg: "brand_blue.200" }}
+                isLoading={isLoading}
               >
                 Send Invite
               </Button>

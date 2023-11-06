@@ -29,6 +29,14 @@ def validate_no_emoji(value):
         raise ValidationError("Emojis and special symbols are not allowed.", code=400)
 
 
+class InvitedUsers(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    user_id = models.UUIDField(default=uuid.uuid4, editable=False)
+
+    def __str__(self) -> str:
+        return self.user_id
+
+
 class DNASequence(models.Model):
     DNA_NUCLEOTIDE = "D"
     RNA_NUCLEOTIDE = "R"
@@ -55,7 +63,7 @@ class DNASequence(models.Model):
     sequence_id = models.CharField(max_length=20, blank=True, null=True)
     sequence = models.TextField(blank=True, null=True)
     date_of_submission = models.DateTimeField(auto_now_add=True)
-    user_id = models.UUIDField(default=uuid.uuid4, editable=False)
+    author_id = models.UUIDField(default=uuid.uuid4, editable=False)
     nucleotide_type = models.CharField(
         max_length=4, choices=NUCLEOTIDE_TYPES, default=DNA_NUCLEOTIDE
     )
@@ -64,6 +72,9 @@ class DNASequence(models.Model):
     )
     bases = models.TextField(blank=True, null=True, validators=[validate_no_emoji])
     name = models.CharField(max_length=100, validators=[validate_no_emoji])
+    invited_users = models.ManyToManyField(
+        InvitedUsers, related_name="invited_users", blank=True
+    )
     description = models.TextField(
         null=True,
         blank=True,

@@ -10,11 +10,10 @@ export enum MeasuredProperty {
 }
 
 export interface IProject {
-  user: String;
+  authorId: String;
   projectTitle: string;
   measuredProperty: MeasuredProperty;
   projectGoal: ProjectGoal;
-
   proteinPDBID?: string;
   pdbFileUrl?: string;
   uniprotId?: string;
@@ -32,7 +31,7 @@ export interface PaginationParams {
 }
 
 export interface SearchParams {
-  userId: string;
+  authorId: string;
   projectTitle: string;
   projectGoal: string;
   measuredProperty: string;
@@ -46,6 +45,7 @@ export interface S3UploadRes {
 
 export interface ProjectModel extends IProject {
   projectFileName: string;
+  invitedUsers?: string[];
 }
 
 export interface CSVColumnDataType {
@@ -59,4 +59,7 @@ export interface IMutationRange {
   scoreRange: { min: number; max: number }
 }
 
-export type QueryType = { user: string; $or?: Array<Record<string, { $regex: string; $options: string }>> };
+export type QueryType = {
+  authorId: string;
+  $or?: Array<Record<string, { $regex: string; $options: string }>>
+};

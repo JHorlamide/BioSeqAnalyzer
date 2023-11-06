@@ -6,14 +6,19 @@ import responseHandler from "../../../common/responseHandler";
 import requestBodyValidator from "../../../common/middleware/requestValidation";
 import userRepository from "../repository/userRepository";
 import { ERR_MSG } from "../types/constants";
-import { registerUser } from "../validation/userSchema";
+import { registerUser, invitation, acceptInvitation } from "../validation/userSchema";
 import userService from "../services/userService";
 
 class UserMiddleware {
   public validateReqBodyField = requestBodyValidator(registerUser);
 
+  public validateInvitationBody = requestBodyValidator(invitation);
+  
+  public validateAcceptBody = requestBodyValidator(acceptInvitation);
+
   public async validateUserAlreadyExit(req: Request, res: Response, next: NextFunction) {
     const { email } = req.body;
+
     const user = await userRepository.getUserByEmail(email);
 
     if (user) {
@@ -24,7 +29,7 @@ class UserMiddleware {
   }
 
   public async validateUserHasRequiredRole(req: Request, res: Response, next: NextFunction) {
-    const { userId } = req.params;
+    const { userId } = res.locals.jwt;
 
     try {
       const user = await userService.getUserById(userId);

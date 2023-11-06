@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { logger } from "../config/logger"
+import { logger } from "./logger"
 
 /**
   Logs the incoming requests and outgoing responses of the application to the console.

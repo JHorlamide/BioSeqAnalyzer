@@ -14,11 +14,14 @@ class ProjectController {
   public createProject = asyncHandler(async (req: Request, res: Response) => {
     const authUser = getAuthUser(req.headers["x-decoded-user"])
     const { userId } = authUser;
-    const project = await projectService.createProject({ user: userId, ...req.body });
+    const project = await projectService.createProject({ authorId: userId, ...req.body });
     responseHandler.successfullyCreated(RES_MSG.PROJECT_CREATED, project, res);
   });
 
   public getAllProjects = asyncHandler(async (req: any, res: Response) => {
+    const DEFAULT_PAGE_SIZE = 1;
+    const DEFAULT_LIMIT = 10;
+
     const decodedUser = JSON.parse(req.headers["x-decoded-user"]);
     const { userId } = decodedUser;
     const {
@@ -29,8 +32,8 @@ class ProjectController {
       measuredProperty = ""
     } = req.query;
 
-    const pageNumber = page ? Number(page) : 1;
-    const limitNumber = limit ? Number(limit) : 10;
+    const pageNumber = page ? Number(page) : DEFAULT_PAGE_SIZE;
+    const limitNumber = limit ? Number(limit) : DEFAULT_LIMIT;
     const searchQuery = projectTitle ? String(projectTitle) : "";
 
     const paginationParams = {
@@ -39,7 +42,7 @@ class ProjectController {
     };
 
     const searchParams = {
-      userId,
+      authorId: userId,
       projectGoal,
       measuredProperty,
       projectTitle: searchQuery,

@@ -1,9 +1,15 @@
+/* React */
+import { useEffect, useState } from "react";
+
 /* Libraries */
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { HiOutlineMail } from "react-icons/hi";
 import { MdDriveFileRenameOutline } from "react-icons/md";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { AiOutlineEyeInvisible, AiOutlineEye } from "react-icons/ai";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "react-hot-toast";
 
 /* Application Modules */
 import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
@@ -11,6 +17,9 @@ import { useRegister } from "../../../hooks/useAuth";
 import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
+import useNavigation from "../../../hooks/useNavigation";
+import useErrorToast from "../../../hooks/useErrorToast";
+import { RegisterFormData, registrationSchema } from "../../../schemas/auth/registerSchema";
 
 /* Chakra UI */
 import {
@@ -24,6 +33,7 @@ import {
   VStack,
   InputRightElement,
 } from "@chakra-ui/react";
+import { useRegisterUserMutation } from "../../../services/auth/registerApi";
 
 type RegisterFormFields = {
   fullName: string;
@@ -32,16 +42,38 @@ type RegisterFormFields = {
 }
 
 const Register = () => {
+  const { handleNavigate } = useNavigation();
+  const [pathQuery] = useSearchParams();
+  const { handleError } = useErrorToast();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const userEmail = pathQuery.get("user_email");
+  const projectType = pathQuery.get("project_type");
+  const invitationToken = pathQuery.get("invitation_token");
+  
   const {
-    handleShowPassword,
-    handleSubmit,
-    onSubmit,
     register,
-    errors,
-    show,
-    isLoading,
-    isValid
-  } = useRegister();
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<RegisterFormData>({ resolver: zodResolver(registrationSchema) });
+  const [registerUser, { isLoading }] = useRegisterUserMutation();
+
+  const onSubmit = async (data: RegisterFormData) => {
+    try {
+      const response = await registerUser(data).unwrap();
+
+      if (response.status === "Success") {
+        toast.success(response.message);
+        
+        setTimeout(() => {
+          handleNavigate(`${AUTH_PREFIX_PATH}/login`);
+        }, 1000);
+      }
+    } catch (error: any) {
+      handleError(error);
+    }
+  };
+
 
   return (
     <FormContainer showHeading={true}>
@@ -89,6 +121,7 @@ const Register = () => {
                 placeholder="Enter your email address"
                 register={register}
                 errors={errors}
+                defaultValue={userEmail ? userEmail : ""}
               />
             </InputGroup>
           </FormControl>
@@ -104,21 +137,21 @@ const Register = () => {
 
               <FormInput<RegisterFormFields>
                 name="password"
-                type={show ? "text" : "password"}
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 register={register}
                 errors={errors}
               />
 
               <InputRightElement _hover={{ cursor: "pointer" }}>
-                {show ? (
+                {showPassword ? (
                   <AiOutlineEye
-                    onClick={handleShowPassword}
+                    onClick={() => setShowPassword(!showPassword)}
                     color="white"
                   />
                 ) : (
                   <AiOutlineEyeInvisible
-                    onClick={handleShowPassword}
+                    onClick={() => setShowPassword(!showPassword)}
                     color="white"
                   />
                 )}

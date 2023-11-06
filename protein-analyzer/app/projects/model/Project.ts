@@ -2,7 +2,8 @@ import { Schema, model } from "mongoose";
 import { ProjectModel, ProjectGoal, MeasuredProperty } from "../types/types";
 
 const projectSchema = new Schema<ProjectModel>({
-  user: { type: String },
+  authorId: { type: String },
+
   projectTitle: { type: String, required: true },
 
   projectGoal: {
@@ -34,6 +35,7 @@ const projectSchema = new Schema<ProjectModel>({
   uniprotId: { type: String },
   proteinAminoAcidSequence: { type: String },
   projectFileName: { type: String },
+  invitedUsers: [{ type: String }],
 }, { timestamps: true })
 
 export default model<ProjectModel>("Project", projectSchema);

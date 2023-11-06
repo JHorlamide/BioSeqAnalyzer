@@ -31,6 +31,7 @@ interface ProjectCardProps {
   projectTitle: string;
   updatedAt: string;
   projectId: string;
+  projectType: "dna" | "protein";
   goToProjectDetailsPage: (projectId: string) => void;
   goToUpdateProjectPage: (projectId: string) => void;
   handleDeleteProject: (project: string) => void;
@@ -45,6 +46,7 @@ const ProjectCard = (props: ProjectCardProps) => {
   } = useDisclosure();
 
   const {
+    projectType,
     updatedAt,
     projectId,
     projectTitle,
@@ -96,6 +98,8 @@ const ProjectCard = (props: ProjectCardProps) => {
         isOpen={isOpenInvite}
         onClose={onCloseInvite}
         projectId={projectId}
+        projectType={projectType}
+        projectName={projectTitle}
       />
 
       <ConfirmationModal

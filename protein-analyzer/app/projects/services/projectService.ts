@@ -29,7 +29,7 @@ class ProjectService {
       throw new ClientError(ERR_MSG.INVALID_PROJECT_DATA);
     }
 
-    if (!projectData.user) {
+    if (!projectData.authorId) {
       throw new ClientError(ERR_MSG.USER_ID_REQUIRED);
     }
 
@@ -42,18 +42,11 @@ class ProjectService {
     searchParams: SearchParams
   ) {
     const { page, limit } = paginationParams;
-    const { userId, ...filteredSearchParams } = searchParams;
-    const searchFilters = Object.entries(filteredSearchParams)
-      .filter(([key, value]) => value !== "")
-      .reduce((acc, [key, value]) => ({ ...acc, [key]: { $regex: value, $options: "i" } }), {});
+    const { authorId, ...filteredSearchParams } = searchParams;
+    const searchFilters = this.getSearchParams(filteredSearchParams);
 
     try {
-      const query: QueryType = { user: userId };
-
-      if (Object.keys(searchFilters).length > 0) {
-        query.$or = [searchFilters];
-      }
-
+      const query = this.getQuery(authorId, searchFilters);
       const totalCount = await projectRepository.countProjects(query);
       const totalPages = Math.ceil(totalCount / limit);
       const projects = await projectRepository.getAllProjects(query, page, limit);
@@ -82,9 +75,9 @@ class ProjectService {
     }
   }
 
-  public async getProjectByUserId(userId: string) {
+  public async getProjectByAuthorId(userId: string) {
     try {
-      const project = await projectRepository.getProjectByUserId(userId);
+      const project = await projectRepository.getProjectByAuthorId(userId);
 
       if (!project) {
         throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
@@ -178,6 +171,7 @@ class ProjectService {
   public async uploadProjectFile(projectId: string, file: Express.Multer.File) {
     try {
       const project = await projectRepository.getProjectById(projectId);
+
       if (!project) {
         throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
       }
@@ -196,36 +190,40 @@ class ProjectService {
 
   /** Get Histogram Data **/
   public async getHistogramData(projectId: string) {
-    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
+    try {
+      const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
 
-    /** Calculate the histogram data **/
-    const histogramData: { label: string, count: number }[] = [];
-    const countByLabel: { [key: string]: number } = {};
+      /** Calculate the histogram data **/
+      const histogramData: { label: string, count: number }[] = [];
+      const countByLabel: { [key: string]: number } = {};
 
-    csvData.forEach((row) => {
-      const label = row.muts;
-      countByLabel[label] = (countByLabel[label] || 0) + 1;
-    });
+      csvData.forEach((row) => {
+        const label = row.muts;
+        countByLabel[label] = (countByLabel[label] || 0) + 1;
+      });
 
-    for (const label in countByLabel) {
-      histogramData.push({ label, count: countByLabel[label] });
+      for (const label in countByLabel) {
+        histogramData.push({ label, count: countByLabel[label] });
+      }
+
+      /**
+       * 1. Distribution of fitness scores as a histogram
+       * The reference sequence should be highlighted in the histogram
+       * **/
+      const fitnessScores: number[] = csvData.map((row) => row.fitness);
+      const referenceSequence = 'WT'; // Assuming the reference sequence is denoted as 'WT'
+      const histogramWithReference = histogramData.map((item) => ({
+        label: item.label,
+        count: item.label === referenceSequence ? item.count : item.count, // Highlight the reference sequence in the histogram
+      }));
+
+      return histogramWithReference;
+    } catch (error: any) {
+      throw new ServerError(error.message);
     }
-
-    /**
-     * 1. Distribution of fitness scores as a histogram
-     * The reference sequence should be highlighted in the histogram
-     * **/
-    const fitnessScores: number[] = csvData.map((row) => row.fitness);
-    const referenceSequence = 'WT'; // Assuming the reference sequence is denoted as 'WT'
-    const histogramWithReference = histogramData.map((item) => ({
-      label: item.label,
-      count: item.label === referenceSequence ? item.count : item.count, // Highlight the reference sequence in the histogram
-    }));
-
-    return histogramWithReference;
   }
 
-  // Get top 10 mutation
+  /* Get top 10 mutation */
   public async getTopMutants(projectId: string) {
     try {
       const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
@@ -240,22 +238,26 @@ class ProjectService {
     }
   }
 
-  // Get mutation distribution
+  /* Get mutation distribution */
   public getMutationDistribution = async (projectId: string) => {
-    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
-    const mutationCounts: number[] = csvData.map((row) => row.muts.split(',').length);
-    const mutationDistribution: { mutationCount: number; count: number }[] = [];
-    const countByMutationCount: { [key: number]: number } = {};
+    try {
+      const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
+      const mutationCounts: number[] = csvData.map((row) => row.muts.split(',').length);
+      const mutationDistribution: { mutationCount: number; count: number }[] = [];
+      const countByMutationCount: { [key: number]: number } = {};
 
-    mutationCounts.forEach((count) => {
-      countByMutationCount[count] = (countByMutationCount[count] || 0) + 1;
-    });
+      mutationCounts.forEach((count) => {
+        countByMutationCount[count] = (countByMutationCount[count] || 0) + 1;
+      });
 
-    for (const count in countByMutationCount) {
-      mutationDistribution.push({ mutationCount: parseInt(count), count: countByMutationCount[count] });
+      for (const count in countByMutationCount) {
+        mutationDistribution.push({ mutationCount: parseInt(count), count: countByMutationCount[count] });
+      }
+
+      return mutationDistribution;
+    } catch (error: any) {
+      throw new ServerError(error.message);
     }
-
-    return mutationDistribution;
   }
 
   /**
@@ -264,37 +266,42 @@ class ProjectService {
    * sequences that include this mutation
    * */
   public async getMutationRange(projectId: string, limitNumber: number) {
-    const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
-    const mutations = csvData.flatMap((row) => row.muts.split(','));
-    const mutationRanges: IMutationRange[] = [];
-    const scoresByMutation: { [key: string]: number[] } = {};
+    try {
+      const csvData: CSVColumnDataType[] = await this.getFileCSVData(projectId);
+      const mutations = csvData.flatMap((row) => row.muts.split(','));
+      const mutationRanges: IMutationRange[] = [];
+      const scoresByMutation: { [key: string]: number[] } = {};
 
-    mutations.forEach((mutation, index) => {
-      const fitnessScore = csvData[index].fitness;
-      if (!scoresByMutation[mutation]) {
-        scoresByMutation[mutation] = [];
+      mutations.forEach((mutation, index) => {
+        const fitnessScore = csvData[index].fitness;
+
+        if (!scoresByMutation[mutation]) {
+          scoresByMutation[mutation] = [];
+        }
+
+        scoresByMutation[mutation].push(fitnessScore);
+      });
+
+      for (const mutation in scoresByMutation) {
+        const scores = scoresByMutation[mutation];
+
+        mutationRanges.push({
+          mutation,
+          scoreRange: {
+            min: Math.min(...scores),
+            max: Math.max(...scores),
+          },
+        });
       }
 
-      scoresByMutation[mutation].push(fitnessScore);
-    });
-
-    for (const mutation in scoresByMutation) {
-      const scores = scoresByMutation[mutation];
-
-      mutationRanges.push({
-        mutation,
-        scoreRange: {
-          min: Math.min(...scores),
-          max: Math.max(...scores),
-        },
-      });
+      // I would refactor this later.
+      // there is genu reason why am slicing the data
+      // I don't just want to send the entire data to client
+      // since am not rendering all the data
+      return mutationRanges.slice(0, limitNumber);
+    } catch (error: any) {
+      throw new ServerError(error.message);
     }
-
-    // I would refactor this later.
-    // there is genu reason why am slicing the data
-    // I don't just want to send the entire data to client
-    // since am not rendering all the data
-    return mutationRanges.slice(0, limitNumber);
   }
 
   /* Get highest fitness */
@@ -364,8 +371,7 @@ class ProjectService {
     }
   }
 
-
-  // Helper function to get the fitness score of the reference sequence (wild type)
+  /* Helper function to get the fitness score of the reference sequence (wild type) */
   private getReferenceFitness(csvData: CSVColumnDataType[]) {
     for (const entry of csvData) {
       if (entry.muts.includes("WT")) {
@@ -376,18 +382,18 @@ class ProjectService {
     return 0; // Default value if reference sequence is not found
   }
 
-  // Helper function to get the entry with the best fitness score
+  /* Helper function to get the entry with the best fitness score */
   private getBestFitnessEntry(csvData: CSVColumnDataType[]) {
     return csvData.reduce((prev, curr) => (curr.fitness > prev.fitness ? curr : prev));
   }
 
-  // Helper function to get the fitness score of the wild type sequence
+  /* Helper function to get the fitness score of the wild type sequence */
   private getWildTypeFitness(csvData: CSVColumnDataType[]) {
     const wildTypeEntry = csvData.find((entry) => entry.muts.includes('WT'));
     return wildTypeEntry ? wildTypeEntry.fitness : 0;
   }
 
-  // Get file from aws
+  /* Get file from aws */
   private getFileCSVData = async (projectId: string) => {
     try {
       const projectFileName = await this.getProjectFileName(projectId);
@@ -436,6 +442,24 @@ class ProjectService {
 
       throw new ServerError(error.message);
     }
+  }
+
+  private getSearchParams(filteredSearchParams: Pick<SearchParams, "measuredProperty" | "projectGoal" | "projectTitle">) {
+    return Object.entries(filteredSearchParams)
+      .filter(([key, value]) => value !== "")
+      .reduce((acc, [key, value]) => ({
+        ...acc, [key]: { $regex: value, $options: "i" }
+      }), {});
+  }
+
+  private getQuery(authorId: string, searchFilters: {}): QueryType {
+    const query: QueryType = { authorId };
+
+    if (Object.keys(searchFilters).length > 0) {
+      query.$or = [searchFilters];
+    }
+
+    return query;
   }
 }
 

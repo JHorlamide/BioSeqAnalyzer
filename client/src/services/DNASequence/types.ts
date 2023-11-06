@@ -33,7 +33,17 @@ export interface IGetProjectsRes extends Response {
   count: number,
   next: string,
   previous: string,
-  results: ICreateDNASeqProjectsRes[]
+  results: {
+    id: string;
+    name: string;
+    bases?: string,
+    description?: string,
+    sequence_id?: string,
+    date_of_submission: string;
+    nucleotide_type: string,
+    topology: string,
+    sequence?: string;
+  }[]
 }
 
 export interface IGetProjectRes {

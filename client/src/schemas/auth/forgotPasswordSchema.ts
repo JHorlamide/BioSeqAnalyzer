@@ -11,4 +11,4 @@ export const resetPasswordSchema = z.object({
 
 export type ResetPassFormData = z.infer<typeof resetPasswordSchema>
 
-export type ForgotPassFormData = z.infer<typeof forgotPasswordSchema>
+export type ForgotPassFormData = z.infer<typeof forgotPasswordSchema>;

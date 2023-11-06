@@ -9,5 +9,7 @@ export const ERR_MSG = {
   INVALID_USER_DATA: "name, email, and, password are required fields",
   EMAIL_IS_REQUIRED: "Email is required",
   SERVER_ERROR: "Service unavailable, Please try again later",
-  INVITATION_FAILED: "Unable to invite user to this project. Please try again later"
+  INVITATION_FAILED: "Unable to invite user to this project. Please try again later",
+  INVALID_INVITATION: "Invalid invitation token",
+  WRONG_USER_INVITATION: "This is invitation is not valid"
 }

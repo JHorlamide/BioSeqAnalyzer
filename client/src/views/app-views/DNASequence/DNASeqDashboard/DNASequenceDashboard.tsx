@@ -33,7 +33,7 @@ const DNASequenceDashboard = () => {
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const filters = useAppSelector((state) => state.DNASeqFilter);
-  const [deleteProject] = useDeleteProjectMutation()
+  const [deleteProject] = useDeleteProjectMutation();
   const { data: projects, isLoading, refetch } = useGetAllProjectsQuery({
     name: filters.name,
     page: filters.currentPage,

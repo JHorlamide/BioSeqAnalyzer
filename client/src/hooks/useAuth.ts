@@ -19,9 +19,9 @@ import { useRegisterUserMutation } from "../services/auth/registerApi";
 import { RegisterFormData, registrationSchema } from "../schemas/auth/registerSchema";
 
 export const useLogin = () => {
-  const { handleError: handleError } = useErrorToast();
+  const { handleError } = useErrorToast();
   const dispatch = useAppDispatch();
-  const [show, setShow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { handleNavigate } = useNavigation();
   const [loginUser, { isLoading }] = useLoginUserMutation();
 
@@ -60,10 +60,10 @@ export const useLogin = () => {
     localStorage.setItem(REFRESH_TOKEN, refreshToken);
   };
 
-  const handleShowPassword = () => setShow(!show);
+  const handleShowPassword = () => setShowPassword(!showPassword);
 
   return {
-    show,
+    show: showPassword,
     errors,
     isValid,
     isLoading,
@@ -77,7 +77,7 @@ export const useLogin = () => {
 export const useRegister = () => {
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
-  const [show, setShow] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const {
     register,
     handleSubmit,
@@ -91,7 +91,7 @@ export const useRegister = () => {
 
       if (response.status === "Success") {
         toast.success(response.message);
-        
+
         setTimeout(() => {
           handleNavigate(`${AUTH_PREFIX_PATH}/login`);
         }, 1000);
@@ -101,10 +101,10 @@ export const useRegister = () => {
     }
   };
 
-  const handleShowPassword = () => setShow(!show);
+  const handleShowPassword = () => setShowPassword(!showPassword);
 
   return {
-    show,
+    show: showPassword,
     isLoading,
     errors,
     isValid,

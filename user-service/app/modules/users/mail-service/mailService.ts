@@ -15,7 +15,6 @@ interface InvitationEmail {
   receiverName: string;
   senderName: string;
   projectName: string;
-  tempPassword: string;
   link: string;
   template: string;
 }
@@ -48,13 +47,12 @@ class MailService {
 
   public async sendInvitationEmail(mailParams: InvitationEmail) {
     const {
+      link,
       receiverMail,
       receiverName,
       senderName,
       projectName,
-      link,
       template,
-      tempPassword
     } = mailParams;
 
     const mailOpts = {
@@ -62,7 +60,7 @@ class MailService {
       template: template,
       to: receiverMail,
       subject: `${projectName} project invitation`,
-      context: { receiverName, senderName, projectName, link, tempPassword },
+      context: { receiverName, senderName, projectName, link },
     };
 
     try {

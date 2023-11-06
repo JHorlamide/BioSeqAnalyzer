@@ -1,9 +1,5 @@
-import { User } from "@prisma/client"
+import { User, Role, InvitationStatus } from "@prisma/client"
 
-enum Role {
-  AUTHOR = "AUTHOR",
-  MEMBER = "MEMBER"
-}
 export interface IUser {
   fullName: string;
   email: string;
@@ -11,18 +7,43 @@ export interface IUser {
   role: Role;
 }
 
-export interface SendProjectInvitation extends IUser {
+export interface SendProjectInvitation {
   userId: string;
   projectId: string;
+  userEmail: string;
   projectName: string;
-  loginPassword: string;
+  projectType: string;
 }
+
+export interface Invitation {
+  userEmail: string;
+  projectId: string;
+  invitationToken: string;
+  invitationTokenExpiration: BigInt;
+}
+
+export interface AcceptInvitation {
+  userEmail: string;
+  fullName: string;
+  invitationToken: string;
+  password: string;
+}
+
+export interface ProjectInvitedTo {
+  user: any
+  userId: string;
+  projectId: string;
+}
+
+export interface InvitationLink {
+  userEmail: string,
+  invitationToken: string,
+  projectType: string
+}
+
 
 export type UpdateUser = Partial<User>;
 
-// export interface UpdateUser {
-//   email: string;
-//   id: string;
-//   resetToken: string;
-//   resetTokenExpiration: number;
-// } 
+export type UpdateInvitation = Partial<Invitation> & {
+  status: InvitationStatus
+};
