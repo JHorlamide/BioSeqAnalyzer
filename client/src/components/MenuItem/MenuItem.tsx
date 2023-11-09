@@ -38,7 +38,7 @@ export const Navigation = () => {
             fontSize="24"
             display={{ base: "none", md: "block" }}
           >
-            ProteinAnalyzer
+            BioSeqAnalyzer
           </Text>
         </Center>
 

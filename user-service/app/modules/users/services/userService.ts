@@ -2,6 +2,7 @@
 import crypto from "crypto";
 
 /* Library */
+import argon2 from "argon2";
 import { InvitationStatus, Role } from "@prisma/client";
 
 /* Application Modules */
@@ -51,7 +52,7 @@ class UserService {
     }
   }
 
-  public async sendProjectInvitation(reqBodyField: SendProjectInvitation) {
+  public async sendInvitation(reqBodyField: SendProjectInvitation) {
     const { userId, projectId, userEmail, projectName, projectType } = reqBodyField;
 
     try {
@@ -63,10 +64,11 @@ class UserService {
 
       const { invitationToken } = await this.createInvitation(userEmail, projectId);
 
-      const invitationLink = await this.invitationLink({
+      const invitationLink = await this.getInvitationLink({
         userEmail,
         invitationToken,
-        projectType
+        projectType,
+        projectId
       });
 
       await mailService.sendInvitationEmail({
@@ -86,38 +88,62 @@ class UserService {
     const { userEmail, invitationToken, fullName, password } = reqBodyField;
 
     try {
-      const invitation = await this.getInvitation(invitationToken, userEmail);
+      const invitation = await this.getValidatedInvitation(invitationToken, userEmail);
+      const passwordHash = await argon2.hash(password);
+      const user = await userRepository.getUserByEmail(userEmail);
+
+      if(user) {
+        await this.updateInvitation(invitationToken, {
+          status: InvitationStatus.ACCEPTED,
+          invitationTokenExpiration: BigInt(0),
+          invitationToken: ""
+        });
+
+        await invitationRepository.createProjectsInvitedTo(
+          user.id,
+          invitation.projectId
+        );
+
+        return user.id;
+      }
 
       const newUser = await this.createUser({
         email: userEmail,
         role: Role.MEMBER,
         fullName,
-        password,
+        password: passwordHash
       });
 
-      await this.updateInvitation(invitationToken);
+      if (newUser.userId) {
+        await this.updateInvitation(invitationToken, {
+          status: InvitationStatus.ACCEPTED,
+          invitationTokenExpiration: BigInt(0),
+          invitationToken: ""
+        });
 
-      await invitationRepository.createProjectsInvitedTo(
-        newUser.userId,
-        invitation.projectId
-      );
+        await invitationRepository.createProjectsInvitedTo(
+          newUser.userId,
+          invitation.projectId
+        );
 
-      return newUser;
+        return newUser.userId;
+      }
     } catch (error: any) {
       throw new ServerError(error.message);
     }
   }
 
-  private async invitationLink({ userEmail, invitationToken, projectType }: InvitationLink) {
+  private async getInvitationLink(params: InvitationLink) {
+    const { userEmail, invitationToken, projectType, projectId } = params;
+
     const invitedUser = await userRepository.getUserByEmail(userEmail);
     const baseLink = invitedUser ? `${config.allowedOrigin}/auth/login` : `${config.allowedOrigin}/auth/register`;
-    const invitationLink = `${baseLink}?invitation_token=${invitationToken}&user_email=${userEmail}&project_type=${projectType}`
-    return invitationLink;
+    return `${baseLink}?invitation_token=${invitationToken}&user_email=${userEmail}&project_id=${projectId}&project_type=${projectType}`
   }
 
   private async createInvitation(userEmail: string, projectId: string) {
     const invitationToken = crypto.randomBytes(16).toString("hex")
-    const invitationExpiration = Date.now() + 24 * 3600000; // 24 hours
+    const invitationExpiration = Date.now() + 24 * 3600000;
 
     return await invitationRepository.createInvitation({
       userEmail,
@@ -127,7 +153,7 @@ class UserService {
     })
   }
 
-  private async getInvitation(invitationToken: string, userEmail: string) {
+  private async getValidatedInvitation(invitationToken: string, userEmail: string) {
     const invitation = await invitationRepository.getInvitationByToken(invitationToken);
 
     if (!invitation) {
@@ -138,17 +164,15 @@ class UserService {
       throw new ClientError(ERR_MSG.WRONG_USER_INVITATION);
     }
 
-    invitation.status = InvitationStatus.ACCEPTED;
+    await this.updateInvitation(invitationToken, {
+      status: InvitationStatus.ACCEPTED
+    })
 
     return invitation;
   }
 
-  private async updateInvitation(invitationToken: string) {
-    await invitationRepository.updateInvitation(invitationToken, {
-      status: InvitationStatus.ACCEPTED,
-      invitationTokenExpiration: undefined,
-      invitationToken: undefined
-    });
+  private async updateInvitation(invitationToken: string, updateFields: UpdateInvitation) {
+    await invitationRepository.updateInvitation(invitationToken, updateFields);
   }
 }
 

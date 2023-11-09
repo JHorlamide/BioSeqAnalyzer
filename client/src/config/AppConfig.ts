@@ -4,6 +4,7 @@ export const APP_NAME = 'Protein Analyzer';
 export const USER_API_BASE_URL = env?.USER_API_ENDPOINT_URL as string;
 export const PROTEIN_API_BASE_URL = env?.PROTEIN_API_ENDPOINT_URL as string;
 export const DNA_SEQUENCE_API_BASE_URL = env?.DNA_SEQUENCE_API_ENDPOINT_URL as string;
+export const BASE_URL = env?.BASE_URL as string;
 export const APP_PREFIX_PATH = '/app';
 export const AUTH_PREFIX_PATH = '/auth';
 export const REDIRECT_URL_KEY = 'redirect'

@@ -22,3 +22,8 @@ export const projectUploadSchema = Joi.object({
     size: Joi.number().max(config.MAX_FILE_SIZE).required(),
   }).unknown(true).required()
 })
+
+export const linkUserToProject = Joi.object({
+  user_id: Joi.string().required(),
+  project_id: Joi.string().required()
+})

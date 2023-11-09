@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 import { RootState } from "../../store/store";
 import { AUTH_TOKEN } from "../../constants/AuthConstant";
 import { USER_API_BASE_URL } from "../../config/AppConfig";
-import { SendEmailInvitationRes, SendEmailInviteReq } from "./types"
+import { AcceptInvitationReq, AcceptInvitationRes, SendEmailInvitationRes, SendEmailInviteReq } from "./types"
 
 export const USER_API = "USER_API";
 
@@ -31,9 +31,17 @@ export const userAPI = createApi({
       query: (data) => ({
         url: "/invite",
         method: "POST",
-        body: data
+        body: data,
       })
-    })
+    }),
+
+    acceptProjectInvite: builder.mutation<AcceptInvitationRes, AcceptInvitationReq>({
+      query: (data) => ({
+        url: "/invite/accept",
+        method: "POST",
+        body: data,
+      })
+    }),
   }),
 
   refetchOnFocus: true,
@@ -42,5 +50,6 @@ export const userAPI = createApi({
 
 export const {
   /* Mutations */
-  useSendProjectInviteMutation
+  useSendProjectInviteMutation,
+  useAcceptProjectInviteMutation
 } = userAPI;

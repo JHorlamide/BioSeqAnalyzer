@@ -11,8 +11,9 @@ import {
   IGetProjectParam,
   IGetProjectRes,
   IGetProjectsRes,
-  // IGetSequenceDataReq,
   IUpdateProjectReq,
+  InviteReq,
+  InviteRes,
   ReqQueryParam
 } from "./types"
 
@@ -21,12 +22,14 @@ export const DNA_PROJECT_API_REDUCER_KEY = "DNASeqProjectsAPI";
 export const DNASeqProjectAPI = createApi({
   reducerPath: DNA_PROJECT_API_REDUCER_KEY,
 
-  tagTypes: ["GetAllDNAProjects", "GetDNAProjectDetails", "CreateDNAProject"],
+  tagTypes: ["GetAllDNAProjects", "GetDNAProjectDetails"],
 
   baseQuery: fetchBaseQuery({
     baseUrl: DNA_SEQUENCE_API_BASE_URL,
+
     prepareHeaders: async (headers, { getState }) => {
       const isBrowser = typeof window !== undefined;
+
       const token = (getState() as RootState).auth.token ||
         (isBrowser ? localStorage.getItem(AUTH_TOKEN) : null);
 
@@ -49,6 +52,7 @@ export const DNASeqProjectAPI = createApi({
         url: `/`,
         params: { page, name, topology, nucleotide_type: nucleotideType }
       }),
+
       providesTags: ["GetAllDNAProjects"],
     }),
 
@@ -58,13 +62,21 @@ export const DNASeqProjectAPI = createApi({
     }),
 
     updateProject: builder.mutation<IGetProjectRes, IUpdateProjectReq>({
-      query: ({ projectId, name, topology, nucleotide_type, bases, description }) => ({
-        url: `/${projectId}/`,
+      query: (updateData) => ({
+        url: `/${updateData.projectId}/`,
         method: "PUT",
-        body: { name, topology, nucleotide_type, bases, description },
+        body: updateData,
       }),
 
       invalidatesTags: ["GetAllDNAProjects", "GetDNAProjectDetails"]
+    }),
+
+    linkInvitedUserToProject: builder.mutation<InviteRes, InviteReq>({
+      query: (data) => ({
+        url: `/invite`,
+        method: "POST",
+        body: data,
+      }),
     }),
 
     deleteProject: builder.mutation<Response, { projectId: string }>({
@@ -86,6 +98,7 @@ export const {
   useCreateProjectMutation,
   useDeleteProjectMutation,
   useUpdateProjectMutation,
+  useLinkInvitedUserToProjectMutation,
 
   /* Queries */
   useGetAllProjectsQuery,

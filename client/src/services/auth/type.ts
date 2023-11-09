@@ -9,18 +9,18 @@ export interface ILoginResponse extends IBaseResponse {
   }
 }
 
+export interface ResetPasswordReq {
+  password: string;
+  confirmPassword: string;
+  passwordToken: string;
+}
+
 export interface ForgotPasswordReq {
   email: string;
 }
 
 export interface ForgotPasswordRes extends IBaseResponse {
   data: {}
-}
-
-export interface ResetPasswordReq {
-  password: string;
-  confirmPassword: string;
-  passwordToken: string;
 }
 
 export interface ResetPasswordRes extends IBaseResponse {

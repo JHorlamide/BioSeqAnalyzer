@@ -33,7 +33,7 @@ model User {
 
 model ProjectsInvitedTo {
   id        String @id @default(uuid())
-  user      User   @relation(fields: [userId], references: [id])
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String @unique
   projectId String
 }
@@ -42,7 +42,7 @@ model Invitation {
   id                        String           @id @default(uuid())
   userEmail                 String
   projectId                 String
-  invitationToken           String           @unique
-  invitationTokenExpiration BigInt
+  invitationToken           String?           @unique
+  invitationTokenExpiration BigInt?
   status                    InvitationStatus @default(PENDING)
 }

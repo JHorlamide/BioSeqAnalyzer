@@ -28,7 +28,7 @@ const FormContainer = ({ formHeading, showHeading, children }: Props) => {
           <Stack>
             <Link to="/website">
               <Text fontSize={35} fontWeight="bold" textAlign="center" color="white">
-                {formHeading ? formHeading : "ProteinAnalyzer"}
+                {formHeading ? formHeading : "BioSeqAnalyzer"}
               </Text>
             </Link>
           </Stack>

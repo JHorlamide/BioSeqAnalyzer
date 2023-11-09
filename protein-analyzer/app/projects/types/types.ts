@@ -45,7 +45,7 @@ export interface S3UploadRes {
 
 export interface ProjectModel extends IProject {
   projectFileName: string;
-  invitedUsers?: string[];
+  invitedUsers: string[];
 }
 
 export interface CSVColumnDataType {

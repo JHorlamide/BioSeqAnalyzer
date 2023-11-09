@@ -31,7 +31,7 @@ interface ProjectCardProps {
   projectTitle: string;
   updatedAt: string;
   projectId: string;
-  projectType: "dna" | "protein";
+  projectType: string;
   goToProjectDetailsPage: (projectId: string) => void;
   goToUpdateProjectPage: (projectId: string) => void;
   handleDeleteProject: (project: string) => void;

@@ -40,13 +40,11 @@ export class UserRoute extends CommonRoutesConfig {
     ])
    
     /**
-    * @route POST /api/users/invite/:invitationToken/accept
+    * @route POST /api/users/invite/accept
     * @desc  Accept Invitation
     * @access Private
     */
-    this.app.post(`${APP_PREFIX_PATH}/users/invite/:invitationToken/accept`, [
-      jwtMiddleware.validJWTNeeded,
-      userMiddleware.validateUserHasRequiredRole,
+    this.app.post(`${APP_PREFIX_PATH}/users/invite/accept`, [
       userMiddleware.validateAcceptBody,
       userController.acceptProjectInvitation
     ])

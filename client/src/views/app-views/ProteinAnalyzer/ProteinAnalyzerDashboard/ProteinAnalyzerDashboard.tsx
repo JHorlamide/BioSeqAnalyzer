@@ -103,6 +103,7 @@ const ProteinAnalyzerDashboard = () => {
           />
         ) : (
           <ProjectsListWithGridItem
+            projectType="Protein"
             proteinProjects={projects.data.projects}
             handleDeleteProject={handleDeleteProject}
             goToUpdateProjectPage={goToUpdateProjectPage}

@@ -27,33 +27,40 @@ import {
 /* Application Modules */
 import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
-import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../../../config/AppConfig";
+import useErrorToast from "../../../hooks/useErrorToast";
+import useNavigation from "../../../hooks/useNavigation";
+import { APP_PREFIX_PATH, AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import { useAppDispatch } from "../../../store/store";
 import { useLoginUserMutation } from "../../../services/auth/authApi";
 import { LoginFormData, loginSchema } from "../../../schemas/auth/loginSchema";
 import { ProteinProjectAPI } from "../../../services/proteinProject/proteinProjectAPI";
 import { setRefreshToken, setToken, setUser } from "../../../store/slices/authSlice";
-import useErrorToast from "../../../hooks/useErrorToast";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
-import useNavigation from "../../../hooks/useNavigation";
 
 type LoginFormFields = {
   email: string;
   password: string;
 }
 
+interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
+  user: {
+    userId: string;
+    fullName: string;
+    email: string;
+  }
+}
+
 const Login = () => {
   const dispatch = useAppDispatch();
+  const [pathQuery] = useSearchParams();
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
   const [loginUser, { isLoading }] = useLoginUserMutation();
-
-  const [pathQuery] = useSearchParams();
-  const userEmail = pathQuery.get("user_email");
-  const projectType = pathQuery.get("project_type")
-  const invitationToken = pathQuery.get("invitation_token")
+  const redirectUrl = pathQuery.get("redirect");
 
   const {
     register,
@@ -61,30 +68,36 @@ const Login = () => {
     formState: { errors, isValid },
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
 
+
   const onSubmit = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data).unwrap();
-      if (response.status === "Success") {
-        const { accessToken, refreshToken, user } = response.data;
-        handleAuthTokenDispatchAndStorage(user, accessToken, refreshToken);
-        dispatch(ProteinProjectAPI.util.invalidateTags(["GetAllProjects"]));
 
+      if (response.status === "Success") {
+        dispatchTokenAndRefetchData(response.data);
         toast.success(response.message);
-        handleNavigate(`${AUTHENTICATED_ENTRY}`);
+
+        if (redirectUrl !== null) {
+          return handleNavigate(redirectUrl);
+        }
+
+        return handleNavigate(AUTHENTICATED_ENTRY);
       }
+
+      handleError(response.message);
     } catch (error: any) {
       handleError(error);
     }
   };
 
-  const handleAuthTokenDispatchAndStorage = (
-    user: any,
-    accessToken: string,
-    refreshToken: string
-  ) => {
+  const dispatchTokenAndRefetchData = (authData: LoginResponse) => {
+    const { user, accessToken, refreshToken } = authData;
+
     dispatch(setUser(user));
     dispatch(setToken(accessToken));
     dispatch(setRefreshToken(refreshToken));
+    dispatch(ProteinProjectAPI.util.invalidateTags(["GetAllProjects"]));
+
     localStorage.setItem(AUTH_TOKEN, accessToken);
     localStorage.setItem(REFRESH_TOKEN, refreshToken);
   };
@@ -117,7 +130,6 @@ const Login = () => {
                 register={register}
                 errors={errors}
                 placeholder="Enter your email"
-                defaultValue={userEmail ? userEmail : ""}
               />
             </InputGroup>
           </FormControl>

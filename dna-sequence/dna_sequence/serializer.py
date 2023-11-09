@@ -43,7 +43,7 @@ class InvitedUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = InvitedUsers
         fields = ["user_id"]
-        
+
     # def save(self, **kwargs):
     #     dna_sequence_id = self.context["dna_sequence_id"]
     #     new_invited_user = InvitedUsers.objects.create()

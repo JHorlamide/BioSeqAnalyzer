@@ -19,7 +19,7 @@ interface InvitationEmail {
   template: string;
 }
 
-type ForgotPasswordEmail = Pick<InvitationEmail, "link" | "receiverMail" | "template" | "receiverName">;
+type ForgotPasswordEmail = Pick<InvitationEmail, "receiverMail" | "receiverName" | "template" | "link">;
 
 class MailService {
   private transporter: Transporter;

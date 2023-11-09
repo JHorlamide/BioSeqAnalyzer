@@ -111,18 +111,10 @@ class ProjectService {
 
   public async updateProject(projectUpdateData: IUpdateProject) {
     const { projectId, projectData } = projectUpdateData;
+
     let pdbFileUrl;
     let proteinPDBID;
     let proteinAminoAcidSequence;
-
-    if (!projectId) {
-      throw new ClientError(ERR_MSG.PROJECT_ID_REQUIRED)
-    }
-
-    /** Ensure that the necessary data is provided to update the project **/
-    if (Object.keys(projectData).length === 0) {
-      throw new ClientError(ERR_MSG.INVALID_PROJECT_DATA)
-    }
 
     try {
       /** If uniprotId is provided, retrieve the protein sequence **/
@@ -135,7 +127,6 @@ class ProjectService {
         proteinPDBID = projectData.proteinPDBID
         pdbFileUrl = `${config.pdbBaseUrl}/${projectData.proteinPDBID}`;
       }
-
 
       const updatedProject = await projectRepository.updateProject({
         projectId,
@@ -162,6 +153,26 @@ class ProjectService {
         await fileService.deleteFile(project.projectFileName);
       }
 
+      return project;
+    } catch (error: any) {
+      throw new ServerError(error.message);
+    }
+  }
+
+  public async AssociateUserToProject(projectId: string, userId: string) {
+    try {
+      const project = await projectRepository.getProjectById(projectId);
+
+      if (!project) {
+        throw new Error(ERR_MSG.PROJECT_NOT_FOUND);
+      }
+
+      if (project.invitedUsers.includes(userId)) {
+        throw new ClientError("User already added to project");
+      }
+
+      project.invitedUsers.push(userId);
+      project.save();
       return project;
     } catch (error: any) {
       throw new ServerError(error.message);

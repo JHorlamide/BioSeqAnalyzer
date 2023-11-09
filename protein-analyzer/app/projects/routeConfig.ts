@@ -60,6 +60,17 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
+    * @route  PUT: /api/protein-user-project-associations
+    * @desc   Link Invited User to Project
+    * @access Private
+    * ***/
+    this.app.put(`${APP_PREFIX_PATH}/protein-user-project-associations`, [
+      projectMiddleware.validateProjectExist,
+      projectMiddleware.validateProjectLink,
+      projectController.associateUserToProject
+    ])
+
+    /***
     * @route DELETE: /api/protein-projects/:projectId
     * @desc Delete Project.
     * @access Private.
@@ -117,15 +128,6 @@ export class ProjectRoute extends CommonRoutesConfig {
       cacheMiddleware.getCachedScoreDistribution,
       projectController.getScoreDistribution
     ]);
-
-    /**
-    * @route POST /api/users/project-invitation
-    * @desc  Send project invitation
-    * @access Public
-    */
-    this.app.post(`${APP_PREFIX_PATH}/users/register`, [
-      
-    ])
 
     return this.app;
   }

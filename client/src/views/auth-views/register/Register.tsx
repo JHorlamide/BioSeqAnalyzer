@@ -1,5 +1,5 @@
 /* React */
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 /* Libraries */
 import { Link, useSearchParams } from "react-router-dom";
@@ -12,14 +12,15 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 
 /* Application Modules */
-import { AUTH_PREFIX_PATH } from "../../../config/AppConfig";
-import { useRegister } from "../../../hooks/useAuth";
+import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH, BASE_URL } from "../../../config/AppConfig";
 import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
 import useNavigation from "../../../hooks/useNavigation";
 import useErrorToast from "../../../hooks/useErrorToast";
 import { RegisterFormData, registrationSchema } from "../../../schemas/auth/registerSchema";
+import { useRegisterUserMutation } from "../../../services/auth/registerApi";
+import { useAcceptProjectInviteMutation } from "../../../services/user/userServiceAPI";
 
 /* Chakra UI */
 import {
@@ -33,7 +34,6 @@ import {
   VStack,
   InputRightElement,
 } from "@chakra-ui/react";
-import { useRegisterUserMutation } from "../../../services/auth/registerApi";
 
 type RegisterFormFields = {
   fullName: string;
@@ -47,24 +47,58 @@ const Register = () => {
   const { handleError } = useErrorToast();
   const [showPassword, setShowPassword] = useState(false);
 
-  const userEmail = pathQuery.get("user_email");
-  const projectType = pathQuery.get("project_type");
-  const invitationToken = pathQuery.get("invitation_token");
-  
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<RegisterFormData>({ resolver: zodResolver(registrationSchema) });
   const [registerUser, { isLoading }] = useRegisterUserMutation();
+  const [acceptInvitation, { isLoading: isLoadingAccept }] = useAcceptProjectInviteMutation()
 
-  const onSubmit = async (data: RegisterFormData) => {
+  const userEmail = pathQuery.get("user_email");
+  const projectType = pathQuery.get("project_type");
+  const invitationToken = pathQuery.get("invitation_token");
+  const projectId = pathQuery.get("project_id");
+
+  const addUserToProject = async (userId: string) => {
+    try {
+      const proteinReqURL = `${BASE_URL}/protein-user-project-associations/`;
+      const DNASeqReqURL = `${BASE_URL}/dna-user-project-associations/`;
+      const reqURL = projectType === "dna" ? DNASeqReqURL : proteinReqURL;
+
+      const requestData = {
+        user_id: userId,
+        project_id: String(projectId)
+      };
+
+      const requestOption = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(requestData)
+      }
+
+      const response = await fetch(reqURL, requestOption);
+      const result = await response.json();
+
+      if (result.status === "Success") {
+        return result;
+      }
+
+      handleError(result.message);
+    } catch (error: any) {
+      handleError(error.message);
+    }
+  }
+
+  const handleUserRegistration = async (data: RegisterFormData) => {
     try {
       const response = await registerUser(data).unwrap();
 
       if (response.status === "Success") {
         toast.success(response.message);
-        
+
         setTimeout(() => {
           handleNavigate(`${AUTH_PREFIX_PATH}/login`);
         }, 1000);
@@ -72,6 +106,42 @@ const Register = () => {
     } catch (error: any) {
       handleError(error);
     }
+  }
+
+  const handleAcceptInviteRegistration = async (data: RegisterFormData) => {
+    try {
+      const reqBody = {
+        fullName: data.fullName,
+        userEmail: data.email,
+        password: data.password,
+        invitationToken: String(invitationToken)
+      }
+
+      const response = await acceptInvitation(reqBody).unwrap();
+
+      if (response.status === "Success") {
+        const { userId } = response.data;
+        const res = await addUserToProject(userId);
+
+        if (res.status === "Success") {
+          toast.success(response.message);
+          return handleNavigate(AUTHENTICATED_ENTRY);
+        }
+      }
+
+      handleError(response.message);
+    } catch (error: any) {
+      handleError(error.message);
+    }
+  }
+
+  const onSubmit = async (data: RegisterFormData) => {
+
+    if (invitationToken && projectType && userEmail) {
+      return await handleAcceptInviteRegistration(data);
+    }
+
+    await handleUserRegistration(data);
   };
 
 
@@ -166,7 +236,7 @@ const Register = () => {
           bg="brand_blue.50"
           width="full"
           type="submit"
-          isLoading={isLoading}
+          isLoading={isLoading ? isLoading : isLoadingAccept}
           isDisabled={!isValid}
           _hover={{ bg: "brand_blue.200" }}
         >

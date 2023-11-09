@@ -19,7 +19,7 @@ export interface Invitation {
   userEmail: string;
   projectId: string;
   invitationToken: string;
-  invitationTokenExpiration: BigInt;
+  invitationTokenExpiration: bigint;
 }
 
 export interface AcceptInvitation {
@@ -36,9 +36,10 @@ export interface ProjectInvitedTo {
 }
 
 export interface InvitationLink {
-  userEmail: string,
-  invitationToken: string,
-  projectType: string
+  userEmail: string;
+  invitationToken: string | null;
+  projectType: string;
+  projectId: string;
 }
 
 

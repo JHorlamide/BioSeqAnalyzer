@@ -56,22 +56,30 @@ class ProjectController {
     const { projectId } = req.params;
     const project = await projectService.getProjectById(projectId);
     responseHandler.successResponse(RES_MSG.PROJECT_FETCHED, project, res);
-  })
+  });
 
   public updateProjectDetails = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
+
     const updatedProject = await projectService.updateProject({
       projectId,
       projectData: req.body
     });
+
     responseHandler.successResponse(RES_MSG.PROJECT_UPDATED, updatedProject, res);
-  })
+  });
 
   public deleteProject = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;
     await projectService.deleteProject(projectId);
     responseHandler.noContent(RES_MSG.PROJECT_DELETED, res);
-  })
+  });
+
+  public associateUserToProject = asyncHandler(async (req: Request, res: Response) => {
+    const { user_id, project_id } = req.body;
+    const response = await projectService.AssociateUserToProject(project_id, user_id);
+    return responseHandler.successResponse("User invited project", response, res);
+  });
 
   public uploadProjectCSV = asyncHandler(async (req: Request, res: Response) => {
     const file = req.file;
@@ -83,7 +91,7 @@ class ProjectController {
 
     const project = await projectService.uploadProjectFile(projectId, file);
     return responseHandler.successResponse(RES_MSG.FILE_UPLOADED, project, res);
-  })
+  });
 
   public getSummaryOfMainMatricesData = asyncHandler(async (req: Request, res: Response) => {
     const { projectId } = req.params;

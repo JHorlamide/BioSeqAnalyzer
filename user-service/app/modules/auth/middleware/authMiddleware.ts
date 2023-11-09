@@ -29,8 +29,9 @@ class AuthMiddleware {
       if (await argon2.verify(user.password, password)) {
         req.body = {
           userId: user.id,
+          role: user.role,
           email: user.email,
-          fullName: user.fullName
+          fullName: user.fullName,
         }
 
         return next();

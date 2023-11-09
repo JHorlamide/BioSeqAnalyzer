@@ -18,13 +18,13 @@ class UserController {
 
   public inviteUserToProject = asyncHandler(async (req: Request, res: Response) => {
     const { userId } = res.locals.jwt;
-    await userService.sendProjectInvitation({ ...req.body, userId, });
+    await userService.sendInvitation({ ...req.body, userId, });
     responseHandler.successResponse(RES_MSG.INVITE_SEND, {}, res);
   });
 
   public acceptProjectInvitation = asyncHandler(async (req: Request, res: Response) => {
-    const user = await userService.acceptProjectInvitation(req.body);
-    responseHandler.successResponse(RES_MSG.USER_CREATE, user, res);
+    const userId = await userService.acceptProjectInvitation(req.body);
+    responseHandler.successResponse(RES_MSG.USER_CREATE, { userId }, res);
   })
 }
 

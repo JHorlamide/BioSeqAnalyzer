@@ -66,35 +66,30 @@ const Card = (props: CardProps) => {
 
 export default function gridListWith() {
   return (
-    <Box p={4} width="full">
+    <Box p={4} width="full" marginTop={-20}>
       <Stack spacing={4} as={Container} maxW={'3xl'} textAlign={'center'}>
         <Heading fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={'bold'}>
           Features
         </Heading>
 
-        <Text color={'gray.600'} fontSize={{ base: 'sm', sm: 'lg' }}>
-          Please note that not all the features listed below have been implemented;
-          currently, only the creation and analysis upload of project data are functional.
-        </Text>
+        <Container maxW={'5xl'} mt={12}>
+          <Flex width="full" flexWrap="wrap" gridGap={6} justify="center">
+            <Card
+              heading={"Analysis of proteins engineered data"}
+              icon={<Icon as={GiMolecule} w={10} h={10} color="#08355a" />}
+              description={"Visualize and analyze the results of their experiments."}
+              status={"Functional"}
+            />
+
+            <Card
+              heading={"DNA sequence analysis"}
+              icon={<Icon as={FcBiotech} w={10} h={10} />}
+              status="Functional"
+              description={"Allows researchers to upload, store, and analyze DNA sequence data."}
+            />
+          </Flex>
+        </Container>
       </Stack>
-
-      <Container maxW={'5xl'} mt={12}>
-        <Flex width="full" flexWrap="wrap" gridGap={6} justify="center">
-          <Card
-            heading={"Analysis of proteins engineered data"}
-            icon={<Icon as={GiMolecule} w={10} h={10} color="#08355a" />}
-            description={"Visualize and analyze the results of their experiments."}
-            status={"Functional"}
-          />
-
-          <Card
-            heading={"DNA sequence analysis"}
-            icon={<Icon as={FcBiotech} w={10} h={10} />}
-            status="Functional"
-            description={"Allows researchers to upload, store, and analyze DNA sequence data."}
-          />
-        </Flex>
-      </Container>
     </Box>
   );
 }

@@ -7,9 +7,11 @@ import { debounce } from "lodash";
 /* Application Modules */
 import useNavigation from "../../../../hooks/useNavigation";
 import Pagination from "../../../../components/Pagination/Pagination";
+import useErrorToast from "../../../../hooks/useErrorToast";
 import EmptyProject from "../../../../components/EmptyProject/EmptyProject";
 import ProjectsListWithGridItem from "../../../../components/Cards/ProjectsListWithGridItem";
 import SearchInput from "../../../../components/SearchInput/SearchInput";
+import ProjectCardSkeleton from "../../../../components/Cards/ProjectCardSkeleton";
 import DashboardHeader from "../../../../components/DashboardHeader/DashboardHeader";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 import { useDeleteProjectMutation, useGetAllProjectsQuery } from "../../../../services/DNASequence/DNASeqProjectAPI";
@@ -18,8 +20,6 @@ import { clearFilterState, setCurrentPage, setName } from "../../../../store/sli
 
 /* Chakra UI */
 import { Box } from '@chakra-ui/react';
-import ProjectCardSkeleton from "../../../../components/Cards/ProjectCardSkeleton";
-import useErrorToast from "../../../../hooks/useErrorToast";
 
 const DEBOUNCE_TIME_MS = 1000;
 const TOTAL_PAGES = 10;
@@ -100,8 +100,9 @@ const DNASequenceDashboard = () => {
           />
         ) : (
           <ProjectsListWithGridItem
-            handleDeleteProject={handleDeleteProject}
             dnaSeqProjects={projects.results}
+            projectType="DNA"
+            handleDeleteProject={handleDeleteProject}
             goToProjectDetailsPage={goToProjectDetailsPage}
             goToUpdateProjectPage={goToUpdateProjectPage}
           />

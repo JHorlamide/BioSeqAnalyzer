@@ -12,10 +12,10 @@ class invitationRepository {
     return await this.prisma.invitation.create({ data: invitationData });
   }
 
-  public async updateInvitation(invitationToken: string, data: UpdateInvitation) {
+  public async updateInvitation(invitationToken: string, updateFields: UpdateInvitation) {
     return await this.prisma.invitation.update({
       where: { invitationToken: invitationToken },
-      data: { ...data }
+      data: updateFields
     })
   }
 

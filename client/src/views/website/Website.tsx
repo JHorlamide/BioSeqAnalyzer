@@ -22,7 +22,7 @@ const Website = () => {
     <Box {...containerStyle}>
       <HStack justifyContent="space-between">
         <Link to="/website">
-          <Text fontSize={24} fontWeight="bold">ProteinAnalyzer</Text>
+          <Text fontSize={24} fontWeight="bold">BioSeqAnalyzer</Text>
         </Link>
 
         <HStack spacing={5}>
@@ -56,7 +56,7 @@ const Website = () => {
             alignItems="flex-start"
             width="80%"
           >
-            <Heading as="h2">About ProteinAnalyzer</Heading>
+            <Heading as="h2">About BioSeqAnalyzer</Heading>
             <Text as="p" fontSize="lg">
               Proteins, the building blocks of life, are large, complex molecules that play
               many critical roles in the body. For example hemoglobin is a protein that

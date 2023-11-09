@@ -1,14 +1,5 @@
 import { CreateProjectFormField } from "../../schemas/DNASequenceProjectSchema";
 
-// export interface ICreateDNASeqProjectsRes {
-//   status: string;
-//   message: string;
-//   data: CreateProjectFormField & {
-//     id: string;
-//     date_of_submission: string;
-//   }
-// }
-
 export interface ICreateDNASeqProjectsRes {
   status: string;
   message: string;
@@ -68,3 +59,10 @@ export interface IGetSequenceDataReq {
 export interface IUpdateProjectReq extends CreateProjectFormField {
   projectId: string;
 }
+
+export interface InviteReq {
+  user_id: string;
+  project_id: string;
+}
+
+export interface InviteRes extends IGetProjectRes { }

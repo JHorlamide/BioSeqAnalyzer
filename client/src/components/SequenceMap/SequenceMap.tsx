@@ -8,13 +8,14 @@ import { Box, Flex, HStack, Input } from '@chakra-ui/react';
 import { SeqVizProps } from 'seqviz';
 import { useNavigate } from "react-router-dom";
 import { BsArrowLeft } from 'react-icons/bs';
-import {IoMdRefresh} from "react-icons/io";
+import { IoMdRefresh } from "react-icons/io";
 
 /* Application Modules */
 import SequenceViewer from "../SequenceViewer/SequenceViewer"
 import Button from '../CustomBtn/Button';
 import AppLoader from '../Loading/AppLoader';
 import { ZoomButtons, Topology, Settings, Information } from './SequenceMapSettings';
+import useErrorToast from '../../hooks/useErrorToast';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
@@ -32,6 +33,7 @@ interface SequenceMapProps {
 
 const SequenceMap = (props: SequenceMapProps) => {
   const navigate = useNavigate();
+  const { handleError } = useErrorToast();
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [zoomLevel, setZoomLevel] = useState(50);
   const [topology, setTopology] = useState<ViewerType>("both_flip");
@@ -137,18 +139,32 @@ const SequenceMap = (props: SequenceMapProps) => {
       </Box>
 
       {isLoading ? (<AppLoader />) : (
-        <SequenceViewer
-          name={sequenceData.name}
-          seq={sequenceData.seq}
-          annotations={sequenceData.annotations}
-          viewer={topology}
-          showIndex={showIndex}
-          showComplement={showComplete}
-          zoom={{ linear: zoomLevel }}
-          enzymes={enzymes}
-          search={{ query: String(searchInputRef.current?.value) }}
-          style={sequenceViewerStyle}
-        />
+        <Fragment>
+          <SequenceViewer
+            name={sequenceData.name}
+            seq={sequenceData.seq}
+            annotations={sequenceData.annotations}
+            viewer={topology}
+            showIndex={showIndex}
+            showComplement={showComplete}
+            zoom={{ linear: zoomLevel }}
+            enzymes={enzymes}
+            search={{ query: String(searchInputRef.current?.value) }}
+            style={sequenceViewerStyle}
+          />
+
+          {sequenceData && sequenceData.seq === undefined && (
+            <Box
+              color="white"
+              textAlign="center"
+              verticalAlign="center"
+              marginTop={60}
+              fontSize={20}
+            >
+              Unable to render sequence map. Please make sure you have access to the internet
+            </Box>
+          )}
+        </Fragment>
       )}
     </Fragment>
   )

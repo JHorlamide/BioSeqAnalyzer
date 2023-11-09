@@ -116,7 +116,7 @@ services:
     networks:
       - bioseq-networks
     volumes:
-      - ../api-gateway/app:/api-gateway/app:cached,ro
+      - ../api-gateway/app:/api-gateway/app:cached
       - /api-gateway/node_modules
     env_file: [ ../api-gateway/.env ]
     depends_on:

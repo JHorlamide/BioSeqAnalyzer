@@ -3,16 +3,18 @@ import json
 
 # Django
 from django_filters.rest_framework import DjangoFilterBackend
+from django.db.models import Q
 
 # REST Framework
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.generics import GenericAPIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 # Application Modules
-from .models import DNASequence
-from .serializer import DNASequenceSerializer, InvitedUsersSerializer
+from .models import DNASequence, InvitedUsers
+from .serializer import DNASequenceSerializer
 from .filter import DNASequenceFilter
 from .pagination import DefaultPagination
 from .s3_utils import read_s3_file_content
@@ -29,7 +31,9 @@ class DnaSequenceViewSet(ModelViewSet):
 
     def get_queryset(self):
         auth_user = json.loads(self.request.META.get("HTTP_X_DECODED_USER"))
-        return DNASequence.objects.filter(author_id=auth_user["userId"])
+        user_id = auth_user["userId"]
+        query_condition = Q(author_id=user_id) | Q(invited_users__user_id=user_id)
+        return DNASequence.objects.filter(query_condition).distinct()
 
     def get_serializer_context(self):
         auth_user = json.loads(self.request.META.get("HTTP_X_DECODED_USER"))
@@ -85,29 +89,51 @@ class DnaSequenceViewSet(ModelViewSet):
             status=status.HTTP_200_OK,
         )
 
-    def update(self, request, *args, **kwargs):
-        try:
-            dna_sequence = DNASequence.objects.get(id=self.kwargs["pk"])
-        except DNASequence.DoesNotExist:
+    def destroy(self, request, *args, **kwargs):
+        auth_user = json.loads(self.request.META.get("HTTP_X_DECODED_USER"))
+        user_id = auth_user["userId"]
+        instance = self.get_object()
+
+        if instance.invited_users.filter(user_id=user_id).exists():
             return Response(
-                {"status": "Failure", "message": "Project not found"},
-                status=status.HTTP_404_NOT_FOUND,
+                {
+                    "status": "Failure",
+                    "message": "You don't have the permission to delete this project",
+                },
+                status=status.HTTP_400_BAD_REQUEST,
             )
 
+        return super().destroy(request, *args, **kwargs)
+
+
+class AssociateUserToProjectViewSet(GenericAPIView):
+    def post(self, request, format=None):
+        project_id = request.data.get("project_id")
         user_id = request.data.get("user_id")
-        
-        if user_id is None:
-            serializer = InvitedUsersSerializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            invited_user = serializer.save()
-            dna_sequence.invited_users.add(invited_user)
-            dna_sequence.save()
+
+        try:
+            dna_sequence = DNASequence.objects.get(id=project_id)
+            invited_user, created = InvitedUsers.objects.get_or_create(user_id=user_id)
+
+            if created:
+                dna_sequence.invited_users.add(invited_user)
+
+            dna_sequence_serializer = DNASequenceSerializer(dna_sequence)
+
             return Response(
                 {
                     "status": "Success",
                     "message": "User invited project",
-                    "data": dna_sequence,
+                    "data": dna_sequence_serializer.data,
                 },
-                status=status.HTTP_200_OK,
+                status=status.HTTP_201_CREATED,
             )
-        
+        except DNASequence.DoesNotExist:
+            return Response(
+                {"status": "Failure", "message": "DNA sequence project not found"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception as e:
+            return Response(
+                {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )

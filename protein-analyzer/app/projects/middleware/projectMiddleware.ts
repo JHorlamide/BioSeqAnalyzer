@@ -11,10 +11,17 @@ import responseHandler from "../../common/responseHandler";
 import requestBodyValidator from "../../common/middleware/requestValidationMiddleware";
 import { ERR_MSG } from "../types/constants";
 import { multerUpload } from "../../common/middleware/multerMiddleware";
-import { createProjectSchema, paginationSchema, projectUploadSchema } from "../validation/projectSchema";
+import {
+  createProjectSchema,
+  paginationSchema,
+  projectUploadSchema,
+  linkUserToProject
+} from "../validation/projectSchema";
 
 class ProjectMiddleware {
   public validateRequestBodyField = requestBodyValidator(createProjectSchema);
+
+  public validateProjectLink = requestBodyValidator(linkUserToProject);
 
   public validateUploadReq = (req: Request, res: Response, next: NextFunction) => {
     multerUpload(req, res, async (err) => {
@@ -41,6 +48,7 @@ class ProjectMiddleware {
     const { page, limit, search } = req.query;
 
     const { error } = paginationSchema.validate({ page, limit, search });
+
     if (error) {
       return responseHandler.badRequest(error.details[0].message, res);
     }

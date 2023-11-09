@@ -1,5 +1,5 @@
 /* React */
-import React, { Fragment } from "react"
+import React, { Fragment, useEffect } from "react"
 
 /* Libraries */
 import toast from "react-hot-toast";
@@ -30,7 +30,7 @@ interface InviteMemberProps {
   isOpen: boolean;
   projectId: string;
   projectName: string;
-  projectType: "dna" | "protein";
+  projectType: string;
   onClose: () => void;
 }
 
@@ -42,12 +42,13 @@ const InviteMember = (props: InviteMemberProps) => {
   const { handleError } = useErrorToast();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-  const [sendProjectInvitation, { isLoading }] = useSendProjectInviteMutation();
   const { isOpen, onClose, projectId, projectType, projectName } = props;
+  const [sendProjectInvitation, { isLoading }] = useSendProjectInviteMutation();
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<InviteMemberFormData>({ resolver: zodResolver(inviteMemberSchema) });
 
@@ -62,16 +63,17 @@ const InviteMember = (props: InviteMemberProps) => {
 
       if (response.status === "Success") {
         toast.success(response.message);
+        reset();
         onClose();
         return;
       }
 
       handleError(response.message);
     } catch (error: any) {
-      console.log({ error });
       handleError(error.message);
     }
   }
+
 
   return (
     <Fragment>
@@ -116,7 +118,7 @@ const InviteMember = (props: InviteMemberProps) => {
                 bg="brand_blue.50"
                 _hover={{ bg: "brand_blue.50" }}
               >
-                Cancel
+                Close
               </Button>
             </ModalFooter>
           </form>

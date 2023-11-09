@@ -16,6 +16,7 @@ interface DNASeqProjects {
 }
 
 interface Props {
+  projectType: string
   dnaSeqProjects?: DNASeqProjects[];
   proteinProjects?: ProteinProjects[];
   goToUpdateProjectPage: (projectId: string) => void;
@@ -35,6 +36,7 @@ const getGridTemplateColumns = () => {
 
 const ProjectsListWithGridItem = (props: Props) => {
   const {
+    projectType,
     dnaSeqProjects,
     proteinProjects,
     handleDeleteProject,
@@ -72,7 +74,7 @@ const ProjectsListWithGridItem = (props: Props) => {
               handleDeleteProject={handleDeleteProject}
               goToUpdateProjectPage={goToUpdateProjectPage}
               goToProjectDetailsPage={goToProjectDetailsPage}
-              projectType={dnaSeqProjects !== null ? "dna" : "protein"}
+              projectType={projectType}
             />
           </GridItem>
         ))}
