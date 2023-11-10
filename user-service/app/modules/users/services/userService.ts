@@ -13,6 +13,7 @@ import config from "../../../config/appConfig";
 import { ERR_MSG } from "../types/constants";
 import { AcceptInvitation, IUser, Invitation, InvitationLink, SendProjectInvitation, UpdateInvitation } from "../types/types";
 import { ClientError, NotFoundError, ServerError } from "../../../common/exceptions/ApiError";
+import { logger } from "../../../config/logger";
 
 class UserService {
   public async createUser(userBodyField: IUser) {
@@ -129,7 +130,8 @@ class UserService {
         return newUser.userId;
       }
     } catch (error: any) {
-      throw new ServerError(error.message);
+      logger.error(error.message)
+      throw new ServerError("Server error. Please try again later");
     }
   }
 

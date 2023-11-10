@@ -15,6 +15,11 @@ export class GatewayRoute extends CommonRoutesConfig {
   }
 
   configureRoutes(): Application {
+    /***
+    * @route  /api/users
+    * @desc   User service route
+    * @access Public
+    * ***/
     this.app.use(`${APP_PREFIX_PATH}/users`, createProxyMiddleware({
       target: USER_BASE_URL,
       changeOrigin: true,
@@ -26,6 +31,11 @@ export class GatewayRoute extends CommonRoutesConfig {
       }
     }))
 
+    /***
+    * @route  /api/protein-projects
+    * @desc   Protein service route
+    * @access Private
+    * ***/
     this.app.use(`${APP_PREFIX_PATH}/protein-projects`, validJWTNeeded, createProxyMiddleware({
       target: PROTEIN_BASE_URL,
       changeOrigin: true,
@@ -37,7 +47,12 @@ export class GatewayRoute extends CommonRoutesConfig {
       }
     }))
 
-    this.app.use(`${APP_PREFIX_PATH}/protein-projects`, createProxyMiddleware({
+    /***
+    * @route  /api/protein-user-project-associations
+    * @desc   Protein service route
+    * @access Public
+    * ***/
+    this.app.use(`${APP_PREFIX_PATH}/protein-user-project-associations`, createProxyMiddleware({
       target: PROTEIN_BASE_URL,
       changeOrigin: true,
       pathRewrite: {
@@ -48,6 +63,11 @@ export class GatewayRoute extends CommonRoutesConfig {
       }
     }))
 
+    /***
+    * @route  /api/dna-sequence
+    * @desc   DNASequence service route
+    * @access Private
+    * ***/
     this.app.use(`${APP_PREFIX_PATH}/dna-sequence`, validJWTNeeded, createProxyMiddleware({
       target: DNA_SEQUENCE_BASE_URL,
       changeOrigin: true,
@@ -59,6 +79,11 @@ export class GatewayRoute extends CommonRoutesConfig {
       }
     }))
 
+    /***
+    * @route  /api/dna-user-project-associations
+    * @desc   DNASequence service route
+    * @access Public
+    * ***/
     this.app.use(`${APP_PREFIX_PATH}/dna-user-project-associations`, createProxyMiddleware({
       target: DNA_SEQUENCE_BASE_URL,
       changeOrigin: true,

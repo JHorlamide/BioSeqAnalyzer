@@ -22,7 +22,7 @@ export class ProjectRoute extends CommonRoutesConfig {
     * @access Private.
     * ***/
     this.app.post(`${APP_PREFIX_PATH}/protein-projects`, [
-      projectMiddleware.validateRequestBodyField,
+      projectMiddleware.validateCreateProjectReqBodyField,
       projectController.createProject
     ])
 
@@ -55,18 +55,18 @@ export class ProjectRoute extends CommonRoutesConfig {
     this.app.put(`${APP_PREFIX_PATH}/protein-projects/:projectId`, [
       projectMiddleware.validateProjectExist,
       projectMiddleware.validateProjectBelongsToUser,
-      projectMiddleware.validateRequestBodyField,
+      projectMiddleware.validateCreateProjectReqBodyField,
       projectController.updateProjectDetails
     ])
 
     /***
-    * @route  PUT: /api/protein-user-project-associations
+    * @route  POST: /api/protein-user-project-associations
     * @desc   Link Invited User to Project
     * @access Private
     * ***/
-    this.app.put(`${APP_PREFIX_PATH}/protein-user-project-associations`, [
+    this.app.post(`${APP_PREFIX_PATH}/protein-user-project-associations`, [
+      projectMiddleware.validateProjectLinkReqBodyField,
       projectMiddleware.validateProjectExist,
-      projectMiddleware.validateProjectLink,
       projectController.associateUserToProject
     ])
 

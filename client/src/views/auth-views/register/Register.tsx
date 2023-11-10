@@ -64,7 +64,7 @@ const Register = () => {
     try {
       const proteinReqURL = `${BASE_URL}/protein-user-project-associations/`;
       const DNASeqReqURL = `${BASE_URL}/dna-user-project-associations/`;
-      const reqURL = projectType === "dna" ? DNASeqReqURL : proteinReqURL;
+      const reqURL = projectType?.toLowerCase() === "dna" ? DNASeqReqURL : proteinReqURL;
 
       const requestData = {
         user_id: userId,

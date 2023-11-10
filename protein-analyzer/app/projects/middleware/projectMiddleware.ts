@@ -19,9 +19,9 @@ import {
 } from "../validation/projectSchema";
 
 class ProjectMiddleware {
-  public validateRequestBodyField = requestBodyValidator(createProjectSchema);
+  public validateCreateProjectReqBodyField = requestBodyValidator(createProjectSchema);
 
-  public validateProjectLink = requestBodyValidator(linkUserToProject);
+  public validateProjectLinkReqBodyField = requestBodyValidator(linkUserToProject);
 
   public validateUploadReq = (req: Request, res: Response, next: NextFunction) => {
     multerUpload(req, res, async (err) => {
@@ -57,10 +57,10 @@ class ProjectMiddleware {
   }
 
   public async validateProjectExist(req: Request, res: Response, next: NextFunction) {
-    const { projectId } = req.params;
+    const { project_id } = req.body;
 
     try {
-      const project = await projectService.getProjectById(projectId);
+      const project = await projectService.getProjectById(project_id);
 
       if (!project) {
         return responseHandler.badRequest(ERR_MSG.PROJECT_NOT_FOUND, res);
