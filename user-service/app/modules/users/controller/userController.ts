@@ -25,7 +25,7 @@ class UserController {
   public acceptProjectInvitation = asyncHandler(async (req: Request, res: Response) => {
     const userId = await userService.acceptProjectInvitation(req.body);
     responseHandler.successResponse(RES_MSG.USER_CREATE, { userId }, res);
-  })
+  });
 }
 
 export default new UserController();

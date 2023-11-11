@@ -1,5 +1,5 @@
 /* React */
-import React, { Fragment, useEffect } from "react"
+import React, { Fragment } from "react"
 
 /* Libraries */
 import toast from "react-hot-toast";
@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "../CustomBtn/Button";
 import useErrorToast from "../../hooks/useErrorToast";
 import { FormInput } from "../CustomInput/FormInput/FormInput";
-import { InviteMemberFormData, inviteMemberSchema } from "../../schemas/inviteMember";
+import { InviteMemberFormData, inviteMemberSchema } from "../../schemas/invitation";
 import { useSendProjectInviteMutation } from "../../services/user/userServiceAPI";
 
 /* Chakra UI */
@@ -30,7 +30,6 @@ interface InviteMemberProps {
   isOpen: boolean;
   projectId: string;
   projectName: string;
-  projectType: string;
   onClose: () => void;
 }
 
@@ -42,7 +41,7 @@ const InviteMember = (props: InviteMemberProps) => {
   const { handleError } = useErrorToast();
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-  const { isOpen, onClose, projectId, projectType, projectName } = props;
+  const { isOpen, onClose, projectId, projectName } = props;
   const [sendProjectInvitation, { isLoading }] = useSendProjectInviteMutation();
 
   const {
@@ -57,7 +56,6 @@ const InviteMember = (props: InviteMemberProps) => {
       const response = await sendProjectInvitation({
         ...data,
         projectId,
-        projectType,
         projectName
       }).unwrap();
 
@@ -73,7 +71,6 @@ const InviteMember = (props: InviteMemberProps) => {
       handleError(error.message);
     }
   }
-
 
   return (
     <Fragment>

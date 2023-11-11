@@ -137,3 +137,30 @@ class AssociateUserToProjectViewSet(GenericAPIView):
             return Response(
                 {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+    
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+
+        if instance.file.name:
+            file_name = f"dna-seq/{instance.file.name}"
+            response = serializer.data
+            response["file_content"] = read_s3_file_content(file_name)
+
+            return Response(
+                {
+                    "status": "Success",
+                    "message": "Project fetched successfully",
+                    "data": response,
+                },
+                status=status.HTTP_200_OK,
+            )
+
+        return Response(
+            {
+                "status": "Success",
+                "message": "Project fetched successfully",
+                "data": serializer.data,
+            },
+            status=status.HTTP_200_OK,
+        )

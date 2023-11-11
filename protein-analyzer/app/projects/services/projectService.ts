@@ -12,7 +12,8 @@ import {
   IMutationRange,
   PaginationParams,
   SearchParams,
-  QueryType
+  // QueryType,
+  QueryArgs
 } from "../types/types";
 
 
@@ -36,7 +37,6 @@ class ProjectService {
     return await this.createProteinProject(projectData);
   }
 
-  // Fetch all the create project by a given user from the DB
   public async getAllProjects(
     paginationParams: PaginationParams,
     searchParams: SearchParams
@@ -46,10 +46,15 @@ class ProjectService {
     const searchFilters = this.getSearchParams(filteredSearchParams);
 
     try {
-      const query = this.getQuery(authorId, searchFilters);
+      const query = this.getQuery({
+        authorId,
+        searchParams: searchFilters
+      });
+
       const totalCount = await projectRepository.countProjects(query);
       const totalPages = Math.ceil(totalCount / limit);
       const projects = await projectRepository.getAllProjects(query, page, limit);
+
       return {
         projects,
         totalPages,
@@ -143,7 +148,7 @@ class ProjectService {
     }
   }
 
-  public async deleteProject(projectId: string) {
+  public async deleteProject(projectId: string, authorId: string) {
     try {
       const project = await projectRepository.deleteProject(projectId);
 
@@ -153,26 +158,6 @@ class ProjectService {
         await fileService.deleteFile(project.projectFileName);
       }
 
-      return project;
-    } catch (error: any) {
-      throw new ServerError(error.message);
-    }
-  }
-
-  public async AssociateUserToProject(projectId: string, userId: string) {
-    try {
-      const project = await projectRepository.getProjectById(projectId);
-
-      if (!project) {
-        throw new Error(ERR_MSG.PROJECT_NOT_FOUND);
-      }
-
-      if (project.invitedUsers.includes(userId)) {
-        throw new ClientError("User already added to project");
-      }
-
-      project.invitedUsers.push(userId);
-      project.save();
       return project;
     } catch (error: any) {
       throw new ServerError(error.message);
@@ -463,11 +448,11 @@ class ProjectService {
       }), {});
   }
 
-  private getQuery(authorId: string, searchFilters: {}): QueryType {
-    const query: QueryType = { authorId };
+  private getQuery({ authorId, searchParams }: QueryArgs) {
+    const query: any = { authorId };
 
-    if (Object.keys(searchFilters).length > 0) {
-      query.$or = [searchFilters];
+    if (Object.keys(searchParams).length > 0) {
+      query.$or = [searchParams];
     }
 
     return query;

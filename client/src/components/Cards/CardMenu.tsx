@@ -1,6 +1,7 @@
 /* Libraries / Packages */
 import { SlOptions } from "react-icons/sl";
 import { IconType } from "react-icons";
+import { BsFolderFill } from "react-icons/bs";
 
 /* Chakra UI */
 import {

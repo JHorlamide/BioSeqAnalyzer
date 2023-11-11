@@ -1,3 +1,5 @@
+import { ObjectId } from "mongoose";
+
 export enum ProjectGoal {
   MAXIMIZE = "Maximize",
   MINIMIZE = "Minimize"
@@ -45,7 +47,7 @@ export interface S3UploadRes {
 
 export interface ProjectModel extends IProject {
   projectFileName: string;
-  invitedUsers: string[];
+  invitedUsers: Array<String>;
 }
 
 export interface CSVColumnDataType {
@@ -59,7 +61,13 @@ export interface IMutationRange {
   scoreRange: { min: number; max: number }
 }
 
-export type QueryType = {
-  authorId: string;
-  $or?: Array<Record<string, { $regex: string; $options: string }>>
-};
+export interface QueryArgs {
+  authorId: string,
+  searchParams: {}
+}
+
+// export type QueryType = {
+//   authorId: string;
+//   invitedUsers?: string;
+//   $or?: Array<Record<string, { $regex: string; $options: string }>>
+// };

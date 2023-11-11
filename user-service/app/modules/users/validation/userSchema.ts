@@ -10,7 +10,6 @@ export const invitation = Joi.object({
   userEmail: Joi.string().email().required(),
   projectId: Joi.string().required(),
   projectName: Joi.string().required(),
-  projectType: Joi.string().required()
 });
 
 export const acceptInvitation = Joi.object({

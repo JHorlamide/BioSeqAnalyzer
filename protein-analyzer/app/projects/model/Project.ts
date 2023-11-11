@@ -35,7 +35,7 @@ const projectSchema = new Schema<ProjectModel>({
   uniprotId: { type: String },
   proteinAminoAcidSequence: { type: String },
   projectFileName: { type: String },
-  invitedUsers: [{ type: String }],
 }, { timestamps: true })
 
 export default model<ProjectModel>("Project", projectSchema);
+

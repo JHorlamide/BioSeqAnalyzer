@@ -57,6 +57,12 @@ export const publicRoute: IRoute[] = [
     path: `${AUTH_PREFIX_PATH}/reset-password/:resetToken`,
     component: ResetPassword
   },
+
+  {
+    key: "SharedDNASequenceOverview",
+    path: `${APP_PREFIX_PATH}/dna-sequence/shared/overview/:projectId`,
+    component: SequenceOverview
+  },
 ]
 
 export const protectedRoute: IRoute[] = [

@@ -12,20 +12,15 @@ export interface SendProjectInvitation {
   projectId: string;
   userEmail: string;
   projectName: string;
-  projectType: string;
 }
 
-export interface Invitation {
-  userEmail: string;
-  projectId: string;
+export type Invitation = Pick<SendProjectInvitation, "userEmail" | "projectId"> & {
   invitationToken: string;
   invitationTokenExpiration: bigint;
 }
 
-export interface AcceptInvitation {
-  userEmail: string;
+export type AcceptInvitation = Pick<Invitation, "userEmail" | "invitationToken"> & {
   fullName: string;
-  invitationToken: string;
   password: string;
 }
 
@@ -35,13 +30,9 @@ export interface ProjectInvitedTo {
   projectId: string;
 }
 
-export interface InvitationLink {
-  userEmail: string;
+export type InvitationLink = Pick<SendProjectInvitation, "projectId" | "userEmail"> & {
   invitationToken: string | null;
-  projectType: string;
-  projectId: string;
 }
-
 
 export type UpdateUser = Partial<User>;
 

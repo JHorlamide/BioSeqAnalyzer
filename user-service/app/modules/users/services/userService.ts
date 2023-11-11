@@ -54,7 +54,7 @@ class UserService {
   }
 
   public async sendInvitation(reqBodyField: SendProjectInvitation) {
-    const { userId, projectId, userEmail, projectName, projectType } = reqBodyField;
+    const { userId, projectId, userEmail, projectName } = reqBodyField;
 
     try {
       const user = await userRepository.getUserById(userId);
@@ -68,19 +68,19 @@ class UserService {
       const invitationLink = await this.getInvitationLink({
         userEmail,
         invitationToken,
-        projectType,
         projectId
       });
 
       await mailService.sendInvitationEmail({
-        senderName: user.fullName,
-        projectName,
         template: "invitationEmail",
+        projectName,
+        senderName: user.fullName,
         receiverMail: userEmail,
         receiverName: userEmail,
         link: invitationLink
       });
     } catch (error: any) {
+      logger.error(error.message);
       throw new ServerError(error.message);
     }
   }
@@ -93,7 +93,7 @@ class UserService {
       const passwordHash = await argon2.hash(password);
       const user = await userRepository.getUserByEmail(userEmail);
 
-      if(user) {
+      if (user) {
         await this.updateInvitation(invitationToken, {
           status: InvitationStatus.ACCEPTED,
           invitationTokenExpiration: BigInt(0),
@@ -109,9 +109,9 @@ class UserService {
       }
 
       const newUser = await this.createUser({
+        fullName,
         email: userEmail,
         role: Role.MEMBER,
-        fullName,
         password: passwordHash
       });
 
@@ -130,21 +130,20 @@ class UserService {
         return newUser.userId;
       }
     } catch (error: any) {
-      logger.error(error.message)
+      logger.error(error.message);
       throw new ServerError("Server error. Please try again later");
     }
   }
 
   private async getInvitationLink(params: InvitationLink) {
-    const { userEmail, invitationToken, projectType, projectId } = params;
-
+    const { userEmail, invitationToken, projectId } = params;
     const invitedUser = await userRepository.getUserByEmail(userEmail);
     const baseLink = invitedUser ? `${config.allowedOrigin}/auth/login` : `${config.allowedOrigin}/auth/register`;
-    return `${baseLink}?invitation_token=${invitationToken}&user_email=${userEmail}&project_id=${projectId}&project_type=${projectType}`
+    return `${baseLink}?invitation_token=${invitationToken}&user_email=${userEmail}&project_id=${projectId}`;
   }
 
   private async createInvitation(userEmail: string, projectId: string) {
-    const invitationToken = crypto.randomBytes(16).toString("hex")
+    const invitationToken = crypto.randomBytes(16).toString("hex");
     const invitationExpiration = Date.now() + 24 * 3600000;
 
     return await invitationRepository.createInvitation({
@@ -152,7 +151,7 @@ class UserService {
       invitationToken,
       projectId,
       invitationTokenExpiration: BigInt(invitationExpiration)
-    })
+    });
   }
 
   private async getValidatedInvitation(invitationToken: string, userEmail: string) {

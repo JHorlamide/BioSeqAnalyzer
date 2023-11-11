@@ -2,6 +2,7 @@
 import { Fragment } from "react";
 
 /* Libraries */
+import { CiShare1 } from "react-icons/ci";
 import { BsFolderFill } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
 import { AiOutlineUserAdd } from "react-icons/ai";
@@ -25,6 +26,7 @@ import {
   Flex,
   useDisclosure
 } from "@chakra-ui/react";
+import ShareProjectModal from "../ShareProjectModal/ShareProjectModal";
 
 
 interface ProjectCardProps {
@@ -39,10 +41,17 @@ interface ProjectCardProps {
 
 const ProjectCard = (props: ProjectCardProps) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
   const {
     isOpen: isOpenInvite,
     onOpen: onOpenInvite,
     onClose: onCloseInvite
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenShare,
+    onOpen: onOpenShare,
+    onClose: onCloseShare
   } = useDisclosure();
 
   const {
@@ -63,11 +72,21 @@ const ProjectCard = (props: ProjectCardProps) => {
   const menuItems = [
     {
       key: "inviteMember",
-      menuTitle: "Invite Member",
+      menuTitle: "Invite colleagues",
       MenuIcon: AiOutlineUserAdd,
       action: (event: React.MouseEvent) => {
         event.stopPropagation();
         onOpenInvite();
+      }
+    },
+
+    {
+      key: "shareProject",
+      menuTitle: "Share with colleagues",
+      MenuIcon: CiShare1,
+      action: (event: React.MouseEvent) => {
+        event.stopPropagation();
+        onOpenShare();
       }
     },
 
@@ -98,7 +117,13 @@ const ProjectCard = (props: ProjectCardProps) => {
         isOpen={isOpenInvite}
         onClose={onCloseInvite}
         projectId={projectId}
-        projectType={projectType}
+        projectName={projectTitle}
+      />
+
+      <ShareProjectModal
+        isOpen={isOpenShare}
+        onClose={onCloseShare}
+        projectId={projectId}
         projectName={projectTitle}
       />
 
@@ -128,7 +153,7 @@ const ProjectCard = (props: ProjectCardProps) => {
             <BsFolderFill size={20} />
           </Box>
 
-          <CardMenu menuItems={menuItems} />
+          <CardMenu menuItems={projectType === "Protein" ? menuItems.slice(2) : menuItems} />
         </CardHeader>
 
         <CardBody marginTop={-6}>

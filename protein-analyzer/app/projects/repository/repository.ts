@@ -8,7 +8,7 @@ class ProjectRepository {
 
   public async getAllProjects(query: any, page: number, limit: number) {
     const skip = (page - 1) * limit;
-    return await Project.find(query).skip(skip).limit(limit).exec();
+    return await Project.find(query).skip(skip).limit(limit).lean().exec();
   }
 
   public async getProjectById(projectId: string) {

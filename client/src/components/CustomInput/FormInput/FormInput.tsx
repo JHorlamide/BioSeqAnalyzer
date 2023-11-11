@@ -14,12 +14,14 @@ import {
 
 /* Chakra UI */
 import {
+  Box,
   Input,
+  VStack,
   InputProps,
   FormLabel,
-  Box,
-  VStack,
+  Textarea,
   InputGroup,
+  TextareaProps,
   InputLeftElement,
   InputRightElement,
   InputLeftElementProps,
@@ -29,6 +31,8 @@ import {
 type FormInputProps<IFormValues extends FieldValues> = {
   inputLeftElement?: InputLeftElementProps;
   inputRightElement?: InputRightElementProps;
+  inputType?: string;
+  textAreaInputProps?: TextareaProps;
   name: Path<IFormValues>;
   label?: string;
   rules?: RegisterOptions;
@@ -44,8 +48,10 @@ export const FormInput =
       rules,
       label,
       errors,
+      inputType,
       inputLeftElement,
       inputRightElement,
+      textAreaInputProps,
       register,
       ...inputProps
     } = props;
@@ -54,42 +60,81 @@ export const FormInput =
       <Fragment>
         {label && <FormLabel htmlFor={name} color="white">{label}</FormLabel>}
 
-        <VStack width="full">
-          <InputGroup>
-            {inputLeftElement && <InputLeftElement {...inputLeftElement} />}
+        {inputType === "textarea" ? (
+          <VStack width="full">
+            <InputGroup>
+              {inputLeftElement && <InputLeftElement {...inputLeftElement} />}
 
-            {inputRightElement && <InputRightElement {...inputRightElement} />}
+              {inputRightElement && <InputRightElement {...inputRightElement} />}
 
-            <Input
-              id={name}
-              name={name}
-              pl="35px"
-              width="100%"
-              height="45px"
-              border="1px solid white"
-              bg="brand_blue.300"
-              focusBorderColor="white"
-              borderRadius="20px"
-              _placeholder={{
-                opacity: "0.6",
-                color: "brand_blue.100",
-                fontSize: "15px",
-              }}
-              {...inputProps}
-              {...(register && register(name, rules))}
-            />
-          </InputGroup>
+              <Textarea
+                id={name}
+                name={name}
+                pl="35px"
+                width="100%"
+                height="45px"
+                border="1px solid white"
+                bg="brand_blue.300"
+                focusBorderColor="white"
+                borderRadius="20px"
+                _placeholder={{
+                  opacity: "0.6",
+                  color: "brand_blue.100",
+                  fontSize: "15px",
+                }}
+                {...textAreaInputProps}
+                {...(register && register(name, rules))}
+              />
+            </InputGroup>
 
-          <Box width="full">
-            <ErrorMessage
-              errors={errors}
-              name={name as any}
-              render={({ message }) => (
-                <p style={{ color: "red", paddingLeft: 10 }}>{message}</p>
-              )}
-            />
-          </Box>
-        </VStack>
-      </Fragment>
+            <Box width="full">
+              <ErrorMessage
+                errors={errors}
+                name={name as any}
+                render={({ message }) => (
+                  <p style={{ color: "red", paddingLeft: 10 }}>{message}</p>
+                )}
+              />
+            </Box>
+          </VStack>
+        ) : (
+          <VStack width="full">
+            <InputGroup>
+              {inputLeftElement && <InputLeftElement {...inputLeftElement} />}
+
+              {inputRightElement && <InputRightElement {...inputRightElement} />}
+
+              <Input
+                id={name}
+                name={name}
+                pl="35px"
+                width="100%"
+                height="45px"
+                border="1px solid white"
+                bg="brand_blue.300"
+                focusBorderColor="white"
+                borderRadius="20px"
+                _placeholder={{
+                  opacity: "0.6",
+                  color: "brand_blue.100",
+                  fontSize: "15px",
+                }}
+                {...inputProps}
+                {...(register && register(name, rules))}
+              />
+            </InputGroup>
+
+            <Box width="full">
+              <ErrorMessage
+                errors={errors}
+                name={name as any}
+                render={({ message }) => (
+                  <p style={{ color: "red", paddingLeft: 10 }}>{message}</p>
+                )}
+              />
+            </Box>
+          </VStack >
+        )}
+      </Fragment >
     );
   }

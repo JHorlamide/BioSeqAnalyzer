@@ -56,15 +56,12 @@ const Register = () => {
   const [acceptInvitation, { isLoading: isLoadingAccept }] = useAcceptProjectInviteMutation()
 
   const userEmail = pathQuery.get("user_email");
-  const projectType = pathQuery.get("project_type");
   const invitationToken = pathQuery.get("invitation_token");
   const projectId = pathQuery.get("project_id");
 
   const addUserToProject = async (userId: string) => {
     try {
-      const proteinReqURL = `${BASE_URL}/protein-user-project-associations/`;
-      const DNASeqReqURL = `${BASE_URL}/dna-user-project-associations/`;
-      const reqURL = projectType?.toLowerCase() === "dna" ? DNASeqReqURL : proteinReqURL;
+      const reqURL = `${BASE_URL}/project-invitations/`;
 
       const requestData = {
         user_id: userId,
@@ -89,22 +86,6 @@ const Register = () => {
       handleError(result.message);
     } catch (error: any) {
       handleError(error.message);
-    }
-  }
-
-  const handleUserRegistration = async (data: RegisterFormData) => {
-    try {
-      const response = await registerUser(data).unwrap();
-
-      if (response.status === "Success") {
-        toast.success(response.message);
-
-        setTimeout(() => {
-          handleNavigate(`${AUTH_PREFIX_PATH}/login`);
-        }, 1000);
-      }
-    } catch (error: any) {
-      handleError(error);
     }
   }
 
@@ -135,15 +116,29 @@ const Register = () => {
     }
   }
 
-  const onSubmit = async (data: RegisterFormData) => {
+  const handleRegistration = async (data: RegisterFormData) => {
+    try {
+      const response = await registerUser(data).unwrap();
 
-    if (invitationToken && projectType && userEmail) {
+      if (response.status === "Success") {
+        toast.success(response.message);
+
+        setTimeout(() => {
+          handleNavigate(`${AUTH_PREFIX_PATH}/login`);
+        }, 1000);
+      }
+    } catch (error: any) {
+      handleError(error);
+    }
+  }
+
+  const onSubmit = async (data: RegisterFormData) => {
+    if (invitationToken && userEmail) {
       return await handleAcceptInviteRegistration(data);
     }
 
-    await handleUserRegistration(data);
+    await handleRegistration(data);
   };
-
 
   return (
     <FormContainer showHeading={true}>

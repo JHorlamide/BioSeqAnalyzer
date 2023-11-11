@@ -12,8 +12,8 @@ import userService from "../services/userService";
 class UserMiddleware {
   public validateReqBodyField = requestBodyValidator(registerUser);
 
-  public validateInvitationBody = requestBodyValidator(invitation);
-  
+  public validateInvitationReqBody = requestBodyValidator(invitation);
+
   public validateAcceptBody = requestBodyValidator(acceptInvitation);
 
   public async validateUserAlreadyExit(req: Request, res: Response, next: NextFunction) {
@@ -39,7 +39,7 @@ class UserMiddleware {
       }
 
       if (user && user.role !== "AUTHOR") {
-        return responseHandler.unAuthorizedResponse("Permission not granted", res);
+        return responseHandler.badRequest("", res);
       }
 
       return next();

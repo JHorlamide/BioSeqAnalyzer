@@ -58,9 +58,10 @@ class ProjectMiddleware {
 
   public async validateProjectExist(req: Request, res: Response, next: NextFunction) {
     const { project_id } = req.body;
+    const { projectId } = req.params;
 
     try {
-      const project = await projectService.getProjectById(project_id);
+      const project = await projectService.getProjectById(projectId || project_id);
 
       if (!project) {
         return responseHandler.badRequest(ERR_MSG.PROJECT_NOT_FOUND, res);

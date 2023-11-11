@@ -48,22 +48,6 @@ export class GatewayRoute extends CommonRoutesConfig {
     }))
 
     /***
-    * @route  /api/protein-user-project-associations
-    * @desc   Protein service route
-    * @access Public
-    * ***/
-    this.app.use(`${APP_PREFIX_PATH}/protein-user-project-associations`, createProxyMiddleware({
-      target: PROTEIN_BASE_URL,
-      changeOrigin: true,
-      pathRewrite: {
-        [`^/protein-user-project-associations`]: "",
-      },
-      onError: (err, req, res) => {
-        res.status(500).send({ status: "Proxy Error", message: err });
-      }
-    }))
-
-    /***
     * @route  /api/dna-sequence
     * @desc   DNASequence service route
     * @access Private
@@ -84,11 +68,11 @@ export class GatewayRoute extends CommonRoutesConfig {
     * @desc   DNASequence service route
     * @access Public
     * ***/
-    this.app.use(`${APP_PREFIX_PATH}/dna-user-project-associations`, createProxyMiddleware({
+    this.app.use(`${APP_PREFIX_PATH}/project-invitations`, createProxyMiddleware({
       target: DNA_SEQUENCE_BASE_URL,
       changeOrigin: true,
       pathRewrite: {
-        [`^/dna-user-project-associations`]: "",
+        [`^/project-invitations`]: "",
       },
       onError: (err, req, res) => {
         res.status(500).send({ status: "Proxy Error", message: err });

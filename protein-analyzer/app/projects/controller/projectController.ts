@@ -24,6 +24,7 @@ class ProjectController {
 
     const decodedUser = JSON.parse(req.headers["x-decoded-user"]);
     const { userId } = decodedUser;
+
     const {
       page,
       limit,
@@ -69,16 +70,13 @@ class ProjectController {
     responseHandler.successResponse(RES_MSG.PROJECT_UPDATED, updatedProject, res);
   });
 
-  public deleteProject = asyncHandler(async (req: Request, res: Response) => {
-    const { projectId } = req.params;
-    await projectService.deleteProject(projectId);
-    responseHandler.noContent(RES_MSG.PROJECT_DELETED, res);
-  });
+  public deleteProject = asyncHandler(async (req: any, res: Response) => {
+    const decodedUser = JSON.parse(req.headers["x-decoded-user"]);
+    const { userId } = decodedUser;
 
-  public associateUserToProject = asyncHandler(async (req: Request, res: Response) => {
-    const { user_id, project_id } = req.body;
-    const response = await projectService.AssociateUserToProject(project_id, user_id);
-    return responseHandler.successResponse("User invited project", response, res);
+    const { projectId } = req.params;
+    await projectService.deleteProject(projectId, userId);
+    responseHandler.noContent(RES_MSG.PROJECT_DELETED, res);
   });
 
   public uploadProjectCSV = asyncHandler(async (req: Request, res: Response) => {

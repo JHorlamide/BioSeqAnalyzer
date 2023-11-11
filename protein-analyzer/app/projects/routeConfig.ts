@@ -60,17 +60,6 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route  POST: /api/protein-user-project-associations
-    * @desc   Link Invited User to Project
-    * @access Private
-    * ***/
-    this.app.post(`${APP_PREFIX_PATH}/protein-user-project-associations`, [
-      projectMiddleware.validateProjectLinkReqBodyField,
-      projectMiddleware.validateProjectExist,
-      projectController.associateUserToProject
-    ])
-
-    /***
     * @route DELETE: /api/protein-projects/:projectId
     * @desc Delete Project.
     * @access Private.

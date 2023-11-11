@@ -29,14 +29,16 @@ import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
 import useErrorToast from "../../../hooks/useErrorToast";
 import useNavigation from "../../../hooks/useNavigation";
-import { APP_PREFIX_PATH, AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../../../config/AppConfig";
+import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH, BASE_URL } from "../../../config/AppConfig";
 import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import { useAppDispatch } from "../../../store/store";
 import { useLoginUserMutation } from "../../../services/auth/authApi";
 import { LoginFormData, loginSchema } from "../../../schemas/auth/loginSchema";
 import { ProteinProjectAPI } from "../../../services/proteinProject/proteinProjectAPI";
+import { DNASeqProjectAPI } from "../../../services/DNASequence/DNASeqProjectAPI";
 import { setRefreshToken, setToken, setUser } from "../../../store/slices/authSlice";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
+import { useAcceptProjectInviteMutation } from "../../../services/user/userServiceAPI";
 
 type LoginFormFields = {
   email: string;
@@ -67,9 +69,73 @@ const Login = () => {
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
+  const [acceptInvitation, { isLoading: isLoadingAccept }] = useAcceptProjectInviteMutation()
 
+  const userEmail = pathQuery.get("user_email");
+  const projectType = pathQuery.get("project_type");
+  const invitationToken = pathQuery.get("invitation_token");
+  const projectId = pathQuery.get("project_id");
 
-  const onSubmit = async (data: LoginFormData) => {
+  const addUserToProject = async (userId: string) => {
+    try {
+      const proteinReqURL = `${BASE_URL}/protein-user-project-associations/`;
+      const DNASeqReqURL = `${BASE_URL}/dna-user-project-associations/`;
+      const reqURL = projectType?.toLowerCase() === "dna" ? DNASeqReqURL : proteinReqURL;
+
+      const requestData = {
+        user_id: userId,
+        project_id: String(projectId)
+      };
+
+      const requestOption = {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+
+        body: JSON.stringify(requestData)
+      }
+
+      const response = await fetch(reqURL, requestOption);
+      const result = await response.json();
+
+      if (result.status === "Success") {
+        return result;
+      }
+
+      handleError(result.message);
+    } catch (error: any) {
+      handleError(error.message);
+    }
+  }
+
+  const handleAcceptInviteRegistration = async (data: LoginFormData) => {
+    try {
+      const reqBody = {
+        userEmail: data.email,
+        password: data.password,
+        invitationToken: String(invitationToken)
+      }
+
+      const response = await acceptInvitation(reqBody).unwrap();
+
+      if (response.status === "Success") {
+        const { userId } = response.data;
+        const res = await addUserToProject(userId);
+
+        if (res.status === "Success") {
+          toast.success(response.message);
+          return handleNavigate(AUTHENTICATED_ENTRY);
+        }
+      }
+
+      handleError(response.message);
+    } catch (error: any) {
+      handleError(error.message);
+    }
+  }
+
+  const handleLogin = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data).unwrap();
 
@@ -88,6 +154,14 @@ const Login = () => {
     } catch (error: any) {
       handleError(error);
     }
+  }
+
+  const onSubmit = async (data: LoginFormData) => {
+    if (invitationToken && projectType && userEmail) {
+      return await handleAcceptInviteRegistration(data);
+    }
+
+    await handleLogin(data);
   };
 
   const dispatchTokenAndRefetchData = (authData: LoginResponse) => {
@@ -97,7 +171,7 @@ const Login = () => {
     dispatch(setToken(accessToken));
     dispatch(setRefreshToken(refreshToken));
     dispatch(ProteinProjectAPI.util.invalidateTags(["GetAllProjects"]));
-
+    dispatch(DNASeqProjectAPI.util.invalidateTags(["GetAllDNAProjects"]));
     localStorage.setItem(AUTH_TOKEN, accessToken);
     localStorage.setItem(REFRESH_TOKEN, refreshToken);
   };
@@ -182,7 +256,7 @@ const Login = () => {
           bg="brand_blue.50"
           width="full"
           type="submit"
-          isLoading={isLoading}
+          isLoading={isLoading ? isLoading : isLoadingAccept}
           isDisabled={!isValid}
           _hover={{ bg: "brand_blue.200" }}
         >

@@ -43,7 +43,12 @@ export const DNASeqProjectAPI = createApi({
 
   endpoints: (builder) => ({
     createProject: builder.mutation<ICreateDNASeqProjectsRes, ICreateProject | FormData>({
-      query: (data) => ({ url: "/", method: "POST", body: data }),
+      query: (data) => ({
+        url: "/",
+        method: "POST",
+        body: data
+      }),
+
       invalidatesTags: ["GetAllDNAProjects"]
     }),
 
