@@ -64,8 +64,8 @@ export class GatewayRoute extends CommonRoutesConfig {
     }))
 
     /***
-    * @route  /api/dna-user-project-associations
-    * @desc   DNASequence service route
+    * @route  /api/project-invitations
+    * @desc   DNASequence service route to associate invited-user to project
     * @access Public
     * ***/
     this.app.use(`${APP_PREFIX_PATH}/project-invitations`, createProxyMiddleware({
@@ -73,6 +73,22 @@ export class GatewayRoute extends CommonRoutesConfig {
       changeOrigin: true,
       pathRewrite: {
         [`^/project-invitations`]: "",
+      },
+      onError: (err, req, res) => {
+        res.status(500).send({ status: "Proxy Error", message: err });
+      }
+    }))
+
+    /***
+    * @route  /api/project/share/:projectId
+    * @desc   DNASequence service route to get project details
+    * @access Public
+    * ***/
+    this.app.use(`${APP_PREFIX_PATH}/project/share/:projectId`, createProxyMiddleware({
+      target: DNA_SEQUENCE_BASE_URL,
+      changeOrigin: true,
+      pathRewrite: {
+        [`^/project/share/:projectId`]: "",
       },
       onError: (err, req, res) => {
         res.status(500).send({ status: "Proxy Error", message: err });

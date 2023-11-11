@@ -10,6 +10,7 @@ const seqVizStyle = {
   padding: "10px 0",
   borderRadius: 10,
   backgroundColor: "white",
+  marginTop: -6
 }
 
 const ProteinSequenceMap = () => {

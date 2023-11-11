@@ -31,15 +31,15 @@ const HeaderNav = () => {
   const { email, fullName } = useAppSelector((state) => state.auth.user);
   const { isOpen, onOpen, onClose } = useDisclosure();
 
+  const handleLogout = () => {
+    dispatch(logoutUser());
+  };
+
   useEffect(() => {
     const pathname = location.pathname;
     const isRequiredPath = (pathname === AUTHENTICATED_ENTRY) || (pathname === DNA_SEQ_ENTRY);
     setIsDashboardPage(isRequiredPath);
   }, [location.pathname]);
-
-  const handleLogout = () => {
-    dispatch(logoutUser());
-  };
 
   return (
     <Box>

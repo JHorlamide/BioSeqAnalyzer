@@ -13,6 +13,7 @@ const seqVizStyle = {
   padding: "10px 0",
   borderRadius: 10,
   backgroundColor: "white",
+  marginTop: -6
 }
 
 const DNASequenceMap = () => {
@@ -20,6 +21,7 @@ const DNASequenceMap = () => {
   const { data, isLoading } = useGetProjectQuery({ projectId: String(projectId) });
   const { bases, file_content, sequence, name, nucleotide_type, topology, date_of_submission } = data?.data || {};
   const { seqVizData, loading: seqVizLoading } = useParseSeq(file_content || sequence || null);
+
   const sequenceData = bases !== null ?
     { ...seqVizData, style: seqVizStyle, seq: bases } :
     { ...seqVizData, style: seqVizStyle }

@@ -1,5 +1,5 @@
 /* React */
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 /* Libraries */
 import { debounce } from "lodash";
@@ -34,6 +34,7 @@ const DNASequenceDashboard = () => {
   const { handleNavigate } = useNavigation();
   const filters = useAppSelector((state) => state.DNASeqFilter);
   const [deleteProject] = useDeleteProjectMutation();
+  
   const { data: projects, isLoading, refetch } = useGetAllProjectsQuery({
     name: filters.name,
     page: filters.currentPage,
@@ -43,35 +44,35 @@ const DNASequenceDashboard = () => {
 
   const isProjectListEmpty = !projects?.results || projects?.results.length === 0;
 
-  const handlePageChange = (page: number) => {
+  const handlePageChange = useCallback((page: number) => {
     dispatch(setCurrentPage(page));
     refetch();
-  };
+  }, [dispatch, refetch]);
 
-  const handleDataRefetch = () => {
+  const handleDataRefetch = useCallback(() => {
     dispatch(clearFilterState());
     refetch();
-  };
+  }, [dispatch, refetch]);
 
-  const goToCreateProject = () => {
+  const goToCreateProject = useCallback(() => {
     handleNavigate(`${APP_PREFIX_PATH}/create-dna-project`);
-  };
+  }, [handleNavigate]);
 
-  const goToUpdateProjectPage = (projectId: string) => {
+  const goToUpdateProjectPage = useCallback((projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/update/${projectId}`);
-  };
+  }, [handleNavigate]);
 
-  const goToProjectDetailsPage = (projectId: string) => {
+  const goToProjectDetailsPage = useCallback((projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/overview/${projectId}`)
-  };
+  }, [handleNavigate]);
 
-  async function handleDeleteProject(projectId: string) {
+  const handleDeleteProject = useCallback(async (projectId: string) => {
     try {
       await deleteProject({ projectId }).unwrap();
     } catch (error: any) {
       handleError(error);
     }
-  }
+  }, [deleteProject, handleError]);
 
   const handleSearchQuery = useMemo(() =>
     debounce(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {

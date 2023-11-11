@@ -19,6 +19,7 @@ import CreateProject from "../views/app-views/DNASequence/CreateDNAProject/Creat
 import UpdateDNASeqProjectForm from "../views/app-views/DNASequence/CreateDNAProject/UpdateDNASeqProjectForm";
 import SequenceOverview from "../views/app-views/DNASequence/DNASequenceMap/DNASequenceMap";
 import ProteinSequenceMap from "../views/app-views/ProteinAnalyzer/ProteinSequenceMap/ProteinSequenceMap";
+import SharedProjectView from "../views/app-views/DNASequence/SharedProjectView/SharedProjectView";
 
 interface IRoute {
   [x: string]: any;
@@ -61,7 +62,7 @@ export const publicRoute: IRoute[] = [
   {
     key: "SharedDNASequenceOverview",
     path: `${APP_PREFIX_PATH}/dna-sequence/shared/overview/:projectId`,
-    component: SequenceOverview
+    component: SharedProjectView
   },
 ]
 

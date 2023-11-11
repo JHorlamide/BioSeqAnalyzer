@@ -1,5 +1,5 @@
 /* React.js */
-import { Fragment, useRef, useState } from 'react';
+import { Fragment, useCallback, useState } from 'react';
 
 /* Chakra UI */
 import { Box, Flex, HStack, Input } from '@chakra-ui/react';
@@ -15,7 +15,6 @@ import SequenceViewer from "../SequenceViewer/SequenceViewer"
 import Button from '../CustomBtn/Button';
 import AppLoader from '../Loading/AppLoader';
 import { ZoomButtons, Topology, Settings, Information } from './SequenceMapSettings';
-import useErrorToast from '../../hooks/useErrorToast';
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
@@ -33,8 +32,7 @@ interface SequenceMapProps {
 
 const SequenceMap = (props: SequenceMapProps) => {
   const navigate = useNavigate();
-  const { handleError } = useErrorToast();
-  const searchInputRef = useRef<HTMLInputElement>(null);
+  const [searchInput, setSearchInput] = useState("");
   const [zoomLevel, setZoomLevel] = useState(50);
   const [topology, setTopology] = useState<ViewerType>("both_flip");
   const [enzymes, setEnzymes] = useState(["PstI", "EcoRI", "XbaI", "SpeI"]);
@@ -42,27 +40,31 @@ const SequenceMap = (props: SequenceMapProps) => {
   const [showComplete, setShowComplete] = useState(true);
   const { sequenceData, isLoading, info, refetch } = props;
 
-  const handleZoomIn = () => {
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  }
+
+  const handleZoomIn = useCallback(() => {
     if (zoomLevel < 100) {
       setZoomLevel(zoomLevel + 10);
     }
-  };
+  }, [zoomLevel]);
 
-  const handleZoomOut = () => {
+  const handleZoomOut = useCallback(() => {
     if (zoomLevel > 50) {
       setZoomLevel(zoomLevel - 10);
     }
-  };
+  }, [zoomLevel]);
 
-  const toggleShowIndex = () => {
+  const toggleShowIndex = useCallback(() => {
     setShowIndex(!showIndex);
-  };
+  }, [showIndex]);
 
-  const toggleShowComplete = () => {
+  const toggleShowComplete = useCallback(() => {
     setShowComplete(!showComplete);
-  };
+  }, [showComplete]);
 
-  const toggleEnzyme = (enzyme: string) => {
+  const toggleEnzyme = useCallback((enzyme: string) => {
     const myEnzymes = enzymes;
 
     if (myEnzymes.includes(enzyme)) {
@@ -70,13 +72,12 @@ const SequenceMap = (props: SequenceMapProps) => {
     } else {
       setEnzymes([...myEnzymes, enzyme]);
     }
-  };
+  }, [enzymes]);
 
   const sequenceViewerStyle = {
     ...sequenceData.style,
     width: "100%",
     height: "48vw",
-    marginTop: -6
   };
 
   return (
@@ -131,7 +132,8 @@ const SequenceMap = (props: SequenceMapProps) => {
               border="1px solid white"
               focusBorderColor="brand_blue.100"
               placeholder="Search bases, annotations, and primers"
-              ref={searchInputRef}
+              value={searchInput}
+              onChange={handleSearchInputChange}
               _placeholder={{ fontSize: "15px", color: "white" }}
             />
           </Box>
@@ -149,7 +151,7 @@ const SequenceMap = (props: SequenceMapProps) => {
             showComplement={showComplete}
             zoom={{ linear: zoomLevel }}
             enzymes={enzymes}
-            search={{ query: String(searchInputRef.current?.value) }}
+            search={{ query: searchInput }}
             style={sequenceViewerStyle}
           />
 

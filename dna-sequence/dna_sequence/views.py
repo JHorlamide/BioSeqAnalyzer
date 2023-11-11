@@ -6,9 +6,11 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.db.models import Q
 
 # REST Framework
-from rest_framework.response import Response
 from rest_framework import status
-from rest_framework.generics import GenericAPIView
+from rest_framework.response import Response
+# from rest_framework.exceptions import NotFound
+from rest_framework.generics import RetrieveAPIView
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
 
@@ -106,7 +108,7 @@ class DnaSequenceViewSet(ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 
-class AssociateUserToProjectViewSet(GenericAPIView):
+class AssociateUserToProjectViewSet(APIView):
     def post(self, request, format=None):
         project_id = request.data.get("project_id")
         user_id = request.data.get("user_id")
@@ -137,30 +139,44 @@ class AssociateUserToProjectViewSet(GenericAPIView):
             return Response(
                 {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
-    
-    def get(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
 
-        if instance.file.name:
-            file_name = f"dna-seq/{instance.file.name}"
-            response = serializer.data
-            response["file_content"] = read_s3_file_content(file_name)
+
+class ShareProjectView(RetrieveAPIView):
+    serializer_class = DNASequenceSerializer
+
+    def get_serializer_class(self):
+        return super().get_serializer_class()
+
+    def get(self, request, *args, **kwargs):
+        project_id = self.kwargs.get("pk")
+
+        try:
+            instance = DNASequence.objects.get(id=project_id)
+            serializer = self.get_serializer(instance)
+
+            if instance.file.name:
+                file_name = f"dna-seq/{instance.file.name}"
+                response = serializer.data
+                response["file_content"] = read_s3_file_content(file_name)
+
+                return Response(
+                    {
+                        "status": "Success",
+                        "message": "Project fetched successfully",
+                        "data": response,
+                    },
+                    status=status.HTTP_200_OK,
+                )
 
             return Response(
                 {
                     "status": "Success",
                     "message": "Project fetched successfully",
-                    "data": response,
+                    "data": serializer.data,
                 },
                 status=status.HTTP_200_OK,
             )
-
-        return Response(
-            {
-                "status": "Success",
-                "message": "Project fetched successfully",
-                "data": serializer.data,
-            },
-            status=status.HTTP_200_OK,
-        )
+        except Exception as e:
+            return Response(
+                {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
