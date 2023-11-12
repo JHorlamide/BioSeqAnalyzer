@@ -1,51 +1,50 @@
-import { CreateProjectFormField } from "../../schemas/DNASequenceProjectSchema";
+import { NucleotideType, TopologyType } from "../../schemas/DNASequenceProjectSchema";
+
+export interface ResData {
+  id: string;
+  name?: string;
+  bases?: string;
+  description?: string;
+  sequence_id?: string;
+  topology: TopologyType;
+  nucleotide_type: NucleotideType;
+  file: string;
+  file_content: string;
+  sequence: string;
+  date_of_submission: string;
+}
 
 export interface ICreateDNASeqProjectsRes {
   status: string;
   message: string;
-  data: CreateProjectFormField & {
-    id: string;
-    date_of_submission: string;
-  }
+  data: ResData;
 }
 
-export interface ReqQueryParam {
+export type ReqQueryParam = Pick<ResData, "topology" | "nucleotide_type"> & {
   page: number;
   name: string;
-  topology: number;
-  nucleotideType: string;
 }
 
-export interface ICreateProject extends CreateProjectFormField {
-  file: string;
-}
+export type ICreateProject = Pick<ResData,
+  "name" |
+  "bases" |
+  "description" |
+  "sequence_id" |
+  "topology" |
+  "nucleotide_type"
+>
 
 export interface IGetProjectsRes extends Response {
-  count: number,
-  next: string,
-  previous: string,
-  results: {
-    id: string;
-    name: string;
-    bases?: string,
-    description?: string,
-    sequence_id?: string,
-    date_of_submission: string;
-    nucleotide_type: string,
-    topology: string,
-    sequence?: string;
-  }[]
+  count: number;
+  next: string;
+  previous: string;
+  results: ResData[];
 }
 
 export interface IGetProjectRes {
   status: string;
   message: string;
-  data: CreateProjectFormField & {
-    file: string;
-    file_content: string;
-    sequence: string;
-    date_of_submission: string;
-  }
+  data: ResData
 };
 
 export interface IGetProjectParam {
@@ -56,7 +55,13 @@ export interface IGetSequenceDataReq {
   sequence_id: string;
 }
 
-export interface IUpdateProjectReq extends CreateProjectFormField {
+export type IUpdateProjectReq = Pick<ResData,
+  "name" |
+  "bases" |
+  "sequence_id" |
+  "topology" |
+  "nucleotide_type"
+> & {
   projectId: string;
 }
 

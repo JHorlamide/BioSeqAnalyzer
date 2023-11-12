@@ -1,5 +1,5 @@
 /* React */
-import { SetStateAction, Dispatch, Fragment } from 'react';
+import { SetStateAction, Dispatch } from 'react';
 
 import { HiOutlineInformationCircle } from "react-icons/hi"
 

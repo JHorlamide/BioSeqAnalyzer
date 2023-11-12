@@ -29,7 +29,7 @@ import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
 import useErrorToast from "../../../hooks/useErrorToast";
 import useNavigation from "../../../hooks/useNavigation";
-import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH, BASE_URL } from "../../../config/AppConfig";
+import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import { useAppDispatch } from "../../../store/store";
 import { useLoginUserMutation } from "../../../services/auth/authApi";
@@ -39,6 +39,7 @@ import { DNASeqProjectAPI } from "../../../services/DNASequence/DNASeqProjectAPI
 import { setRefreshToken, setToken, setUser } from "../../../store/slices/authSlice";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
 import { useAcceptProjectInviteMutation } from "../../../services/user/userServiceAPI";
+import { addUserToProject } from "../../../services/publicApiService";
 
 type LoginFormFields = {
   email: string;
@@ -71,57 +72,24 @@ const Login = () => {
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
   const [acceptInvitation, { isLoading: isLoadingAccept }] = useAcceptProjectInviteMutation()
 
-  const userEmail = pathQuery.get("user_email");
-  const projectType = pathQuery.get("project_type");
-  const invitationToken = pathQuery.get("invitation_token");
-  const projectId = pathQuery.get("project_id");
+  const userEmail = String(pathQuery.get("user_email"));
+  const projectId = String(pathQuery.get("project_id"));
+  const projectType = String(pathQuery.get("project_type"));
+  const invitationToken = String(pathQuery.get("invitation_token"));
 
-  const addUserToProject = async (userId: string) => {
-    try {
-      const proteinReqURL = `${BASE_URL}/protein-user-project-associations/`;
-      const DNASeqReqURL = `${BASE_URL}/dna-user-project-associations/`;
-      const reqURL = projectType?.toLowerCase() === "dna" ? DNASeqReqURL : proteinReqURL;
-
-      const requestData = {
-        user_id: userId,
-        project_id: String(projectId)
-      };
-
-      const requestOption = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-
-        body: JSON.stringify(requestData)
-      }
-
-      const response = await fetch(reqURL, requestOption);
-      const result = await response.json();
-
-      if (result.status === "Success") {
-        return result;
-      }
-
-      handleError(result.message);
-    } catch (error: any) {
-      handleError(error.message);
-    }
-  }
-
-  const handleAcceptInviteRegistration = async (data: LoginFormData) => {
+  const acceptInviteRegistration = async (data: LoginFormData) => {
     try {
       const reqBody = {
         userEmail: data.email,
         password: data.password,
-        invitationToken: String(invitationToken)
+        invitationToken: invitationToken
       }
 
       const response = await acceptInvitation(reqBody).unwrap();
 
       if (response.status === "Success") {
         const { userId } = response.data;
-        const res = await addUserToProject(userId);
+        const res = await addUserToProject(userId, projectId);
 
         if (res.status === "Success") {
           toast.success(response.message);
@@ -135,7 +103,7 @@ const Login = () => {
     }
   }
 
-  const handleLogin = async (data: LoginFormData) => {
+  const handleUserLogin = async (data: LoginFormData) => {
     try {
       const response = await loginUser(data).unwrap();
 
@@ -158,10 +126,10 @@ const Login = () => {
 
   const onSubmit = async (data: LoginFormData) => {
     if (invitationToken && projectType && userEmail) {
-      return await handleAcceptInviteRegistration(data);
+      return await acceptInviteRegistration(data);
     }
 
-    await handleLogin(data);
+    await handleUserLogin(data);
   };
 
   const dispatchTokenAndRefetchData = (authData: LoginResponse) => {

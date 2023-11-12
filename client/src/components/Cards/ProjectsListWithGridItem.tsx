@@ -7,17 +7,11 @@ import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 /* Application Module */
 import ProjectCard from "./ProjectCard";
 import { ProteinProjects } from "../../services/proteinProject/type";
-import { ICreateDNASeqProjectsRes, IGetProjectsRes } from "../../services/DNASequence/types";
-
-interface DNASeqProjects {
-  id: string;
-  name: string;
-  date_of_submission: string;
-}
+import { ResData } from "../../services/DNASequence/types";
 
 interface Props {
   projectType: string
-  dnaSeqProjects?: DNASeqProjects[];
+  dnaSeqProjects?: ResData[];
   proteinProjects?: ProteinProjects[];
   goToUpdateProjectPage: (projectId: string) => void;
   handleDeleteProject: (project: string) => void;
@@ -45,9 +39,9 @@ const ProjectsListWithGridItem = (props: Props) => {
   } = props;
   const projects = [...(proteinProjects ?? []), ...(dnaSeqProjects ?? [])];
 
-  const getProjectProperties = (project: DNASeqProjects | ProteinProjects) => {
+  const getProjectProperties = (project: ResData | ProteinProjects) => {
     if (isDNASeqProject(project)) {
-      const { id, name, date_of_submission } = project as DNASeqProjects;
+      const { id, name, date_of_submission } = project as ResData;
 
       return {
         projectId: id,
@@ -60,8 +54,8 @@ const ProjectsListWithGridItem = (props: Props) => {
     return { projectTitle, updatedAt, projectId: _id };
   };
 
-  const isDNASeqProject = (project: DNASeqProjects | ProteinProjects): boolean => {
-    return (project as DNASeqProjects).id !== undefined;
+  const isDNASeqProject = (project: ResData | ProteinProjects): boolean => {
+    return (project as ResData).id !== undefined;
   };
 
   return (

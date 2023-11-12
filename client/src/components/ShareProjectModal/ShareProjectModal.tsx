@@ -1,5 +1,5 @@
 /* React */
-import React, { Fragment } from "react"
+import React, { useState } from "react"
 
 /* Libraries */
 import { FiCopy } from "react-icons/fi";
@@ -12,6 +12,7 @@ import Button from "../CustomBtn/Button";
 import {
   Box,
   FormControl,
+  Divider,
   Input,
   Modal,
   ModalBody,
@@ -25,7 +26,6 @@ import {
   InputRightElement,
 } from "@chakra-ui/react";
 
-
 interface ShareProjectProps {
   isOpen: boolean;
   projectId: string;
@@ -36,14 +36,20 @@ interface ShareProjectProps {
 const ShareProjectModal = (props: ShareProjectProps) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
-  const textAreaRef = React.useRef<HTMLTextAreaElement | null>(null);
+  const [message, setMessage] = useState("");
   const { isOpen, onClose, projectId, projectName } = props;
 
-  const sharableLink = `http://localhost:5173/app/dna-sequence/shared/overview/${projectId}?message=${textAreaRef.current?.value}`
+  const sharableLink = `http://localhost:5173/app/dna-sequence/shared/overview/${projectId}?&message=${message}`;
+
+  const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const { value } = e.target;
+    setMessage(value);
+  }
 
   const handleCopyProjectLink = () => {
     navigator.clipboard.writeText(sharableLink);
     toast.success("Copied share link to clipboard");
+    onClose();
   }
 
   return (
@@ -59,13 +65,13 @@ const ShareProjectModal = (props: ShareProjectProps) => {
 
         <ModalContent color="white" bg="brand_blue.300">
           <ModalHeader>Share {projectName}</ModalHeader>
-
           <ModalCloseButton />
-
+          <Divider />
           <ModalBody pb={6}>
             <FormControl mt={4} isRequired>
               <Textarea
-                ref={textAreaRef}
+                value={message}
+                onChange={handleMessage}
                 focusBorderColor="white"
                 placeholder="Add optional description"
               />

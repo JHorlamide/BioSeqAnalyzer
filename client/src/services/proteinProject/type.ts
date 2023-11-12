@@ -1,17 +1,32 @@
 import { IBaseResponse } from "../../schemas";
-import { IProject, ProjectFormData } from "../../schemas/proteinProjectSchema";
+import { MeasuredProperty, ProjectGoal } from "../../schemas/proteinProjectSchema";
 
-export interface ProteinProjects extends IProject {
+export interface ProteinProjectData {
   _id: string;
   user: string;
   projectFileName: string;
   pdbFileUrl: string;
   createdAt: string;
   updatedAt: string;
+
+  projectTitle: string;
+  measuredProperty: MeasuredProperty;
+  projectGoal: ProjectGoal;
+  proteinPDBID?: string;
+  uniprotId?: string;
+  proteinAminoAcidSequence?: string;
+
 }
 
 export interface ICreateProjectRes extends IBaseResponse {
-  data: IProject;
+  data: Pick<ProteinProjectData,
+    "projectTitle" |
+    "measuredProperty" |
+    "projectGoal" |
+    "proteinPDBID" |
+    "uniprotId" |
+    "proteinAminoAcidSequence"
+  >;
 }
 
 export interface IGetProteinSequenceRes extends IBaseResponse {
@@ -23,17 +38,19 @@ export interface IGetProteinSequenceReq {
 }
 
 export interface IGetProjectsRes extends IBaseResponse {
-  data: { projects: ProteinProjects[] };
   totalPages: number;
   totalCount: number;
+  data: { projects: ProteinProjectData[] };
 }
 
-export interface IGetProjectQueryParam {
+export type IGetProjectQueryParam = Pick<
+  ProteinProjectData,
+  "projectTitle" |
+  "projectGoal" |
+  "measuredProperty"
+> & {
   page: number;
   limit: number;
-  projectTitle: string;
-  projectGoal: string;
-  measuredProperty: string;
 }
 
 export interface IGetProjectReq {
@@ -41,16 +58,30 @@ export interface IGetProjectReq {
 }
 
 export interface IGetProjectRes extends IBaseResponse {
-  data: ProteinProjects;
+  data: ProteinProjectData;
 }
 
 export interface IUpdateProjectReq {
   projectId: string;
-  data: ProjectFormData;
+  data: Pick<ProteinProjectData,
+    "projectTitle" |
+    "measuredProperty" |
+    "projectGoal" |
+    "proteinPDBID" |
+    "uniprotId" |
+    "proteinAminoAcidSequence"
+  >;
 }
 
 export interface IUpdateProjectRes extends IBaseResponse {
-  data: IProject;
+  data: Pick<ProteinProjectData,
+    "projectTitle" |
+    "measuredProperty" |
+    "projectGoal" |
+    "proteinPDBID" |
+    "uniprotId" |
+    "proteinAminoAcidSequence"
+  >;
 }
 
 export interface IUploadProjectFileReq {
@@ -59,7 +90,7 @@ export interface IUploadProjectFileReq {
 }
 
 export interface IUploadProjectRes extends IBaseResponse {
-  data: ProteinProjects
+  data: ProteinProjectData
 }
 
 export interface IGetSummaryReq {
@@ -76,22 +107,25 @@ export interface IGetSummaryRes {
   data: {
     totalSequence: number;
     foldImprovement: number;
-    percentageSequencesAboveReference: number;
     topMutants: Sequence[];
+    percentageSequencesAboveReference: number;
+
     highestFitness: {
       sequence: string;
       fitness: string;
     }
+
     numSequencesAboveReference: {
+      hitRate: number;
       totalSequence: string;
       sequencesAboveReferenceCount: number
-      hitRate: number;
     },
   };
 }
 
 interface TopVariants {
   mutation: string;
+
   scoreRange: {
     min: number;
     max: number;

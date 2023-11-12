@@ -49,11 +49,11 @@ const useParseSeq = (sequence: string | undefined | null) => {
       }
 
       const annotations = [{
-        name: String(seqData?.name),
         start: 0,
-        end: Number(seqData?.seq.length),
         direction: 1,
-        color: "#08355a"
+        color: "#08355a",
+        name: String(seqData?.name),
+        end: Number(seqData?.seq.length),
       }]
 
       const updatedSeqVizData = {
@@ -78,21 +78,3 @@ const useParseSeq = (sequence: string | undefined | null) => {
 }
 
 export default useParseSeq;
-
-
-// const annotations = [{
-//   name: String(seqData?.name),
-//   start: 0,
-//   end: Number(seqData?.seq.length),
-//   direction: 1,
-//   color: "#08355a"
-// }]
-
-// const updatedSeqVizData = {
-//   ...seqVizData,
-//   ...seqData,
-//   annotations
-// }
-
-// setSeqvizData(updatedSeqVizData);
-// setLoading(false);

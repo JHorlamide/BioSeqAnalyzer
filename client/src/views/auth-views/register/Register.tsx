@@ -34,6 +34,7 @@ import {
   VStack,
   InputRightElement,
 } from "@chakra-ui/react";
+import { addUserToProject } from "../../../services/publicApiService";
 
 type RegisterFormFields = {
   fullName: string;
@@ -53,70 +54,42 @@ const Register = () => {
     formState: { errors, isValid },
   } = useForm<RegisterFormData>({ resolver: zodResolver(registrationSchema) });
   const [registerUser, { isLoading }] = useRegisterUserMutation();
-  const [acceptInvitation, { isLoading: isLoadingAccept }] = useAcceptProjectInviteMutation()
+  const [acceptInvitation, { isLoading: isLoadingAccept }] = useAcceptProjectInviteMutation();
 
-  const userEmail = pathQuery.get("user_email");
-  const invitationToken = pathQuery.get("invitation_token");
-  const projectId = pathQuery.get("project_id");
+  const userEmail = String(pathQuery.get("user_email"));
+  const projectId = String(pathQuery.get("project_id"));
+  const invitationToken = String(pathQuery.get("invitation_token"));
 
-  const addUserToProject = async (userId: string) => {
-    try {
-      const reqURL = `${BASE_URL}/project-invitations/`;
-
-      const requestData = {
-        user_id: userId,
-        project_id: String(projectId)
-      };
-
-      const requestOption = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(requestData)
-      }
-
-      const response = await fetch(reqURL, requestOption);
-      const result = await response.json();
-
-      if (result.status === "Success") {
-        return result;
-      }
-
-      handleError(result.message);
-    } catch (error: any) {
-      handleError(error.message);
-    }
-  }
-
-  const handleAcceptInviteRegistration = async (data: RegisterFormData) => {
+  const acceptInviteRegistration = async (data: RegisterFormData) => {
     try {
       const reqBody = {
         fullName: data.fullName,
         userEmail: data.email,
         password: data.password,
-        invitationToken: String(invitationToken)
+        invitationToken: invitationToken
       }
 
       const response = await acceptInvitation(reqBody).unwrap();
 
       if (response.status === "Success") {
         const { userId } = response.data;
-        const res = await addUserToProject(userId);
+        const res = await addUserToProject(userId, projectId);
 
         if (res.status === "Success") {
           toast.success(response.message);
           return handleNavigate(AUTHENTICATED_ENTRY);
+        } else {
+          handleError(res.message || 'Failed to add user to project');
         }
       }
 
-      handleError(response.message);
+      handleError(response.message || 'Failed to accept invitation');
     } catch (error: any) {
-      handleError(error.message);
+      handleError(`Error during registration: ${error.message}`);
     }
   }
 
-  const handleRegistration = async (data: RegisterFormData) => {
+  const registrationUser = async (data: RegisterFormData) => {
     try {
       const response = await registerUser(data).unwrap();
 
@@ -134,10 +107,10 @@ const Register = () => {
 
   const onSubmit = async (data: RegisterFormData) => {
     if (invitationToken && userEmail) {
-      return await handleAcceptInviteRegistration(data);
+      return await acceptInviteRegistration(data);
     }
 
-    await handleRegistration(data);
+    await registrationUser(data);
   };
 
   return (

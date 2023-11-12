@@ -39,7 +39,7 @@ const DNASequenceDashboard = () => {
     name: filters.name,
     page: filters.currentPage,
     topology: filters.topology,
-    nucleotideType: filters.nucleotideType,
+    nucleotide_type: filters.nucleotideType,
   });
 
   const isProjectListEmpty = !projects?.results || projects?.results.length === 0;

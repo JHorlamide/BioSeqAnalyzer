@@ -8,8 +8,6 @@ import { AUTH_TOKEN } from "../../constants/AuthConstant";
 import { ProjectFormData } from "../../schemas/proteinProjectSchema";
 import {
   ICreateProjectRes,
-  IGetProteinSequenceRes,
-  IGetProteinSequenceReq,
   IGetProjectsRes,
   IGetProjectQueryParam,
   IGetProjectReq,
@@ -140,7 +138,7 @@ export const {
   useUpdateProjectMutation,
   useUploadProjectFileMutation,
 
-  /* Queries */ 
+  /* Queries */
   useGetProjectsQuery,
   useGetProjectQuery,
   useGetTopVariantsQuery,

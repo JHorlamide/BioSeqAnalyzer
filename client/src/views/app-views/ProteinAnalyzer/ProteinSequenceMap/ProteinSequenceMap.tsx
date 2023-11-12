@@ -5,12 +5,13 @@ import { useParams } from 'react-router-dom';
 import { useGetProjectQuery } from '../../../../services/proteinProject/proteinProjectAPI';
 
 const seqVizStyle = {
+  marginTop: -6,
+  borderRadius: 10,
   height: "43vw",
   width: "101.5%",
   padding: "10px 0",
-  borderRadius: 10,
   backgroundColor: "white",
-  marginTop: -6
+  searchInputWidth: "520px"
 }
 
 const ProteinSequenceMap = () => {

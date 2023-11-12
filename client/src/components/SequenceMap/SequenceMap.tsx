@@ -124,9 +124,9 @@ const SequenceMap = (props: SequenceMapProps) => {
             />
           </HStack>
 
-          <Box width="140%">
+          <Box width="full">
             <Input
-              width="lg"
+              width={String(sequenceData.style?.searchInputWidth)}
               color="white"
               borderRadius="full"
               border="1px solid white"
