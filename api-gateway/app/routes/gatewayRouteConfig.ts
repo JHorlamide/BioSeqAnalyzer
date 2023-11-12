@@ -1,3 +1,4 @@
+/* Application Modules */
 import config from "../config/serverConfig";
 import { Application } from "express";
 import { CommonRoutesConfig } from "../config/routeConfig"
@@ -5,9 +6,9 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import { validJWTNeeded } from "../middleware/authMiddleware";
 
 const APP_PREFIX_PATH = config.prefix;
-const USER_BASE_URL = "http://user-service:7070";
-const PROTEIN_BASE_URL = "http://protein-analyzer:8080";
-const DNA_SEQUENCE_BASE_URL = "http://dna-sequence:8000";
+const USER_BASE_URL = config.USER_BASE_URL;
+const PROTEIN_BASE_URL = config.PROTEIN_BASE_URL;
+const DNA_SEQUENCE_BASE_URL = config.DNA_SEQUENCE_BASE_URL;
 
 export class GatewayRoute extends CommonRoutesConfig {
   constructor(app: Application) {
