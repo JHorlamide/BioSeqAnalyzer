@@ -6,9 +6,6 @@ import { createProxyMiddleware } from "http-proxy-middleware";
 import { validJWTNeeded } from "../middleware/authMiddleware";
 
 const APP_PREFIX_PATH = config.prefix;
-const USER_BASE_URL = config.USER_BASE_URL;
-const PROTEIN_BASE_URL = config.PROTEIN_BASE_URL;
-const DNA_SEQUENCE_BASE_URL = config.DNA_SEQUENCE_BASE_URL;
 
 export class GatewayRoute extends CommonRoutesConfig {
   constructor(app: Application) {
@@ -22,7 +19,7 @@ export class GatewayRoute extends CommonRoutesConfig {
     * @access Public
     * ***/
     this.app.use(`${APP_PREFIX_PATH}/users`, createProxyMiddleware({
-      target: USER_BASE_URL,
+      target: config.USER_BASE_URL,
       changeOrigin: true,
       pathRewrite: {
         [`^/users`]: "",
@@ -38,7 +35,7 @@ export class GatewayRoute extends CommonRoutesConfig {
     * @access Private
     * ***/
     this.app.use(`${APP_PREFIX_PATH}/protein-projects`, validJWTNeeded, createProxyMiddleware({
-      target: PROTEIN_BASE_URL,
+      target: config.PROTEIN_BASE_URL,
       changeOrigin: true,
       pathRewrite: {
         [`^/projects`]: "",
@@ -54,7 +51,7 @@ export class GatewayRoute extends CommonRoutesConfig {
     * @access Private
     * ***/
     this.app.use(`${APP_PREFIX_PATH}/dna-sequence`, validJWTNeeded, createProxyMiddleware({
-      target: DNA_SEQUENCE_BASE_URL,
+      target: config.DNA_SEQUENCE_BASE_URL,
       changeOrigin: true,
       pathRewrite: {
         [`^/dna-sequence`]: "",
@@ -70,7 +67,7 @@ export class GatewayRoute extends CommonRoutesConfig {
     * @access Public
     * ***/
     this.app.use(`${APP_PREFIX_PATH}/project-invitations`, createProxyMiddleware({
-      target: DNA_SEQUENCE_BASE_URL,
+      target: config.DNA_SEQUENCE_BASE_URL,
       changeOrigin: true,
       pathRewrite: {
         [`^/project-invitations`]: "",
@@ -86,7 +83,7 @@ export class GatewayRoute extends CommonRoutesConfig {
     * @access Public
     * ***/
     this.app.use(`${APP_PREFIX_PATH}/project/share/:projectId`, createProxyMiddleware({
-      target: DNA_SEQUENCE_BASE_URL,
+      target: config.DNA_SEQUENCE_BASE_URL,
       changeOrigin: true,
       pathRewrite: {
         [`^/project/share/:projectId`]: "",
