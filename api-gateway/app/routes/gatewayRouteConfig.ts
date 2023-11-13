@@ -1,6 +1,7 @@
+import { Application } from "express";
+
 /* Application Modules */
 import config from "../config/serverConfig";
-import { Application } from "express";
 import { CommonRoutesConfig } from "../config/routeConfig"
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { validJWTNeeded } from "../middleware/authMiddleware";

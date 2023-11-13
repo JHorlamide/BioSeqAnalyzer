@@ -11,20 +11,19 @@ import { GatewayRoute } from "../routes/gatewayRouteConfig";
 const app = express();
 const routes: CommonRoutesConfig[] = [];
 
-const allowedOrigins = [config.USER_BASE_URL, config.PROTEIN_BASE_URL, config.DNA_SEQUENCE_BASE_URL];
+const allowedOrigins = ["http://localhost:5173"]
 
-const corsOption: CorsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+const corsOptions: CorsOptions = {
+  origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => {
+    if (allowedOrigins.indexOf(origin!) !== -1 || !origin) {
       callback(null, true);
-      return;
+    } else {
+      callback(new Error('Not allowed by CORS'));
     }
-
-    callback(new Error('Not allowed by CORS'));
   },
-}
+};
 
-app.use(cors(corsOption));
+app.use(cors(corsOptions));
 
 app.use(helmet());
 

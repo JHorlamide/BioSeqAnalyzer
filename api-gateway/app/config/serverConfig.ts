@@ -3,18 +3,19 @@ dotenv.config();
 
 const config = {
   jwt: {
-    secret: process.env.JWT_SECRETE as string,
-    tokenExpiration: process.env.TOKEN_EXPIRATION as string
+    secret: String(process.env.JWT_SECRETE),
+    tokenExpiration: String(process.env.TOKEN_EXPIRATION)
   },
 
   port: process.env.PORT,
   prefix: "/api",
-  node_env: process.env.NODE_ENV,
+  node_env: String(process.env.NODE_ENV),
 
   /*  Service Base URLs */
-  USER_BASE_URL: process.env.USER_BASE_URL as string,
-  PROTEIN_BASE_URL: process.env.PROTEIN_BASE_URL as string,
-  DNA_SEQUENCE_BASE_URL: process.env.DNA_SEQUENCE_BASE_URL as string
+  USER_BASE_URL: String(process.env.USER_BASE_URL),
+  PROTEIN_BASE_URL: String(process.env.PROTEIN_BASE_URL),
+  DNA_SEQUENCE_BASE_URL: String(process.env.DNA_SEQUENCE_BASE_URL),
+  allowedOrigin: String(process.env.ALLOWED_ORIGIN)
 }
 
 export default config;
