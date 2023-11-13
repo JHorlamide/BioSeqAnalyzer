@@ -15,6 +15,6 @@ export const invitation = Joi.object({
 export const acceptInvitation = Joi.object({
   invitationToken: Joi.string().required(),
   userEmail: Joi.string().email().required(),
-  fullName: Joi.string().required(),
+  fullName: Joi.string().optional(),
   password: Joi.string().required()
 })

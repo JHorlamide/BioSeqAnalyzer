@@ -34,7 +34,7 @@ export class UserRoute extends CommonRoutesConfig {
     */
     this.app.post(`${APP_PREFIX_PATH}/users/invite`, [
       jwtMiddleware.validJWTNeeded,
-      userMiddleware.validateUserHasRequiredRole,
+      // userMiddleware.validateUserHasRequiredRole,
       userMiddleware.validateInvitationReqBody,
       userController.inviteUserToProject
     ])

@@ -12,15 +12,16 @@ import { useForm } from "react-hook-form";
 import { toast } from "react-hot-toast";
 
 /* Application Modules */
-import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH, BASE_URL } from "../../../config/AppConfig";
-import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
 import useNavigation from "../../../hooks/useNavigation";
 import useErrorToast from "../../../hooks/useErrorToast";
+import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import { RegisterFormData, registrationSchema } from "../../../schemas/auth/registerSchema";
 import { useRegisterUserMutation } from "../../../services/auth/registerApi";
 import { useAcceptProjectInviteMutation } from "../../../services/user/userServiceAPI";
+import { addUserToProject } from "../../../services/publicApiService";
+import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 
 /* Chakra UI */
 import {
@@ -34,7 +35,6 @@ import {
   VStack,
   InputRightElement,
 } from "@chakra-ui/react";
-import { addUserToProject } from "../../../services/publicApiService";
 
 type RegisterFormFields = {
   fullName: string;
@@ -60,7 +60,7 @@ const Register = () => {
   const projectId = String(pathQuery.get("project_id"));
   const invitationToken = String(pathQuery.get("invitation_token"));
 
-  const acceptInviteRegistration = async (data: RegisterFormData) => {
+  const acceptInvite = async (data: RegisterFormData) => {
     try {
       const reqBody = {
         fullName: data.fullName,
@@ -89,7 +89,7 @@ const Register = () => {
     }
   }
 
-  const registrationUser = async (data: RegisterFormData) => {
+  const handleUserRegistration = async (data: RegisterFormData) => {
     try {
       const response = await registerUser(data).unwrap();
 
@@ -106,11 +106,11 @@ const Register = () => {
   }
 
   const onSubmit = async (data: RegisterFormData) => {
-    if (invitationToken && userEmail) {
-      return await acceptInviteRegistration(data);
+    if (invitationToken !== "null" && userEmail !== "null") {
+      return await acceptInvite(data);
     }
 
-    await registrationUser(data);
+    await handleUserRegistration(data);
   };
 
   return (
@@ -159,7 +159,7 @@ const Register = () => {
                 placeholder="Enter your email address"
                 register={register}
                 errors={errors}
-                defaultValue={userEmail ? userEmail : ""}
+                defaultValue={userEmail !== "null" ? userEmail : ""}
               />
             </InputGroup>
           </FormControl>

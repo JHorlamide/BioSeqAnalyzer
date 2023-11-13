@@ -7,11 +7,11 @@ import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 /* Application Module */
 import ProjectCard from "./ProjectCard";
 import { ProteinProjects } from "../../services/proteinProject/type";
-import { ResData } from "../../services/DNASequence/types";
+import { DNASeqProject } from "../../services/DNASequence/types";
 
 interface Props {
   projectType: string
-  dnaSeqProjects?: ResData[];
+  dnaSeqProjects?: DNASeqProject[];
   proteinProjects?: ProteinProjects[];
   goToUpdateProjectPage: (projectId: string) => void;
   handleDeleteProject: (project: string) => void;
@@ -39,9 +39,9 @@ const ProjectsListWithGridItem = (props: Props) => {
   } = props;
   const projects = [...(proteinProjects ?? []), ...(dnaSeqProjects ?? [])];
 
-  const getProjectProperties = (project: ResData | ProteinProjects) => {
+  const getProjectProperties = (project: DNASeqProject | ProteinProjects) => {
     if (isDNASeqProject(project)) {
-      const { id, name, date_of_submission } = project as ResData;
+      const { id, name, date_of_submission } = project as DNASeqProject;
 
       return {
         projectId: id,
@@ -54,8 +54,8 @@ const ProjectsListWithGridItem = (props: Props) => {
     return { projectTitle, updatedAt, projectId: _id };
   };
 
-  const isDNASeqProject = (project: ResData | ProteinProjects): boolean => {
-    return (project as ResData).id !== undefined;
+  const isDNASeqProject = (project: DNASeqProject | ProteinProjects): boolean => {
+    return (project as DNASeqProject).id !== undefined;
   };
 
   return (

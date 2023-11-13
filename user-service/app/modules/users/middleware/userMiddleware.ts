@@ -28,25 +28,25 @@ class UserMiddleware {
     next();
   }
 
-  public async validateUserHasRequiredRole(req: Request, res: Response, next: NextFunction) {
-    const { userId } = res.locals.jwt;
+  // public async validateUserHasRequiredRole(req: Request, res: Response, next: NextFunction) {
+  //   const { userId } = res.locals.jwt;
 
-    try {
-      const user = await userService.getUserById(userId);
+  //   try {
+  //     const user = await userService.getUserById(userId);
 
-      if (!user) {
-        return responseHandler.badRequest(ERR_MSG.USER_NOT_FOUND, res);
-      }
+  //     if (!user) {
+  //       return responseHandler.badRequest(ERR_MSG.USER_NOT_FOUND, res);
+  //     }
 
-      if (user && user.role !== "AUTHOR") {
-        return responseHandler.badRequest("", res);
-      }
+  //     if (user && user.role !== "AUTHOR") {
+  //       return responseHandler.badRequest("You don't have the permission to invite other member", res);
+  //     }
 
-      return next();
-    } catch (error: any) {
-      return responseHandler.badRequest(error.message, res);
-    }
-  }
+  //     return next();
+  //   } catch (error: any) {
+  //     return responseHandler.badRequest(error.message, res);
+  //   }
+  // }
 }
 
 export default new UserMiddleware();

@@ -1,4 +1,4 @@
-import { User, Role, InvitationStatus } from "@prisma/client"
+import { User, Role, Invitation } from "@prisma/client"
 
 export interface IUser {
   fullName: string;
@@ -7,17 +7,17 @@ export interface IUser {
   role: Role;
 }
 
-export interface SendProjectInvitation {
+export type SendProjectInvitation = Pick<Invitation, "userEmail" | "projectId"> & {
   userId: string;
-  projectId: string;
-  userEmail: string;
   projectName: string;
 }
 
-export type Invitation = Pick<SendProjectInvitation, "userEmail" | "projectId"> & {
-  invitationToken: string;
-  invitationTokenExpiration: bigint;
-}
+export type BaseInvitation = Pick<Invitation,
+  "userEmail" |
+  "projectId" |
+  "invitationToken" |
+  "invitationTokenExpiration"
+>
 
 export type AcceptInvitation = Pick<Invitation, "userEmail" | "invitationToken"> & {
   fullName: string;
@@ -30,12 +30,8 @@ export interface ProjectInvitedTo {
   projectId: string;
 }
 
-export type InvitationLink = Pick<SendProjectInvitation, "projectId" | "userEmail"> & {
-  invitationToken: string | null;
-}
+export type InvitationLink = Pick<Invitation, "projectId" | "userEmail" | "invitationToken">;
 
 export type UpdateUser = Partial<User>;
 
-export type UpdateInvitation = Partial<Invitation> & {
-  status: InvitationStatus
-};
+export type UpdateInvitation = Partial<Invitation>;

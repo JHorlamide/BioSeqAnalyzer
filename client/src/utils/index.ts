@@ -2,7 +2,7 @@ import moment from "moment";
 
 class Utils {
   static getErrorMessage(error: any) {
-    if (error.data || error.response) {
+    if ((error && error.data) || (error && error.response)) {
       return error.data.message ||
         error.response.data.message ||
         error.message ||

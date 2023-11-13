@@ -74,34 +74,7 @@ const Login = () => {
 
   const userEmail = String(pathQuery.get("user_email"));
   const projectId = String(pathQuery.get("project_id"));
-  const projectType = String(pathQuery.get("project_type"));
   const invitationToken = String(pathQuery.get("invitation_token"));
-
-  const acceptInviteRegistration = async (data: LoginFormData) => {
-    try {
-      const reqBody = {
-        userEmail: data.email,
-        password: data.password,
-        invitationToken: invitationToken
-      }
-
-      const response = await acceptInvitation(reqBody).unwrap();
-
-      if (response.status === "Success") {
-        const { userId } = response.data;
-        const res = await addUserToProject(userId, projectId);
-
-        if (res.status === "Success") {
-          toast.success(response.message);
-          return handleNavigate(AUTHENTICATED_ENTRY);
-        }
-      }
-
-      handleError(response.message);
-    } catch (error: any) {
-      handleError(error.message);
-    }
-  }
 
   const handleUserLogin = async (data: LoginFormData) => {
     try {
@@ -124,9 +97,37 @@ const Login = () => {
     }
   }
 
+  const acceptInvite = async (data: LoginFormData) => {
+    try {
+      const reqBody = {
+        userEmail: data.email,
+        password: data.password,
+        invitationToken: invitationToken
+      }
+
+      const response = await acceptInvitation(reqBody).unwrap();
+
+      if (response.status === "Success") {
+        const { userId } = response.data;
+        const res = await addUserToProject(userId, projectId);
+
+        if (res.status === "Success") {
+          toast.success(response.message);
+          return await handleUserLogin(data);
+        } else {
+          handleError(res.message || 'Failed to add user to project');
+        }
+      }
+
+      handleError(response.message || 'Failed to accept invitation');
+    } catch (error: any) {
+      handleError(`Error during login: ${error.message}`);
+    }
+  }
+
   const onSubmit = async (data: LoginFormData) => {
-    if (invitationToken && projectType && userEmail) {
-      return await acceptInviteRegistration(data);
+    if (invitationToken !== "null" && userEmail !== "null") {
+      return await acceptInvite(data);
     }
 
     await handleUserLogin(data);
@@ -172,6 +173,7 @@ const Login = () => {
                 register={register}
                 errors={errors}
                 placeholder="Enter your email"
+                defaultValue={userEmail !== "null" ? userEmail : ""}
               />
             </InputGroup>
           </FormControl>

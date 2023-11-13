@@ -1,6 +1,6 @@
 import { NucleotideType, TopologyType } from "../../schemas/DNASequenceProjectSchema";
 
-export interface ResData {
+export interface DNASeqProject {
   id: string;
   name?: string;
   bases?: string;
@@ -17,15 +17,15 @@ export interface ResData {
 export interface ICreateDNASeqProjectsRes {
   status: string;
   message: string;
-  data: ResData;
+  data: DNASeqProject;
 }
 
-export type ReqQueryParam = Pick<ResData, "topology" | "nucleotide_type"> & {
+export type ReqQueryParam = Pick<DNASeqProject, "topology" | "nucleotide_type"> & {
   page: number;
   name: string;
 }
 
-export type ICreateProject = Pick<ResData,
+export type ICreateProject = Pick<DNASeqProject,
   "name" |
   "bases" |
   "description" |
@@ -38,13 +38,13 @@ export interface IGetProjectsRes extends Response {
   count: number;
   next: string;
   previous: string;
-  results: ResData[];
+  results: DNASeqProject[];
 }
 
 export interface IGetProjectRes {
   status: string;
   message: string;
-  data: ResData
+  data: DNASeqProject
 };
 
 export interface IGetProjectParam {
@@ -55,7 +55,7 @@ export interface IGetSequenceDataReq {
   sequence_id: string;
 }
 
-export type IUpdateProjectReq = Pick<ResData,
+export type IUpdateProjectReq = Pick<DNASeqProject,
   "name" |
   "bases" |
   "sequence_id" |

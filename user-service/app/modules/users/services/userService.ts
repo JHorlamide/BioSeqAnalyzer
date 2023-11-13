@@ -11,7 +11,7 @@ import mailService from "../mail-service/mailService";
 import invitationRepository from "../repository/invitationRepository";
 import config from "../../../config/appConfig";
 import { ERR_MSG } from "../types/constants";
-import { AcceptInvitation, IUser, Invitation, InvitationLink, SendProjectInvitation, UpdateInvitation } from "../types/types";
+import { AcceptInvitation, IUser, BaseInvitation, InvitationLink, SendProjectInvitation, UpdateInvitation } from "../types/types";
 import { ClientError, NotFoundError, ServerError } from "../../../common/exceptions/ApiError";
 import { logger } from "../../../config/logger";
 
@@ -89,15 +89,15 @@ class UserService {
     const { userEmail, invitationToken, fullName, password } = reqBodyField;
 
     try {
-      const invitation = await this.getValidatedInvitation(invitationToken, userEmail);
+      const invitation = await this.getValidatedInvitation(String(invitationToken), userEmail);
       const passwordHash = await argon2.hash(password);
       const user = await userRepository.getUserByEmail(userEmail);
 
       if (user) {
-        await this.updateInvitation(invitationToken, {
+        await this.updateInvitation(invitation.id, {
           status: InvitationStatus.ACCEPTED,
           invitationTokenExpiration: BigInt(0),
-          invitationToken: ""
+          invitationToken: null
         });
 
         await invitationRepository.createProjectsInvitedTo(
@@ -116,10 +116,10 @@ class UserService {
       });
 
       if (newUser.userId) {
-        await this.updateInvitation(invitationToken, {
+        await this.updateInvitation(invitation.id, {
           status: InvitationStatus.ACCEPTED,
           invitationTokenExpiration: BigInt(0),
-          invitationToken: ""
+          invitationToken: null
         });
 
         await invitationRepository.createProjectsInvitedTo(
@@ -131,7 +131,7 @@ class UserService {
       }
     } catch (error: any) {
       logger.error(error.message);
-      throw new ServerError("Server error. Please try again later");
+      throw new ServerError(`Server error: ${error.message}`);
     }
   }
 
@@ -146,34 +146,39 @@ class UserService {
     const invitationToken = crypto.randomBytes(16).toString("hex");
     const invitationExpiration = Date.now() + 24 * 3600000;
 
-    return await invitationRepository.createInvitation({
-      userEmail,
-      invitationToken,
-      projectId,
-      invitationTokenExpiration: BigInt(invitationExpiration)
-    });
+    try {
+      return await invitationRepository.createInvitation({
+        userEmail,
+        projectId,
+        invitationToken,
+        invitationTokenExpiration: BigInt(invitationExpiration)
+      });
+    } catch (error: any) {
+      logger.error(error.message);
+      throw new ServerError(error.message);
+    }
   }
 
   private async getValidatedInvitation(invitationToken: string, userEmail: string) {
-    const invitation = await invitationRepository.getInvitationByToken(invitationToken);
+    try {
+      const invitation = await invitationRepository.getInvitationByToken(invitationToken);
 
-    if (!invitation) {
-      throw new ClientError(ERR_MSG.INVALID_INVITATION);
+      if (!invitation) {
+        throw new ClientError(ERR_MSG.INVALID_INVITATION);
+      }
+
+      if (userEmail !== invitation.userEmail) {
+        throw new ClientError(ERR_MSG.WRONG_USER_INVITATION);
+      }
+
+      return invitation;
+    } catch (error: any) {
+      throw new ServerError(error.message);
     }
-
-    if (userEmail !== invitation.userEmail) {
-      throw new ClientError(ERR_MSG.WRONG_USER_INVITATION);
-    }
-
-    await this.updateInvitation(invitationToken, {
-      status: InvitationStatus.ACCEPTED
-    })
-
-    return invitation;
   }
 
-  private async updateInvitation(invitationToken: string, updateFields: UpdateInvitation) {
-    await invitationRepository.updateInvitation(invitationToken, updateFields);
+  private async updateInvitation(invitationId: string, updateFields: UpdateInvitation) {
+    await invitationRepository.updateInvitation(invitationId, updateFields);
   }
 }
 

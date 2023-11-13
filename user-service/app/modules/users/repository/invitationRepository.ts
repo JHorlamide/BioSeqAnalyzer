@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Invitation, UpdateInvitation } from "../types/types";
+import { BaseInvitation, UpdateInvitation } from "../types/types";
 
 class invitationRepository {
   private prisma: PrismaClient;
@@ -8,13 +8,13 @@ class invitationRepository {
     this.prisma = new PrismaClient();
   }
 
-  public async createInvitation(invitationData: Invitation) {
+  public async createInvitation(invitationData: BaseInvitation) {
     return await this.prisma.invitation.create({ data: invitationData });
   }
 
-  public async updateInvitation(invitationToken: string, updateFields: UpdateInvitation) {
+  public async updateInvitation(invitationId: string, updateFields: UpdateInvitation) {
     return await this.prisma.invitation.update({
-      where: { invitationToken: invitationToken },
+      where: { id: invitationId },
       data: updateFields
     })
   }

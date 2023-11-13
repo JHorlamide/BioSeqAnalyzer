@@ -13,6 +13,7 @@ import Button from '../../../../components/CustomBtn/Button';
 import AppLoader from '../../../../components/Loading/AppLoader';
 import SequenceMap from '../../../../components/SequenceMap/SequenceMap';
 import { AUTH_PREFIX_PATH, BASE_URL } from '../../../../config/AppConfig';
+import { DNASeqProject } from '../../../../services/DNASequence/types';
 
 /* Chakra UI */
 import {
@@ -30,25 +31,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-interface ProjectDetails {
-  id: string;
-  name: string;
-  bases: string | null;
-  description: string | null;
-  sequence_id: string | null;
-  date_of_submission: string;
-  nucleotide_type: string;
-  topology: string;
-  sequence: string;
-  file: string;
-  file_content: string;
-}
-
 interface ProjectDetailsRes {
   status: string;
   message: string;
   detail?: string;
-  data: ProjectDetails
+  data: DNASeqProject
 }
 
 const seqVizStyle = {
@@ -66,9 +53,9 @@ const SharedProjectView = () => {
   const [pathQuery] = useSearchParams();
   const { projectId } = useParams();
   const [isLoading, setLoading] = useState(false);
-  const [projectDetails, setProjectDetails] = useState<ProjectDetails>();
+  const [projectDetails, setProjectDetails] = useState<DNASeqProject>();
 
-  const { bases, file_content, sequence, name, } = projectDetails || {};
+  const { bases, file_content, sequence } = projectDetails || {};
   const { seqVizData, loading: seqVizLoading } = useParseSeq(file_content || sequence || null);
 
   const sequenceData = bases !== null ?
@@ -76,13 +63,13 @@ const SharedProjectView = () => {
     { ...seqVizData, style: seqVizStyle }
 
   const info = {
-    name,
+    name: projectDetails?.name,
     nucleotide_type: projectDetails?.nucleotide_type === "D" ? "DNA" : "RNA",
     topology: projectDetails?.topology === "L" ? "Linear" : "Circular",
     created: Utils.formattedDate(projectDetails?.date_of_submission)
   }
 
-  const message = pathQuery.get("message");
+  const message = String(pathQuery.get("message"));
 
   const fetchProjectDetails = async () => {
     const reqURL = `${BASE_URL}/project/share/${projectId}`;
@@ -101,7 +88,7 @@ const SharedProjectView = () => {
 
       if (detail && detail !== undefined) {
         setLoading(false);
-        return handleError("Server error. Please try again later")
+        return handleError(`Server error: ${detail}`);
       }
 
       setLoading(false);
@@ -113,11 +100,11 @@ const SharedProjectView = () => {
   }
 
   const openMessageModal = () => {
-    if (message && message === undefined) {
-      return onClose();
+    if (message && message !== "null") {
+      return onOpen();
     }
 
-    onOpen();
+    onClose();
   }
 
   useEffect(() => {

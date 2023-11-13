@@ -59,16 +59,17 @@ const InviteMember = (props: InviteMemberProps) => {
         projectName
       }).unwrap();
 
+
       if (response.status === "Success") {
         toast.success(response.message);
-        reset();
+        reset(); 
         onClose();
         return;
       }
 
       handleError(response.message);
     } catch (error: any) {
-      handleError(error.message);
+      handleError(error);
     }
   }
 
