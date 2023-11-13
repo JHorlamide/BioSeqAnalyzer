@@ -8,9 +8,9 @@ router.register("dna-sequence", DnaSequenceViewSet, basename="dna-sequence")
 
 urlpatterns = [
     path(
-        "project-invitations/",
+        "project-association/",
         AssociateUserToProjectViewSet.as_view(),
-        name="project-invitation",
+        name="project-association",
     ),
     path(
         "project/share/<uuid:pk>/",

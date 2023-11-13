@@ -2,9 +2,9 @@ import express from "express";
 import cors, { CorsOptions } from "cors";
 import helmet from "helmet";
 
+import config from "./appConfig";
 import { requestLogger } from "./requestLogger";
 import { CommonRoutesConfig } from "../common/CommonRouteConfig";
-import config from "./appConfig";
 import { errorHandler, routeNotFoundErrorHandler } from "../common/middleware/errorHandler";
 
 // Routes imports
@@ -17,7 +17,7 @@ const routes: CommonRoutesConfig[] = [];
 // Middleware that enables Cross-Origin Resource Sharing (CORS) for the server.
 // This allows the server to handle requests from different domains or origins.
 const corsOptions: CorsOptions = {
-  origin: "*",
+  origin: config.allowedOrigin.baseUrl,
   credentials: true,
 }
 

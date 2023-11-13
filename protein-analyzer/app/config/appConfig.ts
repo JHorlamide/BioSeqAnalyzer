@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
-  endpoint: {
+  allowedOrigin: {
     get baseUrl() {
       if (process.env.NODE_ENV === "production") {
         return process.env.BASE_URL_LIVE
@@ -38,7 +38,7 @@ const config = {
   cached_ttl: 4600,
   redisUrl: `redis://${process.env.REDIS_HOST}:${process.env.REDIS_PORT}`,
   SPACES_KEY: process.env.DO_SPACES_KEY as string,
-  SPACES_SECRET: process.env.DO_SPACES_SECRET as string
+  SPACES_SECRET: process.env.DO_SPACES_SECRET as string,
 }
 
 export default config;

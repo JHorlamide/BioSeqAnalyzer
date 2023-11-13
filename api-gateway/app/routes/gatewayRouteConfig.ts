@@ -66,11 +66,11 @@ export class GatewayRoute extends CommonRoutesConfig {
     * @desc   DNASequence service route to associate invited-user to project
     * @access Public
     * ***/
-    this.app.use(`${APP_PREFIX_PATH}/project-invitations`, createProxyMiddleware({
+    this.app.use(`${APP_PREFIX_PATH}/project-association`, createProxyMiddleware({
       target: config.DNA_SEQUENCE_BASE_URL,
       changeOrigin: true,
       pathRewrite: {
-        [`^/project-invitations`]: "",
+        [`^/project-association`]: "",
       },
       onError: (err, req, res) => {
         res.status(500).send({ status: "Proxy Error", message: err });

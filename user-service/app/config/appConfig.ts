@@ -17,7 +17,16 @@ const config = {
   tempPassword: process.env.TEMP_PASSWORD as string,
   userEmail: process.env.NODEMAILER_USER as string,
   password: process.env.PASSWORD as string,
-  allowedOrigin: process.env.ALLOWED_ORIGIN as string,
+  
+  allowedOrigin: {
+    get baseUrl() {
+      if (process.env.NODE_ENV === "production") {
+        return process.env.BASE_URL_LIVE
+      }
+
+      return process.env.BASE_URL_DEV
+    }
+  },
 }
 
 export default config;

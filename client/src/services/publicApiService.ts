@@ -3,7 +3,7 @@ import { BASE_URL } from "../config/AppConfig";
 
 export const addUserToProject = async (userId: string, projectId: string) => {
   try {
-    const reqURL = `${BASE_URL}/project-invitations/`;
+    const reqURL = `${BASE_URL}/project-association/`;
 
     const requestData = {
       user_id: userId,
