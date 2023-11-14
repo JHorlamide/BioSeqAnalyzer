@@ -45,7 +45,6 @@ const SequenceMap = (props: SequenceMapProps) => {
   const [showComplete, setShowComplete] = useState(true);
   const { sequenceData, isLoading, info, refetch } = props;
 
-  
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   }

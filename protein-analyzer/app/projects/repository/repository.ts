@@ -6,6 +6,10 @@ class ProjectRepository {
     return await Project.create({ ...projectData });
   }
 
+  public async getProjects(authorId: string) {
+    return await Project.find({ authorId }).exec();
+  }
+
   public async getAllProjects(query: any, page: number, limit: number) {
     const skip = (page - 1) * limit;
     return await Project.find(query).skip(skip).limit(limit).lean().exec();
@@ -34,6 +38,14 @@ class ProjectRepository {
 
   public async deleteProject(projectId: string) {
     return await Project.findOneAndDelete({ _id: projectId }).exec();
+  }
+
+  public async deleteAllUserProjects(authorId: string, projectIds: string[]) {
+    return await Project.deleteMany({
+      authorId,
+      
+      _id: { $in: projectIds }
+    })
   }
 }
 

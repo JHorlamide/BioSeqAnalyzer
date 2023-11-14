@@ -73,9 +73,17 @@ class ProjectController {
   public deleteProject = asyncHandler(async (req: any, res: Response) => {
     const decodedUser = JSON.parse(req.headers["x-decoded-user"]);
     const { userId } = decodedUser;
-
     const { projectId } = req.params;
+
     await projectService.deleteProject(projectId, userId);
+    responseHandler.noContentRes(res);
+  });
+
+  public deleteAllProject = asyncHandler(async (req: any, res: Response) => {
+    const decodedUser = JSON.parse(req.headers["x-decoded-user"]);
+    const { userId } = decodedUser;
+
+    await projectService.deleteUserAllProject(userId);
     responseHandler.noContentRes(res);
   });
 

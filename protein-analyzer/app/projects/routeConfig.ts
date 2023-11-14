@@ -17,8 +17,8 @@ export class ProjectRoute extends CommonRoutesConfig {
 
   configureRoutes(): Application {
     /***
-    * @route POST: /api/protein-projects
-    * @desc Create new project.
+    * @route  POST: /api/protein-projects
+    * @desc   Create new project.
     * @access Private.
     * ***/
     this.app.post(`${APP_PREFIX_PATH}/protein-projects`, [
@@ -27,8 +27,8 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route GET: /api/protein-projects
-    * @desc Get All Projects.
+    * @route  GET: /api/protein-projects
+    * @desc   Get All Projects.
     * @access Private.
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/protein-projects`, [
@@ -37,8 +37,8 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route GET: /api/protein-projects/:projectId
-    * @desc  Get Project Details
+    * @route  GET: /api/protein-projects/:projectId
+    * @desc   Get Project Details
     * @access Private
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/protein-projects/:projectId`, [
@@ -48,8 +48,8 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route PUT: /api/protein-projects/:projectId
-    * @desc Update Project Details
+    * @route  PUT: /api/protein-projects/:projectId
+    * @desc   Update Project Details
     * @access Private
     * ***/
     this.app.put(`${APP_PREFIX_PATH}/protein-projects/:projectId`, [
@@ -60,8 +60,17 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route DELETE: /api/protein-projects/:projectId
-    * @desc Delete Project.
+     * @route  DELETE: /api/protein-projects/delete-all
+     * @desc   Delete All User Projects.
+     * @access Private.
+     * ***/
+    this.app.delete(`${APP_PREFIX_PATH}/protein-projects/delete-all`, [
+      projectController.deleteAllProject
+    ])
+
+    /***
+    * @route  DELETE: /api/protein-projects/:projectId
+    * @desc   Delete Project.
     * @access Private.
     * ***/
     this.app.delete(`${APP_PREFIX_PATH}/protein-projects/:projectId`, [
@@ -69,6 +78,7 @@ export class ProjectRoute extends CommonRoutesConfig {
       projectMiddleware.validateProjectBelongsToUser,
       projectController.deleteProject
     ])
+
 
     /***
     * @route  POST: /api/protein-projects/:projectId/csv-upload
@@ -83,8 +93,8 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route GET: /api/protein-projects/:projectId/summary-table-of-main-matrices
-    * @desc Get summary of main matrices data from CSV.
+    * @route  GET: /api/protein-projects/:projectId/summary-table-of-main-matrices
+    * @desc   Get summary of main matrices data from CSV.
     * @access Private.
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/protein-projects/:projectId/summary-table-of-main-matrices`, [
@@ -95,8 +105,8 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route GET: /api/protein-projects/:projectId/top-performing-variants
-    * @desc Get top performing variants data from CSV.
+    * @route  GET: /api/protein-projects/:projectId/top-performing-variants
+    * @desc   Get top performing variants data from CSV.
     * @access Private.
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/protein-projects/:projectId/top-performing-variants`, [
@@ -107,8 +117,8 @@ export class ProjectRoute extends CommonRoutesConfig {
     ])
 
     /***
-    * @route GET: /api/protein-projects/:projectId/score-distribution
-    * @desc Get top score distribution data from CSV.
+    * @route  GET: /api/protein-projects/:projectId/score-distribution
+    * @desc   Get top score distribution data from CSV.
     * @access Private.
     * ***/
     this.app.get(`${APP_PREFIX_PATH}/protein-projects/:projectId/score-distribution`, [

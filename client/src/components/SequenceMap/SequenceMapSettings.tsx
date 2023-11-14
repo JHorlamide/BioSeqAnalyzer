@@ -198,15 +198,15 @@ export const Topology = (props: TopologyProps) => {
 
 export const Settings = (props: SettingsProps) => {
   const {
-    showComplete,
-    showIndex,
     enzymes,
+    showIndex,
+    showComplete,
     toggleEnzyme,
     toggleShowComplete,
     toggleShowIndex
   } = props;
 
-  const configs = [
+  const settings = [
     {
       isChecked: showIndex,
       title: "Show Index",
@@ -244,7 +244,7 @@ export const Settings = (props: SettingsProps) => {
         </MenuButton>
 
         <MenuList bg="brand_blue.300">
-          {configs.map(({ action, title, isChecked }) => (
+          {settings.map(({ action, title, isChecked }) => (
             <MenuItem
               key={title}
               bg="brand_blue.300"
@@ -252,8 +252,8 @@ export const Settings = (props: SettingsProps) => {
               onClick={action}
             >
               <Switch
-                id="show-index"
                 size="md"
+                id="show-index"
                 colorScheme="gray"
                 isChecked={isChecked}
               />

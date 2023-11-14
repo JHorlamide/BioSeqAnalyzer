@@ -1,3 +1,8 @@
+/* Libraries */
+import { AiOutlineUserDelete } from "react-icons/ai";
+import { IoIosArrowDown, IoIosLogOut } from "react-icons/io";
+
+/* Chakra */
 import {
   Box,
   Button as ChakraButton,
@@ -6,35 +11,16 @@ import {
   MenuList,
   MenuGroup,
   MenuItem,
+  Divider,
 } from "@chakra-ui/react";
-import { IconType } from "react-icons";
-import { IoIosArrowDown, IoIosLogOut } from "react-icons/io";
 
 interface ProfileMenuProp {
   fullName: string;
   logout: () => void;
+  deleteAccount: () => void;
 }
 
-interface MenuItemType {
-  key: string;
-  title: string;
-  action?: () => void;
-  Icon?: IconType
-}
-
-const ProfileMenu = ({ fullName, logout }: ProfileMenuProp) => {
-  const MenuItems: MenuItemType[] = [
-    {
-      key: "profile.key",
-      title: "Profile",
-    },
-
-    {
-      key: "setting.key",
-      title: "Settings",
-    },
-  ]
-
+const ProfileMenu = ({ fullName, logout, deleteAccount }: ProfileMenuProp) => {
   return (
     <Menu>
       <MenuButton as={ChakraButton} bg="brand_blue.300" _hover={{ bg: "brand_blue.300" }}>
@@ -43,37 +29,41 @@ const ProfileMenu = ({ fullName, logout }: ProfileMenuProp) => {
         </Box>
       </MenuButton>
 
-      <MenuList paddingX={3} bg="brand_blue.300" borderColor="white">
+      <MenuList bg="brand_blue.300" borderColor="white">
         <MenuGroup title={fullName} color="white">
-          {MenuItems.map(({ key, title }) => (
-            <MenuItem
-              key={key}
-              width="full"
-              color="white"
-              bg="brand_blue.300"
-              _hover={{ bg: "brand_blue.50" }}
-            >
-              {title}
-            </MenuItem>
-          ))}
+          <Divider color="white" />
 
-          <MenuItem
-            as="div"
-            color="white"
-            alignContent="center"
-            fontWeight="semibold"
-            bg="brand_blue.50"
-            marginTop={2}
-            icon={<IoIosLogOut size={18} />}
-            borderRadius={16}
-            onClick={logout}
-            _hover={{
-              bg: "brand_blue.200",
-              cursor: "pointer"
-            }}
-          >
-            Logout
-          </MenuItem>
+          <Box paddingX={3}>
+            <MenuItem
+              as="div"
+              color="white"
+              alignContent="center"
+              fontWeight="semibold"
+              bg="red.400"
+              marginTop={2}
+              icon={<AiOutlineUserDelete size={18} />}
+              borderRadius={16}
+              onClick={deleteAccount}
+              _hover={{ bg: "red.300", cursor: "pointer" }}
+            >
+              Delete Account
+            </MenuItem>
+
+            <MenuItem
+              as="div"
+              color="white"
+              alignContent="center"
+              fontWeight="semibold"
+              bg="brand_blue.50"
+              marginTop={2}
+              icon={<IoIosLogOut size={18} />}
+              borderRadius={16}
+              onClick={logout}
+              _hover={{ bg: "brand_blue.200", cursor: "pointer" }}
+            >
+              Logout
+            </MenuItem>
+          </Box>
         </MenuGroup>
       </MenuList>
     </Menu>

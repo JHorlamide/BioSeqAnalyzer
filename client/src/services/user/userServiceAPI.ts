@@ -42,6 +42,13 @@ export const userAPI = createApi({
         body: data,
       })
     }),
+
+    deleteAccount:  builder.mutation({
+      query: () => ({
+        url: "/account/delete",
+        method: "DELETE",
+      })
+    })
   }),
 
   refetchOnFocus: true,
@@ -51,5 +58,6 @@ export const userAPI = createApi({
 export const {
   /* Mutations */
   useSendProjectInviteMutation,
-  useAcceptProjectInviteMutation
+  useAcceptProjectInviteMutation,
+  useDeleteAccountMutation
 } = userAPI;

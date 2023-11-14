@@ -119,6 +119,13 @@ export const ProteinProjectAPI = createApi({
       }),
 
       invalidatesTags: ["GetAllProjects"]
+    }),
+
+    deleteAllProjects:  builder.mutation({
+      query: () => ({
+        url: "/delete-all",
+        method: "DELETE"
+      })
     })
 
     // getProteinSequence: builder.query<IGetProteinSequenceRes, IGetProteinSequenceReq>({

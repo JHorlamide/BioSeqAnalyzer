@@ -15,6 +15,7 @@ import {
   // QueryType,
   QueryArgs
 } from "../types/types";
+import { logger } from "../../config/logger";
 
 
 class ProjectService {
@@ -155,11 +156,43 @@ class ProjectService {
       if (!project) throw new NotFoundError(ERR_MSG.PROJECT_NOT_FOUND);
 
       if (project.projectFileName) {
-        await fileService.deleteFile(project.projectFileName);
+        const response = await fileService.deleteFile(project.projectFileName);
+
+        if (response.RequestCharged && response.DeleteMarker) {
+          return project;
+        }
       }
 
       return project;
     } catch (error: any) {
+      throw new ServerError(error.message);
+    }
+  }
+
+  public async deleteUserAllProject(authorId: string) {
+    try {
+      const projects = await projectRepository.getProjects(authorId);
+
+      if (projects.length <= 0) {
+        return;
+      }
+
+      const projectIds = projects.flatMap((project) => project.id);
+      const projectFileNames = projects.flatMap((project) => project.projectFileName);
+
+      const validatedFileNames = projectFileNames.filter((fileName) => fileName === undefined);
+
+      if (validatedFileNames.length <= 0) {
+        return await projectRepository.deleteAllUserProjects(authorId, projectIds);
+      }
+
+      await Promise.all(validatedFileNames.map(async (projectFileName) => {
+        await fileService.deleteFile(projectFileName);
+      }));
+
+      return await projectRepository.deleteAllUserProjects(authorId, projectIds);
+    } catch (error: any) {
+      logger.error(JSON.stringify(error));
       throw new ServerError(error.message);
     }
   }

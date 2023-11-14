@@ -1,5 +1,5 @@
 /* React */
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 /* Libraries */
 import { CiUser } from "react-icons/ci";
@@ -23,17 +23,32 @@ import {
   Box,
   Spacer,
 } from "@chakra-ui/react";
+import { useDeleteAccountMutation } from "../../services/user/userServiceAPI";
+import useErrorToast from "../../hooks/useErrorToast";
+
+const MemoizedProfileMenu = React.memo(ProfileMenu);
 
 const HeaderNav = () => {
-  const dispatch = useAppDispatch();
   const location = useLocation();
-  const [isDashboardPage, setIsDashboardPage] = useState(false);
-  const { email, fullName } = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
+  const { handleError } = useErrorToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { email, fullName } = useAppSelector((state) => state.auth.user);
+  const [isDashboardPage, setIsDashboardPage] = useState(false);
+  const [deleteAccount] = useDeleteAccountMutation();
 
   const handleLogout = () => {
     dispatch(logoutUser());
   };
+
+  const handleAccountDeletion = async () => {
+    try {
+      await deleteAccount({}).unwrap();
+      dispatch(logoutUser());
+    } catch (error: any) {
+      handleError(error.message || error);
+    }
+  }
 
   useEffect(() => {
     const pathname = location.pathname;
@@ -79,7 +94,11 @@ const HeaderNav = () => {
             )}
           </Show>
 
-          <ProfileMenu fullName={fullName} logout={handleLogout} />
+          <MemoizedProfileMenu
+            fullName={fullName}
+            logout={handleLogout}
+            deleteAccount={handleAccountDeletion}
+          />
         </Flex>
       </HStack>
     </Box>

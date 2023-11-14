@@ -20,7 +20,9 @@ class ResponseHandler<T extends object> {
   }
 
   public noContentRes(res: Response) {
-    return res.status(httpStatus.NO_CONTENT)
+    return res
+      .status(httpStatus.NO_CONTENT)
+      .json({ status: "Success" })
   }
 
   public badRequest(message: string, res: Response, status?: number): Response {
