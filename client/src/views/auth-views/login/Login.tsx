@@ -39,7 +39,7 @@ import { DNASeqProjectAPI } from "../../../services/DNASequence/DNASeqProjectAPI
 import { setRefreshToken, setToken, setUser } from "../../../store/slices/authSlice";
 import { AUTH_TOKEN, REFRESH_TOKEN } from "../../../constants/AuthConstant";
 import { useAcceptProjectInviteMutation } from "../../../services/user/userServiceAPI";
-import { addUserToProject } from "../../../services/publicApiService";
+import { addUserToProject } from "../../../services/apiService";
 
 type LoginFormFields = {
   email: string;

@@ -11,9 +11,9 @@ import mailService from "../mail-service/mailService";
 import invitationRepository from "../repository/invitationRepository";
 import config from "../../../config/appConfig";
 import { ERR_MSG } from "../types/constants";
-import { AcceptInvitation, IUser, BaseInvitation, InvitationLink, SendProjectInvitation, UpdateInvitation } from "../types/types";
-import { ClientError, NotFoundError, ServerError } from "../../../common/exceptions/ApiError";
 import { logger } from "../../../config/logger";
+import { ClientError, NotFoundError, ServerError } from "../../../common/exceptions/ApiError";
+import { AcceptInvitation, IUser, InvitationLink, SendProjectInvitation, UpdateInvitation } from "../types/types";
 
 class UserService {
   public async createUser(userBodyField: IUser) {
@@ -54,13 +54,11 @@ class UserService {
   }
 
   public async deleteUser(userId: string) {
-    const user = await userRepository.getUserById(userId)
-    
-    if(!user) {
-      throw new NotFoundError(ERR_MSG.USER_NOT_FOUND);
+    try {
+      await userRepository.deleteUser(userId);
+    } catch (error: any) {
+      throw new ServerError("Server error. Please try again later")
     }
-
-    return user;
   }
 
   public async sendInvitation(reqBodyField: SendProjectInvitation) {
@@ -148,7 +146,7 @@ class UserService {
   private async getInvitationLink(params: InvitationLink) {
     const { userEmail, invitationToken, projectId } = params;
     const invitedUser = await userRepository.getUserByEmail(userEmail);
-    const baseLink = invitedUser ? `${config.allowedOrigin}/auth/login` : `${config.allowedOrigin}/auth/register`;
+    const baseLink = invitedUser ? `${config.allowedOrigin.baseUrl}/auth/login` : `${config.allowedOrigin.baseUrl}/auth/register`;
     return `${baseLink}?invitation_token=${invitationToken}&user_email=${userEmail}&project_id=${projectId}`;
   }
 

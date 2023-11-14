@@ -39,7 +39,7 @@ const ProfileMenu = ({ fullName, logout, deleteAccount }: ProfileMenuProp) => {
               color="white"
               alignContent="center"
               fontWeight="semibold"
-              bg="red.400"
+              bg="red.500"
               marginTop={2}
               icon={<AiOutlineUserDelete size={18} />}
               borderRadius={16}

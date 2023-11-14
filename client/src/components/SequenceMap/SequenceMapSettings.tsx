@@ -210,13 +210,13 @@ export const Settings = (props: SettingsProps) => {
     {
       isChecked: showIndex,
       title: "Show Index",
-      action: () => toggleShowIndex(!showIndex)
+      action: () => toggleShowIndex((prevState) => !prevState)
     },
 
     {
       isChecked: showComplete,
       title: "Show Complete",
-      action: () => toggleShowComplete(!showComplete)
+      action: () => toggleShowComplete((prevState) => !prevState)
     }
   ];
 

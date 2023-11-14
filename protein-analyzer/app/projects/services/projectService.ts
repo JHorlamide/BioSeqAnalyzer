@@ -180,7 +180,7 @@ class ProjectService {
       const projectIds = projects.flatMap((project) => project.id);
       const projectFileNames = projects.flatMap((project) => project.projectFileName);
 
-      const validatedFileNames = projectFileNames.filter((fileName) => fileName === undefined);
+      const validatedFileNames = projectFileNames.filter((fileName) => fileName !== undefined);
 
       if (validatedFileNames.length <= 0) {
         return await projectRepository.deleteAllUserProjects(authorId, projectIds);

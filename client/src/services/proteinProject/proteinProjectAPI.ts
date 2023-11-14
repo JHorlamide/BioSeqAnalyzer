@@ -121,7 +121,7 @@ export const ProteinProjectAPI = createApi({
       invalidatesTags: ["GetAllProjects"]
     }),
 
-    deleteAllProjects:  builder.mutation({
+    deleteProteinProjects:  builder.mutation({
       query: () => ({
         url: "/delete-all",
         method: "DELETE"
@@ -144,6 +144,7 @@ export const {
   useDeleteProjectMutation,
   useUpdateProjectMutation,
   useUploadProjectFileMutation,
+  useDeleteProteinProjectsMutation,
 
   /* Queries */
   useGetProjectsQuery,

@@ -20,7 +20,7 @@ import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import { RegisterFormData, registrationSchema } from "../../../schemas/auth/registerSchema";
 import { useRegisterUserMutation } from "../../../services/auth/registerApi";
 import { useAcceptProjectInviteMutation } from "../../../services/user/userServiceAPI";
-import { addUserToProject } from "../../../services/publicApiService";
+import { addUserToProject } from "../../../services/apiService";
 import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../../../config/AppConfig";
 
 /* Chakra UI */

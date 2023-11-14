@@ -14,22 +14,7 @@ export class GatewayRoute extends CommonRoutesConfig {
   }
 
   configureRoutes(): Application {
-    /***
-    * @route  /api/users
-    * @desc   User service route
-    * @access Public
-    * ***/
-    this.app.use(`${APP_PREFIX_PATH}/users`, createProxyMiddleware({
-      target: config.USER_BASE_URL,
-      changeOrigin: true,
-      pathRewrite: {
-        [`^/users`]: "",
-      },
-
-      onError: (err, req, res) => {
-        res.status(500).send({ status: "Proxy Error", message: err });
-      }
-    }))
+    /*** Private Route ***/
 
     /***
     * @route  /api/protein-projects
@@ -66,15 +51,51 @@ export class GatewayRoute extends CommonRoutesConfig {
     }))
 
     /***
-    * @route  /api/project-invitations
-    * @desc   DNASequence service route to associate invited-user to project
-    * @access Public
+    * @route  /api/dna-sequence/delete-projects
+    * @desc   Delete all user projects
+    * @access Private
     * ***/
-    this.app.use(`${APP_PREFIX_PATH}/project-association`, createProxyMiddleware({
+    this.app.use(`${APP_PREFIX_PATH}/delete-projects`, validJWTNeeded, createProxyMiddleware({
       target: config.DNA_SEQUENCE_BASE_URL,
       changeOrigin: true,
       pathRewrite: {
-        [`^/project-association`]: "",
+        [`^/delete-projects`]: "",
+      },
+
+      onError: (err, req, res) => {
+        res.status(500).send({ status: "Proxy Error", message: err });
+      }
+    }))
+
+    /*** Public Route ***/
+
+    /***
+    * @route  /api/users
+    * @desc   User service route
+    * @access Public
+    * ***/
+    this.app.use(`${APP_PREFIX_PATH}/users`, createProxyMiddleware({
+      target: config.USER_BASE_URL,
+      changeOrigin: true,
+      pathRewrite: {
+        [`^/users`]: "",
+      },
+
+      onError: (err, req, res) => {
+        res.status(500).send({ status: "Proxy Error", message: err });
+      }
+    }))
+
+    /***
+    * @route  /api/add-user-to-project
+    * @desc   DNASequence service route to associate invited-user to project
+    * @access Public
+    * ***/
+    this.app.use(`${APP_PREFIX_PATH}/add-user-to-project`, createProxyMiddleware({
+      target: config.DNA_SEQUENCE_BASE_URL,
+      changeOrigin: true,
+      pathRewrite: {
+        [`^/add-user-to-project`]: "",
       },
 
       onError: (err, req, res) => {

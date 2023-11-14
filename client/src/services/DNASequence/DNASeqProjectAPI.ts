@@ -91,7 +91,7 @@ export const DNASeqProjectAPI = createApi({
       }),
 
       invalidatesTags: ["GetAllDNAProjects"]
-    })
+    }),
   }),
 
   refetchOnFocus: true,

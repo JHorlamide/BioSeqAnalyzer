@@ -8,7 +8,7 @@ from django.db.models import Q
 # REST Framework
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, DestroyAPIView
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.filters import SearchFilter, OrderingFilter
@@ -107,7 +107,7 @@ class DnaSequenceViewSet(ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 
-class AssociateUserToProjectViewSet(APIView):
+class AddUserToProjectView(APIView):
     def post(self, request, format=None):
         project_id = request.data.get("project_id")
         user_id = request.data.get("user_id")
@@ -179,3 +179,31 @@ class ShareProjectView(RetrieveAPIView):
             return Response(
                 {"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR
             )
+
+
+class DeleteProjectsView(DestroyAPIView):
+    def delete(self, request, *args, **kwargs):
+        auth_user = json.loads(self.request.META.get("HTTP_X_DECODED_USER"))
+        user_id = auth_user["userId"]
+        query_condition = Q(author_id=user_id) | Q(invited_users__user_id=user_id)
+        deleted_count, deleted_objects = DNASequence.objects.filter(
+            query_condition
+        ).delete()
+
+        if deleted_count > 0:
+            return Response(
+                {
+                    "status": "Success",
+                    "message": "Project fetched successfully",
+                    "data": f"{deleted_count} {deleted_objects}",
+                },
+                status=status.HTTP_204_NO_CONTENT,
+            )
+
+        return Response(
+            {
+                "status": "Failure",
+                "message": "No record found",
+            },
+            status=status.HTTP_404_NOT_FOUND,
+        )

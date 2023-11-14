@@ -45,34 +45,35 @@ const DNASequenceDashboard = () => {
 
   const isProjectListEmpty = !projects?.results || projects?.results.length === 0;
 
-  const handlePageChange = useCallback((page: number) => {
+
+  const handlePageChange = (page: number) => {
     dispatch(setCurrentPage(page));
     refetch();
-  }, [dispatch, refetch]);
+  };
 
 
-  const handleDataRefetch = useCallback(() => {
+  const handleDataRefetch = () => {
     dispatch(clearFilterState());
     refetch();
-  }, [dispatch, refetch]);
+  };
 
 
-  const goToCreateProject = useCallback(() => {
+  const goToCreateProject = () => {
     handleNavigate(`${APP_PREFIX_PATH}/create-dna-project`);
-  }, [handleNavigate]);
+  };
 
 
-  const goToUpdateProjectPage = useCallback((projectId: string) => {
+  const goToUpdateProjectPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/update/${projectId}`);
-  }, [handleNavigate]);
+  };
 
 
-  const goToProjectDetailsPage = useCallback((projectId: string) => {
+  const goToProjectDetailsPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/overview/${projectId}`)
-  }, [handleNavigate]);
+  };
 
 
-  const handleDeleteProject = useCallback(async (projectId: string) => {
+  const handleDeleteProject = async (projectId: string) => {
     setLoadingStates((prevLoadingStates) => ({
       ...prevLoadingStates,
       [projectId]: true,
@@ -88,9 +89,9 @@ const DNASequenceDashboard = () => {
         [projectId]: false,
       }));
     }
-  }, [deleteProject, handleError]);
+  };
 
-  
+
   const handleSearchQuery = useMemo(() =>
     debounce(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setName(value));

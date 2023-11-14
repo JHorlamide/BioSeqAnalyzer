@@ -47,29 +47,35 @@ const ProteinAnalyzerDashboard = () => {
   const isProjectListEmpty = !projects?.data.projects ||
     projects?.data.projects.length === 0;
 
-  const handlePageChange = useCallback((page: number) => {
+
+  const handlePageChange = (page: number) => {
     dispatch(setCurrentPage(page));
     refetch();
-  }, [dispatch, refetch]);
+  };
 
-  const handleDataRefetch = useCallback(() => {
+
+  const handleDataRefetch = () => {
     dispatch(clearFilterState());
     refetch();
-  }, [dispatch, refetch]);
+  };
 
-  const goToCreateProject = useCallback(() => {
+
+  const goToCreateProject = () => {
     handleNavigate(`${APP_PREFIX_PATH}/create-protein-project`);
-  }, [handleNavigate]);
+  };
 
-  const goToUpdateProjectPage = useCallback((projectId: string) => {
+
+  const goToUpdateProjectPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/protein-project/update/${projectId}`)
-  }, [handleNavigate]);
+  };
 
-  const goToProjectDetailsPage = useCallback((projectId: string) => {
+
+  const goToProjectDetailsPage = (projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/protein-project/overview/${projectId}`)
-  }, [handleNavigate]);
+  };
 
-  const handleDeleteProject = useCallback(async (projectId: string) => {
+
+  const handleDeleteProject = async (projectId: string) => {
     setLoadingStates((prevLoadingStates) => ({
       ...prevLoadingStates,
       [projectId]: true,
@@ -85,7 +91,7 @@ const ProteinAnalyzerDashboard = () => {
         [projectId]: false,
       }));
     }
-  }, [deleteProject, handleError]);
+  };
 
   const handleSearchQuery = useMemo(() =>
     debounce(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
