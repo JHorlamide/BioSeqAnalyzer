@@ -33,7 +33,6 @@ import { SelectInput } from '../../../../components/CustomInput/SelectInput/Sele
 // BBa_E0040 (Registry of Standard Biological Parts)
 // JPUB_001430 (JBEI Public Registry)
 
-
 export interface Props {
   isLoading: boolean;
   errors: FieldErrors<ProjectFormData>;

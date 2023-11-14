@@ -1,5 +1,5 @@
 /* React */
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 /* Libraries */
 import { useForm } from "react-hook-form";
@@ -10,7 +10,7 @@ import { toast } from "react-hot-toast";
 import utils from "../../utils";
 import useNavigation from "../useNavigation";
 import useErrorToast from "../useErrorToast";
-import { APP_PREFIX_PATH } from "../../config/AppConfig";
+import { DNA_SEQ_ENTRY } from "../../config/AppConfig";
 import { ProjectFormData, projectSchema } from "../../schemas/DNASequenceProjectSchema";
 import {
   useCreateProjectMutation,
@@ -45,15 +45,13 @@ export const useCreateDNASeqProject = () => {
 
       if (response.status === "Success") {
         toast.success("Project created successfully");
-        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`);
+        return handleNavigate(DNA_SEQ_ENTRY);
       }
 
       handleError(response.message);
     } catch (error: any) {
-      const errorField = Object.keys(error.data)[0];
-      const message = error.data[errorField] || error.data[errorField][0];
-      const errorMessage = error.error || `${errorField}: ${message}`;
-      handleError(errorMessage);
+      console.log({ error });
+      handleError(error.message || error);
     }
   };
 
@@ -116,15 +114,12 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
 
       if (response.status === "Success") {
         toast.success("Project created successfully");
-        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`);
+        return handleNavigate(DNA_SEQ_ENTRY);
       }
 
       handleError(response.message);
     } catch (error: any) {
-      const errorField = Object.keys(error.data)[0];
-      const message = error.data[errorField] || error.data[errorField][0];
-      const errorMessage = error.error || `${errorField}: ${message}`;
-      handleError(errorMessage);
+      handleError(error.message || error);
     }
   };
 
@@ -165,15 +160,12 @@ export const useCreateDNASeqProjectByImport = () => {
 
       if (response.status === "Success") {
         toast.success("Project created successfully");
-        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`);
+        return handleNavigate(DNA_SEQ_ENTRY);
       }
 
       handleError(response.message);
     } catch (error: any) {
-      const errorField = Object.keys(error.data)[0];
-      const message = error.data[errorField] || error.data[errorField][0];
-      const errorMessage = error.error || `${errorField}: ${message}`;
-      handleError(errorMessage);
+      handleError(error.message || error);
     }
   };
 
@@ -188,18 +180,18 @@ export const useCreateDNASeqProjectByImport = () => {
 }
 
 export const useUpdateDNASeqProject = (projectId: string) => {
-  const { handleError } = useErrorToast();
-  const { handleNavigate } = useNavigation();
-  const [projectData, setProjectData] = useState<ProjectFormData>();
-
   const {
     register,
     getValues,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
-  const [updateProject, { isLoading }] = useUpdateProjectMutation();
+
+  const { handleError } = useErrorToast();
+  const { handleNavigate } = useNavigation();
   const { data } = useGetProjectQuery({ projectId });
+  const [updateProject, { isLoading }] = useUpdateProjectMutation();
 
   const submitProject = async (data: ProjectFormData) => {
     const formData = utils.getFilledFormData(data);
@@ -211,22 +203,27 @@ export const useUpdateDNASeqProject = (projectId: string) => {
 
     try {
       const response = await updateProject({ projectId, ...formData }).unwrap();
-
-      if (response.status === "Success") {
+      
+      if (response && response.id === projectId) {
         toast.success("Project updated successfully");
-        return handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)
+        return handleNavigate(DNA_SEQ_ENTRY);
       }
-
-      handleError(response.message);
     } catch (error: any) {
-      const errorField = Object.keys(error.data)[0];
-      const errorMessage = error.error || `${errorField}: ${error.data[errorField][0]}`;
-      handleError(errorMessage);
+      handleError(error.message || error);
     }
   };
 
   useEffect(() => {
-    if (data) setProjectData(data.data);
+    if (data && data.data) {
+      const { name, bases, description, sequence_id, topology, nucleotide_type } = data.data;
+
+      setValue('name', name);
+      setValue('topology', topology);
+      setValue('nucleotide_type', nucleotide_type);
+      setValue('bases', bases !== null ? bases : "");
+      setValue('description', description !== null ? description : "");
+      setValue('sequence_id', sequence_id !== null ? sequence_id : "");
+    }
   }, [data]);
 
   return {
@@ -236,6 +233,5 @@ export const useUpdateDNASeqProject = (projectId: string) => {
     getValues,
     submitProject,
     handleSubmit,
-    projectData: projectData
   };
 }

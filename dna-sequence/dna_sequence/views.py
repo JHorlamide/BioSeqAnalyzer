@@ -107,6 +107,35 @@ class DnaSequenceViewSet(ModelViewSet):
         return super().destroy(request, *args, **kwargs)
 
 
+def update(self, request, *args, **kwargs):
+    auth_user = json.loads(self.request.META.get("HTTP_X_DECODED_USER"))
+    user_id = auth_user["userId"]
+    partial = kwargs.pop("partial", False)
+    instance = self.get_object()
+
+    if instance.invited_users.filter(user_id=user_id).exists():
+        return Response(
+            {
+                "status": "Failure",
+                "message": "You don't have the permission to update this project",
+            },
+            status=status.HTTP_400_BAD_REQUEST,
+        )
+
+    serializer = self.get_serializer(instance, data=request.data, partial=partial)
+    serializer.is_valid(raise_exception=True)
+    self.perform_update(serializer)
+
+    return Response(
+        {
+            "status": "Success",
+            "message": "Project updated successfully",
+            "data": serializer.data,
+        },
+        status=status.HTTP_200_OK,
+    )
+
+
 class AddUserToProjectView(APIView):
     def post(self, request, format=None):
         project_id = request.data.get("project_id")

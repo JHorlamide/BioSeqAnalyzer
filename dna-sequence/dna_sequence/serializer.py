@@ -30,6 +30,9 @@ class DNASequenceSerializer(serializers.ModelSerializer):
         )
         return created_dna
 
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+
     def to_representation(self, instance):
         include_file = self.context.get("include_file", False)
 
@@ -43,7 +46,3 @@ class InvitedUsersSerializer(serializers.ModelSerializer):
     class Meta:
         model = InvitedUsers
         fields = ["user_id"]
-
-    # def save(self, **kwargs):
-    #     dna_sequence_id = self.context["dna_sequence_id"]
-    #     new_invited_user = InvitedUsers.objects.create()

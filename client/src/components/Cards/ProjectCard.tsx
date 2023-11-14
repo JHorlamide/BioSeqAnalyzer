@@ -113,6 +113,17 @@ const ProjectCard = (props: ProjectCardProps) => {
     },
   ];
 
+  const TruncateText = ({ text }: { text: string }) => {
+    const maxLength = 16;
+
+    if (text.length <= maxLength) {
+      return <Text fontWeight="semibold" fontSize={18}>{text}</Text>;
+    }
+
+    const truncatedText = `${text.substring(0, maxLength)}...`;
+    return <Text fontWeight="semibold" fontSize={18}>{truncatedText}</Text>;
+  }
+
   return (
     <Fragment>
       <InviteMember
@@ -160,9 +171,7 @@ const ProjectCard = (props: ProjectCardProps) => {
 
         <CardBody marginTop={-6}>
           <Stack>
-            <Text fontWeight="semibold" fontSize={18}>
-              {projectTitle}
-            </Text>
+            <TruncateText text={projectTitle} />
 
             <Flex justifyContent="space-between">
               <Text color="gray.300">{utils.formattedDate(updatedAt)}</Text>

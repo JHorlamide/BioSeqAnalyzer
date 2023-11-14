@@ -1,6 +1,5 @@
 /* Libraries */
 import { MdDriveFileRenameOutline } from "react-icons/md";
-import { MdOutlineTitle } from "react-icons/md";
 import { FieldErrors, UseFormReturn } from "react-hook-form";
 
 /* Application Modules */
@@ -22,10 +21,10 @@ import {
   Center,
   HStack,
 } from "@chakra-ui/react";
+import { TextAreaInput } from "../../../../components/CustomInput/TextAreaInput/TextAreaInput";
 
 export interface ProjectFormProps {
   projectId?: string;
-  projectData?: ProjectFormData;
   errors: FieldErrors<ProjectFormData>;
   isLoading: boolean;
   submitProject: (data: ProjectFormData) => Promise<string | void>;
@@ -38,7 +37,6 @@ const ProjectForm = (props: ProjectFormProps) => {
     errors,
     isLoading,
     projectId,
-    projectData,
     register,
     handleSubmit,
     submitProject,
@@ -83,7 +81,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                     placeholder="Enter project name"
                     register={register}
                     errors={errors}
-                    defaultValue={projectData && projectData.name}
                   />
                 </InputGroup>
               </FormControl>
@@ -96,7 +93,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                   placeholder="Enter description"
                   register={register}
                   errors={errors}
-                  defaultValue={projectData && projectData.description}
                 />
               </FormControl>
             </VStack>
@@ -117,9 +113,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                     register={register}
                     selectOptions={nucleotideTypeOptions}
                     errors={errors}
-                    selectProps={{
-                      value: projectData && projectData.nucleotide_type,
-                    }}
                   />
 
                   <SelectInput<CreateProjectFormField>
@@ -128,10 +121,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                     register={register}
                     selectOptions={topologyOptions}
                     errors={errors}
-                    selectProps={{
-                      value: projectData && projectData.topology,
-                      defaultValue: projectData && projectData.topology,
-                    }}
                   />
                 </HStack>
               </FormControl>
@@ -147,22 +136,13 @@ const ProjectForm = (props: ProjectFormProps) => {
             >
               <FormControl>
                 <FormLabel>Bases</FormLabel>
-                <InputGroup>
-                  <InputLeftElement
-                    pt="5px"
-                    pointerEvents={"none"}
-                    children={<MdOutlineTitle color="brand_blue.2000" />}
-                  />
-
-                  <FormInput<CreateProjectFormField>
-                    name="bases"
-                    register={register}
-                    errors={errors}
-                    placeholder="Enter project bases"
-                    rules={{ required: "Bases is required", }}
-                    defaultValue={projectData && projectData.bases}
-                  />
-                </InputGroup>
+                <TextAreaInput<CreateProjectFormField>
+                  name="bases"
+                  register={register}
+                  errors={errors}
+                  placeholder="Enter project bases"
+                  rules={{ required: "Bases is required" }}
+                />
               </FormControl>
             </VStack>
 

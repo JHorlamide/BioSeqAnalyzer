@@ -42,8 +42,6 @@ export interface IGetProjectsRes extends Response {
 }
 
 export interface IGetProjectRes {
-  status: string;
-  message: string;
   data: DNASeqProject
 };
 
@@ -54,6 +52,8 @@ export interface IGetProjectParam {
 export interface IGetSequenceDataReq {
   sequence_id: string;
 }
+
+export interface IUpdateProjectRes extends DNASeqProject { };
 
 export type IUpdateProjectReq = Pick<DNASeqProject,
   "name" |

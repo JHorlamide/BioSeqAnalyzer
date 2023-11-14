@@ -12,6 +12,7 @@ import {
   IGetProjectRes,
   IGetProjectsRes,
   IUpdateProjectReq,
+  IUpdateProjectRes,
   InviteReq,
   InviteRes,
   ReqQueryParam
@@ -66,7 +67,7 @@ export const DNASeqProjectAPI = createApi({
       providesTags: ["GetDNAProjectDetails"]
     }),
 
-    updateProject: builder.mutation<IGetProjectRes, IUpdateProjectReq>({
+    updateProject: builder.mutation<IUpdateProjectRes, IUpdateProjectReq>({
       query: (updateData) => ({
         url: `/${updateData.projectId}/`,
         method: "PUT",

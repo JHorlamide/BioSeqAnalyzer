@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import Button from "../../../../components/CustomBtn/Button";
 import useNavigation from "../../../../hooks/useNavigation";
 import ProjectForm from "./ProjectForm";
-import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
+import { DNA_SEQ_ENTRY } from "../../../../config/AppConfig";
 import { useUpdateDNASeqProject } from "../../../../hooks/DNASequence/useCreateDNASeqProject";
 
 const UpdateDNASeqProjectForm = () => {
@@ -23,7 +23,7 @@ const UpdateDNASeqProjectForm = () => {
         bg="brand_blue.300"
         _hover={{ bg: "brand_blue.200" }}
         leftIcon={<BsArrowLeft />}
-        onClick={() => handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/dashboard`)}
+        onClick={() => handleNavigate(DNA_SEQ_ENTRY)}
       >
         Back
       </Button>
