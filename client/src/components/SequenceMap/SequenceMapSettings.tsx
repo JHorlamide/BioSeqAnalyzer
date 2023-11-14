@@ -1,16 +1,16 @@
 /* React */
 import { SetStateAction, Dispatch } from 'react';
 
-import { HiOutlineInformationCircle } from "react-icons/hi"
+import { HiOutlineInformationCircle } from "react-icons/hi";
 
 /* Libraries */
-import { BsZoomIn, BsZoomOut } from "react-icons/bs"
-import { FiSettings } from "react-icons/fi"
+import { FiSettings } from "react-icons/fi";
 import { TbTopologyRing } from "react-icons/tb";
+import { BsZoomIn, BsZoomOut } from "react-icons/bs";
 
 /* Application Modules */
-import Button from '../CustomBtn/Button';
 import utils from '../../utils';
+import Button from '../CustomBtn/Button';
 
 /* Chakra UI */
 import {
@@ -70,8 +70,8 @@ interface SettingsProps {
   showIndex: boolean;
   enzymes: string[];
   toggleEnzyme: (enzyme: string) => void;
-  toggleShowComplete: () => void;
-  toggleShowIndex: () => void;
+  toggleShowComplete: React.Dispatch<React.SetStateAction<boolean>>;
+  toggleShowIndex: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const ZoomButtons = (props: ZoomButtonProps) => {
@@ -155,42 +155,44 @@ export const Topology = (props: TopologyProps) => {
   const { onTopologyChange } = props;
 
   return (
-    <Menu>
-      <MenuButton
-        display="flex"
-        bg="brand_blue.300"
-        rounded="full"
-        paddingY={1.5}
-        paddingX={3}
-        color="white"
-        borderRadius={30}
-        whiteSpace="nowrap"
-        borderColor="red"
-        as={ChakraButton}
-        leftIcon={<TbTopologyRing size={20} />}
-        onClick={(e) => e.stopPropagation()}
-        _hover={{
-          cursor: "pointer",
-          bg: "brand_blue.200"
-        }}
-      >
-        Topology
-      </MenuButton>
+    <Box>
+      <Menu>
+        <MenuButton
+          display="flex"
+          bg="brand_blue.300"
+          rounded="full"
+          paddingY={1.5}
+          paddingX={3}
+          color="white"
+          borderRadius={30}
+          whiteSpace="nowrap"
+          borderColor="red"
+          as={ChakraButton}
+          leftIcon={<TbTopologyRing size={20} />}
+          onClick={(e) => e.stopPropagation()}
+          _hover={{
+            cursor: "pointer",
+            bg: "brand_blue.200"
+          }}
+        >
+          Topology
+        </MenuButton>
 
-      <MenuList bg="brand_blue.300">
-        {topologies.map((topology) => (
-          <MenuItem
-            key={topology.value}
-            bg="brand_blue.300"
-            color="white"
-            onClick={() => onTopologyChange(topology.value)}
-            _hover={{ bg: "brand_blue.100" }}
-          >
-            <Text marginLeft={3}>{topology.title}</Text>
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Menu>
+        <MenuList bg="brand_blue.300">
+          {topologies.map((topology) => (
+            <MenuItem
+              key={topology.value}
+              bg="brand_blue.300"
+              color="white"
+              onClick={() => onTopologyChange(topology.value)}
+              _hover={{ bg: "brand_blue.100" }}
+            >
+              <Text marginLeft={3}>{topology.title}</Text>
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Menu>
+    </Box>
   )
 }
 
@@ -208,135 +210,137 @@ export const Settings = (props: SettingsProps) => {
     {
       isChecked: showIndex,
       title: "Show Index",
-      action: () => toggleShowIndex()
+      action: () => toggleShowIndex(!showIndex)
     },
 
     {
       isChecked: showComplete,
       title: "Show Complete",
-      action: () => toggleShowComplete()
+      action: () => toggleShowComplete(!showComplete)
     }
   ];
 
   return (
-    <Menu>
-      <MenuButton
-        display="flex"
-        color="white"
-        bg="brand_blue.300"
-        rounded="full"
-        paddingY={1.5}
-        paddingX={3}
-        borderRadius={30}
-        whiteSpace="nowrap"
-        as={ChakraButton}
-        leftIcon={<FiSettings size={20} />}
-        onClick={(e) => e.stopPropagation()}
-        _hover={{
-          cursor: "pointer",
-          bg: "brand_blue.200"
-        }}
-      >
-        Settings
-      </MenuButton>
+    <Box>
+      <Menu>
+        <MenuButton
+          display="flex"
+          color="white"
+          bg="brand_blue.300"
+          rounded="full"
+          paddingY={1.5}
+          paddingX={3}
+          borderRadius={30}
+          whiteSpace="nowrap"
+          as={ChakraButton}
+          leftIcon={<FiSettings size={20} />}
+          onClick={(e) => e.stopPropagation()}
+          _hover={{
+            cursor: "pointer",
+            bg: "brand_blue.200"
+          }}
+        >
+          Settings
+        </MenuButton>
 
-      <MenuList bg="brand_blue.300">
-        {configs.map(({ action, title, isChecked }) => (
-          <MenuItem
-            key={title}
-            bg="brand_blue.300"
-            color="white"
-            onClick={action}
-          >
-            <Switch
-              id="show-index"
-              size="md"
-              colorScheme="gray"
-              isChecked={isChecked}
-            />
-            <Text marginLeft={2} marginRight={5}>{title}</Text>
-          </MenuItem>
-        ))}
+        <MenuList bg="brand_blue.300">
+          {configs.map(({ action, title, isChecked }) => (
+            <MenuItem
+              key={title}
+              bg="brand_blue.300"
+              color="white"
+              onClick={action}
+            >
+              <Switch
+                id="show-index"
+                size="md"
+                colorScheme="gray"
+                isChecked={isChecked}
+              />
+              <Text marginLeft={2} marginRight={5}>{title}</Text>
+            </MenuItem>
+          ))}
 
-        <Box marginTop={2} paddingX={2}>
-          <Text
-            color="white"
-            textAlign="center"
-            bg="brand_blue.50"
-            marginTop={3}
-            borderRadius={20}
-          >
-            Enzyme
-          </Text>
+          <Box marginTop={2} paddingX={2}>
+            <Text
+              color="white"
+              textAlign="center"
+              bg="brand_blue.50"
+              marginTop={3}
+              borderRadius={20}
+            >
+              Enzyme
+            </Text>
 
-          <Grid
-            templateColumns='repeat(2, 1fr)'
-            gap={2}
-            display="flex"
-            marginTop={2}
-          >
-            <GridItem width="100%">
-              <Button
-                isActive={enzymes.includes("PstI")}
-                border={0}
-                paddingY={1}
-                paddingX={4}
-                borderRadius={4}
-                color={enzymes.includes("PstI") ? "brand_blue.300" : "white"}
-                colorScheme={enzymes.includes("PstI") ? "gray" : ""}
-                onClick={() => toggleEnzyme("PstI")}
-              >
-                PstI
-              </Button>
-            </GridItem>
+            <Grid
+              templateColumns='repeat(2, 1fr)'
+              gap={2}
+              display="flex"
+              marginTop={2}
+            >
+              <GridItem width="100%">
+                <Button
+                  isActive={enzymes.includes("PstI")}
+                  border={0}
+                  paddingY={1}
+                  paddingX={4}
+                  borderRadius={4}
+                  color={enzymes.includes("PstI") ? "brand_blue.300" : "white"}
+                  colorScheme={enzymes.includes("PstI") ? "gray" : ""}
+                  onClick={() => toggleEnzyme("PstI")}
+                >
+                  PstI
+                </Button>
+              </GridItem>
 
-            <GridItem width="100%">
-              <Button
-                isActive={enzymes.includes("EcoRI")}
-                border={0}
-                paddingY={1}
-                paddingX={4}
-                borderRadius={4}
-                color={enzymes.includes("EcoRI") ? "brand_blue.300" : "white"}
-                colorScheme={enzymes.includes("EcoRI") ? "gray" : ""}
-                onClick={() => toggleEnzyme("EcoRI")}
-              >
-                EcoRI
-              </Button>
-            </GridItem>
+              <GridItem width="100%">
+                <Button
+                  isActive={enzymes.includes("EcoRI")}
+                  border={0}
+                  paddingY={1}
+                  paddingX={4}
+                  borderRadius={4}
+                  color={enzymes.includes("EcoRI") ? "brand_blue.300" : "white"}
+                  colorScheme={enzymes.includes("EcoRI") ? "gray" : ""}
+                  onClick={() => toggleEnzyme("EcoRI")}
+                >
+                  EcoRI
+                </Button>
+              </GridItem>
 
-            <GridItem width="100%">
-              <Button
-                isActive={enzymes.includes("XbaI")}
-                border={0}
-                paddingY={1}
-                paddingX={4}
-                borderRadius={4}
-                color={enzymes.includes("XbaI") ? "brand_blue.300" : "white"}
-                colorScheme={enzymes.includes("XbaI") ? "gray" : ""}
-                onClick={() => toggleEnzyme("XbaI")}
-              >
-                XbaI
-              </Button>
-            </GridItem>
+              <GridItem width="100%">
+                <Button
+                  isActive={enzymes.includes("XbaI")}
+                  border={0}
+                  paddingY={1}
+                  paddingX={4}
+                  borderRadius={4}
+                  color={enzymes.includes("XbaI") ? "brand_blue.300" : "white"}
+                  colorScheme={enzymes.includes("XbaI") ? "gray" : ""}
+                  onClick={() => toggleEnzyme("XbaI")}
+                >
+                  XbaI
+                </Button>
+              </GridItem>
 
-            <GridItem width="100%">
-              <Button
-                isActive={enzymes.includes("SpeI")}
-                border={0}
-                paddingY={1}
-                paddingX={4}
-                borderRadius={4}
-                color={enzymes.includes("SpeI") ? "brand_blue.300" : "white"}
-                colorScheme={enzymes.includes("SpeI") ? "gray" : ""}
-                onClick={() => toggleEnzyme("SpeI")}
-              >
-                SpeI
-              </Button>
-            </GridItem>
-          </Grid>
-        </Box>
-      </MenuList>
-    </Menu>
+              <GridItem width="100%">
+                <Button
+                  isActive={enzymes.includes("SpeI")}
+                  border={0}
+                  paddingY={1}
+                  paddingX={4}
+                  borderRadius={4}
+                  color={enzymes.includes("SpeI") ? "brand_blue.300" : "white"}
+                  colorScheme={enzymes.includes("SpeI") ? "gray" : ""}
+                  onClick={() => toggleEnzyme("SpeI")}
+                >
+                  SpeI
+                </Button>
+              </GridItem>
+            </Grid>
+          </Box>
+        </MenuList>
+      </Menu>
+    </Box>
   )
 }

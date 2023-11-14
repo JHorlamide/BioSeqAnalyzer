@@ -1,5 +1,5 @@
 /* React.js */
-import { Fragment, useCallback, useState } from 'react';
+import React, { Fragment, useCallback, useState } from 'react';
 
 /* Chakra UI */
 import { Box, Flex, HStack, Input } from '@chakra-ui/react';
@@ -15,6 +15,11 @@ import SequenceViewer from "../SequenceViewer/SequenceViewer"
 import Button from '../CustomBtn/Button';
 import AppLoader from '../Loading/AppLoader';
 import { ZoomButtons, Topology, Settings, Information } from './SequenceMapSettings';
+
+const MemoizedZoomButtons = React.memo(ZoomButtons);
+const MemoizedTopology = React.memo(Topology);
+const MemoizedSettings = React.memo(Settings);
+const MemoizedInformation = React.memo(Information);
 
 type ViewerType = "linear" | "circular" | "both" | "both_flip";
 
@@ -40,9 +45,11 @@ const SequenceMap = (props: SequenceMapProps) => {
   const [showComplete, setShowComplete] = useState(true);
   const { sequenceData, isLoading, info, refetch } = props;
 
+  
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   }
+
 
   const handleZoomIn = useCallback(() => {
     if (zoomLevel < 100) {
@@ -50,19 +57,13 @@ const SequenceMap = (props: SequenceMapProps) => {
     }
   }, [zoomLevel]);
 
+
   const handleZoomOut = useCallback(() => {
     if (zoomLevel > 50) {
       setZoomLevel(zoomLevel - 10);
     }
   }, [zoomLevel]);
 
-  const toggleShowIndex = useCallback(() => {
-    setShowIndex(!showIndex);
-  }, [showIndex]);
-
-  const toggleShowComplete = useCallback(() => {
-    setShowComplete(!showComplete);
-  }, [showComplete]);
 
   const toggleEnzyme = useCallback((enzyme: string) => {
     const myEnzymes = enzymes;
@@ -96,7 +97,7 @@ const SequenceMap = (props: SequenceMapProps) => {
               Back
             </Button>
 
-            {info ? (<Information {...info} />) : (
+            {info ? <MemoizedInformation {...info} /> : (
               <Button
                 color="white"
                 bg="brand_blue.300"
@@ -107,20 +108,20 @@ const SequenceMap = (props: SequenceMapProps) => {
               </Button>
             )}
 
-            <ZoomButtons
+            <MemoizedZoomButtons
               handleZoomIn={handleZoomIn}
               handleZoomOut={handleZoomOut}
             />
 
-            <Topology onTopologyChange={setTopology} />
+            <MemoizedTopology onTopologyChange={setTopology} />
 
-            <Settings
+            <MemoizedSettings
               enzymes={enzymes}
               showIndex={showIndex}
               showComplete={showComplete}
               toggleEnzyme={toggleEnzyme}
-              toggleShowComplete={toggleShowComplete}
-              toggleShowIndex={toggleShowIndex}
+              toggleShowIndex={setShowIndex}
+              toggleShowComplete={setShowComplete}
             />
           </HStack>
 
