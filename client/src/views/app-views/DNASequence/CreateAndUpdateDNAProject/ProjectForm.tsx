@@ -4,9 +4,10 @@ import { MdOutlineTitle } from "react-icons/md";
 import { FieldErrors, UseFormReturn } from "react-hook-form";
 
 /* Application Modules */
+import Button from "../../../../components/CustomBtn/Button";
 import { FormInput } from "../../../../components/CustomInput/FormInput/FormInput";
 import { SelectInput } from "../../../../components/CustomInput/SelectInput/SelectInput";
-import Button from "../../../../components/CustomBtn/Button";
+import { nucleotideTypeOptions, topologyOptions } from "./CONSTANTS";
 import { ProjectFormData, CreateProjectFormField } from "../../../../schemas/DNASequenceProjectSchema";
 
 /* Chakra UI */
@@ -21,7 +22,6 @@ import {
   Center,
   HStack,
 } from "@chakra-ui/react";
-import { nucleotideTypeOptions, topologyOptions } from "./CONSTANTS";
 
 export interface ProjectFormProps {
   projectId?: string;

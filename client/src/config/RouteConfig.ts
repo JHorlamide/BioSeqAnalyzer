@@ -9,14 +9,14 @@ import ResetPassword from "../views/auth-views/ResetPassword/ResetPassword";
 
 /* Protected Components -> Protein Analyzer */
 import ProteinAnalyzerDashboard from "../views/app-views/ProteinAnalyzer/ProteinAnalyzerDashboard/ProteinAnalyzerDashboard";
-import CreateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinProject/CreateProjectView";
-import UpdateProjectForm from "../views/app-views/ProteinAnalyzer/CreateProteinProject/UpdateProjectForm";
+import CreateProjectForm from "../views/app-views/ProteinAnalyzer/CreateAndUpdateProteinProject/CreateProjectView";
+import UpdateProjectForm from "../views/app-views/ProteinAnalyzer/CreateAndUpdateProteinProject/UpdateProjectForm";
 import ProjectOverview from "../views/app-views/ProteinAnalyzer/ProjectOverview/ProjectOverview";
 
 /* Protected Components -> DNA Sequence */
 import DNASequenceDashboard from "../views/app-views/DNASequence/DNASeqDashboard/DNASequenceDashboard";
-import CreateProject from "../views/app-views/DNASequence/CreateDNAProject/CreateProjectView";
-import UpdateDNASeqProjectForm from "../views/app-views/DNASequence/CreateDNAProject/UpdateDNASeqProjectForm";
+import CreateProject from "../views/app-views/DNASequence/CreateAndUpdateDNAProject/CreateProjectView";
+import UpdateDNASeqProjectForm from "../views/app-views/DNASequence/CreateAndUpdateDNAProject/UpdateDNASeqProjectForm";
 import SequenceOverview from "../views/app-views/DNASequence/DNASequenceMap/DNASequenceMap";
 import ProteinSequenceMap from "../views/app-views/ProteinAnalyzer/ProteinSequenceMap/ProteinSequenceMap";
 import SharedProjectView from "../views/app-views/DNASequence/SharedProjectView/SharedProjectView";

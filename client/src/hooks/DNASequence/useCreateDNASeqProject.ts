@@ -1,5 +1,5 @@
 /* React */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 /* Libraries */
 import { useForm } from "react-hook-form";
@@ -190,6 +190,8 @@ export const useCreateDNASeqProjectByImport = () => {
 export const useUpdateDNASeqProject = (projectId: string) => {
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
+  const [projectData, setProjectData] = useState<ProjectFormData>();
+
   const {
     register,
     getValues,
@@ -223,6 +225,10 @@ export const useUpdateDNASeqProject = (projectId: string) => {
     }
   };
 
+  useEffect(() => {
+    if (data) setProjectData(data.data);
+  }, [data]);
+
   return {
     errors,
     isLoading,
@@ -230,6 +236,6 @@ export const useUpdateDNASeqProject = (projectId: string) => {
     getValues,
     submitProject,
     handleSubmit,
-    projectData: data ?? data
+    projectData: projectData
   };
 }

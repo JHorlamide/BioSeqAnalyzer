@@ -57,7 +57,7 @@ class UserService {
     try {
       await userRepository.deleteUser(userId);
     } catch (error: any) {
-      throw new ServerError("Server error. Please try again later")
+      throw new ServerError("Server error. Please try again later");
     }
   }
 
