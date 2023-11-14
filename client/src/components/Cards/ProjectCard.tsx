@@ -34,6 +34,7 @@ interface ProjectCardProps {
   updatedAt: string;
   projectId: string;
   projectType: string;
+  loading: boolean;
   goToProjectDetailsPage: (projectId: string) => void;
   goToUpdateProjectPage: (projectId: string) => void;
   handleDeleteProject: (project: string) => void;
@@ -59,12 +60,13 @@ const ProjectCard = (props: ProjectCardProps) => {
     updatedAt,
     projectId,
     projectTitle,
+    loading,
     handleDeleteProject,
     goToUpdateProjectPage,
     goToProjectDetailsPage
   } = props;
 
-  const handleConfirm = () => {
+  const handleConfirmDelete = () => {
     handleDeleteProject(projectId);
     onClose();
   };
@@ -131,7 +133,7 @@ const ProjectCard = (props: ProjectCardProps) => {
         projectName={projectTitle}
         isOpen={isOpen}
         onClose={onClose}
-        handleConfirm={handleConfirm}
+        handleConfirm={handleConfirmDelete}
       />
 
       <Card
@@ -165,14 +167,14 @@ const ProjectCard = (props: ProjectCardProps) => {
             <Flex justifyContent="space-between">
               <Text color="gray.300">{utils.formattedDate(updatedAt)}</Text>
 
-              {/* {isLoadingDelete && (
+              {loading && (
                 <Spinner
                   size="sm"
                   speed="0.65s"
                   thickness="4px"
                   emptyColor="brand_blue.200"
                 />
-              )} */}
+              )}
             </Flex>
 
           </Stack>

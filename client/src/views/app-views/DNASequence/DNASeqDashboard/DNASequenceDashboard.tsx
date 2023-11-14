@@ -1,5 +1,5 @@
 /* React */
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 /* Libraries */
 import { debounce } from "lodash";
@@ -32,9 +32,10 @@ const DNASequenceDashboard = () => {
   const dispatch = useAppDispatch();
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
+  const [loadingStates, setLoadingStates] = useState<{ [key: string]: boolean }>({});
   const filters = useAppSelector((state) => state.DNASeqFilter);
   const [deleteProject] = useDeleteProjectMutation();
-  
+
   const { data: projects, isLoading, refetch } = useGetAllProjectsQuery({
     name: filters.name,
     page: filters.currentPage,
@@ -49,31 +50,47 @@ const DNASequenceDashboard = () => {
     refetch();
   }, [dispatch, refetch]);
 
+
   const handleDataRefetch = useCallback(() => {
     dispatch(clearFilterState());
     refetch();
   }, [dispatch, refetch]);
 
+
   const goToCreateProject = useCallback(() => {
     handleNavigate(`${APP_PREFIX_PATH}/create-dna-project`);
   }, [handleNavigate]);
+
 
   const goToUpdateProjectPage = useCallback((projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/update/${projectId}`);
   }, [handleNavigate]);
 
+
   const goToProjectDetailsPage = useCallback((projectId: string) => {
     handleNavigate(`${APP_PREFIX_PATH}/dna-sequence/overview/${projectId}`)
   }, [handleNavigate]);
 
+
   const handleDeleteProject = useCallback(async (projectId: string) => {
+    setLoadingStates((prevLoadingStates) => ({
+      ...prevLoadingStates,
+      [projectId]: true,
+    }));
+
     try {
       await deleteProject({ projectId }).unwrap();
     } catch (error: any) {
       handleError(error);
+    } finally {
+      setLoadingStates((prevLoadingStates) => ({
+        ...prevLoadingStates,
+        [projectId]: false,
+      }));
     }
   }, [deleteProject, handleError]);
 
+  
   const handleSearchQuery = useMemo(() =>
     debounce(({ target: { value } }: React.ChangeEvent<HTMLInputElement>) => {
       dispatch(setName(value));
@@ -101,9 +118,10 @@ const DNASequenceDashboard = () => {
           />
         ) : (
           <ProjectsListWithGridItem
-            dnaSeqProjects={projects.results}
             projectType="DNA"
-            handleDeleteProject={handleDeleteProject}
+            loadingStates={loadingStates}
+            dnaSeqProjects={projects.results}
+            handleProjectDelete={handleDeleteProject}
             goToProjectDetailsPage={goToProjectDetailsPage}
             goToUpdateProjectPage={goToUpdateProjectPage}
           />

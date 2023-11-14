@@ -6,15 +6,16 @@ import { Grid, GridItem, useMediaQuery } from "@chakra-ui/react";
 
 /* Application Module */
 import ProjectCard from "./ProjectCard";
-import { ProteinProjects } from "../../services/proteinProject/type";
 import { DNASeqProject } from "../../services/DNASequence/types";
+import { ProteinProjectData } from "../../services/proteinProject/type";
 
 interface Props {
   projectType: string
+  loadingStates: { [key: string]: boolean };
   dnaSeqProjects?: DNASeqProject[];
-  proteinProjects?: ProteinProjects[];
+  proteinProjects?: ProteinProjectData[];
+  handleProjectDelete: (projectId: string) => void;
   goToUpdateProjectPage: (projectId: string) => void;
-  handleDeleteProject: (project: string) => void;
   goToProjectDetailsPage: (projectId: string) => void;
 }
 
@@ -33,13 +34,15 @@ const ProjectsListWithGridItem = (props: Props) => {
     projectType,
     dnaSeqProjects,
     proteinProjects,
-    handleDeleteProject,
+    loadingStates,
+    handleProjectDelete,
     goToUpdateProjectPage,
     goToProjectDetailsPage
   } = props;
+
   const projects = [...(proteinProjects ?? []), ...(dnaSeqProjects ?? [])];
 
-  const getProjectProperties = (project: DNASeqProject | ProteinProjects) => {
+  const getProjectProperties = (project: DNASeqProject | ProteinProjectData) => {
     if (isDNASeqProject(project)) {
       const { id, name, date_of_submission } = project as DNASeqProject;
 
@@ -50,11 +53,11 @@ const ProjectsListWithGridItem = (props: Props) => {
       };
     }
 
-    const { _id, projectTitle, updatedAt } = project as ProteinProjects;
+    const { _id, projectTitle, updatedAt } = project as ProteinProjectData;
     return { projectTitle, updatedAt, projectId: _id };
   };
 
-  const isDNASeqProject = (project: DNASeqProject | ProteinProjects): boolean => {
+  const isDNASeqProject = (project: DNASeqProject | ProteinProjectData): boolean => {
     return (project as DNASeqProject).id !== undefined;
   };
 
@@ -64,11 +67,12 @@ const ProjectsListWithGridItem = (props: Props) => {
         {projects.map((project) => (
           <GridItem key={getProjectProperties(project).projectId}>
             <ProjectCard
+              projectType={projectType}
               {...getProjectProperties(project)}
-              handleDeleteProject={handleDeleteProject}
+              handleDeleteProject={handleProjectDelete}
               goToUpdateProjectPage={goToUpdateProjectPage}
               goToProjectDetailsPage={goToProjectDetailsPage}
-              projectType={projectType}
+              loading={loadingStates[getProjectProperties(project).projectId] || false}
             />
           </GridItem>
         ))}

@@ -26,6 +26,12 @@ class UserController {
     const userId = await userService.acceptProjectInvitation(req.body);
     responseHandler.successResponse(RES_MSG.INVITATION_ACCEPTED, { userId }, res);
   });
+
+  public deleteUserAccount = asyncHandler(async (req: Request, res: Response) => {
+    const { userId } = res.locals.jwt;
+    await userService.deleteUser(userId);
+    responseHandler.noContentRes(res);
+  })
 }
 
 export default new UserController();

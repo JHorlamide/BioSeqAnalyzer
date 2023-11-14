@@ -7,7 +7,6 @@ import requestBodyValidator from "../../../common/middleware/requestValidation";
 import userRepository from "../repository/userRepository";
 import { ERR_MSG } from "../types/constants";
 import { registerUser, invitation, acceptInvitation } from "../validation/userSchema";
-import userService from "../services/userService";
 
 class UserMiddleware {
   public validateReqBodyField = requestBodyValidator(registerUser);
@@ -27,26 +26,6 @@ class UserMiddleware {
 
     next();
   }
-
-  // public async validateUserHasRequiredRole(req: Request, res: Response, next: NextFunction) {
-  //   const { userId } = res.locals.jwt;
-
-  //   try {
-  //     const user = await userService.getUserById(userId);
-
-  //     if (!user) {
-  //       return responseHandler.badRequest(ERR_MSG.USER_NOT_FOUND, res);
-  //     }
-
-  //     if (user && user.role !== "AUTHOR") {
-  //       return responseHandler.badRequest("You don't have the permission to invite other member", res);
-  //     }
-
-  //     return next();
-  //   } catch (error: any) {
-  //     return responseHandler.badRequest(error.message, res);
-  //   }
-  // }
 }
 
 export default new UserMiddleware();

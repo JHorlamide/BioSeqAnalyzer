@@ -1,5 +1,5 @@
 import http from "http";
-import main from "../../../server";
+import main from "../../server";
 import supertest, { SuperAgentTest } from "supertest";
 
 describe("CreateNewProject", () => {

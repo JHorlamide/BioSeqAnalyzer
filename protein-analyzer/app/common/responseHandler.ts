@@ -19,10 +19,8 @@ class ResponseHandler<T extends object> {
       .json({ status: "Success", message, data })
   }
 
-  public noContent(message: string, res: Response) {
-    return res
-      .status(httpStatus.NO_CONTENT)
-      .json({ status: "Success", message })
+  public noContentRes(res: Response) {
+    return res.status(httpStatus.NO_CONTENT)
   }
 
   public badRequest(message: string, res: Response, status?: number): Response {

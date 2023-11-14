@@ -1,5 +1,5 @@
 /* React */
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 /* Libraries */
 import { debounce } from "lodash";
@@ -32,6 +32,7 @@ const ProteinAnalyzerDashboard = () => {
   const dispatch = useAppDispatch();
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
+  const [loadingStates, setLoadingStates] = useState<{ [key: string]: boolean }>({});
   const [deleteProject] = useDeleteProjectMutation();
   const filters = useAppSelector((state) => state.proteinAnalyzerFilter);
 
@@ -69,10 +70,20 @@ const ProteinAnalyzerDashboard = () => {
   }, [handleNavigate]);
 
   const handleDeleteProject = useCallback(async (projectId: string) => {
+    setLoadingStates((prevLoadingStates) => ({
+      ...prevLoadingStates,
+      [projectId]: true,
+    }));
+
     try {
       await deleteProject({ projectId }).unwrap();
     } catch (error: any) {
       handleError(error);
+    } finally {
+      setLoadingStates((prevLoadingStates) => ({
+        ...prevLoadingStates,
+        [projectId]: false,
+      }));
     }
   }, [deleteProject, handleError]);
 
@@ -104,8 +115,9 @@ const ProteinAnalyzerDashboard = () => {
         ) : (
           <ProjectsListWithGridItem
             projectType="Protein"
+            loadingStates={loadingStates}
             proteinProjects={projects.data.projects}
-            handleDeleteProject={handleDeleteProject}
+            handleProjectDelete={handleDeleteProject}
             goToUpdateProjectPage={goToUpdateProjectPage}
             goToProjectDetailsPage={goToProjectDetailsPage}
           />
@@ -122,3 +134,4 @@ const ProteinAnalyzerDashboard = () => {
 };
 
 export default ProteinAnalyzerDashboard;
+

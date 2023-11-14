@@ -2,7 +2,7 @@ import { Application } from "express";
 
 /* Application Modules */
 import config from "../config/serverConfig";
-import { CommonRoutesConfig } from "../config/routeConfig"
+import { CommonRoutesConfig } from "../config/routeConfig";
 import { createProxyMiddleware } from "http-proxy-middleware";
 import { validJWTNeeded } from "../middleware/authMiddleware";
 
@@ -25,6 +25,7 @@ export class GatewayRoute extends CommonRoutesConfig {
       pathRewrite: {
         [`^/users`]: "",
       },
+
       onError: (err, req, res) => {
         res.status(500).send({ status: "Proxy Error", message: err });
       }
@@ -41,6 +42,7 @@ export class GatewayRoute extends CommonRoutesConfig {
       pathRewrite: {
         [`^/projects`]: "",
       },
+
       onError: (err, req, res) => {
         res.status(500).send({ status: "Proxy Error", message: err });
       }
@@ -57,6 +59,7 @@ export class GatewayRoute extends CommonRoutesConfig {
       pathRewrite: {
         [`^/dna-sequence`]: "",
       },
+
       onError: (err, req, res) => {
         res.status(500).send({ status: "Proxy Error", message: err });
       }
@@ -73,6 +76,7 @@ export class GatewayRoute extends CommonRoutesConfig {
       pathRewrite: {
         [`^/project-association`]: "",
       },
+
       onError: (err, req, res) => {
         res.status(500).send({ status: "Proxy Error", message: err });
       }
@@ -89,6 +93,7 @@ export class GatewayRoute extends CommonRoutesConfig {
       pathRewrite: {
         [`^/project/share/:projectId`]: "",
       },
+
       onError: (err, req, res) => {
         res.status(500).send({ status: "Proxy Error", message: err });
       }

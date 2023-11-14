@@ -11,7 +11,6 @@ import requestBodyValidator from "../../../common/middleware/requestValidation";
 import { tokenRefresh } from "../validation/authSchema";
 import { Jwt } from "../types/authTypes";
 import { ERR_MSG } from "../../users/types/constants";
-import { NotFoundError } from "../../../common/exceptions/ApiError";
 
 
 class JwtMiddleware {
@@ -29,8 +28,7 @@ class JwtMiddleware {
         res.locals.jwt = jwt.verify(authorization[1], config.jwt.secret) as Jwt;
         return next();
       } catch (error: any) {
-        return responseHandler
-          .forbiddenResponse(`Not authorize ${error}`, res);
+        return responseHandler.forbiddenResponse(`Not authorize ${error}`, res);
       }
     }
 

@@ -76,7 +76,7 @@ class ProjectController {
 
     const { projectId } = req.params;
     await projectService.deleteProject(projectId, userId);
-    responseHandler.noContent(RES_MSG.PROJECT_DELETED, res);
+    responseHandler.noContentRes(res);
   });
 
   public uploadProjectCSV = asyncHandler(async (req: Request, res: Response) => {

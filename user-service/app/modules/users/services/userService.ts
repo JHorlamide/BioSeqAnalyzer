@@ -53,6 +53,16 @@ class UserService {
     }
   }
 
+  public async deleteUser(userId: string) {
+    const user = await userRepository.getUserById(userId)
+    
+    if(!user) {
+      throw new NotFoundError(ERR_MSG.USER_NOT_FOUND);
+    }
+
+    return user;
+  }
+
   public async sendInvitation(reqBodyField: SendProjectInvitation) {
     const { userId, projectId, userEmail, projectName } = reqBodyField;
 

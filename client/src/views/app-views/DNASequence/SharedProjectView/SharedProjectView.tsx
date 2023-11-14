@@ -91,11 +91,11 @@ const SharedProjectView = () => {
         return handleError(`Server error: ${detail}`);
       }
 
-      setLoading(false);
       handleError(message);
     } catch (error: any) {
-      setLoading(false);
       handleError(error.message);
+    } finally {
+      setLoading(false);
     }
   }
 

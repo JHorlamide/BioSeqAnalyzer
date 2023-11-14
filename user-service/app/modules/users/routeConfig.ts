@@ -17,8 +17,8 @@ export class UserRoute extends CommonRoutesConfig {
 
   configureRoutes(): Application {
     /**
-    * @route POST /api/users/register
-    * @desc  Register user
+    * @route  POST /api/users/register
+    * @desc   Register user
     * @access Public
     */
     this.app.post(`${APP_PREFIX_PATH}/users/register`, [
@@ -28,25 +28,34 @@ export class UserRoute extends CommonRoutesConfig {
     ])
 
     /**
-    * @route POST /api/users/invite
-    * @desc  Invite user to project
+    * @route  POST /api/users/invite
+    * @desc   Invite user to project
     * @access Private
     */
     this.app.post(`${APP_PREFIX_PATH}/users/invite`, [
       jwtMiddleware.validJWTNeeded,
-      // userMiddleware.validateUserHasRequiredRole,
       userMiddleware.validateInvitationReqBody,
       userController.inviteUserToProject
     ])
-   
+
     /**
-    * @route POST /api/users/invite/accept
-    * @desc  Accept Invitation
+    * @route  POST /api/users/invite/accept
+    * @desc   Accept Invitation
     * @access Private
     */
     this.app.post(`${APP_PREFIX_PATH}/users/invite/accept`, [
       userMiddleware.validateAcceptBody,
       userController.acceptProjectInvitation
+    ])
+
+    /**
+    * @route  DELETE /api/users/account/delete
+    * @desc   Delete Account
+    * @access Private
+    */
+    this.app.delete(`${APP_PREFIX_PATH}/users/account/delete`, [
+      jwtMiddleware.validJWTNeeded,
+      userController.deleteUserAccount
     ])
 
     return this.app;

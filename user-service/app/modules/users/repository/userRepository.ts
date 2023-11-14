@@ -31,6 +31,10 @@ class UserRepository {
   public async getUserByResetToken(resetToken: string) {
     return await this.prisma.user.findUnique({ where: { resetToken } });
   }
+
+  public async deleteUser(userId: string) {
+    return await this.prisma.user.delete({ where: { id: userId } });
+  }
 }
 
 export default new UserRepository();
