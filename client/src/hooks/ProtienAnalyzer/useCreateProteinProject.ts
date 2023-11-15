@@ -69,26 +69,22 @@ export const useCreateProteinProject = () => {
 }
 
 export const useUpdateProject = (projectId: string) => {
+  const {
+    register,
+    setValue,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
+
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
-  const [projectData, setProjectData] = useState<ProjectFormData>();
   const [inputVisibility, setInputVisibility] = useState({
     showRawSeqInput: false,
     showUniProtInput: true,
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
-
   const [updateProject, { isLoading }] = useUpdateProjectMutation();
   const { data: project } = useGetProjectQuery({ projectId });
-
-  useEffect(() => {
-    if (project) setProjectData(project?.data);
-  }, [project]);
 
   const toggleShowUniProtInput = () => {
     setInputVisibility((prevState) => ({
@@ -101,6 +97,7 @@ export const useUpdateProject = (projectId: string) => {
     try {
       const projectInputData = utils.getFilledFormData(data);
       const response = await updateProject({ projectId, data: projectInputData }).unwrap();
+
       if (response.status === "Success") {
         toast.success(response.message);
         return handleNavigate(`${APP_PREFIX_PATH}/protein-analyzer/dashboard`);
@@ -112,11 +109,30 @@ export const useUpdateProject = (projectId: string) => {
     }
   }
 
+  useEffect(() => {
+    if (project && project.data) {
+      const {
+        projectGoal,
+        projectTitle,
+        uniprotId,
+        proteinPDBID,
+        measuredProperty,
+        proteinAminoAcidSequence
+      } = project.data;
+
+      setValue("projectTitle", projectTitle);
+      setValue("projectGoal", projectGoal);
+      setValue("uniprotId", uniprotId);
+      setValue("measuredProperty", measuredProperty);
+      setValue("proteinPDBID", proteinPDBID);
+      setValue("proteinAminoAcidSequence", proteinAminoAcidSequence);
+    }
+  }, [project]);
+
   return {
     errors,
     isValid,
     isLoading,
-    projectData,
     register,
     handleSubmit,
     submitProject,

@@ -43,7 +43,6 @@ const ProjectForm = (props: ProjectFormProps) => {
     isValid,
     isLoading,
     projectId,
-    projectData,
     showUniProtInput,
     showRawSeqInput,
     register,
@@ -120,7 +119,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                       pt: "5px",
                       pointerEvents: "none"
                     }}
-                    defaultValue={projectData && projectData.proteinAminoAcidSequence}
                   />
                 </FormControl>
               )}
@@ -152,7 +150,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                       pointerEvents: "none",
                       children: <GiMolecule color="gray.3000" />,
                     }}
-                    defaultValue={projectData && projectData.uniprotId}
                   />
                 </FormControl>
               )}
@@ -169,7 +166,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                     pointerEvents: "none",
                     children: < SiMoleculer color="brand_blue.2000" />
                   }}
-                  defaultValue={projectData && projectData.proteinPDBID}
                 />
               </FormControl>
             </VStack>
@@ -190,9 +186,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                     register={register}
                     selectOptions={goalOptions}
                     errors={errors}
-                    selectProps={{
-                      value: projectData && projectData.projectGoal,
-                    }}
                   />
 
                   <SelectInput
@@ -201,10 +194,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                     register={register}
                     selectOptions={measuredPropertyOption}
                     errors={errors}
-                    selectProps={{
-                      value: projectData && projectData.measuredProperty,
-                      defaultValue: projectData && projectData.measuredProperty,
-                    }}
                   />
                 </HStack>
               </FormControl>
@@ -231,7 +220,6 @@ const ProjectForm = (props: ProjectFormProps) => {
                     pointerEvents: "none",
                     children: <MdOutlineTitle color="brand_blue.2000" />
                   }}
-                  defaultValue={projectData && projectData.projectTitle}
                 />
               </FormControl>
             </VStack>

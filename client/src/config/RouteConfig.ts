@@ -9,7 +9,7 @@ import ResetPassword from "../views/auth-views/ResetPassword/ResetPassword";
 
 /* Protected Components -> Protein Analyzer */
 import ProteinAnalyzerDashboard from "../views/app-views/ProteinAnalyzer/ProteinAnalyzerDashboard/ProteinAnalyzerDashboard";
-import CreateProjectForm from "../views/app-views/ProteinAnalyzer/CreateAndUpdateProteinProject/CreateProjectView";
+import CreateProjectForm from "../views/app-views/ProteinAnalyzer/CreateAndUpdateProteinProject/CreateProjectForm";
 import UpdateProjectForm from "../views/app-views/ProteinAnalyzer/CreateAndUpdateProteinProject/UpdateProjectForm";
 import ProjectOverview from "../views/app-views/ProteinAnalyzer/ProjectOverview/ProjectOverview";
 
