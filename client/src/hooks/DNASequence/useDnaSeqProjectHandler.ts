@@ -192,7 +192,6 @@ export const useCreateDNASeqProjectByImport = () => {
 export const useUpdateDNASeqProject = (projectId: string) => {
   const {
     register,
-    getValues,
     setValue,
     handleSubmit,
     formState: { errors },
@@ -200,8 +199,8 @@ export const useUpdateDNASeqProject = (projectId: string) => {
 
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
-  const { data, isLoading } = useGetProjectQuery({ projectId });
-  const [updateProject, { isLoading: isLoadingUpdate }] = useUpdateProjectMutation();
+  const { data } = useGetProjectQuery({ projectId });
+  const [updateProject, { isLoading }] = useUpdateProjectMutation();
 
   const submitProject = async (data: ProjectFormData) => {
     const formData = utils.getFilledFormData(data);
@@ -246,9 +245,7 @@ export const useUpdateDNASeqProject = (projectId: string) => {
   return {
     errors,
     isLoading,
-    isLoadingUpdate,
     register,
-    getValues,
     submitProject,
     handleSubmit,
   };

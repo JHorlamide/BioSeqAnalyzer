@@ -1,7 +1,5 @@
 # Rest Framework
-from rest_framework import status
 from rest_framework import serializers
-from rest_framework.response import Response
 
 # Application Modules
 from .models import DNASequence, InvitedUsers
@@ -32,18 +30,7 @@ class DNASequenceSerializer(serializers.ModelSerializer):
         project_id = self.context["project_id"]
 
         try:
-            dna_seq_project = DNASequence.objects.get(
-                id=project_id, author_id=author_id
-            )
-
-            if dna_seq_project.invited_users.filter(user_id=author_id).exists():
-                return Response(
-                    {
-                        "status": "Failure",
-                        "message": "You don't have the permission to update this project",
-                    },
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
+            dna_seq_project = DNASequence.objects.get(id=project_id)
 
             for key, value in self.validated_data.items():
                 setattr(dna_seq_project, key, value)

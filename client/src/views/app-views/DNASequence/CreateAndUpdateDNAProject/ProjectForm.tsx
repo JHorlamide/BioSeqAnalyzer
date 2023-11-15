@@ -25,16 +25,18 @@ import { TextAreaInput } from "../../../../components/CustomInput/TextAreaInput/
 
 export interface ProjectFormProps {
   isLoading: boolean;
+  projectId?: string;
   errors: FieldErrors<ProjectFormData>;
   submitProject: (data: ProjectFormData) => Promise<string | void>;
   register: UseFormReturn<ProjectFormData>['register'];
   handleSubmit: UseFormReturn<ProjectFormData>['handleSubmit'];
 };
 
-const CreateProjectForm = (props: ProjectFormProps) => {
+const ProjectForm = (props: ProjectFormProps) => {
   const {
     errors,
     isLoading,
+    projectId,
     register,
     handleSubmit,
     submitProject,
@@ -51,7 +53,7 @@ const CreateProjectForm = (props: ProjectFormProps) => {
             fontSize="24px"
             textAlign={{ base: "end", md: "start" }}
           >
-            Create new project
+            {projectId ? "Update project" : "Create new project"}
           </Text>
         </Box>
 
@@ -152,7 +154,7 @@ const CreateProjectForm = (props: ProjectFormProps) => {
               type="submit"
               _hover={{ bg: "brand_blue.200" }}
             >
-              Create Project
+              {projectId ? "Update project" : "Create Project"}
             </Button>
           </VStack>
         </form>
@@ -161,4 +163,4 @@ const CreateProjectForm = (props: ProjectFormProps) => {
   )
 }
 
-export default CreateProjectForm
+export default ProjectForm

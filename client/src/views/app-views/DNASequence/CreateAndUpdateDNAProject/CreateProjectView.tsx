@@ -3,7 +3,7 @@ import { BsArrowLeft } from "react-icons/bs";
 
 /* Application Modules */
 import Button from "../../../../components/CustomBtn/Button";
-import CreateProjectForm from './CreateProjectForm';
+import ProjectForm from './ProjectForm';
 import ProjectFormFileUpload from "./ProjectFormFileUpload";
 import { useNavigate } from "react-router-dom";
 import {
@@ -65,7 +65,7 @@ const CreateProject = () => {
 
       <TabPanels>
         <TabPanel>
-          <CreateProjectForm {...useCreateDNASeqProject()} />
+          <ProjectForm {...useCreateDNASeqProject()} />
         </TabPanel>
 
         <TabPanel>
