@@ -11,9 +11,9 @@ import mailService from "../mail-service/mailService";
 import invitationRepository from "../repository/invitationRepository";
 import config from "../../../config/appConfig";
 import { ERR_MSG } from "../types/constants";
-import { logger } from "../../../config/logger";
 import { ClientError, NotFoundError, ServerError } from "../../../common/exceptions/ApiError";
 import { AcceptInvitation, IUser, InvitationLink, SendProjectInvitation, UpdateInvitation } from "../types/types";
+import { logger } from "../../../config/logger";
 
 class UserService {
   public async createUser(userBodyField: IUser) {
@@ -57,7 +57,7 @@ class UserService {
     try {
       await userRepository.deleteUser(userId);
     } catch (error: any) {
-      throw new ServerError("Server error. Please try again later");
+      throw new ServerError("Server error, please try again later");
     }
   }
 
@@ -88,7 +88,6 @@ class UserService {
         link: invitationLink
       });
     } catch (error: any) {
-      logger.error(error.message);
       throw new ServerError(error.message);
     }
   }
@@ -138,8 +137,8 @@ class UserService {
         return newUser.userId;
       }
     } catch (error: any) {
-      logger.error(error.message);
-      throw new ServerError(`Server error: ${error.message}`);
+      logger.error(error);
+      throw new ServerError(`Server error: Failed to add user to project`);
     }
   }
 
@@ -162,7 +161,6 @@ class UserService {
         invitationTokenExpiration: BigInt(invitationExpiration)
       });
     } catch (error: any) {
-      logger.error(error.message);
       throw new ServerError(error.message);
     }
   }

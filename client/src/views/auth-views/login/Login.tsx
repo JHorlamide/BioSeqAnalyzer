@@ -29,7 +29,7 @@ import Button from "../../../components/CustomBtn/Button";
 import FormContainer from "../../../components/FormContainer/FormContainer";
 import useErrorToast from "../../../hooks/useErrorToast";
 import useNavigation from "../../../hooks/useNavigation";
-import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH } from "../../../config/AppConfig";
+import { AUTHENTICATED_ENTRY, AUTH_PREFIX_PATH, DNA_SEQ_ENTRY } from "../../../config/AppConfig";
 import { FormInput } from "../../../components/CustomInput/FormInput/FormInput";
 import { useAppDispatch } from "../../../store/store";
 import { useLoginUserMutation } from "../../../services/auth/authApi";
@@ -63,7 +63,6 @@ const Login = () => {
   const { handleNavigate } = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
   const [loginUser, { isLoading }] = useLoginUserMutation();
-  const redirectUrl = pathQuery.get("redirect");
 
   const {
     register,
@@ -72,6 +71,7 @@ const Login = () => {
   } = useForm<LoginFormData>({ resolver: zodResolver(loginSchema) });
   const [acceptInvitation, { isLoading: isLoadingAccept }] = useAcceptProjectInviteMutation()
 
+  const redirectUrl = String(pathQuery.get("redirect"));
   const userEmail = String(pathQuery.get("user_email"));
   const projectId = String(pathQuery.get("project_id"));
   const invitationToken = String(pathQuery.get("invitation_token"));
@@ -84,11 +84,11 @@ const Login = () => {
         dispatchTokenAndRefetchData(response.data);
         toast.success(response.message);
 
-        if (redirectUrl !== null) {
-          return handleNavigate(redirectUrl);
+        if (redirectUrl && redirectUrl !== "null") {
+          return handleNavigate(DNA_SEQ_ENTRY);
+        } else {
+          handleNavigate(AUTHENTICATED_ENTRY);
         }
-
-        return handleNavigate(AUTHENTICATED_ENTRY);
       }
 
       handleError(response.message);
@@ -121,7 +121,7 @@ const Login = () => {
 
       handleError(response.message || 'Failed to accept invitation');
     } catch (error: any) {
-      handleError(`Error during login: ${error.message}`);
+      handleError(`Error during login`);
     }
   }
 

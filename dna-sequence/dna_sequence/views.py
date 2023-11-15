@@ -144,10 +144,7 @@ class AddUserToProjectView(APIView):
         try:
             dna_sequence = DNASequence.objects.get(id=project_id)
             invited_user, created = InvitedUsers.objects.get_or_create(user_id=user_id)
-
-            if created:
-                dna_sequence.invited_users.add(invited_user)
-
+            dna_sequence.invited_users.add(invited_user)
             dna_sequence_serializer = DNASequenceSerializer(dna_sequence)
 
             return Response(
@@ -211,6 +208,10 @@ class ShareProjectView(RetrieveAPIView):
 
 
 class DeleteProjectsView(DestroyAPIView):
+    def get_serializer_context(self):
+        auth_user = json.loads(self.request.META.get("HTTP_X_DECODED_USER"))
+        return {"author_id": auth_user["userId"], "include_file": False}
+
     def delete(self, request, *args, **kwargs):
         auth_user = json.loads(self.request.META.get("HTTP_X_DECODED_USER"))
         user_id = auth_user["userId"]

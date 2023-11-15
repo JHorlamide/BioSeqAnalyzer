@@ -36,13 +36,15 @@ model ProjectsInvitedTo {
   user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
   projectId String
+
+  @@index([userId], name: "userId")
 }
 
 model Invitation {
   id                        String           @id @default(uuid())
   userEmail                 String
   projectId                 String
-  invitationToken           String?           @unique
+  invitationToken           String?          @unique
   invitationTokenExpiration BigInt?
   status                    InvitationStatus @default(PENDING)
 }
