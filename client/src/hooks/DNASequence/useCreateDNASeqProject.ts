@@ -183,15 +183,17 @@ export const useUpdateDNASeqProject = (projectId: string) => {
   const {
     register,
     getValues,
-    handleSubmit,
     setValue,
+    handleSubmit,
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
+
 
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const { data } = useGetProjectQuery({ projectId });
   const [updateProject, { isLoading }] = useUpdateProjectMutation();
+
 
   const submitProject = async (data: ProjectFormData) => {
     const formData = utils.getFilledFormData(data);
@@ -203,7 +205,7 @@ export const useUpdateDNASeqProject = (projectId: string) => {
 
     try {
       const response = await updateProject({ projectId, ...formData }).unwrap();
-      
+
       if (response && response.id === projectId) {
         toast.success("Project updated successfully");
         return handleNavigate(DNA_SEQ_ENTRY);
@@ -215,7 +217,14 @@ export const useUpdateDNASeqProject = (projectId: string) => {
 
   useEffect(() => {
     if (data && data.data) {
-      const { name, bases, description, sequence_id, topology, nucleotide_type } = data.data;
+      const {
+        name,
+        bases,
+        description,
+        sequence_id,
+        topology,
+        nucleotide_type
+      } = data.data;
 
       setValue('name', name);
       setValue('topology', topology);

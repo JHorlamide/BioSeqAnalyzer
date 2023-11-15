@@ -114,7 +114,7 @@ const ProjectCard = (props: ProjectCardProps) => {
   ];
 
   const TruncateText = ({ text }: { text: string }) => {
-    const maxLength = 16;
+    const maxLength = 20;
 
     if (text.length <= maxLength) {
       return <Text fontWeight="semibold" fontSize={18}>{text}</Text>;
