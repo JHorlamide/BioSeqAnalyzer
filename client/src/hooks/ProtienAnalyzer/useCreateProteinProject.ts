@@ -18,20 +18,22 @@ import {
   useUpdateProjectMutation
 } from "../../services/proteinProject/proteinProjectAPI";
 
+
 export const useCreateProteinProject = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
+
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [inputVisibility, setInputVisibility] = useState({
     showRawSeqInput: false,
     showUniProtInput: true,
   });
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
   const [createProject, { isLoading }] = useCreateProjectMutation();
+
 
   const toggleShowUniProtInput = () => {
     setInputVisibility((prevState) => ({
@@ -40,10 +42,12 @@ export const useCreateProteinProject = () => {
     }));
   };
 
+
   const submitProject = async (data: ProjectFormData) => {
     try {
       const projectInputData = utils.getFilledFormData(data);
       const response = await createProject(projectInputData).unwrap();
+
       if (response.status === "Success") {
         toast.success(response.message);
         return handleNavigate(`${APP_PREFIX_PATH}/protein-analyzer/dashboard`);
@@ -83,8 +87,8 @@ export const useUpdateProject = (projectId: string) => {
     showUniProtInput: true,
   });
 
-  const [updateProject, { isLoading }] = useUpdateProjectMutation();
   const { data: project } = useGetProjectQuery({ projectId });
+  const [updateProject, { isLoading }] = useUpdateProjectMutation();
 
   const toggleShowUniProtInput = () => {
     setInputVisibility((prevState) => ({

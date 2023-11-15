@@ -96,9 +96,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                       onClick={toggleShowUniProtInput}
                       bg="brand_blue.100"
                       marginBottom={1}
-                      _hover={{
-                        bg: "brand_blue.50"
-                      }}
+                      _hover={{ bg: "brand_blue.50" }}
                     >
                       Use ID instead
                     </Button>
@@ -131,9 +129,7 @@ const ProjectForm = (props: ProjectFormProps) => {
                       onClick={toggleShowUniProtInput}
                       bg="brand_blue.100"
                       marginBottom={1.5}
-                      _hover={{
-                        bg: "brand_blue.100"
-                      }}
+                      _hover={{ bg: "brand_blue.100" }}
                     >
                       Use raw sequence instead
                     </Button>

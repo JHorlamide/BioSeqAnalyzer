@@ -1,5 +1,5 @@
 /* React */
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 /* Libraries */
 import { useForm } from "react-hook-form";
@@ -17,20 +17,22 @@ import {
   useGetProjectQuery,
   useUpdateProjectMutation
 } from "../../services/DNASequence/DNASeqProjectAPI";
-import Utils from "../../utils";
 
 const UNSUPPORTED_TOPOLOGY_ERROR = "Currently circular RNA sequences is not supported.";
 
 export const useCreateDNASeqProject = () => {
-  const { handleError } = useErrorToast();
-  const { handleNavigate } = useNavigation();
-  const [createProject, { isLoading }] = useCreateProjectMutation();
   const {
     register,
     getValues,
     handleSubmit,
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
+
+
+  const { handleError } = useErrorToast();
+  const { handleNavigate } = useNavigation();
+  const [createProject, { isLoading }] = useCreateProjectMutation();
+
 
   const submitProject = async (data: ProjectFormData) => {
     const formData = utils.getFilledFormData(data);
@@ -50,7 +52,6 @@ export const useCreateDNASeqProject = () => {
 
       handleError(response.message);
     } catch (error: any) {
-      console.log({ error });
       handleError(error.message || error);
     }
   };
@@ -66,11 +67,6 @@ export const useCreateDNASeqProject = () => {
 }
 
 export const useCreateDNASeqProjectWithFileUpload = () => {
-  const { handleError } = useErrorToast();
-  const { handleNavigate } = useNavigation();
-  const [isDragOver, setIsDragOver] = useState(false);
-  const [projectFile, setProjectFile] = useState<File | null | undefined>();
-  const [createProject, { isLoading }] = useCreateProjectMutation();
   const {
     register,
     getValues,
@@ -78,11 +74,20 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
 
+
+  const { handleError } = useErrorToast();
+  const { handleNavigate } = useNavigation();
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [projectFile, setProjectFile] = useState<File | null | undefined>();
+  const [createProject, { isLoading }] = useCreateProjectMutation();
+
+
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragOver(false);
     setProjectFile(event.dataTransfer.files[0]);
   };
+
 
   const handleFileInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files && event.target.files[0];
@@ -103,7 +108,7 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
 
     const formData = new FormData();
     const fileName = String(projectFile && projectFile.name.split(".")[0]);
-    const projectName = Utils.capitalizeText(fileName)
+    const projectName = utils.capitalizeText(fileName)
     formData.append("name", projectName);
     formData.append("nucleotide_type", nucleotide_type);
     formData.append("topology", topology);
@@ -137,15 +142,18 @@ export const useCreateDNASeqProjectWithFileUpload = () => {
 }
 
 export const useCreateDNASeqProjectByImport = () => {
-  const { handleError } = useErrorToast();
-  const { handleNavigate } = useNavigation();
-  const [createProject, { isLoading }] = useCreateProjectMutation();
   const {
     register,
     getValues,
     handleSubmit,
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
+
+
+  const { handleError } = useErrorToast();
+  const { handleNavigate } = useNavigation();
+  const [createProject, { isLoading }] = useCreateProjectMutation();
+
 
   const submitProject = async (data: ProjectFormData) => {
     const formData = utils.getFilledFormData(data);
@@ -156,7 +164,10 @@ export const useCreateDNASeqProjectByImport = () => {
     }
 
     try {
-      const response = await createProject({ ...formData, name: formData.sequence_id }).unwrap();
+      const response = await createProject({
+        ...formData,
+        name: formData.sequence_id
+      }).unwrap();
 
       if (response.status === "Success") {
         toast.success("Project created successfully");
