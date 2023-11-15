@@ -16,7 +16,7 @@ import ProjectOverview from "../views/app-views/ProteinAnalyzer/ProjectOverview/
 /* Protected Components -> DNA Sequence */
 import DNASequenceDashboard from "../views/app-views/DNASequence/DNASeqDashboard/DNASequenceDashboard";
 import CreateProject from "../views/app-views/DNASequence/CreateAndUpdateDNAProject/CreateProjectView";
-import UpdateDNASeqProjectForm from "../views/app-views/DNASequence/CreateAndUpdateDNAProject/UpdateDNASeqProjectForm";
+import UpdateDNASeqProjectForm from "../views/app-views/DNASequence/CreateAndUpdateDNAProject/UpdateProjectForm";
 import SequenceOverview from "../views/app-views/DNASequence/DNASequenceMap/DNASequenceMap";
 import ProteinSequenceMap from "../views/app-views/ProteinAnalyzer/ProteinSequenceMap/ProteinSequenceMap";
 import SharedProjectView from "../views/app-views/DNASequence/SharedProjectView/SharedProjectView";

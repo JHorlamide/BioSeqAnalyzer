@@ -28,7 +28,6 @@ export const useCreateDNASeqProject = () => {
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
 
-
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [createProject, { isLoading }] = useCreateProjectMutation();
@@ -199,12 +198,10 @@ export const useUpdateDNASeqProject = (projectId: string) => {
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
 
-
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
-  const { data } = useGetProjectQuery({ projectId });
-  const [updateProject, { isLoading }] = useUpdateProjectMutation();
-
+  const { data, isLoading } = useGetProjectQuery({ projectId });
+  const [updateProject, { isLoading: isLoadingUpdate }] = useUpdateProjectMutation();
 
   const submitProject = async (data: ProjectFormData) => {
     const formData = utils.getFilledFormData(data);
@@ -249,6 +246,7 @@ export const useUpdateDNASeqProject = (projectId: string) => {
   return {
     errors,
     isLoading,
+    isLoadingUpdate,
     register,
     getValues,
     submitProject,

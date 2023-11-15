@@ -8,7 +8,7 @@ import Button from "../../../../components/CustomBtn/Button";
 import useNavigation from "../../../../hooks/useNavigation";
 import ProjectForm from "./ProjectForm";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
-import { useUpdateProject } from "../../../../hooks/ProtienAnalyzer/useCreateProteinProject";
+import { useUpdateProject } from "../../../../hooks/ProtienAnalyzer/useProteinProjectHandler";
 
 const UpdateProjectForm = () => {
   const { handleNavigate } = useNavigation();

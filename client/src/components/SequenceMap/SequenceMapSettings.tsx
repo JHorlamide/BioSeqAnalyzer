@@ -141,7 +141,7 @@ export const Information = (props: InfoProps) => {
         <PopoverBody>
           {Object.keys(props).map((key, index) => (
             <Flex key={index} justifyContent="space-between">
-              <Text>{utils.capitalizeText(key)}</Text>
+              <Text>{utils.capitalizeText(key)}: </Text>
               <Text>{props[key as keyof InfoProps]}</Text>
             </Flex>
           ))}

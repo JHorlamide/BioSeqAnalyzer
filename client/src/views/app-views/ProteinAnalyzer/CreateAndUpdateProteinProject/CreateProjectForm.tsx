@@ -6,7 +6,7 @@ import { BsArrowLeft } from "react-icons/bs";
 import Button from "../../../../components/CustomBtn/Button";
 import useNavigation from "../../../../hooks/useNavigation";
 import ProjectForm from "./ProjectForm";
-import { useCreateProteinProject } from "../../../../hooks/ProtienAnalyzer/useCreateProteinProject";
+import { useCreateProteinProject } from "../../../../hooks/ProtienAnalyzer/useProteinProjectHandler";
 import { APP_PREFIX_PATH } from "../../../../config/AppConfig";
 
 const CreateProject = () => {

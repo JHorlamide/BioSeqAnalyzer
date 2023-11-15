@@ -7,11 +7,11 @@ import { ProjectFormData, projectSchema } from "../../schemas/proteinProjectSche
 import { zodResolver } from "@hookform/resolvers/zod";
 
 /* Application Modules */
+import utils from "../../utils";
+import useNavigation from "../useNavigation";
+import useErrorToast from "../useErrorToast";
 import { toast } from "react-hot-toast";
 import { APP_PREFIX_PATH } from "../../config/AppConfig";
-import useNavigation from "../useNavigation";
-import utils from "../../utils";
-import useErrorToast from "../useErrorToast";
 import {
   useCreateProjectMutation,
   useGetProjectQuery,
@@ -34,14 +34,12 @@ export const useCreateProteinProject = () => {
   });
   const [createProject, { isLoading }] = useCreateProjectMutation();
 
-
   const toggleShowUniProtInput = () => {
     setInputVisibility((prevState) => ({
       showRawSeqInput: !prevState.showRawSeqInput,
       showUniProtInput: !prevState.showUniProtInput,
     }));
   };
-
 
   const submitProject = async (data: ProjectFormData) => {
     try {

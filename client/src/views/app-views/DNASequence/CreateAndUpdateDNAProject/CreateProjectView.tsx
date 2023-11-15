@@ -3,14 +3,14 @@ import { BsArrowLeft } from "react-icons/bs";
 
 /* Application Modules */
 import Button from "../../../../components/CustomBtn/Button";
-import ProjectForm from './ProjectForm';
+import CreateProjectForm from './CreateProjectForm';
 import ProjectFormFileUpload from "./ProjectFormFileUpload";
 import { useNavigate } from "react-router-dom";
 import {
   useCreateDNASeqProject,
   useCreateDNASeqProjectByImport,
   useCreateDNASeqProjectWithFileUpload
-} from '../../../../hooks/DNASequence/useCreateDNASeqProject';
+} from '../../../../hooks/DNASequence/useDnaSeqProjectHandler';
 
 /* Chakra UI */
 import {
@@ -65,7 +65,7 @@ const CreateProject = () => {
 
       <TabPanels>
         <TabPanel>
-          <ProjectForm {...useCreateDNASeqProject()} />
+          <CreateProjectForm {...useCreateDNASeqProject()} />
         </TabPanel>
 
         <TabPanel>
