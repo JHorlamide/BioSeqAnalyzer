@@ -87,7 +87,7 @@ const Login = () => {
         if (redirectUrl && redirectUrl !== "null") {
           return handleNavigate(DNA_SEQ_ENTRY);
         } else {
-          handleNavigate(AUTHENTICATED_ENTRY);
+          return handleNavigate(AUTHENTICATED_ENTRY);
         }
       }
 

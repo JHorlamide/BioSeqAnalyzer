@@ -49,10 +49,8 @@ class DnaSequenceViewSet(ModelViewSet):
     def create(self, request, *args, **kwargs):
         auth_user = json.loads(self.request.META.get("HTTP_X_DECODED_USER"))
         sequence_id = request.data.get("sequence_id")
-        serializer = DNASequenceSerializer(
-            data=request.data,
-            context={"author_id": auth_user["userId"], "include_file": True},
-        )
+        context = {"author_id": auth_user["userId"], "include_file": True}
+        serializer = DNASequenceSerializer(data=request.data, context=context)
         serializer.is_valid(raise_exception=True)
         dna_sequence = serializer.save()
 

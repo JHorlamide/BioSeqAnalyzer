@@ -27,7 +27,7 @@ class DNASequenceSerializer(serializers.ModelSerializer):
 
     def save(self, **kwargs):
         author_id = self.context["author_id"]
-        project_id = self.context["project_id"]
+        project_id = self.context.get("project_id")
 
         try:
             dna_seq_project = DNASequence.objects.get(id=project_id)

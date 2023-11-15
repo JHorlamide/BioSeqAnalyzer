@@ -199,7 +199,7 @@ export const useUpdateDNASeqProject = (projectId: string) => {
 
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
-  const { data } = useGetProjectQuery({ projectId });
+  const { data, isLoading: isLoadingRetrieve } = useGetProjectQuery({ projectId });
   const [updateProject, { isLoading }] = useUpdateProjectMutation();
 
   const submitProject = async (data: ProjectFormData) => {
@@ -245,6 +245,9 @@ export const useUpdateDNASeqProject = (projectId: string) => {
   return {
     errors,
     isLoading,
+    isLoadingRetrieve,
+    file_content: data?.data.file_content,
+    sequence: data?.data.sequence,
     register,
     submitProject,
     handleSubmit,

@@ -53,11 +53,11 @@ export const SelectInput = <IFormValues extends Record<string, unknown>>(props: 
       <Stack width="full">
         <FormLabel>{label}</FormLabel>
         <Select
-          {...selectProps}
-          {...rest}
-          {...(register && register(name))}
-          _focus={{ border: "none", borderColor: "white" }}
           border="0.5px solid white"
+          _focus={{ border: "none", borderColor: "white" }}
+          {...rest}
+          {...selectProps}
+          {...(register && register(name))}
         >
           {selectOptions.map((option) => (
             <option key={option.label} value={option.value}>

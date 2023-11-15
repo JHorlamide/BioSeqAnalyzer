@@ -49,7 +49,6 @@ const SequenceMap = (props: SequenceMapProps) => {
     setSearchInput(e.target.value);
   }
 
-
   const handleZoomIn = useCallback(() => {
     if (zoomLevel < 100) {
       setZoomLevel(zoomLevel + 10);
