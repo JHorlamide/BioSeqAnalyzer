@@ -45,9 +45,10 @@ if (config.node_env !== "test") {
 routes.push(new UserRoute(app));
 routes.push(new AuthRoute(app));
 
-// Error handing middleware
+// Global error handing middleware
 app.use(errorHandler);
 
-app.use(routeNotFoundErrorHandler)
+// Route not found error handler
+app.use(routeNotFoundErrorHandler);
 
 export { app, routes };

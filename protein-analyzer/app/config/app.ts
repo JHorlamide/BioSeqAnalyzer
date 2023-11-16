@@ -8,7 +8,7 @@ import { useTreblle } from "treblle";
 import config from "./appConfig";
 import { requestLogger } from "./requestLogger";
 import { CommonRoutesConfig } from "../common/CommonRouteConfig";
-import { errorHandler } from "../common/middleware/errorHandlerMiddleware";
+import { errorHandler, routeNotFoundErrorHandler } from "../common/middleware/errorHandlerMiddleware";
 
 // Routes imports
 import { ProjectRoute } from "../projects/routeConfig";
@@ -50,8 +50,10 @@ if (config.node_env !== "test") {
 // routes definition
 routes.push(new ProjectRoute(app));
 
-// Error handing middleware
+// Global error handing middleware
 app.use(errorHandler);
 
+// Route not found error handler
+app.use(routeNotFoundErrorHandler);
 
 export { app, routes };

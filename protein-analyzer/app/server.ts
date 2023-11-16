@@ -30,12 +30,9 @@ function createServer(): http.Server {
   return server;
 }
 
-export default createServer;
-
-async function main(): Promise<http.Server> {
+export default async function main(): Promise<http.Server> {
   await DBConnectWithRetry();
-  const server = createServer();
-  return server;
+  return createServer();
 }
 
 if (config.node_env !== "test") {

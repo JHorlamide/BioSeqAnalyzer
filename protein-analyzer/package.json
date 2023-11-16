@@ -7,7 +7,7 @@
     "start": "npm run build && node ./dist/server.js",
     "dev": "ts-node-dev --poll --respawn --transpile-only app/server.ts",
     "build": "rimraf ./dist && tsc",
-    "test": "jest",
+    "test": "jest --watchAll",
     "test:watch": "jest --watchAll --verbose --detectOpenHandles"
   },
   "keywords": [],

@@ -11,6 +11,7 @@ export function errorHandler(error: APIError, req: Request, res: Response, next:
     statusCode: error.statusCode || 500,
     status: "Failure",
     message: error.message || "Server error. Please try again later",
+    stack: error.stack,
   }
 
   const errorObject = Object.assign({}, defaultError, error);
@@ -19,8 +20,7 @@ export function errorHandler(error: APIError, req: Request, res: Response, next:
   return responseHandler.customResponse(errorObject.statusCode, errorObject, res);
 }
 
-// const errorObj = {
-//   status: false,
-//   message: error.message,
-//   statusCode: error.statusCode
-// }
+export const routeNotFoundErrorHandler = (req: Request, res: Response, next: NextFunction) => {
+  responseHandler.customResponse(404, { message: "Route not found" }, res);
+  return next();
+}
