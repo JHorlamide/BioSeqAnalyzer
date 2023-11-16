@@ -1,1 +1,5 @@
 {"level":"error","message":"Unhandled error. (ConnectionTimeoutError: Connection timeout\n    at Socket.<anonymous> (/Users/olamidejubril/Documents/projects/jhorlamide/projects/BioSeqAnalyzer/protein-analyzer/node_modules/@redis/client/dist/lib/client/socket.js:178:124)\n    at Object.onceWrapper (node:events:627:28)\n    at Socket.emit (node:events:513:28)\n    at Socket._onTimeout (node:net:568:8)\n    at listOnTimeout (node:internal/timers:564:17)\n    at processTimers (node:internal/timers:507:7))"}
+{"level":"error","message":"getaddrinfo ENOTFOUND redis-cache"}
+{"level":"error","message":"getaddrinfo ENOTFOUND redis-cache"}
+{"level":"error","message":"getaddrinfo ENOTFOUND redis-cache"}
+{"level":"error","message":"getaddrinfo ENOTFOUND redis-cache"}

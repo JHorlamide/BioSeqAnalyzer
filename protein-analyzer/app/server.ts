@@ -5,9 +5,9 @@ import http from "http";
 import config from "./config/appConfig";
 import DBConnectWithRetry from "./config/DBConfig";
 import { app, routes } from "./config/app";
+import { logger } from "./config/logger";
 import { onError } from "./config/requestLogger";
 import { CommonRoutesConfig } from "./common/CommonRouteConfig";
-import { logger } from "./config/logger";
 
 function createServer(): http.Server {
   app.set("port", config.port);
@@ -25,12 +25,14 @@ function createServer(): http.Server {
         logger.info(`Routes configured for -> ${route.getName()}`);
       });
     }
-  })
+  });
 
   return server;
 }
 
-export default async function main(): Promise<http.Server> {
+export default createServer;
+
+async function main(): Promise<http.Server> {
   await DBConnectWithRetry();
   const server = createServer();
   return server;

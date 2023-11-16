@@ -28,7 +28,11 @@ const config = {
   port: process.env.PORT,
   prefix: "/api",
   node_env: process.env.NODE_ENV,
-  databaseUrl: process.env.DATABASE_URL as string,
+  // devDatabaseUrl: process.env.DATABASE_URL as string,
+  testDatabaseUrl: process.env.TEST_DATABASE_URL as string,
+  databaseUrl: process.env.NODE_ENV !== "test"
+    ? process.env.DATABASE_URL as string
+    : process.env.TEST_DATABASE_URL as string,
   uniprotBaseUrl: process.env.UNIPROT_BASE_URL,
   pdbBaseUrl: process.env.PDB_BASE_URL,
   MAX_FILE_SIZE: 5 * 1024 * 1024, // Maximum file size of 5MB

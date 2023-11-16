@@ -1,7 +1,9 @@
+/* Libraries */
+import { createClient, RedisClientType } from "redis";
+
 /* Application Modules */
 import config from "../../config/appConfig";
 import { logger } from "../../config/logger";
-import { createClient, RedisClientType } from "redis";
 import { ServerError } from "../../common/exceptions/ApiError";
 
 class RedisCache {
@@ -10,7 +12,7 @@ class RedisCache {
   constructor() {
     this.client = createClient({ url: config.redisUrl });
 
-    this.client.connect()
+    this.client.connect?.()
       .then(() => logger.info("Redis connected successfully"))
       .catch((error) => {
         logger.error(error.message);
@@ -37,15 +39,6 @@ class RedisCache {
       throw new ServerError("Internal Server Error");
     }
   }
-
-  // private async initializeRedis() {
-  //   try {
-  //     await this.client.connect();
-  //   } catch (error: any) {
-  //     logger.error(error.message);
-  //     throw new ServerError(error.message);
-  //   }
-  // }
 }
 
 export default new RedisCache();

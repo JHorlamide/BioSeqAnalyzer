@@ -6,6 +6,7 @@ const config = {
   testEnvironment: "node",
   detectOpenHandles: true,
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
+  setupFilesAfterEnv: ['./jest.setup.redis-mock.js'],
   // testMatch: [""],
 };
 
