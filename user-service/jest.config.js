@@ -6,7 +6,6 @@ const config = {
   testEnvironment: "node",
   detectOpenHandles: true,
   transformIgnorePatterns: ["<rootDir>/node_modules/"],
-  // testMatch: [""],
 };
 
 module.exports = config;

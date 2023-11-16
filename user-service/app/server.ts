@@ -29,11 +29,8 @@ function createServer(): http.Server {
   return server;
 }
 
-export default async function main(): Promise<http.Server> {
-  const server = createServer();
-  return server;
-}
+export default createServer;
 
 if (config.node_env !== "test") {
-  main();
+  createServer();
 }
