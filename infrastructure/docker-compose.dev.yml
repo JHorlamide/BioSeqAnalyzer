@@ -36,6 +36,7 @@ services:
       - bioseq-networks
     environment:
       MYSQL_ROOT_PASSWORD: "password"
+      DATABASE_URL: "mysql://root:password@mysql:3306/User"
 
   mysql2:
     container_name: mysql2
@@ -63,6 +64,7 @@ services:
       - ../user-service/app:/user-service/app:cached
       - ../user-service/views:/user-service/views:cached
       - ../user-service/prisma:/user-service/prisma:cached
+      - migrations:/user-service/prisma/migrations
       - /user-service/node_modules
     env_file: [ ../user-service/.env ]
     depends_on: [ "mysql" ]
@@ -140,4 +142,6 @@ services:
 
 volumes:
   redis-cache:
+    driver: local
+  migrations:
     driver: local

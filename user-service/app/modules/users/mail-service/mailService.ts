@@ -65,7 +65,7 @@ class MailService {
 
     try {
       await this.transporter.sendMail(mailOpts);
-      logger.info(`Email sent successfully to the following recipients: ${receiverMail.toString()}`)
+      logger.info(`Email sent successfully to the following recipients: ${receiverMail.toString()}`);
     } catch (error: any) {
       logger.error(`Sending email error: ${error.message}`);
       throw new ServerError(`Unable to send email: ${error.message}`);
@@ -85,7 +85,7 @@ class MailService {
 
     try {
       await this.transporter.sendMail(mailOpts);
-      logger.info(`Email sent successfully to the following recipients: ${receiverMail.toString()}`)
+      logger.info(`Email sent successfully to the following recipients: ${receiverMail.toString()}`);
     } catch (error: any) {
       logger.error(`Sending email error: ${error.message}`);
       throw new ServerError(`Unable to send email: ${error.message}`);

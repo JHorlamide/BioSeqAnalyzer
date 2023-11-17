@@ -31,6 +31,6 @@ function createServer(): http.Server {
 
 export default createServer;
 
-if (config.node_env !== "test") {
-  createServer();
-}
+// if (config.node_env === "development") {
+//   createServer();
+// }

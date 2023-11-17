@@ -7,7 +7,7 @@
     "start": "npm run build && node ./dist/server.js",
     "dev": "ts-node-dev --respawn --transpile-only app/server.ts",
     "build": "rimraf ./dist && tsc",
-    "test": "jest",
+    "test": "./scripts/run-integration.sh",
     "test:watch": "jest --watchAll --verbose --detectOpenHandles",
     "start:migrate:dev": "prisma migrate dev --name init && npm run dev",
     "start:migrate:prod": "prisma migrate deploy && node ./dist/server.js"

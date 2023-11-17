@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import supertest, { SuperAgentTest } from "supertest";
 
 /* Application Modules */
-import createServer from "../../server";
+import createServer from "../server";
 import {
   accessToken,
   createWithProjectPDBID,
@@ -14,7 +14,7 @@ import {
   createProjectWithoutUniProtIDAndPDBID,
   userId,
   updateProjectText,
-} from "../fixtures/testData";
+} from "./fixtures/testData";
 
 const BASE_URL = "/api/protein-projects";
 

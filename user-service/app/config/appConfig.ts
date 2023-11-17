@@ -3,6 +3,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const config = {
+  allowedOrigin: {
+    get baseUrl() {
+      if (process.env.NODE_ENV === "production") {
+        return process.env.BASE_URL_LIVE
+      }
+
+      return process.env.BASE_URL_DEV
+    }
+  },
+
   jwt: {
     secret: process.env.JWT_SECRETE as string,
     audience: process.env.JWT_AUDIENCE,
@@ -17,16 +27,6 @@ const config = {
   tempPassword: process.env.TEMP_PASSWORD as string,
   userEmail: process.env.NODEMAILER_USER as string,
   password: process.env.PASSWORD as string,
-  
-  allowedOrigin: {
-    get baseUrl() {
-      if (process.env.NODE_ENV === "production") {
-        return process.env.BASE_URL_LIVE
-      }
-
-      return process.env.BASE_URL_DEV
-    }
-  },
 }
 
 export default config;

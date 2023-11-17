@@ -10,7 +10,7 @@ export function errorHandler(error: ApiError, req: Request, res: Response, next:
   const statusCode = error.status;
 
   const resBody = {
-    success: false,
+    status: false,
     message: error.message,
   }
 
