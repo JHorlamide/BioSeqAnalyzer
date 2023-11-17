@@ -29,7 +29,8 @@ WORKDIR /protein-analyzer
 COPY package*.json .
 
 # Install only development packages
-RUN npm install --only=production
+RUN npm install --omit=dev
+# RUN npm install --only=production
 
 # Copy the built app from the development stage to the production stage
 COPY --from=development /protein-analyzer/dist ./dist

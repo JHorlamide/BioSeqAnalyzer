@@ -1,9 +1,37 @@
-import { Box, HStack, Text, VStack, Heading, Center, Image } from "@chakra-ui/react"
+/* React */
+import { ReactElement } from 'react';
+
+/* Libraries */
+import { Link } from "react-router-dom";
+import { FcBiotech } from 'react-icons/fc';
+import { GiMolecule } from "react-icons/gi";
+
+/* Application Modules */
 import { AUTH_PREFIX_PATH } from "../../config/AppConfig";
 import Button from "../../components/CustomBtn/Button";
 import useNavigation from "../../hooks/useNavigation";
-import Features from "./Features"
-import { Link } from "react-router-dom";
+
+import {
+  Box,
+  HStack,
+  Text,
+  VStack,
+  Heading,
+  Center,
+  Image,
+  Container,
+  Flex,
+  Icon,
+  Stack,
+  useColorModeValue,
+} from "@chakra-ui/react"
+
+interface CardProps {
+  heading: string;
+  description: string;
+  icon: ReactElement;
+  status: string;
+}
 
 const containerStyle = {
   bg: "brand_blue.300",
@@ -14,9 +42,82 @@ const containerStyle = {
   paddingY: "16px"
 }
 
+const Card = (props: CardProps) => {
+  const { heading, description, icon, status } = props;
+
+  return (
+    <Box
+      maxW={{ base: 'full', md: '350px' }}
+      width="full"
+      borderWidth="1px"
+      borderRadius="lg"
+      overflow="hidden"
+      p={5}>
+      <Stack align={'start'} spacing={2}>
+        <Flex
+          w={16}
+          h={16}
+          align={'center'}
+          justify={'center'}
+          color={'white'}
+          rounded={'full'}
+          bg={useColorModeValue('gray.100', 'gray.700')}>
+          {icon}
+        </Flex>
+
+        <Box mt={2}>
+          <Heading size="md">{heading}</Heading>
+          <Text mt={1} fontSize={'sm'}>
+            {description}
+          </Text>
+        </Box>
+
+        <HStack>
+          <Text fontWeight="semibold" colorScheme={'blue'} size={'sm'}>
+            Status:
+          </Text>
+
+          <Text colorScheme={'blue'} size={'sm'}>
+            {status}
+          </Text>
+        </HStack>
+      </Stack>
+    </Box>
+  );
+};
+
+function Features() {
+  return (
+    <Box p={4} width="full">
+      <Stack spacing={4} as={Container} maxW={'3xl'} textAlign={'center'}>
+        <Heading fontSize={{ base: '2xl', sm: '4xl' }} fontWeight={'bold'}>
+          Features
+        </Heading>
+
+        <Container maxW={'5xl'} mt={12}>
+          <Flex width="full" flexWrap="wrap" gridGap={6} justify="center">
+            <Card
+              heading={"Analysis of proteins engineered data"}
+              icon={<Icon as={GiMolecule} w={10} h={10} color="#08355a" />}
+              description={"Visualize and analyze the results of their experiments."}
+              status={"Functional"}
+            />
+
+            <Card
+              heading={"DNA sequence analysis"}
+              icon={<Icon as={FcBiotech} w={10} h={10} />}
+              status="Functional"
+              description={"Allows researchers to upload, store, and analyze DNA sequence data."}
+            />
+          </Flex>
+        </Container>
+      </Stack>
+    </Box>
+  );
+}
+
 const Website = () => {
   const { handleNavigate } = useNavigation();
-  const proteinSequenceLink = "https://www.cup.uni-muenchen.de/ch/compchem/tink/as.html";
 
   return (
     <Box {...containerStyle}>
@@ -46,7 +147,7 @@ const Website = () => {
         </HStack>
       </HStack>
 
-      <HStack flexDirection={{ base: "column", md: "row" }} justifyContent="space-evenly">
+      <Flex mt={10}>
         <Center>
           <VStack
             justifyContent="center"
@@ -56,49 +157,51 @@ const Website = () => {
             alignItems="flex-start"
             width="80%"
           >
-            <Heading as="h2">About BioSeqAnalyzer</Heading>
-            <Text as="p" fontSize="lg">
-              Proteins, the building blocks of life, are large, complex molecules that play
-              many critical roles in the body. For example hemoglobin is a protein that
-              moves oxygen in your blood to your muscles. Other proteins such as lactase
-              enzymes help us digest milk.
+            <Heading as="h2">Introducing BioSeqAnalyzer -
+              Your Comprehensive Protein & DNA/RNA Analysis Platform
+            </Heading>
+
+            <Text>
+              Welcome to BioSeqAnalyzer, where I empower users to decipher and make sense of
+              their experimental data effortlessly. The platform, initially renowned as ProteinAnalyzer,
+              has evolved to cater not only to protein sequences but also to the intricate world of DNA/RNA
+              sequences.
             </Text>
 
-            <Text as="p" fontSize="lg">
-              A protein is a linear chain of amino acids. There are 20 <a href={proteinSequenceLink} target="_blank">standard amino acids.</a>
-              This "alphabet" lets us represent a protein as a sequence of discrete tokens.
-              This is known as a protein's primary structure.
-            </Text>
+            <Text fontWeight="bold" fontSize={20}>Protein Analysis:</Text>
+            <Box pl={5}>
+              <Text as="p" fontSize="lg">
+                Unravel the impact of sequence alterations on a protein's behavior. BioSeqAnalyzer
+                allows users to comprehend changes introduced to a specific protein sequence and discern
+                their influence on various numerical properties measured in the laboratory. Dive deep into
+                the realm of protein engineering, starting with a reference 'wild type' protein and exploring
+                mutations to uncover valuable insights.
+              </Text>
+            </Box>
 
-            <Text as="p" fontSize="lg">
-              In protein engineering, the goal is to improve the property of a protein
-              sequence by changing its amino acid sequence (primary structure) and measuring
-              the property of different variants. The projects start with a “wild type”
-              protein that has a given reference sequence. Then mutations to this sequence
-              are introduced and their results on a given property of that protein are measured
-              in a laboratory.
-            </Text>
+            <Text fontWeight="bold" fontSize={20}>DNA/RNA Sequencing:</Text>
+            <Box pl={5}>
+              <Text as="p" fontSize="lg">
+                Explore the vast landscape of genetic information with our DNA/RNA sequencing
+                capabilities. Visualize and analyze DNA/RNA sequences effortlessly, whether you're
+                creating projects through our user-friendly form, uploading files in multiple formats,
+                or seamlessly importing data from the NCBI database. BioSeqAnalyzer provides a
+                collaborative workspace where users can share project links, invite team members,
+                and collectively unravel the mysteries encoded in genetic sequences.
+              </Text>
+            </Box>
 
-            <Center>
-              <Image src="/protein-sequence.png" width="60%" height="30%" />
-            </Center>
-
-            <Text as="p" fontSize="lg">
-              The goal of this web app is to enable users to make sense of the changes
-              introduced to a given protein sequence and how they affect a numerical
-              property measured in the laboratory for each variant.
-            </Text>
-
-            <Text as="p" fontSize="lg">
-              Using this web app, users can create a project by filling a project form.
-              Then when they upload data corresponding to the project, they can visualize
-              and analyze the results of their experiments.
-            </Text>
+            <Box>
+              <Text as="p" fontSize="lg">
+                BioSeqAnalyzer is not just a tool; it's your gateway to understanding, analyzing,
+                and collaborating on experimental data in the world of proteins, DNA, and RNA.
+                Elevate your research with precision and efficiency.
+              </Text>
+            </Box>
           </VStack>
         </Center>
-
         <Features />
-      </HStack>
+      </Flex>
     </Box>
   )
 }
