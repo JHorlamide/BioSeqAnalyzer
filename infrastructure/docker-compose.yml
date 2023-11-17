@@ -27,8 +27,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: "root"
       MONGO_INITDB_ROOT_PASSWORD: "1234"
 
-  mysql-server:
-    container_name: mysql-server
+  mysql:
+    container_name: mysql
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -36,9 +36,10 @@ services:
       - bioseq-networks
     environment:
       MYSQL_ROOT_PASSWORD: "password"
+      DATABASE_URL: "mysql://root:password@mysql:3306/User"
  
-  mysql2-server:
-    container_name: mysql2-server
+  mysql2:
+    container_name: mysql2
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
     restart: always
@@ -51,7 +52,7 @@ services:
   user-service:
     container_name: user-service
     build:
-      context: ../UserService
+      context: ../user-service
       target: production
     tty: true
     restart: unless-stopped
@@ -59,10 +60,13 @@ services:
     networks:
       - bioseq-networks
     volumes:
-      - ../UserService/app:/user-service/app:cached,ro
+      - ../user-service/app:/user-service/app:cached
+      - ../user-service/views:/user-service/views:cached
+      - ../user-service/prisma:/user-service/prisma:cached
+      - migrations:/user-service/prisma/migrations
       - /user-service/node_modules
-    env_file: [ ../UserService/.env ]
-    depends_on: [ "mysql-server" ]
+    env_file: [ ../user-service/.env ]
+    depends_on: [ "mysql" ]
 
   protein-analyzer:
     container_name: protein-analyzer
@@ -86,18 +90,19 @@ services:
       REDIS_PASSWORD: "protein-12345"
 
   dna-sequence:
-    container_name: DNA-Sequence
+    container_name: dna-Sequence
     build:
       context: ../dna-sequence
       dockerfile: ../dna-sequence/Dockerfile
     volumes:
-      - ../dna-sequence:/app:cached,ro
+      - ../dna-sequence:/app:cached
+      - ../dna-sequence/dna_sequence/migrations:/app/dna_sequence/migrations:cached
     networks:
       - bioseq-networks
     restart: unless-stopped
     ports: [ "8000:8000" ]
     env_file: [ ../dna-sequence/.env ]
-    depends_on: [ "mysql2-server" ]
+    depends_on: [ "mysql2" ]
 
   api-gateway:
     container_name: api-gateway
@@ -110,7 +115,7 @@ services:
     networks:
       - bioseq-networks
     volumes:
-      - ../api-gateway/app:/api-gateway/app:cached,ro
+      - ../api-gateway/app:/api-gateway/app:cached
       - /api-gateway/node_modules
     env_file: [ ../api-gateway/.env ]
     depends_on:
@@ -134,4 +139,6 @@ services:
 
 volumes:
   redis-cache:
+    driver: local
+  migrations:
     driver: local

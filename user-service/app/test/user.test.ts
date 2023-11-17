@@ -15,8 +15,8 @@ import {
   invalidLoginTest,
   passwordResetTest,
   mailParam,
-  resetPasswordTest,
-  invalidPasswordResetTest
+  invalidPasswordResetTest,
+  sendInvitationTest
 } from "./fixtures/testData";
 
 const BASE_URL = "/api/users";
@@ -96,7 +96,7 @@ describe("user and authentication endpoint", function () {
   });
 
   describe("without accessToken", function () {
-    it("it should POST to request password reset", async function () {
+    it("it should allow POST to request password reset", async function () {
       const response = await request
         .post(`${BASE_URL}/forgot-password`)
         .send(passwordResetTest);
@@ -119,7 +119,7 @@ describe("user and authentication endpoint", function () {
   })
 
   describe("with valid accessToken", function () {
-    it("it should POST to refresh user token", async function () {
+    it("it should allow POST to refresh user token", async function () {
       const response = await request
         .post(`${BASE_URL}/refresh-token`)
         .set({ Authorization: `Bearer ${accessToken}` })
@@ -140,5 +140,11 @@ describe("user and authentication endpoint", function () {
       accessToken = response.body.data.accessToken;
       refreshToken = response.body.data.refreshToken;
     })
+  })
+
+  it("it should allow POST to send project invitation", async function () {
+    const response = await request
+      .post(`${BASE_URL}/invite`)
+      .send(sendInvitationTest)
   })
 });

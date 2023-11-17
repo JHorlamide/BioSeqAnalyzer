@@ -92,7 +92,7 @@ services:
       REDIS_PASSWORD: "protein-12345"
 
   dna-sequence:
-    container_name: DNA-Sequence
+    container_name: dna-Sequence
     build:
       context: ../dna-sequence
       dockerfile: ../dna-sequence/Dockerfile

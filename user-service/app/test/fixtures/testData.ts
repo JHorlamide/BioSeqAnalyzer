@@ -34,8 +34,13 @@ export const mailParam = {
   link: "http://localhost:3000"
 }
 
-export const resetPasswordTest = {
-  password: "olamide",
-  confirmPassword: "olamide",
-  passwordToken: "sampletoken"
+export const sendInvitationTest = {
+  userEmail: "olamide@gmail.com",
+  projectName: "Sample Project Name",
+  projectId: "8cdc4790-12f2-472d-a15f-4477e5ab006a",
 }
+// export const resetPasswordTest = {
+//   password: "olamide",
+//   confirmPassword: "olamide",
+//   passwordToken: "sampletoken"
+// }
