@@ -1,4 +1,4 @@
-# Use an official Node.js runtime as a parent image
+### Stage 1: Development Stage ###
 FROM node:16-alpine as development
 
 # Set the working directory to /protein-analyzer

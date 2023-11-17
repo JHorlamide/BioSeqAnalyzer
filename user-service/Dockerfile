@@ -12,7 +12,7 @@ COPY prisma ./prisma/
 # Install dependencies
 RUN npm install
 
-RUN npx prisma generate
+# RUN npx prisma generate
 
 # Copy the rest of the application code to the working directory
 COPY . .
@@ -38,7 +38,7 @@ RUN npm install --only=production
 
 # Copy the built app from the development stage to the production stage
 COPY --from=development /user-service/dist ./dist
-COPY --from=builder /user-service/prisma ./prisma
+# COPY --from=development /user-service/prisma ./prisma
 
 # Set the command to run the app
 CMD ["node", "dist/server.js"]
