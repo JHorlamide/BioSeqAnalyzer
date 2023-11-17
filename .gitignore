@@ -3,3 +3,5 @@ keys/
 data
 .DS_Store
 .idea/
+infrastructure/BioSeqAnalyzer-Web-server.pem
+

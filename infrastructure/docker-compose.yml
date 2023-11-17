@@ -36,7 +36,6 @@ services:
       - bioseq-networks
     environment:
       MYSQL_ROOT_PASSWORD: "password"
-      DATABASE_URL: "mysql://root:password@mysql:3306/User"
  
   mysql2:
     container_name: mysql2
@@ -59,6 +58,8 @@ services:
     ports: [ "7070:7070" ]
     networks:
       - bioseq-networks
+    environment:
+      DATABASE_URL: "mysql://root:password@mysql:3306/User"
     volumes:
       - ../user-service/app:/user-service/app:cached
       - ../user-service/views:/user-service/views:cached
@@ -94,9 +95,16 @@ services:
     build:
       context: ../dna-sequence
       dockerfile: ../dna-sequence/Dockerfile
+    environment:
+      DB_HOST: mysql2
+      PORT: 3306
+      MYSQL_USER: root
+      MYSQL_DATABASE: DnaSequence
+      MYSQL_ROOT_PASSWORD: RootPass
     volumes:
       - ../dna-sequence:/app:cached
       - ../dna-sequence/dna_sequence/migrations:/app/dna_sequence/migrations:cached
+      - dna-seq-migrations:/app/dna_sequence/migrations
     networks:
       - bioseq-networks
     restart: unless-stopped
@@ -141,4 +149,6 @@ volumes:
   redis-cache:
     driver: local
   migrations:
+    driver: local
+  dna-seq-migrations:
     driver: local
