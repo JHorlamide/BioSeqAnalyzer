@@ -13,6 +13,11 @@ const config = {
     }
   },
 
+  treble: {
+    apiKey: process.env.TREBLLE_API_KEY,
+    projectId: process.env.TREBLLE_PROJECT_ID
+  },
+
   jwt: {
     secret: process.env.JWT_SECRETE as string,
     audience: process.env.JWT_AUDIENCE,

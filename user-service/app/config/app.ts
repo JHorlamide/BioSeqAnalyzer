@@ -1,6 +1,8 @@
+/* Libraries */
 import express from "express";
 import cors, { CorsOptions } from "cors";
 import helmet from "helmet";
+import { useTreblle } from "treblle";
 
 import config from "./appConfig";
 import { requestLogger } from "./requestLogger";
@@ -13,6 +15,11 @@ import { AuthRoute } from "../modules/auth/routeConfig";
 
 const app = express();
 const routes: CommonRoutesConfig[] = [];
+
+useTreblle(app, {
+  apiKey: config.treble.apiKey,
+  projectId: config.treble.projectId
+});
 
 // Middleware that enables Cross-Origin Resource Sharing (CORS) for the server.
 // This allows the server to handle requests from different domains or origins.
