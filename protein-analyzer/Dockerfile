@@ -16,7 +16,8 @@ COPY . .
 # Build the TypeScript code
 RUN npm run build
 
-FROM node:16-alpine as production
+### Stage 2: Production Stage ###
+FROM node:18-slim as production
 
 # Set environment to production
 ARG NODE_ENV=production

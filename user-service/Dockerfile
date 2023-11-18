@@ -15,11 +15,14 @@ RUN npm install
 # Copy the rest of the application code to the working directory
 COPY . .
 
+# Generate prisma client
+RUN npx prisma generate
+
 # Build the TypeScript code
 RUN npm run build
 
 ### Stage 2: Production Stage ###
-FROM node:16-alpine as production
+FROM node:18-slim as production
 
 # Set environment to production
 ARG NODE_ENV=production
