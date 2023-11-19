@@ -45,4 +45,4 @@ COPY --from=development /user-service/prisma ./prisma
 EXPOSE 7070
 
 # Set the command to run the app
-CMD ["node", "dist/server.js"]
+CMD ["node", "dist/server.js", "0.0.0.0:7070"]
