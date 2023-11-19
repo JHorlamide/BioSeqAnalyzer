@@ -56,6 +56,7 @@ services:
     tty: true
     restart: unless-stopped
     ports: [ "7070:7070" ]
+    network_mode: "host"
     networks:
       - bioseq-networks
     environment:
@@ -76,7 +77,8 @@ services:
       target: production
     tty: true
     restart: unless-stopped
-    ports: [ "8080:8080" ]
+    ports: [ "7071:7071" ]
+    network_mode: "host"
     networks:
       - bioseq-networks
     volumes:
@@ -107,7 +109,7 @@ services:
     networks:
       - bioseq-networks
     restart: unless-stopped
-    ports: [ "8000:8000" ]
+    ports: [ "7072:7072" ]
     env_file: [ ../dna-sequence/.env ]
     depends_on: [ "mysql2" ]
 
@@ -118,7 +120,7 @@ services:
       target: production
     tty: true
     restart: unless-stopped
-    ports: [ "9090:9090" ]
+    ports: [ "7073:7073" ]
     networks:
       - bioseq-networks
     volumes:

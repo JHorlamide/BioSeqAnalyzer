@@ -17,7 +17,7 @@ RUN pipenv install --system
 COPY . .
 
 # Expose the Django development server port
-EXPOSE 8000
+EXPOSE 7072
 
 # Start the Django development server
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["python", "manage.py", "runserver", "0.0.0.0:7072"]
