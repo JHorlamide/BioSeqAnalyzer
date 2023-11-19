@@ -42,6 +42,9 @@ RUN npm install --omit=dev
 COPY --from=development /user-service/dist ./dist
 COPY --from=development /user-service/prisma ./prisma
 
+# Generate prisma client
+RUN npx prisma generate
+
 EXPOSE 7070
 
 # Set the command to run the app
