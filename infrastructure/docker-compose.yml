@@ -50,7 +50,7 @@ services:
     build:
       context: ../user-service
       target: production
-    tty: true
+    # tty: true
     restart: unless-stopped
     ports: [ "7070:7070" ]
     networks:
@@ -71,7 +71,7 @@ services:
     build:
       context: ../protein-analyzer
       target: production
-    tty: true
+    # tty: true
     restart: unless-stopped
     ports: [ "7071:7071" ]
     networks:
@@ -113,7 +113,7 @@ services:
     build:
       context: ../api-gateway
       target: production
-    tty: true
+    # tty: true
     restart: unless-stopped
     ports: [ "7073:7073" ]
     networks:
@@ -130,7 +130,7 @@ services:
   client:
     container_name: client
     build: ../client
-    tty: true
+    # tty: true
     restart: unless-stopped
     ports: [ "5173:5173" ]
     networks:
