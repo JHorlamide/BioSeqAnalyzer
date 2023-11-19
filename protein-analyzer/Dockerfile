@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 ### Stage 2: Production Stage ###
-FROM node:18-slim as production
+FROM node:16-alpine as production
 
 # Set environment to production
 ARG NODE_ENV=production

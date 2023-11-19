@@ -56,7 +56,6 @@ services:
     tty: true
     restart: unless-stopped
     ports: [ "7070:7070" ]
-    network_mode: "host"
     networks:
       - bioseq-networks
     environment:
@@ -78,7 +77,6 @@ services:
     tty: true
     restart: unless-stopped
     ports: [ "7071:7071" ]
-    network_mode: "host"
     networks:
       - bioseq-networks
     volumes:
