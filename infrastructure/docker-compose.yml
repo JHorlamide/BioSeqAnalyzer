@@ -46,7 +46,7 @@ services:
   user-service:
     container_name: user-service
     build:
-      context: ../user-service`
+      context: ../user-service
       target: production
     # tty: true
     restart: unless-stopped
