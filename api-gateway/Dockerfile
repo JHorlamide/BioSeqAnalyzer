@@ -34,5 +34,7 @@ RUN npm install --only=production
 # Copy the built app from the development stage to the production stage
 COPY --from=development /api-gateway/dist ./dist
 
+EXPOSE 9090
+
 # Set the command to run the app
 CMD ["node", "dist/server.js"]

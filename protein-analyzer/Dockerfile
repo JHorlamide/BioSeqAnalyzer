@@ -36,5 +36,7 @@ RUN npm install --omit=dev
 # Copy the built app from the development stage to the production stage
 COPY --from=development /protein-analyzer/dist ./dist
 
+EXPOSE 8080
+
 # Set the command to run the app
 CMD ["node", "dist/server.js"]

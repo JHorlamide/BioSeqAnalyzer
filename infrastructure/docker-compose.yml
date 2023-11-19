@@ -103,7 +103,6 @@ services:
       MYSQL_ROOT_PASSWORD: RootPass
     volumes:
       - ../dna-sequence:/app:cached
-      # - ../dna-sequence/dna_sequence/migrations:/app/dna_sequence/migrations:cached
       - dna-seq-migrations:/app/dna_sequence/migrations
     networks:
       - bioseq-networks
