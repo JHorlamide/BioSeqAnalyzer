@@ -1,8 +1,5 @@
 version: '3.8'
 
-networks:
-  bioseq-networks:
-
 services:
   redis-cache:
     container_name: redis-server
@@ -143,6 +140,9 @@ services:
       - ../client/src:/client/src:cached,ro
     env_file: [ ../client/.env ]
     depends_on: [ "protein-analyzer", "dna-sequence", "user-service" ]
+
+networks:
+  bioseq-networks:
 
 volumes:
   redis-cache:
