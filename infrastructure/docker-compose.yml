@@ -44,7 +44,6 @@ services:
       - ./env/mysql2.env
 
   user-service:
-    image: 036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-user
     container_name: user-service
     build:
       context: ../user-service
@@ -64,7 +63,6 @@ services:
     depends_on: [ "mysql" ]
 
   protein-analyzer:
-    image: 036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-protein-analyzer
     container_name: protein-analyzer
     build:
       context: ../protein-analyzer
@@ -81,7 +79,6 @@ services:
     depends_on: [ "mongodb-server", "redis-cache" ]
 
   dna-sequence:
-    image: 036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-dna-sequence
     container_name: dna-sequence
     build:
       context: ../dna-sequence
@@ -97,7 +94,6 @@ services:
     depends_on: [ "mysql2" ]
 
   api-gateway:
-    image: 036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-api-gateway
     container_name: api-gateway
     build:
       context: ../api-gateway
@@ -117,7 +113,6 @@ services:
       - user-service
 
   client:
-    image: 036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-client
     container_name: client
     build:
       context: ../client
