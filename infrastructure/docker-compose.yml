@@ -1,9 +1,16 @@
 version: '3.8'
 
 services:
+  nginx:
+    build:
+      context: ../nginx
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+
   redis-cache:
     container_name: redis-server
-    image: redis:alpine
+    image: redis:latest
     restart: always
     networks:
       - bioseq-networks
@@ -30,8 +37,6 @@ services:
     restart: always
     networks:
       - bioseq-networks
-    env_file:
-      - ./env/mysql.env
  
   mysql2:
     container_name: mysql2
@@ -40,8 +45,6 @@ services:
     restart: always
     networks:
       - bioseq-networks
-    env_file:
-      - ./env/mysql2.env
 
   user-service:
     container_name: user-service
@@ -119,7 +122,7 @@ services:
       dockerfile: Dockerfile
     # tty: true
     restart: unless-stopped
-    ports: [ "80:80" ]
+    # ports: [ "80:80" ]
     networks:
       - bioseq-networks
     volumes:

@@ -3,38 +3,68 @@
   "containerDefinitions": [
     {
       "name": "client",
-      "image": "036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-client",
+      "image": "bioseqanalyzer-client",
       "hostname": "client",
       "essential": false,
-      "memory": 256
+      "memory": 256,
+      "portMappings": [
+        {
+          "hostPort": 8080,
+          "containerPort": 8080
+        }
+      ]
     },
     {
       "name": "protein-analyzer",
-      "image": "036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-protein-analyzer",
+      "image": "bioseqanalyzer-protein-analyzer",
       "hostname": "protein-analyzer",
       "essential": false,
-      "memory": 128
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 7071,
+          "containerPort": 7071
+        }
+      ]
     },
     {
       "name": "user-service",
-      "image": "036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-user",
+      "image": "bioseqanalyzer-user-service",
       "hostname": "user-service",
       "essential": false,
-      "memory": 128
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 7070,
+          "containerPort": 7070
+        }
+      ]
     },
     {
       "name": "dna-sequence",
-      "image": "036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-dna-sequence",
+      "image": "bioseqanalyzer-dna-sequence",
       "hostname": "dna-sequence",
       "essential": false,
-      "memory": 128
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 7072,
+          "containerPort": 7072
+        }
+      ]
     },
     {
       "name": "api-gateway",
-      "image": "036580031988.dkr.ecr.eu-north-1.amazonaws.com/bioseq-api-gateway",
+      "image": "bioseqanalyzer-apigateway",
       "hostname": "api-gateway",
       "essential": true,
-      "memory": 128
+      "memory": 128,
+      "portMappings": [
+        {
+          "hostPort": 7073,
+          "containerPort": 7073
+        }
+      ]
     }
   ]
 }

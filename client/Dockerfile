@@ -1,5 +1,5 @@
 #### Stage 1 #####
-FROM node:16-alpine
+FROM node:16-alpine as builder
 
 WORKDIR /client
 
@@ -11,10 +11,11 @@ COPY . .
 
 RUN npm run build
 
-
 #### Stage 2 #####
-FROM nginx
+FROM nginx as production
 
-COPY --from=0  /client/dist /usr/share/nginx/html
+EXPOSE 5173
 
+COPY ./nginx.default.conf /etc/nginx/conf.d/default.conf
 
+COPY --from=builder  /client/dist /usr/share/nginx/html

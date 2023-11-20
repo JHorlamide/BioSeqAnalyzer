@@ -138,7 +138,6 @@ services:
     container_name: client
     build:
       context: ../client
-      # docerfile: Dockerfile.development
     tty: true
     restart: unless-stopped
     ports: [ "5173:5173" ]
