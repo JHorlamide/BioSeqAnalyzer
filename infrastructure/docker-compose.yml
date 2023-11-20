@@ -33,6 +33,8 @@ services:
     restart: always
     networks:
       - bioseq-networks
+    env_file:
+      - ./env/mysql.env
  
   mysql2:
     container_name: mysql2
@@ -41,6 +43,8 @@ services:
     restart: always
     networks:
       - bioseq-networks
+    env_file:
+      - ./env/mysql2.env
 
   user-service:
     container_name: user-service
@@ -116,9 +120,7 @@ services:
     build:
       context: ../client
       dockerfile: Dockerfile
-    # tty: true
     restart: unless-stopped
-    # ports: [ "80:80" ]
     networks:
       - bioseq-networks
     volumes:
