@@ -114,10 +114,12 @@ services:
 
   client:
     container_name: client
-    build: ../client
+    build:
+      context: ../client
+      dockerfile: Dockerfile
     # tty: true
     restart: unless-stopped
-    ports: [ "5173:5173" ]
+    ports: [ "80:80" ]
     networks:
       - bioseq-networks
     volumes:

@@ -126,6 +126,7 @@ const ProjectOverview = () => {
             projectId={String(projectId)}
             projectFileName={projectFileName}
             proteinPDBID={proteinPDBID}
+            proteinAminoAcidSequence={proteinAminoAcidSequence}
           />
         </TabPanel>
       </TabPanels>

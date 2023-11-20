@@ -30,7 +30,7 @@ const TopVariantsTable = ({ mutationRanges, maxTableData }: Props) => {
     <Box width="full">
       <CustomTable
         columns={columns}
-        maxTableData={100}
+        // maxTableData={100}
         mutationRanges={mutationRanges}
       />
     </Box>

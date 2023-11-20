@@ -53,7 +53,7 @@ const ProteinSequenceViewer = (props: Props) => {
   const { handleError } = useErrorToast();
   const { projectId } = useParams();
   const tabIndex = Number(localStorage.getItem("tabIndex"));
-  const { seqVizData, loading } = useParseSeq(proteinAminoAcidSequence)
+  const { seqVizData } = useParseSeq(proteinAminoAcidSequence)
 
   if (!proteinPDBID) {
     handleError("No Protein PDB ID Provided. To view protein structure please provide a PDB ID")
@@ -142,11 +142,7 @@ const ProteinSequenceViewer = (props: Props) => {
       </Stack>
 
       {tabIndex !== 1 && (
-        <SequenceViewer
-          {...seqVizData}
-          style={seqVizStyle}
-          viewer={"linear"}
-        />
+        <SequenceViewer {...seqVizData} style={seqVizStyle} viewer={"linear"} />
       )}
 
       {proteinPDBID && (

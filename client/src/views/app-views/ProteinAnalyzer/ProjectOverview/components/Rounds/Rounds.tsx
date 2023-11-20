@@ -16,9 +16,12 @@ interface Props {
   projectId: string;
   proteinPDBID?: string;
   projectFileName?: string;
+  proteinAminoAcidSequence?: string;
 }
 
-const Rounds = ({ projectFileName, projectId, proteinPDBID }: Props) => {
+const Rounds = (props: Props) => {
+  const { projectFileName, projectId, proteinPDBID, proteinAminoAcidSequence } = props;
+
   if (!projectFileName) {
     return <DocumentUpload projectId={projectId} />
   }
@@ -50,6 +53,7 @@ const Rounds = ({ projectFileName, projectId, proteinPDBID }: Props) => {
         <ProteinSequenceViewer
           proteinPDBID={proteinPDBID}
           containerStyle={containerStyle}
+          proteinAminoAcidSequence={proteinAminoAcidSequence}
         />
       </HStack>
 

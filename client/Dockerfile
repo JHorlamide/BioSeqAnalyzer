@@ -1,3 +1,4 @@
+#### Stage 1 #####
 FROM node:16-alpine
 
 WORKDIR /client
@@ -8,6 +9,12 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 
-EXPOSE 5173
+RUN npm run build
 
-CMD ["npm", "run", "dev"]
+
+#### Stage 2 #####
+FROM nginx
+
+COPY --from=0  /client/dist /usr/share/nginx/html
+
+
