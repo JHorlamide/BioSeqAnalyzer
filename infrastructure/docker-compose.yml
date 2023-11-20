@@ -59,7 +59,7 @@ services:
       - ../user-service/prisma:/user-service/prisma:cached
       - migrations:/user-service/prisma/migrations
       - /user-service/node_modules
-    env_file: [ ../user-service/.env ]
+    env_file: [ ../user-service/.env.prod ]
     depends_on: [ "mysql" ]
 
   protein-analyzer:
@@ -75,7 +75,7 @@ services:
     volumes:
       - ../protein-analyzer/app:/protein-analyzer/app:cached
       - /protein-analyzer/node_modules
-    env_file: [ ../protein-analyzer/.env ]
+    env_file: [ ../protein-analyzer/.env.prod ]
     depends_on: [ "mongodb-server", "redis-cache" ]
 
   dna-sequence:
@@ -90,7 +90,7 @@ services:
       - bioseq-networks
     restart: unless-stopped
     ports: [ "7072:7072" ]
-    env_file: [ ../dna-sequence/.env ]
+    env_file: [ ../dna-sequence/.env.prod ]
     depends_on: [ "mysql2" ]
 
   api-gateway:
@@ -106,7 +106,7 @@ services:
     volumes:
       - ../api-gateway/app:/api-gateway/app:cached
       - /api-gateway/node_modules
-    env_file: [ ../api-gateway/.env ]
+    env_file: [ ../api-gateway/.env.prod ]
     depends_on:
       - protein-analyzer
       - dna-sequence
@@ -125,7 +125,7 @@ services:
     volumes:
       - ../client/public:/client/public:cached
       - ../client/src:/client/src:cached
-    env_file: [ ../client/.env ]
+    env_file: [ ../client/.env.prod ]
     depends_on: [ "protein-analyzer", "dna-sequence", "user-service" ]
 
 networks:
