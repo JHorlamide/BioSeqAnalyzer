@@ -11,7 +11,7 @@ import { GatewayRoute } from "../routes/gatewayRouteConfig";
 const app = express();
 const routes: CommonRoutesConfig[] = [];
 
-const allowedOrigins = ["http://localhost:5173"]
+const allowedOrigins = [config.allowedOrigin];
 
 const corsOptions: CorsOptions = {
   origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => {

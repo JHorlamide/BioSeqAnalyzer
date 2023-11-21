@@ -6,5 +6,8 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ["apexcharts", "molstar"],
+  },
+  server: {
+    port: 3000
   }
 })

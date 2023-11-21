@@ -14,7 +14,7 @@ RUN npm run build
 #### Stage 2 #####
 FROM nginx as production
 
-EXPOSE 5173
+EXPOSE 3000
 
 COPY ./nginx/default.conf /etc/nginx/conf.d/default.conf
 

@@ -1,141 +1,144 @@
+version: "3.9"
+
 services:
-  nginx:
-    build:
-      context: ../nginx
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
+    nginx:
+        build:
+            context: ../nginx
+            dockerfile: Dockerfile
+        container_name: nginx
+        ports:
+            - "80:80"
 
-  redis-cache:
-    container_name: redis-server
-    image: redis:latest
-    restart: always
-    networks:
-      - bioseq-networks
-    ports:
-      - "6379:6379"
-    command: redis-server --save 20 1 --loglevel warning
-    volumes:
-      - redis-cache:/data
+    redis-cache:
+        container_name: redis-server
+        image: redis
+        restart: always
+        networks:
+            - bioseq-networks
+        ports:
+            - "6379:6379"
+        command: redis-server --save 20 1 --loglevel warning
+        volumes:
+            - redis-cache:/data
 
-  mongodb-server:
-    image: mongo:4.4
-    container_name: mongodb-server
-    networks:
-      - bioseq-networks
-    ports:
-      - "27017:27017"
+    mongodb-server:
+        image: mongo
+        container_name: mongodb-server
+        networks:
+            - bioseq-networks
+        ports:
+            - "27017:27017"
 
-  mysql:
-    container_name: mysql
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    networks:
-      - bioseq-networks
-    env_file:
-      - ./env/mysql.env
- 
-  mysql2:
-    container_name: mysql2
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
-    networks:
-      - bioseq-networks
-    env_file:
-      - ./env/mysql2.env
+    mysql:
+        container_name: mysql
+        image: mysql
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        networks:
+            - bioseq-networks
+        env_file:
+            - ./env/mysql.env
 
-  user-service:
-    container_name: user-service
-    build:
-      context: ../user-service
-      target: production
-    # tty: true
-    restart: unless-stopped
-    ports: [ "7070:7070" ]
-    networks:
-      - bioseq-networks
-    volumes:
-      - ../user-service/app:/user-service/app:cached
-      - ../user-service/views:/user-service/views:cached
-      - ../user-service/prisma:/user-service/prisma:cached
-      - migrations:/user-service/prisma/migrations
-      - /user-service/node_modules
-    env_file: [ ../user-service/.env.prod ]
-    depends_on: [ "mysql" ]
+    mysql2:
+        image: mysql
+        container_name: mysql2
+        command: --default-authentication-plugin=mysql_native_password
+        restart: always
+        networks:
+            - bioseq-networks
+        env_file:
+            - ./env/mysql2.env
 
-  protein-analyzer:
-    container_name: protein-analyzer
-    build:
-      context: ../protein-analyzer
-      target: production
-    # tty: true
-    restart: unless-stopped
-    ports: [ "7071:7071" ]
-    networks:
-      - bioseq-networks
-    volumes:
-      - ../protein-analyzer/app:/protein-analyzer/app:cached
-      - /protein-analyzer/node_modules
-    env_file: [ ../protein-analyzer/.env.prod ]
-    depends_on: [ "mongodb-server", "redis-cache" ]
+    user-service:
+        container_name: user-service
+        build:
+            context: ../user-service
+            target: production
+        # tty: true
+        restart: unless-stopped
+        ports: ["7070:7070"]
+        networks:
+            - bioseq-networks
+        volumes:
+            - ../user-service/app:/user-service/app:cached
+            - ../user-service/views:/user-service/views:cached
+            - ../user-service/prisma:/user-service/prisma:cached
+            - migrations:/user-service/prisma/migrations
+            - /user-service/node_modules
+        env_file: [../user-service/.env.prod]
+        depends_on: ["mysql"]
 
-  dna-sequence:
-    container_name: dna-sequence
-    build:
-      context: ../dna-sequence
-      dockerfile: ../dna-sequence/Dockerfile
-    volumes:
-      - ../dna-sequence:/app:cached
-      - dna-seq-migrations:/app/dna_sequence/migrations
-    networks:
-      - bioseq-networks
-    restart: unless-stopped
-    ports: [ "7072:7072" ]
-    env_file: [ ../dna-sequence/.env.prod ]
-    depends_on: [ "mysql2" ]
+    protein-analyzer:
+        container_name: protein-analyzer
+        build:
+            context: ../protein-analyzer
+            target: production
+        # tty: true
+        restart: unless-stopped
+        ports: ["7071:7071"]
+        networks:
+            - bioseq-networks
+        volumes:
+            - ../protein-analyzer/app:/protein-analyzer/app:cached
+            - /protein-analyzer/node_modules
+        env_file: [../protein-analyzer/.env.prod]
+        depends_on: ["mongodb-server", "redis-cache"]
 
-  api-gateway:
-    container_name: api-gateway
-    build:
-      context: ../api-gateway
-      target: production
-    # tty: true
-    restart: unless-stopped
-    ports: [ "7073:7073" ]
-    networks:
-      - bioseq-networks
-    volumes:
-      - ../api-gateway/app:/api-gateway/app:cached
-      - /api-gateway/node_modules
-    env_file: [ ../api-gateway/.env.prod ]
-    depends_on:
-      - protein-analyzer
-      - dna-sequence
-      - user-service
+    dna-sequence:
+        container_name: dna-sequence
+        build:
+            context: ../dna-sequence
+            dockerfile: ../dna-sequence/Dockerfile
+        volumes:
+            - ../dna-sequence:/app:cached
+            - dna-seq-migrations:/app/dna_sequence/migrations
+        networks:
+            - bioseq-networks
+        restart: unless-stopped
+        ports: ["7072:7072"]
+        env_file: [../dna-sequence/.env.prod]
+        depends_on: ["mysql2"]
 
-  client:
-    container_name: client
-    build:
-      context: ../client
-      dockerfile: Dockerfile
-    restart: unless-stopped
-    networks:
-      - bioseq-networks
-    volumes:
-      - ../client/public:/client/public:cached
-      - ../client/src:/client/src:cached
-    env_file: [ ../client/.env.prod ]
-    depends_on: [ "protein-analyzer", "dna-sequence", "user-service" ]
+    api-gateway:
+        container_name: api-gateway
+        build:
+            context: ../api-gateway
+            target: production
+        # tty: true
+        restart: unless-stopped
+        ports: ["7073:7073"]
+        networks:
+            - bioseq-networks
+        volumes:
+            - ../api-gateway/app:/api-gateway/app:cached
+            - /api-gateway/node_modules
+        env_file: [../api-gateway/.env.prod]
+        depends_on:
+            - protein-analyzer
+            - dna-sequence
+            - user-service
+
+    client:
+        container_name: client
+        build:
+            context: ../client
+            dockerfile: Dockerfile
+        restart: unless-stopped
+        networks:
+            - bioseq-networks
+        volumes:
+            - ../client/public:/client/public:cached
+            - ../client/src:/client/src:cached
+        env_file: [../client/.env.prod]
+        depends_on: ["protein-analyzer", "dna-sequence", "user-service"]
 
 networks:
-  bioseq-networks:
+    bioseq-networks:
 
 volumes:
-  redis-cache:
-    driver: local
-  migrations:
-    driver: local
-  dna-seq-migrations:
-    driver: local
+    redis-cache:
+        driver: local
+    migrations:
+        driver: local
+    dna-seq-migrations:
+        driver: local
