@@ -18,12 +18,10 @@ function createServer(): http.Server {
     const addr = server.address();
     const bind = typeof addr === 'string' ? `pipe ${addr}` : `port ${addr?.port}`;
     logger.info(`API gateway server is running on port ${config.port} 🚀`);
-
-    if (config.node_env !== "test") {
-      routes.forEach((route: CommonRoutesConfig) => {
-        logger.info(`Routes configured for -> ${route.getName()}`);
-      });
-    }
+    
+    routes.forEach((route: CommonRoutesConfig) => {
+      logger.info(`Routes configured for -> ${route.getName()}`);
+    });
   })
 
   return server;

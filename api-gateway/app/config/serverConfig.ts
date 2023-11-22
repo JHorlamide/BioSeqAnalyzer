@@ -15,7 +15,7 @@ const config = {
   USER_BASE_URL: String(process.env.USER_BASE_URL),
   PROTEIN_BASE_URL: String(process.env.PROTEIN_BASE_URL),
   DNA_SEQUENCE_BASE_URL: String(process.env.DNA_SEQUENCE_BASE_URL),
-  allowedOrigin: String(process.env.ALLOWED_ORIGIN)
+  allowedOrigin: process.env.ALLOWED_ORIGIN as string
 }
 
 export default config;

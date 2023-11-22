@@ -6,10 +6,10 @@ const config = {
   allowedOrigin: {
     get baseUrl() {
       if (process.env.NODE_ENV === "production") {
-        return process.env.BASE_URL_LIVE
+        return process.env.BASE_URL_LIVE as string;
       }
 
-      return process.env.BASE_URL_DEV
+      return process.env.BASE_URL_DEV as string;
     }
   },
 

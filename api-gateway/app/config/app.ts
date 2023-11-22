@@ -11,16 +11,9 @@ import { GatewayRoute } from "../routes/gatewayRouteConfig";
 const app = express();
 const routes: CommonRoutesConfig[] = [];
 
-const allowedOrigins = [config.allowedOrigin];
-
 const corsOptions: CorsOptions = {
-  origin: (origin: string | undefined, callback: (error: Error | null, allow?: boolean) => void) => {
-    if (allowedOrigins.indexOf(origin!) !== -1 || !origin) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: "*",
+  credentials: true,
 };
 
 app.use(cors(corsOptions));

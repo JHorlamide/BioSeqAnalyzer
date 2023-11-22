@@ -12,7 +12,7 @@ import useErrorToast from '../../../../hooks/useErrorToast';
 import Button from '../../../../components/CustomBtn/Button';
 import AppLoader from '../../../../components/Loading/AppLoader';
 import SequenceMap from '../../../../components/SequenceMap/SequenceMap';
-import { AUTH_PREFIX_PATH, BASE_URL } from '../../../../config/AppConfig';
+import { AUTH_PREFIX_PATH, API_BASE_URL } from '../../../../config/AppConfig';
 import { DNASeqProject } from '../../../../services/DNASequence/types';
 
 /* Chakra UI */
@@ -72,7 +72,7 @@ const SharedProjectView = () => {
   const message = String(pathQuery.get("message"));
 
   const fetchProjectDetails = async () => {
-    const reqURL = `${BASE_URL}/project/share/${projectId}`;
+    const reqURL = `${API_BASE_URL}/project/share/${projectId}`;
 
     try {
       setLoading(true);

@@ -95,7 +95,7 @@ services:
             context: ../dna-sequence
             dockerfile: ../dna-sequence/Dockerfile
         environment:
-            DB_HOST: mysql2
+            DB_HOST: mysql
             PORT: 3306
             MYSQL_USER: root
             MYSQL_DATABASE: DnaSequence

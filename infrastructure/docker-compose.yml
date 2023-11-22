@@ -2,12 +2,22 @@ version: "3.9"
 
 services:
     nginx:
+        container_name: nginx
         build:
             context: ../nginx
             dockerfile: Dockerfile
-        container_name: nginx
+        networks:
+            - bioseq-networks
         ports:
             - "80:80"
+        depends_on:
+            [
+                "client",
+                "user-service",
+                "protein-analyzer",
+                "dna-sequence",
+                "api-gateway",
+            ]
 
     redis-cache:
         container_name: redis-server
@@ -44,6 +54,7 @@ services:
         container_name: mysql2
         command: --default-authentication-plugin=mysql_native_password
         restart: always
+        ports: ["3306:3306"]
         networks:
             - bioseq-networks
         env_file:
@@ -56,7 +67,7 @@ services:
             target: production
         # tty: true
         restart: unless-stopped
-        ports: ["7070:7070"]
+        ports: ["7070:7070", "3001:3001"]
         networks:
             - bioseq-networks
         volumes:
@@ -104,7 +115,6 @@ services:
         build:
             context: ../api-gateway
             target: production
-        # tty: true
         restart: unless-stopped
         ports: ["7073:7073"]
         networks:

@@ -2,11 +2,12 @@
 import React, { useState } from "react"
 
 /* Libraries */
-import { FiCopy } from "react-icons/fi";
 import toast from "react-hot-toast";
+import { FiCopy } from "react-icons/fi";
 
 /* Application Modules */
 import Button from "../CustomBtn/Button";
+import { CLIENT_BASE_URL } from "../../config/AppConfig";
 
 /* Chakra UI */
 import {
@@ -33,15 +34,13 @@ interface ShareProjectProps {
   onClose: () => void;
 }
 
-const BASE_URL=import.meta.env.VITE_BASE_URL;
-
 const ShareProjectModal = (props: ShareProjectProps) => {
   const initialRef = React.useRef(null);
   const finalRef = React.useRef(null);
   const [message, setMessage] = useState("");
   const { isOpen, onClose, projectId, projectName } = props;
 
-  const sharableLink = `${BASE_URL}/app/dna-sequence/shared/overview/${projectId}?&message=${message}`;
+  const sharableLink = `${CLIENT_BASE_URL}/app/dna-sequence/shared/overview/${projectId}?&message=${message}`;
 
   const handleMessage = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;

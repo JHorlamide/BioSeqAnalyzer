@@ -1,9 +1,9 @@
 /* Application Modules */
-import { BASE_URL } from "../config/AppConfig";
+import { API_BASE_URL } from "../config/AppConfig";
 
 export const addUserToProject = async (userId: string, projectId: string) => {
   try {
-    const reqURL = `${BASE_URL}/add-user-to-project/`;
+    const reqURL = `${API_BASE_URL}/add-user-to-project/`;
 
     const requestData = {
       user_id: userId,
@@ -32,7 +32,7 @@ export const addUserToProject = async (userId: string, projectId: string) => {
 
 export const deleteDnaSeqProjects = async () => {
   try {
-    const reqURL = `${BASE_URL}/delete-projects/`;
+    const reqURL = `${API_BASE_URL}/delete-projects/`;
     const token = localStorage.getItem("auth_token");
 
     const requestOption = {
