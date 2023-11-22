@@ -43,11 +43,11 @@ To install this application, follow these steps:
 To start the application use docker compose:
 
 * Navigate to the project directory: `cd infrastructure`
-* `docker-compose up --build`
+* `docker-compose up --build -d`
 * To test the API endpoints, you can use a tool like [Postman](https://www.postman.com/downloads/) or [curl](https://curl.se/). For example, to create a new resource using `curl`, you can run the following command:
 
   * ```
-    curl -X POST -H "Content-Type: application/json" -d '{ "name": "Growth", "description": "Scale the business" }' http://localhost:7071/api/phases
+    curl -X POST -H "Content-Type: application/json" -d '{ "name": "Growth", "description": "Scale the business" }' http://localhost:7071/api/protein-projects
     ```
 
 ## Usage
@@ -68,13 +68,61 @@ The API endpoints of the service are described below:
 
 #### DNA API Endpoints:
 
+The API endpoints of the service are described below:
+
+* `POST /api/dna-sequence`: Create a new DNA sequence project via project form, file upload, and import from database.
+* `GET /api/dna-sequence/:projectId`: Get DNA sequence project details.
+* `PUT /api/dna-sequence/:projectId:` Update DNA sequence projects details with the given project ID.
+* `DELETE /api/dna-sequence/:projectId:` Delete DNA sequence project with the given project ID. This also deleted the associated file on S3 if any.
+* `DELETE /api/delete-projects/:` Deletes all user projects. This happens when the user delete their accounts.
+* `GET /api/add-user-to-project:` This adds an invited user to a project if they choose to accept the invitation to a project.
+* `GET /api/project-share/:projectId:` Gives you a project details via an unprotected route.
+
 #### User API Endpoints:
+
+The API endpoints of the service are described below:
+
+* `POST /api/users/register`: Creates a new user. body ->
+  ```
+  {fullName: "string", emai: "string", password: "string"}
+  ```
+* `GET /api/users/invite`: Sends invitation email to invite a user to a project. body -> `{userEmail: "string", projectId: "string", projectName: "string"}`
+* `GET /api/users/invite/accept:` Accepts an invitation to a projects. body -> `{invitationToken: "string", userEmail: "string", fullName: "string", password: "string"}`
+* `PUT /api/users/account/delete:` Deletes a user account. Delete an account deletes all associated projects (protein & DNA sequence projects).
+
+#### Authentication API Endpoints:
+
+The API endpoints of the service are described below:
+
+* `POST /api/users/login`: Login user if the provided credential are correct. body -> {
+  ```
+  emai: "string", password: "string"}
+  ```
+* `GET /api/users/refresh-token`: Refresh user authe token if the accessToken has expired. body -> `{refreshToken: "string"}`
+* `GET /api/users/forgot-password:` Sends a forgotpassword email to the user account if the provided email ID is valid. body ->` {email: "string"}`
+* `PUT /api/users/reset-password:` Resets the user password. body ->
+  ```
+  {password: "string", confirmPassword: "string", passwordToken: "string"}
+  ```
 
 ## Running Test
 
 To ensure the reliability and accuracy of the application, I have implemented a simple suite of tests. While these tests are not exhaustive, but they cover some critical aspects of the API implementation. To run the tests, use the following commands:
 
+**Protein API Service**
+
+* From the root Directory of the BioSeqAnalyzer, `cd` into `protein-analyzer`.
 * To run the tests in watch mode, use the command `npm run test:watch`.
 * To run the tests without watch mode, use the command `npm run test`.
+
+**User API Service**
+
+* From the root Directory of the BioSeqAnalyzer, `cd` into `user-service`.
+* Run the tests in watch mode, use the command `npm run test:watch`.
+
+**DNA Sequence API Service**
+
+* From the root Directory of the BioSeqAnalyzer, `cd` into `dna-sequence`.
+* Run the tests `pytest`.
 
 I take application testing seriously and am committed to ensuring the highest possible quality of software :)

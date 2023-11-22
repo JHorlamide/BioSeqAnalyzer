@@ -148,11 +148,9 @@ export const useCreateDNASeqProjectByImport = () => {
     formState: { errors },
   } = useForm<ProjectFormData>({ resolver: zodResolver(projectSchema) });
 
-
   const { handleError } = useErrorToast();
   const { handleNavigate } = useNavigation();
   const [createProject, { isLoading }] = useCreateProjectMutation();
-
 
   const submitProject = async (data: ProjectFormData) => {
     const formData = utils.getFilledFormData(data);
