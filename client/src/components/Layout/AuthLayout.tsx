@@ -10,9 +10,3 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 
 export default AuthLayout;
 
-// showHeading={true} formHeading={formHeading}
-// const location = useLocation();
-// const formHeading =
-//   location.pathname === `${AUTH_PREFIX_PATH}/forgot-password`
-//     ? "Reset your password"
-//     : "";

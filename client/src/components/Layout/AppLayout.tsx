@@ -24,7 +24,6 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         width="20%"
         bg="brand_blue.300"
         overflow="auto"
-        right={5}
         paddingY={3}
         paddingX={3}
       >
@@ -42,7 +41,6 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         <Suspense fallback={<AppLoader />}>
           {children}
         </Suspense>
-
         <Footer />
       </Box>
     </Flex>

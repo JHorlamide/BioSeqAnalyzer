@@ -103,6 +103,7 @@ services:
         volumes:
             - ../dna-sequence:/app:cached
             - dna-seq-migrations:/app/dna_sequence/migrations
+        command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
         networks:
             - bioseq-networks
         restart: unless-stopped

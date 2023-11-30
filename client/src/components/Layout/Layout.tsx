@@ -17,7 +17,7 @@ const Layout = () => {
   return (
     <Suspense fallback={<AppLoader />}>
       <MobileNote />
-      
+
       <Layout>
         <Views />
       </Layout>

@@ -104,6 +104,7 @@ services:
             - ../dna-sequence:/app:cached
             - ../dna-sequence/dna_sequence/migrations:/app/dna_sequence/migrations:cached
             - dna-seq-migrations:/dna_sequence/migrations
+        command: bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
         networks:
             - bioseq-networks
         restart: unless-stopped
