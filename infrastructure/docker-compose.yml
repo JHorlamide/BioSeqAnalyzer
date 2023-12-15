@@ -11,14 +11,9 @@ services:
         ports:
             - "80:80"
         depends_on:
-            [
-                "client",
-                "user-service",
-                "protein-analyzer",
-                "dna-sequence",
-                "api-gateway",
-            ]
-
+            - bioseq-client
+            - api-gateway
+        
     redis-cache:
         container_name: redis-server
         image: redis
@@ -65,7 +60,6 @@ services:
         build:
             context: ../user-service
             target: production
-        # tty: true
         restart: unless-stopped
         ports: ["7070:7070", "3001:3001"]
         networks:
@@ -129,8 +123,8 @@ services:
             - dna-sequence
             - user-service
 
-    client:
-        container_name: client
+    bioseq-client:
+        container_name: bioseq-client
         build:
             context: ../client
             dockerfile: Dockerfile

@@ -24,7 +24,7 @@ const navigationConfig: NavConfigProps[] = [
   {
     key: 'dashboards-dna-sequence',
     path: `${APP_PREFIX_PATH}/dna-sequence/dashboard`,
-    title: 'DNA Sequence',
+    title: 'DNA/RNA Sequence',
     Icon: GiDna1,
   },
 ]

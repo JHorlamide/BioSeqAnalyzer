@@ -66,7 +66,6 @@ class ProjectService {
     }
   }
 
-  // Get a single project by the given projectId
   public async getProjectById(projectId: string) {
     try {
       const project = await projectRepository.getProjectById(projectId);
@@ -149,7 +148,7 @@ class ProjectService {
     }
   }
 
-  public async deleteProject(projectId: string, authorId: string) {
+  public async deleteProjectAndAssociatedFile(projectId: string, authorId: string) {
     try {
       const project = await projectRepository.deleteProject(projectId);
 
@@ -206,6 +205,7 @@ class ProjectService {
       }
 
       const { response, bucketKey } = await fileService.uploadFileToBucket(file);
+
       if (!response || response.$metadata.httpStatusCode !== 200) {
         throw new ServerError(ERR_MSG.FILE_UPLOAD_ERROR);
       }

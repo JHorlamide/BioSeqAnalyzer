@@ -139,7 +139,7 @@ const SequenceMap = (props: SequenceMapProps) => {
         </Flex>
       </Box>
 
-      {isLoading ? (<AppLoader />) : (
+      {isLoading ? <AppLoader /> : (
         <Fragment>
           <SequenceViewer
             name={sequenceData.name}

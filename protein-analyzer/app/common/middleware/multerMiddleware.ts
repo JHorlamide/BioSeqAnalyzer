@@ -1,5 +1,11 @@
+/* Core */
 import path from 'path';
+
+/* Libraries */
+import { Request } from 'express';
 import multer, { FileFilterCallback } from "multer";
+
+/* Application Modules */
 import config from '../../config/appConfig';
 
 function checkFileType(file: any, callBack: any) {
@@ -16,11 +22,10 @@ function checkFileType(file: any, callBack: any) {
 
 // Multer storage configuration
 // Store the uploaded file in memory
-const storage = multer.memoryStorage();
 export const multerUpload = multer({
-  storage,
+  storage: multer.memoryStorage(),
   limits: { fileSize: config.MAX_FILE_SIZE },
-  fileFilter: function (req: any, file: any, callBack: FileFilterCallback) {
+  fileFilter: function (req: Request, file: Express.Multer.File, callBack: FileFilterCallback) {
     checkFileType(file, callBack);
   }
 }).single("file");

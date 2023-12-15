@@ -9,7 +9,6 @@ import {
   GetObjectCommand,
   PutObjectCommand,
   DeleteObjectCommand,
-  DeleteObjectCommandOutput
 } from "@aws-sdk/client-s3";
 
 /* Application Modules */

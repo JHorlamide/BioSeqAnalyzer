@@ -1,9 +1,10 @@
+/* Libraries */
 import { Application } from "express";
+import { createProxyMiddleware } from "http-proxy-middleware";
 
 /* Application Modules */
 import config from "../config/serverConfig";
 import { CommonRoutesConfig } from "../config/routeConfig";
-import { createProxyMiddleware } from "http-proxy-middleware";
 import { validJWTNeeded } from "../middleware/authMiddleware";
 
 const APP_PREFIX_PATH = config.prefix;

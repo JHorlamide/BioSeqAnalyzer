@@ -132,8 +132,8 @@ services:
             - dna-sequence
             - user-service
 
-    client:
-        container_name: client
+    bioseq-client:
+        container_name: bioseq-client
         build:
             context: ../client
             dockerfile: Dockerfile.dev

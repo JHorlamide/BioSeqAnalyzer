@@ -75,7 +75,7 @@ class ProjectController {
     const { userId } = decodedUser;
     const { projectId } = req.params;
 
-    await projectService.deleteProject(projectId, userId);
+    await projectService.deleteProjectAndAssociatedFile(projectId, userId);
     responseHandler.noContentRes(res);
   });
 
@@ -88,8 +88,8 @@ class ProjectController {
   });
 
   public uploadProjectCSV = asyncHandler(async (req: Request, res: Response) => {
-    const file = req.file;
     const { projectId } = req.params;
+    const file = req.file;
 
     if (!file) {
       return responseHandler.badRequest(ERR_MSG.NO_FILE_UPLOAD, res);
