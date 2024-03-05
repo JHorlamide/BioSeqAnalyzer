@@ -125,4 +125,4 @@ describe("protein project endpoint", function () {
       expect(response.status).toBe(204);
     });
   })
-})
+});

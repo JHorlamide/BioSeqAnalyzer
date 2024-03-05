@@ -185,7 +185,6 @@ const ProjectCard = (props: ProjectCardProps) => {
                 />
               )}
             </Flex>
-
           </Stack>
         </CardBody>
       </Card>
